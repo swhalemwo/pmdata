@@ -12,6 +12,7 @@ library(lobstr)
 ## library(xlsx)
 ## library(googlesheets4)
 ## library(rmonad)
+library(testthat)
 
 
 vrbl_fndr <- function(df, penl_vrbls) {
@@ -61,16 +62,41 @@ gendt_pmdb_excl <- function(PMDB_FILE, only_pms=T) {
     ## check that all countries with country string convert to country code
     if (dt_pmdb_excl2[is.na(iso3c) & country != "", .N] > 0) {stop("not all countries are matched")}
 
-    
+    ## test_file("~/Dropbox/phd/pmdata/data_sources/pmdb/tests_gendt_pmdb_excl.R")
+
+    ## test_that("all PMs have ID", {expect_true(dtx[is.na(ID), .N] == 0)})
+    ## test_that("all_PMs have ID", {expect_true(dtx[, none(ID, is.na)])})
+    ## if (dt_pmdb_excl2[is.na(ID), .N > 0]) {stop("not all PMs have ID")}
+    ## if (dt_pmdb_excl2[, uniqueN(ID) == .N]) {stop("not all IDs are unique")}
     
     return(dt_pmdb_excl2)
         
 }
 
+test_gendt_pmdb_excl <- function(dt_pmdb_excl2) {
+    test_that("true is true", {expect_true(T)})
+    test_that("all_PMs have ID", {expect_true(dt_pmdb_excl2[, none(ID, is.na)])})
 
-gendt_pmdb_excl(PMDB_FILE, only_pms = F)
+    
+}
+
+test_gendt_pmdb_excl(dtx)
 
 
+test_file("~/Dropbox/phd/pmdata/data_sources/pmdb/tests_gendt_pmdb_excl.R")
+
+
+dtx[, none(ID, is.na)]
+
+
+dt_pmdb_excl <- gendt_pmdb_excl(PMDB_FILE, only_pms = F)
+
+
+
+1+1
+
+path <- testthat_example("failure")
+test_file(path)
 
 PMDATA_DIR <- "/home/johannes/Dropbox/phd/pmdata/"
 PMDB_DIR <- paste0(PMDATA_DIR, "data_sources/pmdb/")
