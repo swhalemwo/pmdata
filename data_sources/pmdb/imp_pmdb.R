@@ -13,6 +13,7 @@ library(lobstr)
 ## library(googlesheets4)
 ## library(rmonad)
 library(testthat)
+library(collapse)
 
 
 vrbl_fndr <- function(df, penl_vrbls) {
@@ -171,33 +172,14 @@ gendtc_pmdb_excl <- function(PMDB_FILE, only_pms = T) {
 
 
 gendtc_pmdb_excl(PMDB_FILE)
-debug("gendtc_pmdb_excl")
+## debug("gendtc_pmdb_excl")
 
 
 
-## compare dts: 
-dt_pmdb_excl_dt <- gendt_pmdb_excl(PMDB_FILE)[, `:=`(`Museum_opening year` = NULL, Museum_name = NULL,
-                       Museum_country = NULL, `Museum_closing year` = NULL,
-                       Museum_status = NULL)]
-
-dt_pmdb_excl_clps <- gendtc_pmdb_excl(PMDB_FILE) %>% .[, .SD, .SDcols = names(dt_pmdb_excl_dt)]
-
-identical(dt_pmdb_excl_dt, dt_pmdb_excl_clps)
-fsetdiff(dt_pmdb_excl_dt, dt_pmdb_excl_clps)
 
 
 
-    
 
-
-
-microbenchmark(
-    dt = gendt_pmdb_excl(PMDB_FILE),
-    clps = gendtc_pmdb_excl(PMDB_FILE), times = 5)
-
-## dtx[, none(ID, is.na)]
-
-## dt_pmdb_excl <- gendt_pmdb_excl(PMDB_FILE, only_pms = F)
 
 
 
@@ -287,3 +269,21 @@ for(i in 1:40) {
     
     
     
+## ** compare dt and collapse
+## compare dts: 
+dt_pmdb_excl_dt <- gendt_pmdb_excl(PMDB_FILE)[, `:=`(`Museum_opening year` = NULL, Museum_name = NULL,
+                       Museum_country = NULL, `Museum_closing year` = NULL,
+                       Museum_status = NULL)]
+
+dt_pmdb_excl_clps <- gendtc_pmdb_excl(PMDB_FILE) %>% .[, .SD, .SDcols = names(dt_pmdb_excl_dt)]
+
+identical(dt_pmdb_excl_dt, dt_pmdb_excl_clps)
+fsetdiff(dt_pmdb_excl_dt, dt_pmdb_excl_clps)
+
+
+
+
+microbenchmark(
+    dt = gendt_pmdb_excl(PMDB_FILE),
+    clps = gendtc_pmdb_excl(PMDB_FILE), times = 5)
+
