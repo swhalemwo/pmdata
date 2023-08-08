@@ -1,0 +1,13 @@
+Package: pmdata
+Title: Private Museum Data Processing
+Version: 0.0.1
+Authors@R: 
+    person("Johannes", "Aengenheyster", , "j.aengenheyster@uva.nl", role = c("aut", "cre"),
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: Provides reusable functions for generating the various data objects used in the Private Museum research project at UvA
+License: GPL-3
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Imports: purrr, data.table, countrycode, lobstr, testthat, collapse
+
