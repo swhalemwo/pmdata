@@ -1,6 +1,3 @@
-PMDATA_DIR <- "/home/johannes/Dropbox/phd/pmdata/"
-PMDB_DIR <- paste0(PMDATA_DIR, "data_sources/pmdb/")
-PMDB_FILE <- paste0(PMDB_DIR, "Private museum database_v1.csv")
 
 ## maybe add version number later
 
@@ -23,43 +20,7 @@ x <- read_sheet(PMDB_URL)
 
 
 
-
-
-for(i in 1:10) {
-    ## dtx <- leaker_test()
-    dtx <- gendt_pmdb_excl(PMDB_FILE, only_pms = F, rff = "fread")
-    rm(dtx)    
-    gc()
-    print(as.integer(mem_used()))
-}
-
-
-
-
-dtx <- gendt_pmdb_excl(PMDB_FILE, only_pms = F, rff = T)
-
-fwrite()
-object_size(dtx)
-
-## memory profiling
-
-mem_change(dtx <- gendt_pmdb_excl(PMDB_FILE, only_pms = F))
-object_size(dtx)
-
-
-
-for(i in 1:40) {
-    m1 <- as.integer(pryr::mem_used())
-    ## dtx <- gendt_pmdb_excl(PMDB_FILE, only_pms = F)
-    ## dtx <- gendtm_pmdb_excl(PMDB_FILE, only_pms = F)
-    dtx <- 10 %>>% sqrt
-    rm(dtx)    
-    gc()
-    m2 <- as.integer(pryr::mem_used())
-    print(m2-m1)
-}
-
-
+## for some funny reason the first call always leaks some memory?
 
 
 

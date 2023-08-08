@@ -1,22 +1,29 @@
 ## * import PMDB
 
-args <- commandArgs(trailingOnly = T)
-options(width = 110)
+## args <- commandArgs(trailingOnly = T)
+## options(width = 110)
 
 
 ## library(readxl)
-library(purrr)
-library(countrycode)
-## library(pryr)
-library(lobstr)
-## library(xlsx)
-## library(googlesheets4)
-## library(rmonad)
-library(testthat)
-library(collapse)
+## library(purrr)
+## library(countrycode)
+## ## library(pryr)
+## library(lobstr)
+## ## library(xlsx)
+## ## library(googlesheets4)
+## ## library(rmonad)
+## library(testthat)
+## library(collapse)
 
-
+#' finds a variable in a data.frame from candidates
+#'
+#' with quickly changing excel sheets, column/variable names can change as well. vrbl_fndr gets the
+#' one variable that is present in the data from a vector of candidates.
+#' if multiple or none variable is found, an error is thrown
+#' @param df data.frame 
+#' @param penl_vrbls vector of potential variables
 vrbl_fndr <- function(df, penl_vrbls) {
+    if (as.character(match.call()[[1]]) %in% fstd){browser()}
     #' find the variable referred by by potential variables (penl_vrbls)
 
     vrbl <- intersect(names(df), penl_vrbls)
@@ -31,12 +38,14 @@ vrbl_fndr <- function(df, penl_vrbls) {
 
 
 
-
+#' generates the most basic data.frame of the google sheet (only handful of columns standardized)
+#'
+#' @param PMBD_FILE path to CSV download from google sheets
+#' @param only_pms whether to include only private museums that are currently open
+#' @export
 gendt_pmdb_excl <- function(PMDB_FILE, only_pms=T) {
     if (as.character(match.call()[[1]]) %in% fstd){browser()}
-    1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
-    #' just read in the excel file, add a few auxiliary columns 
-
+    
     dt_pmdb_excl <- fread( PMDB_FILE)[2:.N]# skip second column
     ## dt_pmdb_excl[, map(.SD, class)] %>% melt(id.vars = "ID") %>% .[value != "character"] %>% .[, .N, value]
     ## dtx <- read.xlsx2(PMDB_FILE, sheetName = "Blad1") %>% adt() %>% .[2:.N]
@@ -76,12 +85,16 @@ gendt_pmdb_excl <- function(PMDB_FILE, only_pms=T) {
         
 }
 
+
+#' generates the most basic data.frame of the google sheet as rmonad (only handful of columns standardized)
+#'
+#' @param PMBD_FILE path to CSV download from google sheets
+#' @param only_pms whether to include only private museums that are currently open
+#' @export
 gendtm_pmdb_excl <- function(PMDB_FILE, only_pms=T) {
     if (as.character(match.call()[[1]]) %in% fstd){browser()}
     1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
-    #' just read in the excel file, add a few auxiliary columns
-    #' use rmonad (leaks memory tho)
-    
+        
     basic_cols <- as_monad(list(
         country = c("Country where museum is located", "Museum_country"),
         name = c("Museum_name", "Name of museum"),
@@ -131,13 +144,16 @@ gendtm_pmdb_excl <- function(PMDB_FILE, only_pms=T) {
 
 }
 
-## gendtm_pmdb_excl(PMDB_FILE)
 
+#' generates the most basic data.frame of the google sheet using collapse (only handful of columns standardized)
+#'
+#' @param PMBD_FILE path to CSV download from google sheets
+#' @param only_pms whether to include only private museums that are currently open
+#' @export
 gendtc_pmdb_excl <- function(PMDB_FILE, only_pms = T) {
     if (as.character(match.call()[[1]]) %in% fstd){browser()}
-    1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
 
-    dt_pmdb_excl <- fread(PMDB_FILE)[2:.N]# skip second column
+    dt_pmdb_excl <- fread(PMDB_FILE)[2:.N] # skip second column
     ## dt_pmdb_excl[, map(.SD, class)] %>% melt(id.vars = "ID") %>% .[value != "character"] %>% .[, .N, value]
     ## dtx <- read.xlsx2(PMDB_FILE, sheetName = "Blad1") %>% adt() %>% .[2:.N]
     ## dtx[653:.N] %>% melt(id.vars = "ID") %>% .[value != ""]
