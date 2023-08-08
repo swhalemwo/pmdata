@@ -1,19 +1,6 @@
 ## * import PMDB
 
-## args <- commandArgs(trailingOnly = T)
-## options(width = 110)
 
-
-## library(readxl)
-## library(purrr)
-## library(countrycode)
-## ## library(pryr)
-## library(lobstr)
-## ## library(xlsx)
-## ## library(googlesheets4)
-## ## library(rmonad)
-## library(testthat)
-## library(collapse)
 
 #' finds a variable in a data.frame from candidates
 #'
@@ -22,6 +9,7 @@
 #' if multiple or none variable is found, an error is thrown
 #' @param df data.frame 
 #' @param penl_vrbls vector of potential variables
+#' @return the variable that is both in penl_vrbls and df
 vrbl_fndr <- function(df, penl_vrbls) {
     if (as.character(match.call()[[1]]) %in% fstd){browser()}
     #' find the variable referred by by potential variables (penl_vrbls)
@@ -145,15 +133,16 @@ gendtm_pmdb_excl <- function(PMDB_FILE, only_pms=T) {
 }
 
 
-#' generates the most basic data.frame of the google sheet using collapse (only handful of columns standardized)
+#' generates basic data.frame of the google sheet (using collapse)
 #'
+#' only a handful of columns are standardized here
 #' @param PMBD_FILE path to CSV download from google sheets
 #' @param only_pms whether to include only private museums that are currently open
 #' @export
-gendtc_pmdb_excl <- function(PMDB_FILE, only_pms = T) {
+gendtc_pmdb_excl <- function(PMDB_FILE = DATA_LOCS$PMDB_FILE, only_pms = T) {
     if (as.character(match.call()[[1]]) %in% fstd){browser()}
 
-    dt_pmdb_excl <- fread(PMDB_FILE)[2:.N] # skip second column
+    dt_pmdb_excl <- fread(PMDB_FILE) %>% adt %>% .[2:.N] # skip second column
     ## dt_pmdb_excl[, map(.SD, class)] %>% melt(id.vars = "ID") %>% .[value != "character"] %>% .[, .N, value]
     ## dtx <- read.xlsx2(PMDB_FILE, sheetName = "Blad1") %>% adt() %>% .[2:.N]
     ## dtx[653:.N] %>% melt(id.vars = "ID") %>% .[value != ""]
@@ -185,7 +174,18 @@ gendtc_pmdb_excl <- function(PMDB_FILE, only_pms = T) {
 
 }
 
-## gendtc_pmdb_excl(PMDB_FILE)
-## debug("gendtc_pmdb_excl")
 
-## gendtc_pmdb_excl(PMDB_FILE)
+
+
+## #' test function
+## #'
+## #' this is some description
+## #' @export 
+## testf <- function() {
+##     15
+## }
+
+## #' @export 
+## testf2 <- function() {
+##     290
+## }
