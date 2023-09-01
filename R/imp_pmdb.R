@@ -26,12 +26,13 @@ vrbl_fndr <- function(df, penl_vrbls) {
 
 
 
-#' generates the most basic data.frame of the google sheet (only handful of columns standardized)
+#' generates the most basic data.frame of the google sheet
+#' (only handful of columns standardized)
 #'
 #' @param PMBD_FILE path to CSV download from google sheets
 #' @param only_pms whether to include only private museums that are currently open
 #' @export
-gendt_pmdb_excl <- function(PMDB_FILE, only_pms=T) {
+gendt_pmdb_excl <- function(PMDB_FILE = DATA_LOCS$PMDB_FILE, only_pms=T) {
     if (as.character(match.call()[[1]]) %in% fstd){browser()}
     
     dt_pmdb_excl <- fread( PMDB_FILE)[2:.N]# skip second column
@@ -79,7 +80,7 @@ gendt_pmdb_excl <- function(PMDB_FILE, only_pms=T) {
 #' @param PMBD_FILE path to CSV download from google sheets
 #' @param only_pms whether to include only private museums that are currently open
 #' @export
-gendtm_pmdb_excl <- function(PMDB_FILE, only_pms=T) {
+gendtm_pmdb_excl <- function(PMDB_FILE = DATA_LOCS$PMDB_FILE, only_pms=T) {
     if (as.character(match.call()[[1]]) %in% fstd){browser()}
     1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
         
