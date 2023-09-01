@@ -169,9 +169,12 @@ gendtc_pmdb_excl <- function(PMDB_FILE = DATA_LOCS$PMDB_FILE, only_pms = T) {
 
     if (fsubset(dt_pmdb_excl2, is.na(iso3c) & country != "") %>% fnrow > 0) {stop("not all countries are matched")}
 
-
-    return(dt_pmdb_excl2)
-
+    if (only_pms) {
+        return(sbt(dt_pmdb_excl2, museum_status == "private museum"))
+    } else if (!only_pms) {
+        return(dt_pmdb_excl2)
+    }
+    
 
 }
 
