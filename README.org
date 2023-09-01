@@ -1,4 +1,8 @@
 
 * Private Museum Project Data Management
 
+** how to update data files
+
+*** PMDB_FILE
+go to google sheets, downloads as .csv
 
