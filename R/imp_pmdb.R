@@ -80,11 +80,11 @@ vrbl_fndr <- function(df, penl_vrbls) {
 
 #' generates basic data.frame of the google sheet (using collapse)
 #'
-#' only a handful of columns are standardized here
+#' only a handful of columns are standardized here (countrycode, year_opened/year_closed, ID)
 #' @param PMBD_FILE path to CSV download from google sheets
 #' @param only_pms whether to include only private museums that are currently open
 #' @export
-gd_pmdb_excl <- function(PMDB_FILE = DATA_LOCS$PMDB_FILE, only_pms = T) {
+gd_pmdb_excl <- function(PMDB_FILE = DATA_LOCS$PMDB_FILE, only_pms) {
     ## if (as.character(match.call()[[1]]) %in% fstd){browser()}
 
     dt_pmdb_excl <- fread(PMDB_FILE) %>% adt %>% .[2:.N] # skip second column
