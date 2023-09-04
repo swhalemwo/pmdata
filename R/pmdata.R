@@ -5,7 +5,7 @@
 #' @importFrom countrycode countrycode
 #' @import data.table
 #' @import collapse
-
+#' @importFrom memoise memoise
 
 .datatable.aware = T
 
@@ -31,18 +31,16 @@ gen_data_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_sou
     return(data_locs)
 }
                           
-#' ## testf
-## #'
-## #' @export
-## testf <- function() {10}
 
-
-## #' testf2 is a function
+#' ## test function
 ## #'
-## #' that returns something 
-## #' @export
-## testf2 <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_sources/") {
-##     data_locs <- list(
-##         PMDB_FILE = paste0(DATA_DIR, "pmdb/Private museum database_v1.csv"))
-    
-## }
+## #' this is some description
+## #' @export 
+## testf1 <- memoise(function() {
+##     15
+## })
+
+## #' @export 
+## testf2 <- memoise(function() {
+##     290 + testf1()
+## })
