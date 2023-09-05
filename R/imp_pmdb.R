@@ -186,7 +186,12 @@ gd_pmdb <- function(dt_pmdb_excl, verbose = F) {
         muem_fndr_name    = c("Museum_name of founder"),
         architect         = c("Building_architect_standardized"),
         llid              = c("ID from Larry's List"),
-        realism           = c("Collection_genre_realism")
+        realism           = c("Collection_genre_realism"),
+        gvtsupport        = c("Museum_government support standardized"),
+        donorprogram      = c("Private donor program_standardized"),
+        endowment         = c("Endowment"),
+        sponsorship       = c("Sponsorship"),
+        rentalpossblt     = c("Building rental possibility_standardized")
     )
 
     rename_list2 <- map(rename_list, ~vrbl_fndr(dt_pmdb_excl, .x)) %>% unlist %>%
@@ -195,9 +200,11 @@ gd_pmdb <- function(dt_pmdb_excl, verbose = F) {
     if (any(is.na(names(rename_list2)))) {stop("NAs in original variables")}
     if (len(intersect(names(dt_pmdb_excl), rename_list2)) > 0) {stop("overlapping variable names")}
 
+    
     ## convert a bunch of columns to int
     int_vrbls <- .c(clctn_size, an_fyear, an_lyear, birthyear, deathyear, an_nyears, muem_fndr_name,
-                    realism, cafe_restrnt, webshop, museumshop, llid, founder_wealth)
+                    realism, cafe_restrnt, webshop, museumshop, llid, founder_wealth, gvtsupport,
+                    endowment, sponsorship, rentalpossblt)
 
     ## rename columns 
     dt_pmdb_rnmd <- frename(dt_pmdb_excl, rename_list2, cols = names(rename_list2))
