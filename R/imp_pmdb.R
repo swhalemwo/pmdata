@@ -217,10 +217,20 @@ gd_pmdb <- function(dt_pmdb_excl, verbose = F) {
 
     ## compare int and string variables
 
-    ## dt_pmdb_rnmd_intd[, c("ID", int_vrbls), with = F] %>% melt(id.vars = "ID", value.name = "int") %>%
-    ##     .[melt(dt_pmdb_rnmd[, c("ID", int_vrbls), with = F], id.vars = "ID", value.name = "chr"),
-    ##       on = .(ID, variable)] %>%
-    ##     .[is.na(int) & chr != ""]
+    dt_chrintcprn <- dt_pmdb_rnmd_intd[, c("ID", int_vrbls), with = F] %>%
+        melt(id.vars = "ID", value.name = "int") %>%
+        .[melt(dt_pmdb_rnmd[, c("ID", int_vrbls), with = F], id.vars = "ID", value.name = "chr"),
+          on = .(ID, variable)]
+
+    if (fnrow(dt_chrintcprn[is.na(int) & chr != ""]) > 0) {
+        if (verbose) {
+            print(dt_chrintcprn[is.na(int) & chr != ""], n = 100)
+        } else {
+            print(dt_chrintcprn[is.na(int) & chr != ""])
+        }
+            
+        warning("FIXME: some strings don't convert to ints")
+    }
     
     ## hmm check them in detail
     ## looks good enough
