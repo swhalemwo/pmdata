@@ -110,6 +110,18 @@ gd_pmdb_excl <- function(PMDB_FILE = DATA_LOCS$PMDB_FILE, only_pms) {
             year_opened = as.integer(year_opened_str),
             year_closed = as.integer(year_closed_str))
 
+    ## throw warning if some PMs don't have ID
+    if (any(is.na(dt_pmdb_excl2$ID))) {
+        warning("some IDs are NA")
+        dt_pmdb_excl2 <- dt_pmdb_excl2[!is.na(ID)]
+    }
+
+    ## throw error if any duplicated IDs
+    if (any_duplicated(dt_pmdb_excl2$ID)) {
+        print(dt_pmdb_excl2[fduplicated(ID)])
+        stop("duplicated IDs")
+    }
+    
 
     if (fsubset(dt_pmdb_excl2, is.na(iso3c) & country != "") %>% fnrow > 0) {stop("not all countries are matched")}
 
