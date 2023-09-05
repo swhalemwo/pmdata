@@ -26,7 +26,7 @@
 #' @export
 gc_data_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_sources/") {
     data_locs <- list(
-        PMDB_FILE = paste0(DATA_DIR, "pmdb/Private museum database_v1.csv"))
+        PMDB_FILE = paste0(DATA_DIR, "pmdb/Private museum database_v2.csv"))
 
     return(data_locs)
 }
