@@ -10,10 +10,10 @@
 #' @param df data.frame 
 #' @param penl_vrbls vector of potential variables
 #' @return the variable that is both in penl_vrbls and df
+#' @export
 vrbl_fndr <- function(df, penl_vrbls) {
-    if (as.character(match.call()[[1]]) %in% fstd){browser()}
-    #' find the variable referred by by potential variables (penl_vrbls)
-
+    ## if (as.character(match.call()[[1]]) %in% fstd){browser()}
+    
     vrbl <- intersect(names(df), penl_vrbls)
     if (len(vrbl) > 1)  {
         stop("multiple variables found: referred to by ", paste0(penl_vrbls, collapse = " - "))
