@@ -152,8 +152,8 @@ gc_rename_list <- function() {
         twitter_flwrs     = c("Number of Twitter followers"),
         youtube_flwrs     = c("Number of Youtube followers"),
         trpadvsr_rating   = c("Tripadvisor rating"),
-        trpadvsr_nbr_rvws = c("Number of tripadvisor reviews"),
-        google_nbr_rvws   = c("Number of google reviews"),
+        trpadvsr_nbrrvws  = c("Number of tripadvisor reviews"),
+        google_nbrrvws    = c("Number of google reviews"),
         google_rating     = c("Google rating"),
         nationality       = c("Nationality_founder_LL"),
         gender            = c("Gender founder", "Founder_gender"),
@@ -167,14 +167,14 @@ gc_rename_list <- function() {
         clctn_size        = c("Collection_size_standardized", "Size of collection standardized"),
         clctn_gnr_fcs     = c("Collection_genre_focus_dummy"),
         clctn_med_fcs     = c("Collection_medium focus"),
-        ## clctn_med_fcs_nms = c("Collection_medium_non maintream list"),
+         clctn_med_fcs_nms = c("Collection_medium_non maintream list"),
         clctn_cry_fcs     = c("Collection_country focus"),
         clctn_reg_fcs     = c("Collection_region focus"),
         clctn_modctmp     = c("Collection_genre_modern_contemporary"),
         temp_exhibs       = c("Exhibitions_temporary dummy", "Temporary exhibitions",
-                              "Collection_exhibitions_temporary dummy"),
+                            "Collection_exhibitions_temporary dummy"),
         founder_name      = c("Founder_name", "Founder name"),
-        buildg_type       = c("Building type standardized"),
+        buildgtype        = c("Building type standardized"),
         cafe_restrnt      = c("CafeRestaurant standardized"),
         webshop           = c("Webshop_standardized"),
         museumshop        = c("Museumshop / bookshop_standardized"),
@@ -195,32 +195,33 @@ gc_rename_list <- function() {
         endowment         = c("Endowment"),
         sponsorship       = c("Sponsorship"),
         rentalpossblt     = c("Building rental possibility_standardized"),
-        tours             = c("Museum_actvts tours"),
-        publications      = c("Museum_actvts publications"),
-        support           = c("Museum_actvts support"),
-        online            = c("Museum_actvts online"),
-        performance_events= c("Museum_actvts performance_events"),
-        education         = c("Museum_actvts education"),
-        talks_conferences = c("Museum_actvts talks_conferences"),
-        research          = c("Museum_actvts research"),
-        hedonic           = c("Museum_actvts hedonic"),
-        volunteer         = c("Museum_actvts volunteer"),
-        award             = c("Museum_actvts award"),
-        preservation      = c("Museum_actvts preservation"),
-        actvts_other      = c("Museum_actvts other"),
-        reduced_tickets   = c("Museum_reduced ticket groups"),
-        multiple_locs     = c("Museum_multiple locations"),
+        act_tours         = c("Museum_actvts tours"),
+        act_publications  = c("Museum_actvts publications"),
+        act_support       = c("Museum_actvts support"),
+        act_online        = c("Museum_actvts online"),
+        act_events        = c("Museum_actvts performance_events"),
+        act_education     = c("Museum_actvts education"),
+        act_talks         = c("Museum_actvts talks_conferences"),
+        act_research      = c("Museum_actvts research"),
+        act_hedonic       = c("Museum_actvts hedonic"),
+        act_volunteer     = c("Museum_actvts volunteer"),
+        act_award         = c("Museum_actvts award"),
+        act_preservation  = c("Museum_actvts preservation"),
+        act_other         = c("Museum_actvts other"),
+        reducedtickets    = c("Museum_reduced ticket groups"),
+        multiplelocs      = c("Museum_multiple locations"),
         city              = c("Museum_city"),
         cooperation       = c("Museum_cooperation with other musea_standardized"),
         mission           = c("Museum_mission"),
         staff_diversity   = c("Museum_staff diversity"),
         foundation        = c("Foundation"),
-        avbl_exhibhist   = c("Exhibition history available", "Collection_exhibition history available"),
+        avbl_exhibhist    = c("Exhibition history available", "Collection_exhibition history available"),
         avbl_clctnhldngs  = c("Collection_holdings available"),
         avbl_legalstruct  = c("Museum_legal structure"),
         avbl_gvrncstruct  = c("Museum_governance structure"),
         avbl_floorsize    = c("Floor size"),
-        avbl_exhibsize    = c("Exhibition size")
+        avbl_exhibsize    = c("Exhibition size"),
+        website           = c("Museum_website")
                               
     )
 
@@ -254,40 +255,48 @@ gd_pmdb <- function(dt_pmdb_excl, verbose = F) {
     ## actual values in those columns are too limited to cover entire DB, hopefully presence is still meaningful
     ## could be indicative of size (smaller values are missing) or transparency
     chartobin_vrbls <- .c(
-        cooperation, multiple_locs, reduced_tickets, staff_diversity, avbl_clctnhldngs,
-        avbl_legalstruct, avbl_gvrncstruct, avbl_floorsize, avbl_exhibsize, avbl_exhibhist)
+        cooperation, multiplelocs, reducedtickets, staff_diversity, avbl_clctnhldngs,
+        avbl_legalstruct, avbl_gvrncstruct, avbl_floorsize, avbl_exhibsize, avbl_exhibhist,
+        founder_gvrnc, insta_bluetick)
                         
     ## do the actual conversion: convert zeroes and empty strings to empty string
     dt_pmdb_chartobinvrbls_cvrtd <- tfmv(dt_pmdb_rnmd, vars = chartobin_vrbls,
-                                         FUN = \(x) fifelse(x %in% c("", "0"), "", "1"))
+                                         FUN = \(x) fifelse(x == "0", "0", fifelse(x == "", "", "1")))
+
     
+    
+
     ## convert a bunch of columns to int: stuff that is numeric, also add the chartobin_vrbls
     int_vrbls <- .c(
         clctn_size, an_fyear, an_lyear, birthyear, deathyear, an_nyears, muem_fndr_name,
         realism, cafe_restrnt, webshop, museumshop, llid, founder_wealth, gvtsupport,
         donorprogram, endowment, sponsorship, rentalpossblt, insta_flwrs, insta_posts,
-        insta_bluetick, fb_flwrs, fb_likes, twitter_flwrs, youtube_flwrs, trpadvsr_nbr_rvws,
-        google_nbr_rvws, 
-        
+        insta_bluetick, fb_flwrs, fb_likes, twitter_flwrs, youtube_flwrs, trpadvsr_nbrrvws,
+        google_nbrrvws, clctn_gnr_fcs, temp_exhibs, act_tours, act_publications, act_support, act_online,
+        act_events, act_education, act_talks, act_research, act_hedonic, act_volunteer,
+        act_award, act_preservation, act_other, foundation) %>% c(chartobin_vrbls)
 
-                    ) %>% c(chartobin_vrbls)
-
-    numeric_vars <- .(trpadvisor_rating, google_rating)
-
-    
     ## convert integer columns to integer
-    dt_pmdb_rnmd_intd <- tfmv(dt_pmdb_chartobinvrbls_cvrtd, vars = int_vrbls, FUN = as.integer)
+    dt_pmdb_rnmd_intd <- tfmv(dt_pmdb_chartobinvrbls_cvrtd, vars = int_vrbls,
+                              FUN = \(x) gsub(",", "", x) %>% as.integer)
+
+    ## convert numeric vars (decimal values) to numeric
+    num_vars <- .c(trpadvsr_rating, google_rating)
+
+    dt_pmdb_num_cvrtd <- tfmv(dt_pmdb_rnmd_intd, vars = num_vars,
+                              FUN = \(x) gsub(",", ".", x) %>% as.numeric)
+
 
     ## compare int and string variables:
     ## chrintcprn: character-int-comparison
-    dt_chrintcprn <- dt_pmdb_rnmd_intd[, c("ID", int_vrbls), with = F] %>%
+    dt_chrintcprn <- dt_pmdb_num_cvrtd[, c("ID", int_vrbls), with = F] %>%
         melt(id.vars = "ID", value.name = "int") %>%
         .[melt(dt_pmdb_rnmd[, c("ID", int_vrbls), with = F], id.vars = "ID", value.name = "chr"),
           on = .(ID, variable)]
 
     if (fnrow(dt_chrintcprn[is.na(int) & chr != ""]) > 0) {
         if (verbose) {
-            print(dt_chrintcprn[is.na(int) & chr != ""], n = 100)
+            print(dt_chrintcprn[is.na(int) & chr != ""], n = 1000)
         } else {
             print(dt_chrintcprn[is.na(int) & chr != ""])
         }
@@ -297,12 +306,12 @@ gd_pmdb <- function(dt_pmdb_excl, verbose = F) {
     c_vrbls_stdzd_step1 <- .c(ID, name, museum_status, iso3c, year_opened, year_closed)
     
     ## only select standardized columns
-    dt_all_stdzd <- slt(dt_pmdb_rnmd_intd, c(c_vrbls_stdzd_step1, names(rename_list)))
+    dt_all_stdzd <- slt(dt_pmdb_num_cvrtd, c(c_vrbls_stdzd_step1, names(rename_list)))
 
     return(dt_all_stdzd)
     
     
 }
 
-gd_pmdb_excl(gc_data_locs()$PMDB_FILE, only_pms = F) %>% 
-    gd_pmdb %>% str
+## gd_pmdb_excl(gc_data_locs()$PMDB_FILE, only_pms = F) %>% # .[, .N, `IG_blue tick_LL`]
+##     gd_pmdb(verbose = T)
