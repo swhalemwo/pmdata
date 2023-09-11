@@ -24,7 +24,7 @@
 #' @param DATA_DIR location which includes data sources, default set to current dir
 #' @return list of strings of location of data files
 #' @export
-gc_data_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_sources/") {
+gc_pmdata_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_sources/") {
     data_locs <- list(
         PMDB_FILE = paste0(DATA_DIR, "pmdb/Private museum database_v4.csv"))
 
