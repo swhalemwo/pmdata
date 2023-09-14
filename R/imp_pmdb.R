@@ -167,7 +167,7 @@ gc_rename_list <- function() {
         clctn_size        = c("Collection_size_standardized", "Size of collection standardized"),
         clctn_gnr_fcs     = c("Collection_genre_focus_dummy"),
         clctn_med_fcs     = c("Collection_medium focus"),
-         clctn_med_fcs_nms = c("Collection_medium_non maintream list"),
+        clctn_med_fcs_nms = c("Collection_medium_non maintream list"),
         clctn_cry_fcs     = c("Collection_country focus"),
         clctn_reg_fcs     = c("Collection_region focus"),
         clctn_modctmp     = c("Collection_genre_modern_contemporary"),
