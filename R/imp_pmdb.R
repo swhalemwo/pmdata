@@ -238,7 +238,8 @@ gc_rename_list <- function() {
 gd_pmdb <- function(dt_pmdb_excl, verbose = F) {
     if (as.character(match.call()[[1]]) %in% fstd){browser()}
     1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
-    
+    globalVariables(names(dt_pmdb_excl))
+
     rename_list <- gc_rename_list()
 
     rename_list2 <- map(rename_list, ~vrbl_fndr(dt_pmdb_excl, .x)) %>% unlist %>%

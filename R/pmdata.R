@@ -5,7 +5,8 @@
 #' @importFrom countrycode countrycode
 #' @import data.table
 #' @import collapse
-#' @importFrom memoise memoise
+
+
 
 .datatable.aware = T
 
