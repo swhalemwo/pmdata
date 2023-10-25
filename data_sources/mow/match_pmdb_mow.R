@@ -41,6 +41,7 @@ check_mow_pmdb_match <- function(dt_pmdb_matchy, pmdb_ID) {
     ## use mow-pmdb-match (C-c m) to fuzzy-search whether PMDB museum is in MOW
     MOW_ID <- readline("MOW ID: ")
 
+    # if entry doesn't start with "M" assume missing data (just type "j" or whatever)
     if (substring(MOW_ID,1,1) != "M") MOW_ID <- "nomatch"
 
     dt_res <- data.table(PMDB_ID = pmdb_ID, MOW_ID = MOW_ID)
@@ -148,6 +149,8 @@ check_mow_match_old_recent <- function(dt_pmdb_matchy) {
 
 
 
+
+
 gw_mow_pmdb_matches <- function() {
     if (as.character(match.call()[[1]]) %in% fstd){browser()}
     1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
@@ -160,15 +163,9 @@ gw_mow_pmdb_matches <- function() {
         .[, .(ID, name, museum_status, year_opened, country = countrycode(iso3c, "iso3c", "country.name"))] %>%
         .[museum_status %!in% c("no private museum", "duplicate")]
 
-
-    ## look at how many stuff is already checked
-    if (file.exists(MOW_PMDB_MATCH_RES_FILE)) {
-        dt_res <- fread(MOW_PMDB_MATCH_RES_FILE)
-    } else {
-        dt_res <- data.table(PMDB_ID=character(), MOW_ID = character())
-    }
+    dt_mow_pmdb_matches <- gd_mow_pmdb_matches(gc_pmdata_locs()$MOW_PMDB_MATCHRES_FILE)
  
-    pmdb_IDS_to_check <- setdiff(dt_pmdb_matchy$ID, dt_res$PMDB_ID)
+    pmdb_IDS_to_check <- setdiff(dt_pmdb_matchy$ID, dt_mow_pmdb_matches$PMDB_ID)
 
     map(pmdb_IDS_to_check, ~check_mow_pmdb_match(dt_pmdb_matchy, .x))
 
@@ -180,7 +177,7 @@ gw_mow_pmdb_matches <- function() {
 
 
 ## here go the results
-MOW_PMDB_MATCH_RES_FILE <- paste0(dirname(gc_pmdata_locs()$MOW_INFO_FILE), "/mow_pmdb_match_res.csv")
+## MOW_PMDB_MATCH_RES_FILE <- paste0(dirname(gc_pmdata_locs()$MOW_INFO_FILE), "/mow_pmdb_match_res.csv")
 
 gw_mow_pmdb_matches()
 

@@ -1,7 +1,42 @@
 ## * MOW import
 
 
-gd_mow_info <- function(MOW_INFO_FILE = PMDATA_LOCS$MOW_INFO_FILE) {
+#' generate data.table of MOW entries
+#' also 
+
+test_mow_pmdb_cvrg <- function(dt_pmdb, dt_mow_info) {
+    
+    tinytest::expect_true(T)
+}
+
+## test_mow_pmdb_cvrg(1,2)
+## tinytest::expect_true(T)
+
+
+#' read the file of results after manually checking PMDB entries for corresponding matches in MOW
+#' one row per PM
+#' @param MOW_PMDB_MATCHRES_FILE the location of the match results file
+#' @return data.table with 2 columns: PMDB_ID and MOW_ID where match exist, "nomatch" if no match exists
+gd_mow_pmdb_matchres <- function(MOW_PMDB_MATCHRES_FILE = PMDATA_LOCS$MOW_PMDB_MATCHRES_FILE) {
+    ## look at how many stuff is already checked
+    if (file.exists(MOW_PMDB_MATCHRES_FILE)) {
+        dt_res <- fread(MOW_PMDB_MATCHRES_FILE)
+    } else {
+        dt_res <- data.table(PMDB_ID=character(), MOW_ID = character())
+    }
+
+    return(dt_res)
+}
+
+#' generate the MOW info file: one line per MOW entry
+#' has matches with PMDB (column PMDB_ID) where available
+#' @param MOW_INFO_FILE csv file produced by mow.py with one mow entry per line
+#' @param MOW_PMDB_MATCHRES_FILE two-column csv file with links from PMDB IDs to MOW IDs, where available
+#' @return data.table of MOW_INFO_FILE with data.table of MOW_PMDB_MATCHRES_FILE joined to it
+#' @export
+gd_mow_info <- function(MOW_INFO_FILE = PMDATA_LOCS$MOW_INFO_FILE,
+                        MOW_PMDB_MATCHRES_FILE = PMDATA_LOCS$MOW_PMDB_MATCHRES_FILE) {
+    
     if (as.character(match.call()[[1]]) %in% fstd){browser()}
     1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
     
@@ -9,16 +44,16 @@ gd_mow_info <- function(MOW_INFO_FILE = PMDATA_LOCS$MOW_INFO_FILE) {
         .[, iso3c := countrycode(country, "country.name", "iso3c")]
     
     
-
-
-    fileConn<-file("/home/johannes/Dropbox/phd/pmdata/data_sources/mow/output.txt")
-    writeLines(c("Hello","World"), fileConn)
-    close(fileConn)
-        
-
     ## read in the matches to PMDB
-    
+    dt_mow_pmdb_match <- fread(MOW_PMDB_MATCHRES_FILE)
 
+    if (dt_mow_pmdb_match[MOW_ID != "nomatch", any_duplicated(MOW_ID)]) {stop("some MOW_IDs are duplicated")}
+    if (dt_mow_pmdb_match[, any_duplicated(PMDB_ID)]) {stop("some PMDB_IDs are duplicated")}
+
+    ## match 
+    dt_mow_info2 <- dt_mow_pmdb_match[dt_mow_info, on = .(MOW_ID = idx)] %>%
+        setcolorder(.c(MOW_ID, PMDB_ID))
+    
 
     ## hmm there are a bunch whose opening date is stuff like 20th century, which gets parsed as 20
     ## dt_mow_info[founding_date1 < 100, .(name, founding_date1)] %>% print(n=300)
@@ -26,7 +61,8 @@ gd_mow_info <- function(MOW_INFO_FILE = PMDATA_LOCS$MOW_INFO_FILE) {
     ## dt_mow_info[founding_date1 < 1700, .(name, founding_date1)] %>% print(n=300)
 
     ## less than 1% (366) are before 1800, only 71 before 1500
-    return(dt_mow_info)
+    ## attr(dt_mow_info2, "gnrtdby") <- as.character(match.call()[[1]])
+    return(dt_mow_info2)
 
     ## dt_mow_info[, .N, .(iso3c, founding_date1)] %>% na.omit %>%
     ##     .[, Nsum := sum(N), iso3c] %>%
@@ -37,7 +73,7 @@ gd_mow_info <- function(MOW_INFO_FILE = PMDATA_LOCS$MOW_INFO_FILE) {
     
 }
 
-gd_mow_info(gc_pmdata_locs()$MOW_INFO_FILE)
+## gd_mow_info(gc_pmdata_locs()$MOW_INFO_FILE, gc_pmdata_locs()$MOW_PMDB_MATCHRES_FILE)
 
 
 gd_mow_tags <- function() {
@@ -45,9 +81,3 @@ gd_mow_tags <- function() {
     
 
     
-gd_mow_dupl <- function() {
-    dupl_res_file <- paste0(
-
-
-}
-                        

@@ -27,6 +27,7 @@
 gc_pmdata_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_sources/") {
     data_locs <- list(
         PMDB_FILE = paste0(DATA_DIR, "pmdb/Private museum database_v4.csv"),
+        MOW_PMDB_MATCHRES_FILE = paste0(DATA_DIR, "mow/mow_pmdb_matchres.csv"),
         MOW_INFO_FILE = paste0(DATA_DIR, "mow/mow.csv"),
         MOW_CLSFCN_FILE = paste0(DATA_DIR, "mow/classification.csv"),
         MOW_TAG_FILE = paste0(DATA_DIR, "mow/type.csv")
