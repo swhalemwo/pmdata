@@ -6,8 +6,8 @@
 #' @importFrom countrycode countrycode
 #' @import data.table
 #' @import collapse
-## #' @import stats
-#' @rawNamespace import(stats, except = D)
+#' @rawNamespace import(stats, except = D) # don't import D, which comes from collapse
+## https://stackoverflow.com/questions/51899220/import-all-the-functions-of-a-package-except-one-when-building-a-package
 
 .datatable.aware = T
 
@@ -17,7 +17,7 @@
 #' main goals here:
 #' 1. access data files reliably across projects
 #' 2. allow porting to other directories
-#' 3. have option to generate data frames without passing explicit location argument (e.g. gendt_X())
+#' 3. have option to generate data frames without passing explicit location argument (e.g. gd_X())
 #' For this purpose `gen_data_locs` generates a list of locations of files used for input
 #' which is used as default argument for data generation functions that read files.
 #'
