@@ -2,11 +2,12 @@
 
 
 #' @importFrom purrr map
+#' @importFrom magrittr `%>%`
 #' @importFrom countrycode countrycode
 #' @import data.table
 #' @import collapse
-
-
+## #' @import stats
+#' @rawNamespace import(stats, except = D)
 
 .datatable.aware = T
 
@@ -37,6 +38,37 @@ gc_pmdata_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_so
 
     return(data_locs)
 }
+
+globalVariables(c("PMDATA_LOCS", ".","%>%", "fstd", "adt"))
+
+#' test me
+#' @export
+## testf <- function() {
+##     if (as.character(match.call()[[1]]) %in% fstd){browser()}
+        
+##     ## cooperation <- NULL
+##     ## acts <- NULL
+    
+##     ## walk(c("cooperation", "acts"), ~assign(.x, NULL, envir = environment(testf)))
+##     ## walk(c("cooperation", "acts"), ~assign(.x, NULL)) # , envir = environment(testf)))
+
+##     globalVariables
+##     suppressForeignCheck
+##     envx <- environment()
+##     walk(c("pepega", "keepo"), ~assign(.x, NULL, envir = envx))
+##     walk(c("pepega", "keepo"), ~assign(.x, NULL, envir = parent.frame()))
+    
+
+##     dtx <- data.table(pepega = 1)[, keepo := pepega + 2]
+
+##     ## print(cooperation)
+##     ## print(acts)
+## }
+
+## testf()
+
+## rm(cooperation)
+## rm(acts)
 
                           
 
