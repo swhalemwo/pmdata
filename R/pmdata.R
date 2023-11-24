@@ -28,8 +28,10 @@
 #' @export
 gc_pmdata_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_sources/") {
 
-    ## FIXME: move artnews to DATA_DIR
-    ARTNEWS_DIR = "/home/johannes/ownCloud/org_pop_data/artnews/"
+    ## FIXME: move artnews to DATA_DIR: atm the ownCloud directory is big (~300 mb) due to including all the HTMLs
+    ## 
+    ARTNEWS_DIR_old <- "/home/johannes/ownCloud/org_pop_data/artnews/"
+    
 
     data_locs <- list(
         PMDB_FILE = paste0(DATA_DIR, "pmdb/Private museum database_v4.csv"),
@@ -37,8 +39,9 @@ gc_pmdata_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_so
         MOW_INFO_FILE = paste0(DATA_DIR, "mow/mow.csv"),
         MOW_CLSFCN_FILE = paste0(DATA_DIR, "mow/classification.csv"),
         MOW_TAG_FILE = paste0(DATA_DIR, "mow/type.csv"),
-        ARTNEWS_DIR = ARTNEWS_DIR,
-        ARTNEWS_TIME_FILE = paste0(ARTNEWS_DIR, "ranking.csv")
+        ARTNEWS_DIR_old = ARTNEWS_DIR_old,
+        ARTNEWS_TIME_FILE = paste0(ARTNEWS_DIR_old, "ranking.csv"),
+        ARTNEWS_COLLECTOR_ENTRIES_FILE = paste0(DATA_DIR, "artnews/an_clctr_entries.csv")
         
     )
     
