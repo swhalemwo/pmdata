@@ -1,0 +1,1205 @@
+| an_entry_id | an_person_id | clctr_name                                         | is_couple |
+| ACE4        | APE4a        | James Alsdorf                                      |         1 |
+| ACE4        | APE4b        | Marilyn Alsdorf                                    |         1 |
+| ACE7        | APE7a        | Harry W. Anderson                                  |         1 |
+| ACE7        | APE7b        | Mary Margaret Anderson                             |         1 |
+| ACE17       | APE17a       | Barry Berkus                                       |         1 |
+| ACE17       | APE17b       | Gail Berkus                                        |         1 |
+| ACE21       | APE21a       | Nellie Blaquier                                    |         1 |
+| ACE21       | APE21b       | Carlos Pedro Blaquier                              |         1 |
+| ACE23       | APE23a       | Marion Bloch                                       |         1 |
+| ACE23       | APE23b       | Henry W. Bloch                                     |         1 |
+| ACE24       | APE24a       | George Bloch                                       |         1 |
+| ACE24       | APE24b       | Mary Bloch                                         |         1 |
+| ACE25       | APE25a       | Eric Boissonnas                                    |         1 |
+| ACE25       | APE25b       | Silvie Boissonnas                                  |         1 |
+| ACE28       | APE28a       | Marcel Boulois                                     |         1 |
+| ACE28       | APE28b       | Gisèle Boulois                                     |         1 |
+| ACE30       | APE30a       | Irma Braman                                        |         1 |
+| ACE30       | APE30b       | Norman Braman                                      |         1 |
+| ACE32       | APE32a       | Edythe L. Broad                                    |         1 |
+| ACE32       | APE32b       | Eli Broad                                          |         1 |
+| ACE41       | APE41a       | Patricia Phelps de Cisneros                        |         1 |
+| ACE41       | APE41b       | Gustavo A. Cisneros                                |         1 |
+| ACE46       | APE46a       | Werner Dannheisser                                 |         1 |
+| ACE46       | APE46b       | Elaine Dannheisser                                 |         1 |
+| ACE48       | APE48a       | Thomas Dittmer                                     |         1 |
+| ACE48       | APE48b       | Francis Dittmer                                    |         1 |
+| ACE50       | APE50a       | Denyse Durand-Ruel                                 |         1 |
+| ACE50       | APE50b       | Philippe Durand-Ruel                               |         1 |
+| ACE52       | APE52a       | Stefan T. Edlis Neeson                             |         1 |
+| ACE52       | APE52b       | Gael Neeson                                        |         1 |
+| ACE61       | APE61a       | Jo Ann                                             |         1 |
+| ACE61       | APE61b       | "Julian Ganz, Jr."                                 |         1 |
+| ACE64       | APE64a       | Beatrice Gersh                                     |         1 |
+| ACE64       | APE64b       | Philip Gersh                                       |         1 |
+| ACE67       | APE67a       | Carol Goldberg                                     |         1 |
+| ACE67       | APE67b       | Arthur Goldberg                                    |         1 |
+| ACE73       | APE73a       | Marie Halff                                        |         1 |
+| ACE73       | APE73b       | Hugh Halff                                         |         1 |
+| ACE77       | APE77a       | Bette Harris                                       |         1 |
+| ACE77       | APE77b       | Neison Harris                                      |         1 |
+| ACE79       | APE79a       | Annick Herbert                                     |         1 |
+| ACE79       | APE79b       | Anton Herbert                                      |         1 |
+| ACE81       | APE81a       | William Hokin                                      |         1 |
+| ACE81       | APE81b       | Anne Hokin                                         |         1 |
+| ACE82       | APE82a       | Margaret Horowitz                                  |         1 |
+| ACE82       | APE82b       | Raymond Horowitz                                   |         1 |
+| ACE92       | APE92a       | George Kaufman                                     |         1 |
+| ACE92       | APE92b       | Linda Kaufman                                      |         1 |
+| ACE93       | APE93a       | Ann Kinney                                         |         1 |
+| ACE93       | APE93b       | Gilbert H. Kinney                                  |         1 |
+| ACE97       | APE97a       | Henry R. Kravis                                    |         1 |
+| ACE97       | APE97b       | Carolyne Roehm                                     |         1 |
+| ACE109      | APE109a      | Linda Macklowe                                     |         1 |
+| ACE109      | APE109b      | Harry Macklowe                                     |         1 |
+| ACE110      | APE110a      | Susan Manilow                                      |         1 |
+| ACE110      | APE110b      | Lewis Manilow                                      |         1 |
+| ACE120      | APE120a      | Paul Mellon                                        |         1 |
+| ACE120      | APE120b      | Rachel Mellon                                      |         1 |
+| ACE127      | APE127a      | Jane Meyerhoff                                     |         1 |
+| ACE127      | APE127b      | Robert Meyerhoff                                   |         1 |
+| ACE128      | APE128a      | Robert Mnuchin                                     |         1 |
+| ACE128      | APE128b      | Adrian Mnuchin                                     |         1 |
+| ACE135      | APE135a      | Eileen Norton                                      |         1 |
+| ACE135      | APE135b      | Peter Norton                                       |         1 |
+| ACE140      | APE140a      | Paul Oliver-Hoffmann                               |         1 |
+| ACE140      | APE140b      | Camille Oliver-Hoffmann                            |         1 |
+| ACE148      | APE148a      | Etsuko Price                                       |         1 |
+| ACE148      | APE148b      | Joe D. Price                                       |         1 |
+| ACE158      | APE158a      | Sir Robert Sainsbury                               |         1 |
+| ACE158      | APE158b      | Lady Lisa Sainsbury                                |         1 |
+| ACE161      | APE161a      | Denise Saul                                        |         1 |
+| ACE161      | APE161b      | Andrew M. Saul                                     |         1 |
+| ACE164      | APE164a      | Eugene Schwartz                                    |         1 |
+| ACE164      | APE164b      | Barbara Schwartz                                   |         1 |
+| ACE165      | APE165a      | Joel Seydoux                                       |         1 |
+| ACE165      | APE165b      | Anne Seydoux                                       |         1 |
+| ACE170      | APE170a      | Nathan Smooke                                      |         1 |
+| ACE170      | APE170b      | Marion Smooke                                      |         1 |
+| ACE171      | APE171a      | Victor Smorgon                                     |         1 |
+| ACE171      | APE171b      | Loti Smorgon                                       |         1 |
+| ACE174      | APE174a      | Emily Spiegel                                      |         1 |
+| ACE174      | APE174b      | Jerry Spiegel                                      |         1 |
+| ACE176      | APE176a      | Saul Steinberg                                     |         1 |
+| ACE176      | APE176b      | Gayfryd Steinberg                                  |         1 |
+| ACE186      | APE186a      | Baron Hans Heinrich Thyssen-Bornemisza             |         1 |
+| ACE186      | APE186b      | Baroness Carmen Thyssen-Bornemisza                 |         1 |
+| ACE190      | APE190a      | Dorothy Vogel                                      |         1 |
+| ACE190      | APE190b      | Herbert Vogel                                      |         1 |
+| ACE198      | APE198a      | Virginia Wright                                    |         1 |
+| ACE198      | APE198b      | Bagley Wright                                      |         1 |
+| ACE202      | APE202a      | Bernard Gerald Cantor                              |         1 |
+| ACE202      | APE202b      | Iris Cantor                                        |         1 |
+| ACE203      | APE203a      | Marshall S. Cogan                                  |         1 |
+| ACE203      | APE203b      | Maureen Cogan                                      |         1 |
+| ACE204      | APE204a      | Hélène David-Weill                                 |         1 |
+| ACE204      | APE204b      | Michel Alexandre David-Weill                       |         1 |
+| ACE218      | APE218a      | Victoria Newhouse                                  |         1 |
+| ACE218      | APE218b      | "Samuel I. Newhouse, Jr."                          |         1 |
+| ACE222      | APE222a      | Marianne Schwartz                                  |         1 |
+| ACE222      | APE222b      | Alan Schwartz                                      |         1 |
+| ACE225      | APE225a      | Stuart Spence                                      |         1 |
+| ACE225      | APE225b      | Judy Spence                                        |         1 |
+| ACE233      | APE233a      | Hartmut Ackermeier                                 |         1 |
+| ACE233      | APE233b      | Silvia Ackermeier                                  |         1 |
+| ACE238      | APE238a      | Nelson Blitz Jr.                                   |         1 |
+| ACE238      | APE238b      | Catherine Woodard                                  |         1 |
+| ACE239      | APE239a      | Janet de Botton                                    |         1 |
+| ACE239      | APE239b      | Gilbert de Botton                                  |         1 |
+| ACE240      | APE240a      | Gérard Boulois                                     |         1 |
+| ACE240      | APE240b      | Anne-Marie Boulois                                 |         1 |
+| ACE241      | APE241a      | Edward Carter                                      |         1 |
+| ACE241      | APE241b      | Hannah Carter                                      |         1 |
+| ACE244      | APE244a      | Marvin Fishman                                     |         1 |
+| ACE244      | APE244b      | Janet Fishman                                      |         1 |
+| ACE245      | APE245a      | Marie-Françoise Fuchs                              |         1 |
+| ACE245      | APE245b      | Gilles Fuchs                                       |         1 |
+| ACE247      | APE247a      | Jacques Hachuel                                    |         1 |
+| ACE247      | APE247b      | Marta Hachuel                                      |         1 |
+| ACE249      | APE249a      | Jean Christophe Julian                             |         1 |
+| ACE249      | APE249b      | Nicole Julian                                      |         1 |
+| ACE252      | APE252a      | Richard Lane                                       |         1 |
+| ACE252      | APE252b      | Barbara Lane                                       |         1 |
+| ACE256      | APE256a      | Jan Mayer                                          |         1 |
+| ACE256      | APE256b      | Frederick Mayer                                    |         1 |
+| ACE262      | APE262a      | Betty Rudman                                       |         1 |
+| ACE262      | APE262b      | Isaac Rudman                                       |         1 |
+| ACE270      | APE270a      | Thurston Twigg-Smith                               |         1 |
+| ACE270      | APE270b      | Laila Twigg-Smith                                  |         1 |
+| ACE271      | APE271a      | Carl Vogel                                         |         1 |
+| ACE271      | APE271b      | Carin Vogel                                        |         1 |
+| ACE273      | APE273a      | John Weber                                         |         1 |
+| ACE273      | APE273b      | Charlotte Weber                                    |         1 |
+| ACE274      | APE274a      | Leon Levy White                                    |         1 |
+| ACE274      | APE274b      | Shelby White                                       |         1 |
+| ACE277      | APE277a      | Frits Becht                                        |         1 |
+| ACE277      | APE277b      | Agnes Becht                                        |         1 |
+| ACE278      | APE278a      | Marchesa Marida Berlingieri                        |         1 |
+| ACE278      | APE278b      | Marchese Annibale Berlingieri                      |         1 |
+| ACE281      | APE281a      | Miguel Angel Capriles                              |         1 |
+| ACE281      | APE281b      | Magaly Capriles                                    |         1 |
+| ACE286      | APE286a      | Doris Fisher                                       |         1 |
+| ACE286      | APE286b      | Donald Fisher                                      |         1 |
+| ACE287      | APE287a      | Franz Josef van der Grinten                        |         1 |
+| ACE287      | APE287b      | Hans van der Grinten                               |         1 |
+| ACE290      | APE290a      | Rolf Hoffman                                       |         1 |
+| ACE290      | APE290b      | Erika Hoffman                                      |         1 |
+| ACE291      | APE291a      | David Mirvish                                      |         1 |
+| ACE291      | APE291b      | Audrey Mirvish                                     |         1 |
+| ACE295      | APE295a      | Marie-Thérèse Perrin                               |         1 |
+| ACE295      | APE295b      | Alain-Dominique Perrin                             |         1 |
+| ACE296      | APE296a      | Jesús de Polanco                                   |         1 |
+| ACE296      | APE296b      | Mariluz Barreiros                                  |         1 |
+| ACE297      | APE297a      | Véronique Prat                                     |         1 |
+| ACE297      | APE297b      | Louis-Antoine Prat                                 |         1 |
+| ACE298      | APE298a      | David Rockefeller                                  |         1 |
+| ACE298      | APE298b      | Peggy Rockefeller                                  |         1 |
+| ACE299      | APE299a      | Mera Rubell                                        |         1 |
+| ACE299      | APE299b      | Donald Rubell                                      |         1 |
+| ACE304      | APE304a      | Joey Tanenbaum                                     |         1 |
+| ACE304      | APE304b      | Toby Tanenbaum                                     |         1 |
+| ACE305      | APE305a      | Daniel Terra                                       |         1 |
+| ACE305      | APE305b      | Judith Terra                                       |         1 |
+| ACE308      | APE308a      | Reba Williams                                      |         1 |
+| ACE308      | APE308b      | Dave H. Williams                                   |         1 |
+| ACE309      | APE309a      | George Abrams                                      |         1 |
+| ACE309      | APE309b      | Maida Abrams                                       |         1 |
+| ACE311      | APE311a      | Monique Barbier-Mueller                            |         1 |
+| ACE311      | APE311b      | Jean Paul Barbier-Mueller                          |         1 |
+| ACE313      | APE313a      | Vivian Campbell                                    |         1 |
+| ACE313      | APE313b      | David Campbell                                     |         1 |
+| ACE320      | APE320a      | Carrie Lehrman                                     |         1 |
+| ACE320      | APE320b      | Robert Lehrman                                     |         1 |
+| ACE321      | APE321a      | Ann Pizzuti                                        |         1 |
+| ACE321      | APE321b      | Ron Pizzuti                                        |         1 |
+| ACE322      | APE322a      | John Powers                                        |         1 |
+| ACE322      | APE322b      | Kimiko Powers                                      |         1 |
+| ACE323      | APE323a      | Lila  Silverman                                    |         1 |
+| ACE323      | APE323b      | Gilbert B. Silverman                               |         1 |
+| ACE325      | APE325a      | Maria Nieves Noriega de Autrey                     |         1 |
+| ACE325      | APE325b      | Sergio Autrey                                      |         1 |
+| ACE326      | APE326a      | David Barclay                                      |         1 |
+| ACE326      | APE326b      | Frederick Barclay                                  |         1 |
+| ACE327      | APE327a      | Clyde Beswick                                      |         1 |
+| ACE327      | APE327b      | Karin Beswick                                      |         1 |
+| ACE328      | APE328a      | John Garland Bowes                                 |         1 |
+| ACE328      | APE328b      | Frances Garland Bowes                              |         1 |
+| ACE329      | APE329a      | Rosa de la Cruz                                    |         1 |
+| ACE329      | APE329b      | Carlos de la Cruz                                  |         1 |
+| ACE330      | APE330a      | Kenneth Dayton                                     |         1 |
+| ACE330      | APE330b      | Judy Dayton                                        |         1 |
+| ACE331      | APE331a      | Anne Ehrenkranz                                    |         1 |
+| ACE331      | APE331b      | Joel S. Ehrenkranz                                 |         1 |
+| ACE333      | APE333a      | Anna Froehlich                                     |         1 |
+| ACE333      | APE333b      | Josef Froehlich                                    |         1 |
+| ACE335      | APE335a      | Marsha Glazer                                      |         1 |
+| ACE335      | APE335b      | Jay Glazer                                         |         1 |
+| ACE336      | APE336a      | Martine Guichard                                   |         1 |
+| ACE336      | APE336b      | Didier Guichard                                    |         1 |
+| ACE339      | APE339a      | Michal Hornstein                                   |         1 |
+| ACE339      | APE339b      | Renata Hornstein                                   |         1 |
+| ACE340      | APE340a      | Morton L. Janklow                                  |         1 |
+| ACE340      | APE340b      | Linda Janklow                                      |         1 |
+| ACE343      | APE343a      | Barbara Landau                                     |         1 |
+| ACE343      | APE343b      | Jon Landau                                         |         1 |
+| ACE344      | APE344a      | Thomas H. Lee                                      |         1 |
+| ACE344      | APE344b      | Ann Tenenbaum                                      |         1 |
+| ACE345      | APE345a      | Peter Ludwig                                       |         1 |
+| ACE345      | APE345b      | Irene Ludwig                                       |         1 |
+| ACE346      | APE346a      | Ida Maramotti                                      |         1 |
+| ACE346      | APE346b      | Achille Maramotti                                  |         1 |
+| ACE347      | APE347a      | Michael Ovitz                                      |         1 |
+| ACE347      | APE347b      | Judy Ovitz                                         |         1 |
+| ACE352      | APE352a      | Ida Sanders                                        |         1 |
+| ACE352      | APE352b      | Pieter Sanders                                     |         1 |
+| ACE353      | APE353a      | Kim Richter Shirley                                |         1 |
+| ACE353      | APE353b      | Jon Shirley                                        |         1 |
+| ACE355      | APE355a      | Blema Steinberg                                    |         1 |
+| ACE355      | APE355b      | Arnold Steinberg                                   |         1 |
+| ACE356      | APE356a      | Eleonore Stoffel                                   |         1 |
+| ACE356      | APE356b      | Michael Stoffel                                    |         1 |
+| ACE357      | APE357a      | Norah Stone                                        |         1 |
+| ACE357      | APE357b      | Norman Stone                                       |         1 |
+| ACE358      | APE358a      | Kenneth Thomson                                    |         1 |
+| ACE358      | APE358b      | Marilyn Thomson                                    |         1 |
+| ACE362      | APE362a      | Thomas Bechtler                                    |         1 |
+| ACE362      | APE362b      | Cristina Bechtler                                  |         1 |
+| ACE366      | APE366a      | Joseph Goldyne                                     |         1 |
+| ACE366      | APE366b      | Deborah Sperry Goldyne                             |         1 |
+| ACE371      | APE371a      | Richard Kramlich                                   |         1 |
+| ACE371      | APE371b      | Pamela Kramlich                                    |         1 |
+| ACE372      | APE372a      | Baroness Marion Lambert                            |         1 |
+| ACE372      | APE372b      | Baron Philippe Lambert                             |         1 |
+| ACE375      | APE375a      | George Roberts                                     |         1 |
+| ACE375      | APE375b      | Lee Ann Roberts                                    |         1 |
+| ACE379      | APE379a      | Donna Stone                                        |         1 |
+| ACE379      | APE379b      | Howard S. Stone                                    |         1 |
+| ACE385      | APE385a      | Debra Black                                        |         1 |
+| ACE385      | APE385b      | Leon Black                                         |         1 |
+| ACE387      | APE387a      | David Bowie                                        |         1 |
+| ACE387      | APE387b      | Iman Mohamed Abdulmajid                            |         1 |
+| ACE397      | APE397a      | Bebe Kemper                                        |         1 |
+| ACE397      | APE397b      | "R. Crosby Kemper, Jr."                            |         1 |
+| ACE401      | APE401a      | Elisabeth Leopold                                  |         1 |
+| ACE401      | APE401b      | Rudolf Leopold                                     |         1 |
+| ACE405      | APE405a      | Masula Mannil                                      |         1 |
+| ACE405      | APE405b      | Harry Mannil                                       |         1 |
+| ACE407      | APE407a      | Gabrielle Merzbacher                               |         1 |
+| ACE407      | APE407b      | Werner Merzbacher                                  |         1 |
+| ACE415      | APE415a      | Charles Wrightsman                                 |         1 |
+| ACE415      | APE415b      | Jayne Wrightsman                                   |         1 |
+| ACE418      | APE418a      | Anette Brandhorst                                  |         1 |
+| ACE418      | APE418b      | Udo Brandhorst                                     |         1 |
+| ACE427      | APE427a      | Mimi Haas                                          |         1 |
+| ACE427      | APE427b      | Peter Haas                                         |         1 |
+| ACE431      | APE431a      | Renata Hornstein                                   |         1 |
+| ACE431      | APE431b      | Michal Hornstein                                   |         1 |
+| ACE433      | APE433a      | Elsa Hotz                                          |         1 |
+| ACE433      | APE433b      | Theo Hotz                                          |         1 |
+| ACE435      | APE435a      | Evelyn Lauder                                      |         1 |
+| ACE435      | APE435b      | Leonard Lauder                                     |         1 |
+| ACE436      | APE436a      | Jo Carole Lauder                                   |         1 |
+| ACE436      | APE436b      | Ronald S. Lauder                                   |         1 |
+| ACE437      | APE437a      | Vicki Logan                                        |         1 |
+| ACE437      | APE437b      | Kent Logan                                         |         1 |
+| ACE439      | APE439a      | Rachel Mellon                                      |         1 |
+| ACE439      | APE439b      | Paul Mellon                                        |         1 |
+| ACE444      | APE444a      | Judy Ovitz                                         |         1 |
+| ACE444      | APE444b      | Michael Ovitz                                      |         1 |
+| ACE445      | APE445a      | Mary Pappajohn                                     |         1 |
+| ACE445      | APE445b      | John Pappajohn                                     |         1 |
+| ACE450      | APE450a      | Helen Schwab                                       |         1 |
+| ACE450      | APE450b      | Charles Schwab                                     |         1 |
+| ACE451      | APE451a      | Anna Marie Shapiro                                 |         1 |
+| ACE451      | APE451b      | Robert Shapiro                                     |         1 |
+| ACE452      | APE452a      | Mary Shirley                                       |         1 |
+| ACE452      | APE452b      | Jon Shirley                                        |         1 |
+| ACE453      | APE453a      | Jerry I. Speyer                                    |         1 |
+| ACE453      | APE453b      | Katherine G. Farley                                |         1 |
+| ACE454      | APE454a      | Dorie Sternberg                                    |         1 |
+| ACE454      | APE454b      | Paul Sternberg                                     |         1 |
+| ACE456      | APE456a      | Toby Tanenbaum                                     |         1 |
+| ACE456      | APE456b      | Joey Tanenbaum                                     |         1 |
+| ACE459      | APE459a      | Nora Barron                                        |         1 |
+| ACE459      | APE459b      | Guy Barron                                         |         1 |
+| ACE460      | APE460a      | Cristina Bechtler-Lanfranconi                      |         1 |
+| ACE460      | APE460b      | Thomas W. Bechtler-Lanfranconi                     |         1 |
+| ACE461      | APE461a      | Barbara Bryant.                                    |         1 |
+| ACE461      | APE461b      | "Donald L. Bryant, Jr."                            |         1 |
+| ACE462      | APE462a      | Jane Davis                                         |         1 |
+| ACE462      | APE462b      | David Davis                                        |         1 |
+| ACE463      | APE463a      | Pamela Ebsworth                                    |         1 |
+| ACE463      | APE463b      | Barney A. Ebsworth                                 |         1 |
+| ACE466      | APE466a      | Elizabeth Hedreen                                  |         1 |
+| ACE466      | APE466b      | Richard Hedreen                                    |         1 |
+| ACE467      | APE467a      | Ronnie Heyman                                      |         1 |
+| ACE467      | APE467b      | Samuel Heyman                                      |         1 |
+| ACE469      | APE469a      | Pamela Kramlich                                    |         1 |
+| ACE469      | APE469b      | Richard Kramlich                                   |         1 |
+| ACE470      | APE470a      | Marie-Josée Kravis                                 |         1 |
+| ACE470      | APE470b      | Henry R. Kravis                                    |         1 |
+| ACE471      | APE471a      | Catie Marron                                       |         1 |
+| ACE471      | APE471b      | Donald B. Marron                                   |         1 |
+| ACE473      | APE473a      | Jacqueline Nordmann                                |         1 |
+| ACE473      | APE473b      | Philippe Nordmann                                  |         1 |
+| ACE474      | APE474a      | Louise Riggio                                      |         1 |
+| ACE474      | APE474b      | Leonard Riggio                                     |         1 |
+| ACE475      | APE475a      | Kathy Sachs                                        |         1 |
+| ACE475      | APE475b      | Keith Sachs                                        |         1 |
+| ACE476      | APE476a      | Judy Steinhardt                                    |         1 |
+| ACE476      | APE476b      | Michael H. Steinhardt                              |         1 |
+| ACE479      | APE479a      | Barbara Alfond                                     |         1 |
+| ACE479      | APE479b      | Ted Alfond                                         |         1 |
+| ACE481      | APE481a      | Sylvie Berri                                       |         1 |
+| ACE481      | APE481b      | Claude Berri                                       |         1 |
+| ACE483      | APE483a      | Melinda Gates                                      |         1 |
+| ACE483      | APE483b      | Bill Gates                                         |         1 |
+| ACE492      | APE492a      | Ellen Ringier                                      |         1 |
+| ACE492      | APE492b      | Michael Ringier                                    |         1 |
+| ACE493      | APE493a      | Sharon Rockefeller                                 |         1 |
+| ACE493      | APE493b      | Jay Rockefeller                                    |         1 |
+| ACE494      | APE494a      | Jeannette Sanders                                  |         1 |
+| ACE494      | APE494b      | Martijn Sanders                                    |         1 |
+| ACE496      | APE496a      | Ruth Shack                                         |         1 |
+| ACE496      | APE496b      | Richard Shack                                      |         1 |
+| ACE497      | APE497a      | Margaret Stent                                     |         1 |
+| ACE497      | APE497b      | Terry Stent                                        |         1 |
+| ACE501      | APE501a      | Valerie Diker                                      |         1 |
+| ACE501      | APE501b      | Charles Diker                                      |         1 |
+| ACE503      | APE503a      | Peter H. Lunder                                    |         1 |
+| ACE503      | APE503b      | Paula Lunder                                       |         1 |
+| ACE506      | APE506a      | Giovanna Panza di Biumo                            |         1 |
+| ACE506      | APE506b      | Giuseppe Panza di Biumo                            |         1 |
+| ACE508      | APE508a      | Marieke Sanders                                    |         1 |
+| ACE508      | APE508b      | Pieter Sanders                                     |         1 |
+| ACE509      | APE509a      | Ute Scharpff                                       |         1 |
+| ACE509      | APE509b      | Rudolf Scharpff                                    |         1 |
+| ACE511      | APE511a      | B. Z. Schwartz                                     |         1 |
+| ACE511      | APE511b      | Michael Schwartz                                   |         1 |
+| ACE513      | APE513a      | Nancy Anschutz                                     |         1 |
+| ACE513      | APE513b      | Philip Anschutz                                    |         1 |
+| ACE515      | APE515a      | Sandra Fineberg                                    |         1 |
+| ACE515      | APE515b      | Gerald Fineberg                                    |         1 |
+| ACE516      | APE516a      | Maxine Frankel                                     |         1 |
+| ACE516      | APE516b      | Stuart Frankel                                     |         1 |
+| ACE519      | APE519a      | Janine Hill                                        |         1 |
+| ACE519      | APE519b      | J. Tomilson Hill                                   |         1 |
+| ACE521      | APE521a      | Anne Marion                                        |         1 |
+| ACE521      | APE521b      | John Marion                                        |         1 |
+| ACE523      | APE523a      | Cindy Rachofsky                                    |         1 |
+| ACE523      | APE523b      | Howard Rachofsky                                   |         1 |
+| ACE525      | APE525a      | Tsuneo Sudo                                        |         1 |
+| ACE525      | APE525b      | Eiichiro Sudo                                      |         1 |
+| ACE527      | APE527a      | Ruth True                                          |         1 |
+| ACE527      | APE527b      | William True                                       |         1 |
+| ACE530      | APE530a      | Annette Brandhorst                                 |         1 |
+| ACE530      | APE530b      | Udo Brandhorst                                     |         1 |
+| ACE531      | APE531a      | Melva Raymond Learsy                               |         1 |
+| ACE531      | APE531b      | and Raymond Learsy                                 |         1 |
+| ACE535      | APE535a      | Danielle Ganek                                     |         1 |
+| ACE535      | APE535b      | David Ganek                                        |         1 |
+| ACE537      | APE537a      | Susan Hort                                         |         1 |
+| ACE537      | APE537b      | Michael Hort                                       |         1 |
+| ACE539      | APE539a      | Jeanne Klein                                       |         1 |
+| ACE539      | APE539b      | Michael L. Klein                                   |         1 |
+| ACE540      | APE540a      | Sarah-Ann Kramarsky                                |         1 |
+| ACE540      | APE540b      | Werner H. Kramarsky                                |         1 |
+| ACE541      | APE541a      | Jill Kraus                                         |         1 |
+| ACE541      | APE541b      | Peter Kraus                                        |         1 |
+| ACE543      | APE543a      | Sherry Mallin                                      |         1 |
+| ACE543      | APE543b      | Joel Mallin                                        |         1 |
+| ACE544      | APE544a      | Carol Rahr                                         |         1 |
+| ACE544      | APE544b      | Stewart Rahr                                       |         1 |
+| ACE548      | APE548a      | Abigail Wexner                                     |         1 |
+| ACE548      | APE548b      | Leslie H. Wexner                                   |         1 |
+| ACE550      | APE550a      | Kenneth C. Griffin                                 |         1 |
+| ACE550      | APE550b      | Anne Dias-Griffin                                  |         1 |
+| ACE552      | APE552a      | Anne Fisher                                        |         1 |
+| ACE552      | APE552b      | Jerome Fisher                                      |         1 |
+| ACE555      | APE555a      | Ninah Lynne                                        |         1 |
+| ACE555      | APE555b      | Michael Lynne                                      |         1 |
+| ACE556      | APE556a      | Susan Magnier                                      |         1 |
+| ACE556      | APE556b      | John Magnier                                       |         1 |
+| ACE558      | APE558a      | Elizabeth Plotnick                                 |         1 |
+| ACE558      | APE558b      | Harvey Plotnick                                    |         1 |
+| ACE563      | APE563a      | Leonora Belilty                                    |         1 |
+| ACE563      | APE563b      | Jimmy Belilty                                      |         1 |
+| ACE565      | APE565a      | Monique Burger                                     |         1 |
+| ACE565      | APE565b      | Max Burger                                         |         1 |
+| ACE566      | APE566a      | Cherryl Cohen                                      |         1 |
+| ACE566      | APE566b      | Frank Cohen                                        |         1 |
+| ACE569      | APE569a      | Kathleen Fuld                                      |         1 |
+| ACE569      | APE569b      | Richard S. Fuld Jr.                                |         1 |
+| ACE570      | APE570a      | Ann Gund                                           |         1 |
+| ACE570      | APE570b      | Graham Gund                                        |         1 |
+| ACE571      | APE571a      | Margrit Hahnloser                                  |         1 |
+| ACE571      | APE571b      | Paul Hahnloser                                     |         1 |
+| ACE572      | APE572a      | Adam Lindemann                                     |         1 |
+| ACE572      | APE572b      | Amalia Dayan                                       |         1 |
+| ACE573      | APE573a      | Margaret Munzer Loeb                               |         1 |
+| ACE573      | APE573b      | Daniel S. Loeb                                     |         1 |
+| ACE574      | APE574a      | Frances G. McGlothlin                              |         1 |
+| ACE574      | APE574b      | James W. McGlothlin                                |         1 |
+| ACE576      | APE576a      | Julie Minskoff                                     |         1 |
+| ACE576      | APE576b      | Edward J. Minskoff                                 |         1 |
+| ACE578      | APE578a      | Marsha Perelman                                    |         1 |
+| ACE578      | APE578b      | Jeffrey Perelman                                   |         1 |
+| ACE579      | APE579a      | Miuccia Prada                                      |         1 |
+| ACE579      | APE579b      | Patrizio Bertelli                                  |         1 |
+| ACE580      | APE580a      | Lisa Pritzker                                      |         1 |
+| ACE580      | APE580b      | John A. Pritzker                                   |         1 |
+| ACE586      | APE586a      | Lauren Taschen                                     |         1 |
+| ACE586      | APE586b      | Benedikt Taschen                                   |         1 |
+| ACE588      | APE588a      | Elaine Wynn                                        |         1 |
+| ACE588      | APE588b      | Stephen A. Wynn                                    |         1 |
+| ACE589      | APE589a      | Hélène Arnault                                     |         1 |
+| ACE589      | APE589b      | Bernard Arnault                                    |         1 |
+| ACE590      | APE590a      | Maria Arena Bell                                   |         1 |
+| ACE590      | APE590b      | William Bell Jr.                                   |         1 |
+| ACE591      | APE591a      | Karen Boros                                        |         1 |
+| ACE591      | APE591b      | Christian Boros                                    |         1 |
+| ACE593      | APE593a      | Peggy Burnet                                       |         1 |
+| ACE593      | APE593b      | Ralph Burnet                                       |         1 |
+| ACE597      | APE597a      | Agnes Essl                                         |         1 |
+| ACE597      | APE597b      | Karlheinz Essl                                     |         1 |
+| ACE598      | APE598a      | Geraldine Gottesman                                |         1 |
+| ACE598      | APE598b      | Noam Gottesman                                     |         1 |
+| ACE599      | APE599a      | Mania Hahnloser                                    |         1 |
+| ACE599      | APE599b      | Bernhard Hahnloser                                 |         1 |
+| ACE600      | APE600a      | Christine Hall                                     |         1 |
+| ACE600      | APE600b      | Andrew Hall                                        |         1 |
+| ACE602      | APE602a      | Cindy Horn                                         |         1 |
+| ACE602      | APE602b      | Alan Horn                                          |         1 |
+| ACE604      | APE604a      | Anneliese Lenz                                     |         1 |
+| ACE604      | APE604b      | Gerhard Lenz                                       |         1 |
+| ACE605      | APE605a      | Jane Manoogian                                     |         1 |
+| ACE605      | APE605b      | Richard Manoogian                                  |         1 |
+| ACE607      | APE607a      | Lisa Tananbaum                                     |         1 |
+| ACE607      | APE607b      | Steve Tananbaum                                    |         1 |
+| ACE611      | APE611a      | Eileen Cohen                                       |         1 |
+| ACE611      | APE611b      | Michael Cohen                                      |         1 |
+| ACE613      | APE613a      | Nathalie de Gunzburg                               |         1 |
+| ACE613      | APE613b      | Charles de Gunzburg                                |         1 |
+| ACE614      | APE614a      | Deedie Rose                                        |         1 |
+| ACE614      | APE614b      | Rusty Rose                                         |         1 |
+| ACE616      | APE616a      | Dana Tananbaum                                     |         1 |
+| ACE616      | APE616b      | Jim Tananbaum                                      |         1 |
+| ACE617      | APE617a      | Roman Abramovich                                   |         1 |
+| ACE617      | APE617b      | Dasha Zhukova                                      |         1 |
+| ACE619      | APE619a      | Robert H. Chaney                                   |         1 |
+| ACE619      | APE619b      | Jereann H. Chaney"                                 |         1 |
+| ACE619      | APE619c      | Holland Chaney                                     |         1 |
+| ACE620      | APE620a      | Frank J. Fertitta III                              |         1 |
+| ACE620      | APE620b      | Lorenzo Fertitta                                   |         1 |
+| ACE621      | APE621a      | Diane Halle                                        |         1 |
+| ACE621      | APE621b      | Bruce Halle                                        |         1 |
+| ACE623      | APE623a      | Mimi Libeert                                       |         1 |
+| ACE623      | APE623b      | Filiep Libeert                                     |         1 |
+| ACE626      | APE626a      | Lynda Resnick                                      |         1 |
+| ACE626      | APE626b      | Stewart Resnick                                    |         1 |
+| ACE627      | APE627a      | Myriam Ullens                                      |         1 |
+| ACE627      | APE627b      | Guy Ullens                                         |         1 |
+| ACE628      | APE628a      | Maria Baibakova                                    |         1 |
+| ACE628      | APE628b      | Oleg Baybakov                                      |         1 |
+| ACE629      | APE629a      | Marijke Cordia                                     |         1 |
+| ACE629      | APE629b      | Willem Cordia                                      |         1 |
+| ACE631      | APE631a      | Ingrid Jung                                        |         1 |
+| ACE631      | APE631b      | Hugo Jung                                          |         1 |
+| ACE632      | APE632a      | Nancy Magoon                                       |         1 |
+| ACE632      | APE632b      | Robert Magoon                                      |         1 |
+| ACE633      | APE633a      | Susan Marx                                         |         1 |
+| ACE633      | APE633b      | Larry Marx                                         |         1 |
+| ACE635      | APE635a      | Amy Phelan                                         |         1 |
+| ACE635      | APE635b      | John Phelan                                        |         1 |
+| ACE636      | APE636a      | Penny Pritzker                                     |         1 |
+| ACE636      | APE636b      | Bryan Traubert                                     |         1 |
+| ACE637      | APE637a      | Lenore Sender                                      |         1 |
+| ACE637      | APE637b      | Adam Sender                                        |         1 |
+| ACE640      | APE640a      | Iris Strauss                                       |         1 |
+| ACE640      | APE640b      | Matthew Strauss                                    |         1 |
+| ACE641      | APE641a      | Robbi Toll                                         |         1 |
+| ACE641      | APE641b      | Bruce E. Toll                                      |         1 |
+| ACE643      | APE643a      | Laura Arnold                                       |         1 |
+| ACE643      | APE643b      | John Arnold                                        |         1 |
+| ACE644      | APE644a      | Cees de Bruin-Heijn                                |         1 |
+| ACE644      | APE644b      | Inge de Bruin-Heijn                                |         1 |
+| ACE645      | APE645a      | Alexandra and Cohen                                |         1 |
+| ACE645      | APE645b      | Steven A. Cohen                                    |         1 |
+| ACE648      | APE648a      | Amanda Fuhrman                                     |         1 |
+| ACE648      | APE648b      | Glenn R. Fuhrman                                   |         1 |
+| ACE650      | APE650a      | Catherine Lagrange                                 |         1 |
+| ACE650      | APE650b      | Pierre Lagrange                                    |         1 |
+| ACE651      | APE651a      | Paula Lunder                                       |         1 |
+| ACE651      | APE651b      | Peter H. Lunder                                    |         1 |
+| ACE653      | APE653a      | Emily Rales                                        |         1 |
+| ACE653      | APE653b      | Mitchell Rales                                     |         1 |
+| ACE656      | APE656a      | Barbara Vogelstein                                 |         1 |
+| ACE656      | APE656b      | John Vogelstein                                    |         1 |
+| ACE659      | APE659a      | Bettina Bryant                                     |         1 |
+| ACE659      | APE659b      | Donald L. Bryant Jr.                               |         1 |
+| ACE663      | APE663a      | Suna Kiraç                                         |         1 |
+| ACE663      | APE663b      | Inan Kiraç                                         |         1 |
+| ACE664      | APE664a      | Liz Lefkofsky                                      |         1 |
+| ACE664      | APE664b      | Eric Lefkofsky                                     |         1 |
+| ACE667      | APE667a      | Edith Vanmoerkerke                                 |         1 |
+| ACE667      | APE667b      | Mark Vanmoerkerke                                  |         1 |
+| ACE668      | APE668a      | Shelley Fox Aarons                                 |         1 |
+| ACE668      | APE668b      | Philip E. Aarons                                   |         1 |
+| ACE670      | APE670a      | Caryl Englander                                    |         1 |
+| ACE670      | APE670b      | Israel Englander                                   |         1 |
+| ACE672      | APE672a      | Florence Guerlain                                  |         1 |
+| ACE672      | APE672b      | Daniel Guerlain                                    |         1 |
+| ACE673      | APE673a      | Barbara Haubrok                                    |         1 |
+| ACE673      | APE673b      | Axel Haubrok                                       |         1 |
+| ACE675      | APE675a      | Alison Klein                                       |         1 |
+| ACE675      | APE675b      | Peter W. Klein                                     |         1 |
+| ACE677      | APE677a      | Barbara Levine                                     |         1 |
+| ACE677      | APE677b      | Aaron Levine                                       |         1 |
+| ACE678      | APE678a      | Pamela Mohn                                        |         1 |
+| ACE678      | APE678b      | Jarl Mohn                                          |         1 |
+| ACE679      | APE679a      | Rose-Marie van Otterloo                            |         1 |
+| ACE679      | APE679b      | Eijk van Otterloo                                  |         1 |
+| ACE680      | APE680a      | Heather Podesta                                    |         1 |
+| ACE680      | APE680b      | Tony Podesta                                       |         1 |
+| ACE682      | APE682a      | Christiane Schaufler-Münch                         |         1 |
+| ACE682      | APE682b      | Peter Schaufler                                    |         1 |
+| ACE684      | APE684a      | Sylvia Ströher                                     |         1 |
+| ACE684      | APE684b      | Ulrich Ströher                                     |         1 |
+| ACE687      | APE687a      | Jane Toll                                          |         1 |
+| ACE687      | APE687b      | Robert Toll                                        |         1 |
+| ACE688      | APE688a      | Wang Wei                                           |         1 |
+| ACE688      | APE688b      | Liu Yiqian                                         |         1 |
+| ACE689      | APE689a      | Jutta Weishaupt                                    |         1 |
+| ACE689      | APE689b      | Siegfried Weishaupt                                |         1 |
+| ACE693      | APE693a      | Robert Drake                                       |         1 |
+| ACE693      | APE693b      | Renee Drake                                        |         1 |
+| ACE696      | APE696a      | Steven Latner                                      |         1 |
+| ACE696      | APE696b      | Michael Latner                                     |         1 |
+| ACE697      | APE697a      | Maurice Marciano                                   |         1 |
+| ACE697      | APE697b      | Paul Marciano                                      |         1 |
+| ACE701      | APE701a      | Andrea Olympio Pereira                             |         1 |
+| ACE701      | APE701b      | José Olympio Pereira                               |         1 |
+| ACE703      | APE703a      | Vicki Sant                                         |         1 |
+| ACE703      | APE703b      | Roger Sant                                         |         1 |
+| ACE710      | APE710a      | Trudy Cejas                                        |         1 |
+| ACE710      | APE710b      | Paul Cejas                                         |         1 |
+| ACE712      | APE712a      | Isabel Coppel                                      |         1 |
+| ACE712      | APE712b      | Agustín Coppel                                     |         1 |
+| ACE714      | APE714a      | Mitzi Eisenberg                                    |         1 |
+| ACE714      | APE714b      | Warren Eisenberg                                   |         1 |
+| ACE715      | APE715a      | Rebecca Eisenberg                                  |         1 |
+| ACE715      | APE715b      | Martin Eisenberg                                   |         1 |
+| ACE717      | APE717a      | Susan Feinstein                                    |         1 |
+| ACE717      | APE717b      | Leonard Feinstein                                  |         1 |
+| ACE718      | APE718a      | Marilyn Fields                                     |         1 |
+| ACE718      | APE718b      | Larry Fields                                       |         1 |
+| ACE719      | APE719a      | Christy Gautreaux                                  |         1 |
+| ACE719      | APE719b      | Bill Gautreaux                                     |         1 |
+| ACE723      | APE723a      | Raymond J. McGuire                                 |         1 |
+| ACE723      | APE723b      | Crystal McCrary                                    |         1 |
+| ACE724      | APE724a      | Tom Pritzker                                       |         1 |
+| ACE724      | APE724b      | Margot Pritzker                                    |         1 |
+| ACE726      | APE726a      | Hilary Ross                                        |         1 |
+| ACE726      | APE726b      | Wilbur L. Ross Jr.                                 |         1 |
+| ACE729      | APE729a      | Elizabeth Singer                                   |         1 |
+| ACE729      | APE729b      | Frederick Singer                                   |         1 |
+| ACE730      | APE730a      | Susana Steinbruch                                  |         1 |
+| ACE730      | APE730b      | Ricardo Steinbruch                                 |         1 |
+| ACE734      | APE734a      | Anita Zabludowicz                                  |         1 |
+| ACE734      | APE734b      | Poju Zabludowicz                                   |         1 |
+| ACE735      | APE735a      | James Keith (JK) Brown                             |         1 |
+| ACE735      | APE735b      | Eric Diefenbach                                    |         1 |
+| ACE739      | APE739a      | Yassmin Ghandehari                                 |         1 |
+| ACE739      | APE739b      | Sasan Ghandehari                                   |         1 |
+| ACE741      | APE741a      | Hong Ra-hee                                        |         1 |
+| ACE741      | APE741b      | Lee Kun-hee                                        |         1 |
+| ACE745      | APE745a      | Nina Moore                                         |         1 |
+| ACE745      | APE745b      | Frank Moore                                        |         1 |
+| ACE746      | APE746a      | Catriona Mordant                                   |         1 |
+| ACE746      | APE746b      | Simon Mordant                                      |         1 |
+| ACE747      | APE747a      | Genny Nissenbaum                                   |         1 |
+| ACE747      | APE747b      | Selmo Nissenbaum                                   |         1 |
+| ACE748      | APE748a      | Lisa Perry                                         |         1 |
+| ACE748      | APE748b      | Richard Perry                                      |         1 |
+| ACE749      | APE749a      | Sabine Plattner                                    |         1 |
+| ACE749      | APE749b      | Hasso Plattner                                     |         1 |
+| ACE752      | APE752a      | Linnea Conrad Roberts                              |         1 |
+| ACE752      | APE752b      | George Roberts                                     |         1 |
+| ACE754      | APE754a      | Elham Salamé                                       |         1 |
+| ACE754      | APE754b      | Tony Salamé                                        |         1 |
+| ACE755      | APE755a      | Nadia Samdani                                      |         1 |
+| ACE755      | APE755b      | Rajeeb Samdani                                     |         1 |
+| ACE757      | APE757a      | Brett Sundheim                                     |         1 |
+| ACE757      | APE757b      | Daniel S. Sundheim                                 |         1 |
+| ACE761      | APE761a      | Halit Cingillioglu                                 |         1 |
+| ACE761      | APE761b      | Kemal Has Cingillioglu                             |         1 |
+| ACE763      | APE763a      | Michael C. Forman                                  |         1 |
+| ACE763      | APE763b      | Jennifer Rice                                      |         1 |
+| ACE765      | APE765a      | Pamela J. Joyner                                   |         1 |
+| ACE765      | APE765b      | Alfred J. Giuffrida                                |         1 |
+| ACE770      | APE770a      | Sheri Schultz                                      |         1 |
+| ACE770      | APE770b      | Howard Schultz                                     |         1 |
+| ACE772      | APE772a      | Anne Titze                                         |         1 |
+| ACE772      | APE772b      | Wolfgang Titze                                     |         1 |
+| ACE773      | APE773a      | Patricia Pearson-Vergez                            |         1 |
+| ACE773      | APE773b      | Juan Vergez                                        |         1 |
+| ACE776      | APE776a      | Laura Arrillaga-Andreessen                         |         1 |
+| ACE776      | APE776b      | Marc Andreessen                                    |         1 |
+| ACE778      | APE778a      | Tracey Berkowitz                                   |         1 |
+| ACE778      | APE778b      | Bruce R. Berkowitz                                 |         1 |
+| ACE779      | APE779a      | Barbara Bluhm-Kaul                                 |         1 |
+| ACE779      | APE779b      | Don Kaul                                           |         1 |
+| ACE780      | APE780a      | Lauren Booth                                       |         1 |
+| ACE780      | APE780b      | Mark Booth                                         |         1 |
+| ACE782      | APE782a      | Estrellita Brodsky                                 |         1 |
+| ACE782      | APE782b      | Daniel Brodsky                                     |         1 |
+| ACE785      | APE785a      | Bridgitt Evans                                     |         1 |
+| ACE785      | APE785b      | Bruce Evans                                        |         1 |
+| ACE786      | APE786a      | Gabriela Garza                                     |         1 |
+| ACE786      | APE786b      | Ramiro Garza                                       |         1 |
+| ACE787      | APE787a      | Petra Levin                                        |         1 |
+| ACE787      | APE787b      | Stephen Levin                                      |         1 |
+| ACE792      | APE792a      | Helen Zell                                         |         1 |
+| ACE792      | APE792b      | Sam Zell                                           |         1 |
+| ACE795      | APE795a      | Elizabeth Chun                                     |         1 |
+| ACE795      | APE795b      | Phillip Chun                                       |         1 |
+| ACE799      | APE799a      | Kelly Mueller                                      |         1 |
+| ACE799      | APE799b      | Scott Mueller                                      |         1 |
+| ACE800      | APE800a      | Jane Nathanson                                     |         1 |
+| ACE800      | APE800b      | Marc Nathanson                                     |         1 |
+| ACE802      | APE802a      | Cecilia Poma                                       |         1 |
+| ACE802      | APE802b      | Ernesto Poma                                       |         1 |
+| ACE805      | APE805a      | Komal Shah                                         |         1 |
+| ACE805      | APE805b      | Gaurav Garg                                        |         1 |
+| ACE806      | APE806a      | Claire-Anne Stroll                                 |         1 |
+| ACE806      | APE806b      | Lawrence S. Stroll                                 |         1 |
+| ACE807      | APE807a      | Clara Tsai                                         |         1 |
+| ACE807      | APE807b      | Joseph C. Tsai                                     |         1 |
+| ACE813      | APE813a      | Cecilia Cheung                                     |         1 |
+| ACE813      | APE813b      | Chung-Kiu “C.K.” Cheung                            |         1 |
+| ACE814      | APE814a      | Kasseem “Swizz Beatz” Dean                         |         1 |
+| ACE814      | APE814b      | Alicia Keys                                        |         1 |
+| ACE815      | APE815a      | Yael Fegel                                         |         1 |
+| ACE815      | APE815b      | Gary Fegel                                         |         1 |
+| ACE819      | APE819a      | Jimmy Iovine                                       |         1 |
+| ACE819      | APE819b      | Liberty Ross                                       |         1 |
+| ACE824      | APE824a      | Kiran Nadar                                        |         1 |
+| ACE824      | APE824b      | Shiv Nadar                                         |         1 |
+| ACE826      | APE826a      | Eyal Ofer                                          |         1 |
+| ACE826      | APE826b      | Idan Ofer                                          |         1 |
+| ACE827      | APE827a      | Darlene Pérez                                      |         1 |
+| ACE827      | APE827b      | Jorge M. Pérez                                     |         1 |
+| ACE831      | APE831a      | Maggie Tsai                                        |         1 |
+| ACE831      | APE831b      | Richard Tsai                                       |         1 |
+| ACE833      | APE833a      | Josef Vascovitz                                    |         1 |
+| ACE833      | APE833b      | Lisa Goodman                                       |         1 |
+| ACE834      | APE834a      | Jenny Jinyuan Wang                                 |         1 |
+| ACE834      | APE834b      | Guo Guangchang                                     |         1 |
+| ACE840      | APE840a      | Deirdre Dyson                                      |         1 |
+| ACE840      | APE840b      | James Dyson                                        |         1 |
+| ACE841      | APE841a      | Cecilie Fredriksen                                 |         1 |
+| ACE841      | APE841b      | Kathrine Fredriksen                                |         1 |
+| ACE843      | APE843a      | Arthur Lewis                                       |         1 |
+| ACE843      | APE843b      | Hau Nguyen                                         |         1 |
+| ACE844      | APE844a      | George Lucas                                       |         1 |
+| ACE844      | APE844b      | Mellody Hobson                                     |         1 |
+| ACE845      | APE845a      | Bernard Lumpkin                                    |         1 |
+| ACE845      | APE845b      | Carmine Boccuzzi                                   |         1 |
+| ACE847      | APE847a      | Batia Ofer                                         |         1 |
+| ACE847      | APE847b      | Idan Ofer                                          |         1 |
+| ACE848      | APE848a      | Janelle Pinnell                                    |         1 |
+| ACE848      | APE848b      | Alden Pinnell                                      |         1 |
+| ACE849      | APE849a      | Sara Shlesinger                                    |         1 |
+| ACE849      | APE849b      | John Shlesinger                                    |         1 |
+| ACE851      | APE851a      | Mei Warburg                                        |         1 |
+| ACE851      | APE851b      | Allan Warburg                                      |         1 |
+| ACE855      | APE855a      | Katie Rodan                                        |         1 |
+| ACE855      | APE855b      | Amnon Rodan                                        |         1 |
+| ACE856      | APE856a      | Jaime Schwartzberg                                 |         1 |
+| ACE856      | APE856b      | Andrew Schwartzberg                                |         1 |
+| ACE857      | APE857a      | Amy Shih                                           |         1 |
+| ACE857      | APE857b      | Leo Shih                                           |         1 |
+| ACE858      | APE858a      | Carl Thoma                                         |         1 |
+| ACE858      | APE858b      | Marilynn Thoma                                     |         1 |
+| ACE859      | APE859a      | Ric Whitney                                        |         1 |
+| ACE859      | APE859b      | Tina Perry-Whitney                                 |         1 |
+| ACE1        | APE1a        | Zenko Adachi                                       |         0 |
+| ACE2        | APE2a        | Giovanni Agnelli                                   |         0 |
+| ACE3        | APE3a        | Muhammed al-Tajir                                  |         0 |
+| ACE5        | APE5a        | Arthur G. Altschul                                 |         0 |
+| ACE6        | APE6a        | Thomas Ammann                                      |         0 |
+| ACE8        | APE8a        | Warren Anderson                                    |         0 |
+| ACE9        | APE9a        | Walter H. Annenberg                                |         0 |
+| ACE10       | APE10a       | B.L Au                                             |         0 |
+| ACE11       | APE11a       | Emilio Azcarraga                                   |         0 |
+| ACE12       | APE12a       | Richard Brown Baker                                |         0 |
+| ACE13       | APE13a       | Sid Richardson Bass                                |         0 |
+| ACE14       | APE14a       | Anne Bass                                          |         0 |
+| ACE15       | APE15a       | Audrey Jones Beck                                  |         0 |
+| ACE16       | APE16a       | Heinz Berggruen                                    |         0 |
+| ACE18       | APE18a       | Silvio Berlusconi                                  |         0 |
+| ACE19       | APE19a       | Claude Berri                                       |         0 |
+| ACE20       | APE20a       | Ernst Beyeler                                      |         0 |
+| ACE22       | APE22a       | Martin Blinder                                     |         0 |
+| ACE26       | APE26a       | Alan Bond                                          |         0 |
+| ACE27       | APE27a       | Janet Green                                        |         0 |
+| ACE29       | APE29a       | William Bowmore                                    |         0 |
+| ACE31       | APE31a       | Donald Leroy Bren                                  |         0 |
+| ACE33       | APE33a       | Edward Broida                                      |         0 |
+| ACE34       | APE34a       | Lothar-Günther Buchheim                            |         0 |
+| ACE35       | APE35a       | Miguel Capriles                                    |         0 |
+| ACE36       | APE36a       | Edward Carter                                      |         0 |
+| ACE37       | APE37a       | Gerald Chan                                        |         0 |
+| ACE38       | APE38a       | Alberto Chateaubriand                              |         0 |
+| ACE39       | APE39a       | Wendell Cherry                                     |         0 |
+| ACE40       | APE40a       | Jay Chiat                                          |         0 |
+| ACE42       | APE42a       | Lillian Clark                                      |         0 |
+| ACE43       | APE43a       | Robert Holmes à Court                              |         0 |
+| ACE44       | APE44a       | Douglas S. Cramer                                  |         0 |
+| ACE45       | APE45a       | Herman Daled                                       |         0 |
+| ACE47       | APE47a       | Bruce Dayton                                       |         0 |
+| ACE49       | APE49a       | "Edward R. Downe, Jr."                             |         0 |
+| ACE51       | APE51a       | Asher Edelman                                      |         0 |
+| ACE53       | APE53a       | Gerald Elliott                                     |         0 |
+| ACE54       | APE54a       | Robert Ellsworth                                   |         0 |
+| ACE55       | APE55a       | Georges Embiricos                                  |         0 |
+| ACE56       | APE56a       | James O. Fairfax                                   |         0 |
+| ACE57       | APE57a       | Lord Thomson of Fleet                              |         0 |
+| ACE58       | APE58a       | Gert Rudolf Flick                                  |         0 |
+| ACE59       | APE59a       | Amalia Lacroze de Fortabat                         |         0 |
+| ACE60       | APE60a       | Giorgio Franchetti                                 |         0 |
+| ACE62       | APE62a       | David Geffen                                       |         0 |
+| ACE63       | APE63a       | Jacques Gelman                                     |         0 |
+| ACE65       | APE65a       | J. Paul Getty II                                   |         0 |
+| ACE66       | APE66a       | "Alfred C. Glassell, Jr."                          |         0 |
+| ACE68       | APE68a       | Isabel Goldsmith                                   |         0 |
+| ACE69       | APE69a       | Giuliano Gori                                      |         0 |
+| ACE70       | APE70a       | John Goulandris                                    |         0 |
+| ACE71       | APE71a       | Graham Gund                                        |         0 |
+| ACE72       | APE72a       | Agnes Gund                                         |         0 |
+| ACE74       | APE74a       | Robert Halff                                       |         0 |
+| ACE75       | APE75a       | Armand Hammer *deceased as we went to press        |         0 |
+| ACE76       | APE76a       | Toshio Hara                                        |         0 |
+| ACE78       | APE78a       | Henry John Heinz III                               |         0 |
+| ACE80       | APE80a       | Donald Hess                                        |         0 |
+| ACE83       | APE83a       | Richard E. Jacobs                                  |         0 |
+| ACE84       | APE84a       | Barbara Jakobson                                   |         0 |
+| ACE85       | APE85a       | Dakis Joannou                                      |         0 |
+| ACE86       | APE86a       | Philip Johnson                                     |         0 |
+| ACE87       | APE87a       | Barbara Piasecka Johnson                           |         0 |
+| ACE88       | APE88a       | Samuel Josefowitz                                  |         0 |
+| ACE89       | APE89a       | Nicole Jullien Mattei                              |         0 |
+| ACE90       | APE90a       | Shegeki Kameyama                                   |         0 |
+| ACE91       | APE91a       | Takuji Kato                                        |         0 |
+| ACE94       | APE94a       | Frederick Koch                                     |         0 |
+| ACE95       | APE95a       | William Koch                                       |         0 |
+| ACE96       | APE96a       | Robert Kogod                                       |         0 |
+| ACE98       | APE98a       | David Lloyd Kreeger                                |         0 |
+| ACE99       | APE99a       | Sotaro Kubo                                        |         0 |
+| ACE100      | APE100a      | Hideo Kurita                                       |         0 |
+| ACE101      | APE101a      | Henryk de Kwiatkowski                              |         0 |
+| ACE102      | APE102a      | Yolanda Garza Laguera                              |         0 |
+| ACE103      | APE103a      | Leonard A. Lauder                                  |         0 |
+| ACE104      | APE104a      | Ronald S. Lauder                                   |         0 |
+| ACE105      | APE105a      | Raymond Learsy                                     |         0 |
+| ACE106      | APE106a      | Gerhard Lenz                                       |         0 |
+| ACE107      | APE107a      | K.S. Lo                                            |         0 |
+| ACE108      | APE108a      | Peter Ludwig                                       |         0 |
+| ACE111      | APE111a      | Richard Manoogian                                  |         0 |
+| ACE112      | APE112a      | Martin Z. Margulies                                |         0 |
+| ACE113      | APE113a      | Annie Windfohr Marion                              |         0 |
+| ACE114      | APE114a      | Donald B. Marron                                   |         0 |
+| ACE115      | APE115a      | Steve Martin                                       |         0 |
+| ACE116      | APE116a      | Erich Marx                                         |         0 |
+| ACE117      | APE117a      | Roger Mazarguil                                    |         0 |
+| ACE118      | APE118a      | Lord Alister McAlpine                              |         0 |
+| ACE119      | APE119a      | Margaret McDermott                                 |         0 |
+| ACE121      | APE121a      | Christophe de Menil                                |         0 |
+| ACE122      | APE122a      | Dominique de Menil                                 |         0 |
+| ACE123      | APE123a      | Georges de Menil                                   |         0 |
+| ACE124      | APE124a      | Philippa de Menil                                  |         0 |
+| ACE125      | APE125a      | Adelaide de Menil                                  |         0 |
+| ACE126      | APE126a      | François de Menil                                  |         0 |
+| ACE129      | APE129a      | José Mugrabi                                       |         0 |
+| ACE130      | APE130a      | Karl-Heinrich Müller                               |         0 |
+| ACE131      | APE131a      | Henri Nannen                                       |         0 |
+| ACE132      | APE132a      | Raymond Nasher                                     |         0 |
+| ACE133      | APE133a      | Rose Newman                                        |         0 |
+| ACE134      | APE134a      | Stavros Niarchos                                   |         0 |
+| ACE136      | APE136a      | Sammy Ofer                                         |         0 |
+| ACE137      | APE137a      | Houn Ohara                                         |         0 |
+| ACE138      | APE138a      | Kiichiro Okano                                     |         0 |
+| ACE139      | APE139a      | Eiji Okwawa                                        |         0 |
+| ACE141      | APE141a      | Reinhard Onnasch                                   |         0 |
+| ACE142      | APE142a      | Jaime Ortiz-Patiño                                 |         0 |
+| ACE143      | APE143a      | Michael Ovitz                                      |         0 |
+| ACE144      | APE144a      | Max Palevsky                                       |         0 |
+| ACE145      | APE145a      | Peter Palumbo                                      |         0 |
+| ACE146      | APE146a      | Giuseppe Panza di Biumo                            |         0 |
+| ACE147      | APE147a      | Jacques Poulge                                     |         0 |
+| ACE149      | APE149a      | Jay Arthur Pritzker                                |         0 |
+| ACE150      | APE150a      | Joseph Pulitzer                                    |         0 |
+| ACE151      | APE151a      | Joe Rank                                           |         0 |
+| ACE152      | APE152a      | Robert Gore Rifkind                                |         0 |
+| ACE153      | APE153a      | Renee Rivkin                                       |         0 |
+| ACE154      | APE154a      | Frederik Roos                                      |         0 |
+| ACE155      | APE155a      | Jacob Rothschild                                   |         0 |
+| ACE156      | APE156a      | Robert Rowan                                       |         0 |
+| ACE157      | APE157a      | Charles Saatchi                                    |         0 |
+| ACE159      | APE159a      | Tokichi Sakai                                      |         0 |
+| ACE160      | APE160a      | Fayez Sarofim                                      |         0 |
+| ACE162      | APE162a      | Otto Schäfer                                       |         0 |
+| ACE163      | APE163a      | John Schaeffer                                     |         0 |
+| ACE166      | APE166a      | Norton Simon                                       |         0 |
+| ACE167      | APE167a      | Yannis Sistovaris                                  |         0 |
+| ACE168      | APE168a      | Joshua P. Smith                                    |         0 |
+| ACE169      | APE169a      | Robert H. Smith                                    |         0 |
+| ACE172      | APE172a      | Sheldon Solow                                      |         0 |
+| ACE173      | APE173a      | Reiner Speck                                       |         0 |
+| ACE175      | APE175a      | Ray Stark                                          |         0 |
+| ACE177      | APE177a      | Leonard N. Stern                                   |         0 |
+| ACE178      | APE178a      | Hans-Hermann Stober                                |         0 |
+| ACE179      | APE179a      | Stephen Swid                                       |         0 |
+| ACE180      | APE180a      | Yeung Wing Tak                                     |         0 |
+| ACE181      | APE181a      | Masahiro Takano                                    |         0 |
+| ACE182      | APE182a      | A. Alfred Taubman                                  |         0 |
+| ACE183      | APE183a      | Daniel Terra                                       |         0 |
+| ACE184      | APE184a      | Hiroshi Teshigahara                                |         0 |
+| ACE185      | APE185a      | Hans Thulin                                        |         0 |
+| ACE187      | APE187a      | Robert Tobin                                       |         0 |
+| ACE188      | APE188a      | T. T. Tsui                                         |         0 |
+| ACE189      | APE189a      | Robert Vivian                                      |         0 |
+| ACE191      | APE191a      | Joel Wachs                                         |         0 |
+| ACE192      | APE192a      | Jack Warner                                        |         0 |
+| ACE193      | APE193a      | John Weber                                         |         0 |
+| ACE194      | APE194a      | Frederick R. Weisman                               |         0 |
+| ACE195      | APE195a      | Marcia Weisman                                     |         0 |
+| ACE196      | APE196a      | Leslie Herbert Wexner                              |         0 |
+| ACE197      | APE197a      | Ian Woodner                                        |         0 |
+| ACE199      | APE199a      | Jayne Wrightsman                                   |         0 |
+| ACE200      | APE200a      | Lucio Amelio                                       |         0 |
+| ACE201      | APE201a      | Plácido Arango                                     |         0 |
+| ACE205      | APE205a      | Alain Delon                                        |         0 |
+| ACE206      | APE206a      | Daniel Filipacchi                                  |         0 |
+| ACE207      | APE207a      | Chang Tien Ge                                      |         0 |
+| ACE208      | APE208a      | Alex Goulandris                                    |         0 |
+| ACE209      | APE209a      | Basil Goulandris                                   |         0 |
+| ACE210      | APE210a      | Hikonobu Ise                                       |         0 |
+| ACE211      | APE211a      | Katsumi Kawamura                                   |         0 |
+| ACE212      | APE212a      | William Lane                                       |         0 |
+| ACE213      | APE213a      | Joseph Lau                                         |         0 |
+| ACE214      | APE214a      | Micheline Maus                                     |         0 |
+| ACE215      | APE215a      | William Miller                                     |         0 |
+| ACE216      | APE216a      | Tsai Chen Nan                                      |         0 |
+| ACE217      | APE217a      | Masao Nangaku                                      |         0 |
+| ACE219      | APE219a      | Elie de Rothschild                                 |         0 |
+| ACE220      | APE220a      | Eric de Rothschild                                 |         0 |
+| ACE221      | APE221a      | Ryoei Saito                                        |         0 |
+| ACE223      | APE223a      | Urs Schwartzenbach                                 |         0 |
+| ACE224      | APE224a      | Tsukasa Shishima                                   |         0 |
+| ACE226      | APE226a      | David Thomson                                      |         0 |
+| ACE227      | APE227a      | Jean Alvarez de Tolédo                             |         0 |
+| ACE228      | APE228a      | Lois Torf                                          |         0 |
+| ACE229      | APE229a      | Tomonori Tsurumaki                                 |         0 |
+| ACE230      | APE230a      | Sieji Tsutsumi                                     |         0 |
+| ACE231      | APE231a      | Klaus Turbon                                       |         0 |
+| ACE232      | APE232a      | Roberto T. Villanueva                              |         0 |
+| ACE234      | APE234a      | Jan Ahlers                                         |         0 |
+| ACE235      | APE235a      | Marilynn Alsdorf                                   |         0 |
+| ACE236      | APE236a      | Hans Rasmus Astrup                                 |         0 |
+| ACE237      | APE237a      | Annibale Berlingieri                               |         0 |
+| ACE242      | APE242a      | Gilberto Chateaubriand                             |         0 |
+| ACE243      | APE243a      | Paul Desmarais                                     |         0 |
+| ACE246      | APE246a      | Hans Grothe                                        |         0 |
+| ACE248      | APE248a      | Michael Hornstein                                  |         0 |
+| ACE250      | APE250a      | Kwee Liong Keng                                    |         0 |
+| ACE251      | APE251a      | John Kluge                                         |         0 |
+| ACE253      | APE253a      | Robert Lehrman                                     |         0 |
+| ACE254      | APE254a      | Arthur Lim                                         |         0 |
+| ACE255      | APE255a      | Luella Maslon                                      |         0 |
+| ACE257      | APE257a      | Carlo Monzino                                      |         0 |
+| ACE258      | APE258a      | Raymond D. Nasher                                  |         0 |
+| ACE259      | APE259a      | George Ortiz                                       |         0 |
+| ACE260      | APE260a      | Joseph Pulitzer Jr                                 |         0 |
+| ACE261      | APE261a      | J.R. Ritman                                        |         0 |
+| ACE263      | APE263a      | Dieter Scharf                                      |         0 |
+| ACE264      | APE264a      | Walther Scharf                                     |         0 |
+| ACE265      | APE265a      | Peter Sharp                                        |         0 |
+| ACE266      | APE266a      | Kenneth Thomson                                    |         0 |
+| ACE267      | APE267a      | George Ti                                          |         0 |
+| ACE268      | APE268a      | Susie Tompkins                                     |         0 |
+| ACE269      | APE269a      | Seiji Tsutsumi                                     |         0 |
+| ACE272      | APE272a      | Thomas Walther                                     |         0 |
+| ACE275      | APE275a      | Wayne Wrightsman                                   |         0 |
+| ACE276      | APE276a      | Juan Abelló                                        |         0 |
+| ACE279      | APE279a      | Christiaan Braun                                   |         0 |
+| ACE280      | APE280a      | "Sultan Haji Hassanal Bolkiah,  Sultan of Brunei"  |         0 |
+| ACE282      | APE282a      | Ignacio Cobo                                       |         0 |
+| ACE283      | APE283a      | Edward Cox                                         |         0 |
+| ACE284      | APE284a      | Elaine Dannheisser                                 |         0 |
+| ACE285      | APE285a      | Barney Ebsworth                                    |         0 |
+| ACE288      | APE288a      | Bob Guccione                                       |         0 |
+| ACE289      | APE289a      | Ydessa Hendeles                                    |         0 |
+| ACE292      | APE292a      | Peter Moores                                       |         0 |
+| ACE293      | APE293a      | Jean-Pierre Moueix                                 |         0 |
+| ACE294      | APE294a      | Jorge Ortiz-Patiño                                 |         0 |
+| ACE300      | APE300a      | Martijn Sanders                                    |         0 |
+| ACE301      | APE301a      | Pieter Sanders                                     |         0 |
+| ACE302      | APE302a      | Wilhelm Schürmann                                  |         0 |
+| ACE303      | APE303a      | Marion Smooke                                      |         0 |
+| ACE306      | APE306a      | Martin Visser                                      |         0 |
+| ACE307      | APE307a      | Andrew Lloyd Webber                                |         0 |
+| ACE310      | APE310a      | Angelo Baldessari                                  |         0 |
+| ACE312      | APE312a      | Mary Livingston Griggs Burke                       |         0 |
+| ACE314      | APE314a      | Attilo Codognato                                   |         0 |
+| ACE315      | APE315a      | Karen Cohen                                        |         0 |
+| ACE316      | APE316a      | Jeffrey E. Horvitz                                 |         0 |
+| ACE317      | APE317a      | Harry Hyams                                        |         0 |
+| ACE318      | APE318a      | Stephane Janssen                                   |         0 |
+| ACE319      | APE319a      | Sam Josefowitz                                     |         0 |
+| ACE324      | APE324a      | Robert Sosnick                                     |         0 |
+| ACE332      | APE332a      | Baron Giorgio Franchetti                           |         0 |
+| ACE334      | APE334a      | Soichiro Fukutake                                  |         0 |
+| ACE337      | APE337a      | Jorge S. Helft                                     |         0 |
+| ACE338      | APE338a      | Mauro Herlitzka                                    |         0 |
+| ACE341      | APE341a      | Simon Kwan                                         |         0 |
+| ACE342      | APE342a      | Emily Fisher Landau                                |         0 |
+| ACE348      | APE348a      | Lord Peter Palumbo                                 |         0 |
+| ACE349      | APE349a      | Ronald O. Perelman                                 |         0 |
+| ACE350      | APE350a      | François Pinault                                   |         0 |
+| ACE351      | APE351a      | Sainsbury Family                                   |         0 |
+| ACE354      | APE354a      | Carlos Slim Helú                                   |         0 |
+| ACE359      | APE359a      | Mitchell Wolfson                                   |         0 |
+| ACE360      | APE360a      | Reinhold Würth                                     |         0 |
+| ACE361      | APE361a      | Gianni Agnelli                                     |         0 |
+| ACE363      | APE363a      | Scott Black                                        |         0 |
+| ACE364      | APE364a      | Nicola Bulgari                                     |         0 |
+| ACE365      | APE365a      | Eduardo F. Costantini                              |         0 |
+| ACE367      | APE367a      | Esther Grether                                     |         0 |
+| ACE368      | APE368a      | Manfred Heiting                                    |         0 |
+| ACE369      | APE369a      | Marieluise Hessel                                  |         0 |
+| ACE370      | APE370a      | Graham Kirkham                                     |         0 |
+| ACE373      | APE373a      | Peter Lewis                                        |         0 |
+| ACE374      | APE374a      | Werner Merzbacher                                  |         0 |
+| ACE376      | APE376a      | David Rockefeller                                  |         0 |
+| ACE377      | APE377a      | Robert Smith                                       |         0 |
+| ACE378      | APE378a      | Jeffrey Steiner                                    |         0 |
+| ACE380      | APE380a      | Charles Tabachnick                                 |         0 |
+| ACE381      | APE381a      | Paul Allen                                         |         0 |
+| ACE382      | APE382a      | Hortense Anda-Bührle                               |         0 |
+| ACE383      | APE383a      | John P. Axelrod                                    |         0 |
+| ACE384      | APE384a      | Dieter Bührle                                      |         0 |
+| ACE386      | APE386a      | Herbert Black                                      |         0 |
+| ACE388      | APE388a      | Joop van Caldenborgh                               |         0 |
+| ACE389      | APE389a      | Lloyd Cotsen                                       |         0 |
+| ACE390      | APE390a      | Prodromus Emfietzoglou                             |         0 |
+| ACE391      | APE391a      | Joseph Hackmey                                     |         0 |
+| ACE392      | APE392a      | Daniel Hechter                                     |         0 |
+| ACE393      | APE393a      | Robert Hiscox                                      |         0 |
+| ACE394      | APE394a      | Carl Icahn                                         |         0 |
+| ACE395      | APE395a      | Audrey Irmas                                       |         0 |
+| ACE396      | APE396a      | John Kaldor                                        |         0 |
+| ACE398      | APE398a      | Robert P. Kogod                                    |         0 |
+| ACE399      | APE399a      | Werner Kramarsky                                   |         0 |
+| ACE400      | APE400a      | Myron Kunin                                        |         0 |
+| ACE402      | APE402a      | Joseph Lewis                                       |         0 |
+| ACE403      | APE403a      | Denis Logothetis                                   |         0 |
+| ACE404      | APE404a      | Irene Ludwig                                       |         0 |
+| ACE406      | APE406a      | Dinos Martinos                                     |         0 |
+| ACE408      | APE408a      | Arendt Oetker                                      |         0 |
+| ACE409      | APE409a      | Wafic Said                                         |         0 |
+| ACE410      | APE410a      | Rudolf Scharpf                                     |         0 |
+| ACE411      | APE411a      | David Tang                                         |         0 |
+| ACE412      | APE412a      | Robert L. B. Tobin                                 |         0 |
+| ACE413      | APE413a      | José Luis Várez Fisa                               |         0 |
+| ACE414      | APE414a      | Thomas W. Weisel                                   |         0 |
+| ACE416      | APE416a      | Bruce Bailey                                       |         0 |
+| ACE417      | APE417a      | Frances Bowes                                      |         0 |
+| ACE419      | APE419a      | Edward R. Broida                                   |         0 |
+| ACE420      | APE420a      | Donald L. Bryant Jr.                               |         0 |
+| ACE421      | APE421a      | Blake Byrne                                        |         0 |
+| ACE422      | APE422a      | Constance Caplan                                   |         0 |
+| ACE423      | APE423a      | Frances Dittmer                                    |         0 |
+| ACE424      | APE424a      | Ulla Dreyfus-Best                                  |         0 |
+| ACE425      | APE425a      | Aaron I. Fleischman                                |         0 |
+| ACE426      | APE426a      | Ingvild Goetz                                      |         0 |
+| ACE428      | APE428a      | Jean Hamon                                         |         0 |
+| ACE429      | APE429a      | Samuel Heyman                                      |         0 |
+| ACE430      | APE430a      | Erika Hoffmann                                     |         0 |
+| ACE432      | APE432a      | Joseph Hotung                                      |         0 |
+| ACE434      | APE434a      | Uri Knecht                                         |         0 |
+| ACE438      | APE438a      | Eugenio López Alonso                               |         0 |
+| ACE440      | APE440a      | Robert Miller                                      |         0 |
+| ACE441      | APE441a      | Jan Mitchell                                       |         0 |
+| ACE442      | APE442a      | Michimasa Murauchi                                 |         0 |
+| ACE443      | APE443a      | Maja Oeri                                          |         0 |
+| ACE446      | APE446a      | Kimiko Powers                                      |         0 |
+| ACE447      | APE447a      | Leonard Riggio                                     |         0 |
+| ACE448      | APE448a      | Lee Ann Roberts                                    |         0 |
+| ACE449      | APE449a      | Inge Rodenstock                                    |         0 |
+| ACE455      | APE455a      | Eiichiro Sudo                                      |         0 |
+| ACE457      | APE457a      | Dean Valentine                                     |         0 |
+| ACE458      | APE458a      | Shelby White                                       |         0 |
+| ACE464      | APE464a      | Harald Falckenberg                                 |         0 |
+| ACE465      | APE465a      | Friedrich Christian Flick                          |         0 |
+| ACE468      | APE468a      | Uli Knecht                                         |         0 |
+| ACE472      | APE472a      | Leonardo Mondadori                                 |         0 |
+| ACE477      | APE477a      | Norman Stone                                       |         0 |
+| ACE478      | APE478a      | Tsuneshi Suzuki                                    |         0 |
+| ACE480      | APE480a      | Philip Anschutz                                    |         0 |
+| ACE482      | APE482a      | Udo Brandhorst                                     |         0 |
+| ACE484      | APE484a      | Yu Gi-chung                                        |         0 |
+| ACE485      | APE485a      | Marguerite Hoffman                                 |         0 |
+| ACE486      | APE486a      | Frank Huang                                        |         0 |
+| ACE487      | APE487a      | Elton John                                         |         0 |
+| ACE488      | APE488a      | Alicia Koplowitz                                   |         0 |
+| ACE489      | APE489a      | Minoru Mori                                        |         0 |
+| ACE490      | APE490a      | Jack Nicholson                                     |         0 |
+| ACE491      | APE491a      | Emily Rauh Pulitzer                                |         0 |
+| ACE495      | APE495a      | Stephan Schmidheiny                                |         0 |
+| ACE498      | APE498a      | Ricard Akagawa                                     |         0 |
+| ACE499      | APE499a      | Bernard Arnault                                    |         0 |
+| ACE500      | APE500a      | Dimitris Daskalopoulos                             |         0 |
+| ACE502      | APE502a      | "George Lindemann,       Jr."                      |         0 |
+| ACE504      | APE504a      | Philip S. Niarchos                                 |         0 |
+| ACE505      | APE505a      | Peter Norton                                       |         0 |
+| ACE507      | APE507a      | Scott Rudin                                        |         0 |
+| ACE510      | APE510a      | Chara Schreyer                                     |         0 |
+| ACE512      | APE512a      | Sheikh Saud bin Mohammad bin Ali al-Thani          |         0 |
+| ACE514      | APE514a      | Steven A. Cohen                                    |         0 |
+| ACE517      | APE517a      | David Ganek                                        |         0 |
+| ACE518      | APE518a      | John Paul Getty II                                 |         0 |
+| ACE520      | APE520a      | Roberto Marinho                                    |         0 |
+| ACE522      | APE522a      | Bernardo Paz                                       |         0 |
+| ACE524      | APE524a      | Mitchell Rales                                     |         0 |
+| ACE526      | APE526a      | Beth Swofford                                      |         0 |
+| ACE528      | APE528a      | Jose Manuel Berardo                                |         0 |
+| ACE529      | APE529a      | Lilian Bettencourt                                 |         0 |
+| ACE532      | APE532a      | James Clark                                        |         0 |
+| ACE533      | APE533a      | Paolo Consolandi                                   |         0 |
+| ACE534      | APE534a      | The Garza Sada family                              |         0 |
+| ACE536      | APE536a      | Laurence Graff                                     |         0 |
+| ACE538      | APE538a      | Nasser David Khalili                               |         0 |
+| ACE542      | APE542a      | Michael Lynne                                      |         0 |
+| ACE545      | APE545a      | Patrizia Sandretto Re Rebaudengo                   |         0 |
+| ACE546      | APE546a      | Sakip Sabanci                                      |         0 |
+| ACE547      | APE547a      | Alain Wertheimer                                   |         0 |
+| ACE549      | APE549a      | Frank Cohen                                        |         0 |
+| ACE551      | APE551a      | Garza Sada Family                                  |         0 |
+| ACE553      | APE553a      | Antoine de Galbert                                 |         0 |
+| ACE554      | APE554a      | Barbara Lee                                        |         0 |
+| ACE557      | APE557a      | Lester Marks                                       |         0 |
+| ACE559      | APE559a      | Steven Rales                                       |         0 |
+| ACE560      | APE560a      | Lily Safra                                         |         0 |
+| ACE561      | APE561a      | Adam D. Sender                                     |         0 |
+| ACE562      | APE562a      | Francesca Thyssen-Bornemisza                       |         0 |
+| ACE564      | APE564a      | Frieder Burda                                      |         0 |
+| ACE567      | APE567a      | Beth Rudin DeWoody                                 |         0 |
+| ACE568      | APE568a      | Glenn R. Fuhrman                                   |         0 |
+| ACE575      | APE575a      | Henry S. McNeil                                    |         0 |
+| ACE577      | APE577a      | Thomas Olbricht                                    |         0 |
+| ACE581      | APE581a      | Louisa Stude Sarofim                               |         0 |
+| ACE582      | APE582a      | Tatsumi Sato                                       |         0 |
+| ACE583      | APE583a      | Juan Antonio Perez Simon                           |         0 |
+| ACE584      | APE584a      | Peter Simon                                        |         0 |
+| ACE585      | APE585a      | Gayle Stoffel                                      |         0 |
+| ACE587      | APE587a      | Alice Walton                                       |         0 |
+| ACE592      | APE592a      | Mary Griggs Burke                                  |         0 |
+| ACE594      | APE594a      | Kim Chang-il                                       |         0 |
+| ACE595      | APE595a      | Ella Fontanals-Cisneros                            |         0 |
+| ACE596      | APE596a      | Michael Crichton                                   |         0 |
+| ACE601      | APE601a      | Prince Hans-Adam II von und zu Liechtenstein       |         0 |
+| ACE603      | APE603a      | Marc Landeau                                       |         0 |
+| ACE606      | APE606a      | Aby J. Rosen                                       |         0 |
+| ACE608      | APE608a      | David Teiger                                       |         0 |
+| ACE609      | APE609a      | Neil G. Bluhm                                      |         0 |
+| ACE610      | APE610a      | Mickey Cartin                                      |         0 |
+| ACE612      | APE612a      | Kenneth C. Griffin                                 |         0 |
+| ACE615      | APE615a      | Eric Schmidt                                       |         0 |
+| ACE618      | APE618a      | Peter M. Brant                                     |         0 |
+| ACE622      | APE622a      | Damien Hirst                                       |         0 |
+| ACE624      | APE624a      | David Martinez                                     |         0 |
+| ACE625      | APE625a      | Victor Pinchuk                                     |         0 |
+| ACE630      | APE630a      | Edward “Ned” Johnson III                           |         0 |
+| ACE634      | APE634a      | Hubert Neumann                                     |         0 |
+| ACE638      | APE638a      | Uli Sigg                                           |         0 |
+| ACE639      | APE639a      | Eric Smidt                                         |         0 |
+| ACE642      | APE642a      | Stephen A. Wynn                                    |         0 |
+| ACE646      | APE646a      | Philippe Decelle                                   |         0 |
+| ACE647      | APE647a      | Ovitz family                                       |         0 |
+| ACE649      | APE649a      | Noam Gottesman                                     |         0 |
+| ACE652      | APE652a      | John S. Middleton                                  |         0 |
+| ACE654      | APE654a      | Princess Gloria von Thurn und Taxis                |         0 |
+| ACE655      | APE655a      | Walter Vanhaerents                                 |         0 |
+| ACE657      | APE657a      | Susan Weber                                        |         0 |
+| ACE658      | APE658a      | Tadashi Yanai                                      |         0 |
+| ACE660      | APE660a      | Pierre Chen                                        |         0 |
+| ACE661      | APE661a      | Halit Cingillioglu                                 |         0 |
+| ACE662      | APE662a      | Glenn Dubin                                        |         0 |
+| ACE665      | APE665a      | Joe Lewis                                          |         0 |
+| ACE666      | APE666a      | Dimitri Mavrommatis                                |         0 |
+| ACE669      | APE669a      | María Asunción Aramburuzabala                      |         0 |
+| ACE671      | APE671a      | Grässlin Family                                    |         0 |
+| ACE674      | APE674a      | Hugo Jung                                          |         0 |
+| ACE676      | APE676a      | Pierre Lagrange                                    |         0 |
+| ACE681      | APE681a      | Dmitry Rybolovlev                                  |         0 |
+| ACE683      | APE683a      | Julia Stoschek                                     |         0 |
+| ACE685      | APE685a      | Budi Tek                                           |         0 |
+| ACE686      | APE686a      | Sheikha Al Mayassa bint Hamad bin Khalifa Al Thani |         0 |
+| ACE690      | APE690a      | Len Blavatnik                                      |         0 |
+| ACE691      | APE691a      | Richard Chang                                      |         0 |
+| ACE692      | APE692a      | Thomas Chao                                        |         0 |
+| ACE694      | APE694a      | Carl Gustaf Ehrnrooth                              |         0 |
+| ACE695      | APE695a      | Alan Howard                                        |         0 |
+| ACE698      | APE698a      | Leonid Mikhelson                                   |         0 |
+| ACE699      | APE699a      | Takeo Obayashi                                     |         0 |
+| ACE700      | APE700a      | Daniel Och                                         |         0 |
+| ACE702      | APE702a      | Qiao Zhibing                                       |         0 |
+| ACE704      | APE704a      | Yang Bin                                           |         0 |
+| ACE705      | APE705a      | Candace Carmel Barasch                             |         0 |
+| ACE706      | APE706a      | Nicolas Berggruen                                  |         0 |
+| ACE707      | APE707a      | Ernesto Bertarelli                                 |         0 |
+| ACE708      | APE708a      | Christian Bührle                                   |         0 |
+| ACE709      | APE709a      | Edouard Carmignac                                  |         0 |
+| ACE711      | APE711a      | Kemal Has Cingillioglu                             |         0 |
+| ACE713      | APE713a      | Tiqui Atencio Demirdjian                           |         0 |
+| ACE716      | APE716a      | Lawrence J. Ellison                                |         0 |
+| ACE720      | APE720a      | Thomas Lau                                         |         0 |
+| ACE721      | APE721a      | Jho Low                                            |         0 |
+| ACE722      | APE722a      | Maramotti Family                                   |         0 |
+| ACE725      | APE725a      | Stephen Ross                                       |         0 |
+| ACE727      | APE727a      | Joseph Safra                                       |         0 |
+| ACE728      | APE728a      | Thomas Shao                                        |         0 |
+| ACE731      | APE731a      | Wang Jianlin                                       |         0 |
+| ACE732      | APE732a      | Charlotte Colket Weber                             |         0 |
+| ACE733      | APE733a      | Elaine Wynn                                        |         0 |
+| ACE736      | APE736a      | Adrian Cheng                                       |         0 |
+| ACE737      | APE737a      | Leonardo DiCaprio                                  |         0 |
+| ACE738      | APE738a      | George Economou                                    |         0 |
+| ACE740      | APE740a      | Maja Hoffmann                                      |         0 |
+| ACE742      | APE742a      | Viatcheslav Moshe Kantor                           |         0 |
+| ACE743      | APE743a      | Ananda Krishnan                                    |         0 |
+| ACE744      | APE744a      | Grażyna Kulczyk                                    |         0 |
+| ACE750      | APE750a      | Sultan Sooud Al Qassemi                            |         0 |
+| ACE751      | APE751a      | Bob Rennie                                         |         0 |
+| ACE753      | APE753a      | Rubell Family                                      |         0 |
+| ACE756      | APE756a      | Suh Kyung-Bae                                      |         0 |
+| ACE758      | APE758a      | Sheikh Hamad bin Jassim bin Jaber Al Thani         |         0 |
+| ACE759      | APE759a      | Wang Zhongjun                                      |         0 |
+| ACE760      | APE760a      | Haryanto Adikoesoemo                               |         0 |
+| ACE762      | APE762a      | Fisher Family                                      |         0 |
+| ACE764      | APE764a      | Danny Goldberg                                     |         0 |
+| ACE766      | APE766a      | Guy Laliberté                                      |         0 |
+| ACE767      | APE767a      | Li Lin                                             |         0 |
+| ACE768      | APE768a      | Jack Ma                                            |         0 |
+| ACE769      | APE769a      | Yusaku Maezawa                                     |         0 |
+| ACE771      | APE771a      | Steve Tisch                                        |         0 |
+| ACE774      | APE774a      | Roman Abramovich                                   |         0 |
+| ACE775      | APE775a      | Mohammed Afkhami                                   |         0 |
+| ACE777      | APE777a      | Laurent Asscher                                    |         0 |
+| ACE781      | APE781a      | Botín Family                                       |         0 |
+| ACE783      | APE783a      | Lonti Ebers                                        |         0 |
+| ACE784      | APE784a      | Eisenberg Family                                   |         0 |
+| ACE788      | APE788a      | Cheech Marin                                       |         0 |
+| ACE789      | APE789a      | Niarchos Family                                    |         0 |
+| ACE790      | APE790a      | Augusto Perfetti                                   |         0 |
+| ACE791      | APE791a      | Jochen Zeitz                                       |         0 |
+| ACE793      | APE793a      | Alfonso de Angoitia Noriega                        |         0 |
+| ACE794      | APE794a      | Suzanne Deal Booth                                 |         0 |
+| ACE796      | APE796a      | Nicola Erni                                        |         0 |
+| ACE797      | APE797a      | Heidi Goëss-Horten                                 |         0 |
+| ACE798      | APE798a      | Bernardo Gómez Martínez                            |         0 |
+| ACE801      | APE801a      | Petch Osathanugrah                                 |         0 |
+| ACE803      | APE803a      | Laurene Powell Jobs                                |         0 |
+| ACE804      | APE804a      | Lisa Reuben                                        |         0 |
+| ACE808      | APE808a      | Wang Bing                                          |         0 |
+| ACE809      | APE809a      | Pedro Barbosa                                      |         0 |
+| ACE810      | APE810a      | David Booth                                        |         0 |
+| ACE811      | APE811a      | Miguel Chang                                       |         0 |
+| ACE812      | APE812a      | Edmund Cheng                                       |         0 |
+| ACE816      | APE816a      | Charlotte Feng Ford                                |         0 |
+| ACE817      | APE817a      | Larry Fink                                         |         0 |
+| ACE818      | APE818a      | Jeffrey Gundlach                                   |         0 |
+| ACE820      | APE820a      | Yasuharu Ishikawa                                  |         0 |
+| ACE821      | APE821a      | Ömer Koç                                           |         0 |
+| ACE822      | APE822a      | Barry Lam                                          |         0 |
+| ACE823      | APE823a      | Victor Ma                                          |         0 |
+| ACE825      | APE825a      | Louis Norval                                       |         0 |
+| ACE828      | APE828a      | Paul Raether                                       |         0 |
+| ACE829      | APE829a      | Gordon Schachat                                    |         0 |
+| ACE830      | APE830a      | Alexander Tedja                                    |         0 |
+| ACE832      | APE832a      | Robert Tsao                                        |         0 |
+| ACE835      | APE835a      | Wee Cho Yaw                                        |         0 |
+| ACE836      | APE836a      | Dasha Zhukova                                      |         0 |
+| ACE837      | APE837a      | Jeff Bezos                                         |         0 |
+| ACE838      | APE838a      | Troy Carter                                        |         0 |
+| ACE839      | APE839a      | Patrick Drahi                                      |         0 |
+| ACE842      | APE842a      | He Jianfeng                                        |         0 |
+| ACE846      | APE846a      | Eyal Ofer                                          |         0 |
+| ACE850      | APE850a      | Robert Soros                                       |         0 |
+| ACE852      | APE852a      | Jon Brooks                                         |         0 |
+| ACE853      | APE853a      | Jeff Markley                                       |         0 |
+| ACE854      | APE854a      | Danny Rimer                                        |         0 |
+| ACE860      | APE860a      | Yan Du                                             |         0 |
+| ACE861      | APE861a      | Jenny Yeh                                          |         0 |

@@ -42,7 +42,8 @@ gc_pmdata_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_so
         ARTNEWS_DIR_old = ARTNEWS_DIR_old,
         ARTNEWS_TIME_FILE = paste0(ARTNEWS_DIR_old, "ranking.csv"),
         ARTNEWS_COLLECTOR_ENTRIES_FILE = paste0(DATA_DIR, "artnews/an_clctr_entries.csv"),
-        ARTNEWS_COLLECTOR_PERSON_FILE = paste0(DATA_DIR, "artnews/an_clctr_person.csv") 
+        ARTNEWS_COLLECTOR_PERSON_FILE = paste0(DATA_DIR, "artnews/an_clctr_person.csv"),
+        ARTNEWS_COLLECTOR_PERSON_FILE_ORG = paste0(DATA_DIR, "artnews/an_clctr_person_org.csv") 
         
     )
     

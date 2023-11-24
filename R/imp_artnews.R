@@ -68,4 +68,5 @@ gwd_artnews_person <- function(ARTNEWS_COLLECTOR_ENTRIES_FILE = PMDATA_LOCS$ARTN
 ## ONLY RUN ONCE:
 ## this duplicates couple rows so that manual deletion is easier
 ## names are not standardized for automatic detection of both names
-gwd_artnews_person()
+## gwd_artnews_person()
+dtx <- fread(PMDATA_LOCS$ARTNEWS_COLLECTOR_PERSON_FILE_ORG)
