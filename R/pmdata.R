@@ -27,13 +27,19 @@
 #' @return list of strings of location of data files
 #' @export
 gc_pmdata_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_sources/") {
+
+    ## FIXME: move artnews to DATA_DIR
+    ARTNEWS_DIR = "/home/johannes/ownCloud/org_pop_data/artnews/"
+
     data_locs <- list(
         PMDB_FILE = paste0(DATA_DIR, "pmdb/Private museum database_v4.csv"),
         MOW_PMDB_MATCHRES_FILE = paste0(DATA_DIR, "mow/mow_pmdb_matchres.csv"),
         MOW_INFO_FILE = paste0(DATA_DIR, "mow/mow.csv"),
         MOW_CLSFCN_FILE = paste0(DATA_DIR, "mow/classification.csv"),
         MOW_TAG_FILE = paste0(DATA_DIR, "mow/type.csv"),
-        ARTNEWS_TIME_FILE = "/home/johannes/ownCloud/org_pop_data/artnews/ranking.csv"
+        ARTNEWS_DIR = ARTNEWS_DIR,
+        ARTNEWS_TIME_FILE = paste0(ARTNEWS_DIR, "ranking.csv")
+        
     )
     
 
