@@ -30,9 +30,8 @@ gc_pmdata_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_so
 
     ## FIXME: move artnews to DATA_DIR: atm the ownCloud directory is big (~300 mb) due to including all the HTMLs
     ## the ARTNEWS_COLLECTOR_ENTRIES_FILE is already in the correct directory
-    ## ARTNEWS_DIR_old <- "/home/johannes/ownCloud/org_pop_data/artnews/"
-    
-
+    ARTNEWS_DIR_old <- "/home/johannes/ownCloud/org_pop_data/artnews/"
+        
     data_locs <- list(
         PMDB_FILE = paste0(DATA_DIR, "pmdb/Private museum database_v4.csv"),
         MOW_PMDB_MATCHRES_FILE = paste0(DATA_DIR, "mow/mow_pmdb_matchres.csv"),
@@ -42,7 +41,9 @@ gc_pmdata_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_so
         ARTNEWS_TIME_FILE = paste0(ARTNEWS_DIR_old, "ranking.csv"),
         ARTNEWS_COLLECTOR_ENTRIES_FILE = paste0(DATA_DIR, "artnews/an_clctr_entries.csv"),
         ARTNEWS_COLLECTOR_PERSON_FILE = paste0(DATA_DIR, "artnews/an_clctr_person.csv"),
-        ARTNEWS_COLLECTOR_PERSON_FILE_ORG = paste0(DATA_DIR, "artnews/an_clctr_person_org.csv") 
+        ARTNEWS_COLLECTOR_PERSON_FILE_ORG = paste0(DATA_DIR, "artnews/an_clctr_person_org.csv"),
+        ARTNEWS_PERSON_FILE  = paste0(DATA_DIR, "artnews/an_person.csv"),
+        ARTNEWS_APECPRN_FILE = paste0(DATA_DIR, "artnews/an_apecprn.csv")
         
     )
     
