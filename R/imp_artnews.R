@@ -27,20 +27,24 @@ gd_artnews_time <- function(ARTNEWS_TIME_FILE = PMDATA_LOCS$ARTNEWS_TIME_FILE) {
 #' @param ARTNEWS_COLLECTOR_ENTRIES_FILE the output that gets produced: unique collectors, with ID (Artnews-collector-entity, ACE) and heuristic of whether they are a couple
 gwd_artnews_clctr <- function(ARTNEWS_TIME_FILE = PMDATA_LOCS$ARTNEWS_TIME_FILE,
                               ARTNEWS_COLLECTOR_ENTRIES_FILE = PMDATA_LOCS$ARTNEWS_COLLECTOR_ENTRIES_FILE) {
+    if (as.character(match.call()[[1]]) %in% fstd){browser()}
+    1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
 
     dt_artnews_time <- fread(ARTNEWS_TIME_FILE)
 
     ## heuristic coding ("and" present)  whether collector refers to couple
-    dt_artnews_time[, .(clctr_name = funique(clctr_name))] %>%
+    dt_ace <- dt_artnews_time[, .(clctr_name = funique(clctr_name))] %>%
         .[, .(an_entry_id = paste0("ACE", 1:.N), clctr_name,
-              is_couple = fifelse(grepl(" and ", clctr_name), 1, 0))] %>%        
-        fwrite(paste0(ARTNEWS_COLLECTOR_ENTRIES_FILE))
+              is_couple = fifelse(grepl(" and ", clctr_name), 1, 0))]
+
+    
+    ## fwrite(dt_ace, paste0(ARTNEWS_COLLECTOR_ENTRIES_FILE))
 
 }
 
 ## ONLY RUN ONCE:
 ## the ARTNEWS_COLLECTOR_ENTRIES_FILE has to be checked manually whether the heuristic coding is correct
-## gwd_artnews_clctr()
+gwd_artnews_clctr()
 
 #' reads ARTNEWS_COLLECTOR_ENTRIES_FILE, duplicates couple rows to make reduction to person simpler
 #'
