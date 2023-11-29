@@ -30,15 +30,46 @@ gwd_artnews_clctr <- function(ARTNEWS_TIME_FILE = PMDATA_LOCS$ARTNEWS_TIME_FILE,
     if (as.character(match.call()[[1]]) %in% fstd){browser()}
     1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
 
+
+
     dt_artnews_time <- fread(ARTNEWS_TIME_FILE)
 
-    ## heuristic coding ("and" present)  whether collector refers to couple
-    dt_ace <- dt_artnews_time[, .(clctr_name = funique(clctr_name))] %>%
-        .[, .(an_entry_id = paste0("ACE", 1:.N), clctr_name,
-              is_couple = fifelse(grepl(" and ", clctr_name), 1, 0))]
+    dt_ace <- dt_artnews_time[, funique(.SD), .SDcols = c("clctr_name", "id")] %>%
+        setnames(old = "id", new = "an_entry_id") %>% 
+        .[, is_couple := fifelse(grepl(" and ", clctr_name), 1, 0)]
 
+    ## compare old (no ID in python parsing, still no-breaking spaces) and new:
+
+    ## dt_artnews_time_old <- fread("/home/johannes/Dropbox/phd/papers/org_pop/data/artnews/ranking.csv")
+
+    ## ## heuristic coding ("and" present)  whether collector refers to couple
+    ## dt_ace_old <- dt_artnews_time_old[, .(clctr_name = funique(clctr_name))] %>%
+    ##     .[, .(an_entry_id = paste0("ACE", 1:.N), clctr_name,
+    ##           is_couple = fifelse(grepl(" and ", clctr_name), 1, 0))]
     
-    ## fwrite(dt_ace, paste0(ARTNEWS_COLLECTOR_ENTRIES_FILE))
+    ## join on ACE ID, check whether names differ
+    ## dt_cprn <- join(dt_ace, dt_ace_old[, .(clctr_name_old = clctr_name, an_entry_id)], on = "an_entry_id") %>%
+    ##     .[clctr_name != clctr_name_old] %>%
+    ##     .[, dist := stringdist(clctr_name, clctr_name_old)] %>% 
+    ##     .[, .(clctr_name, clctr_name_old, dist)]
+    ## looks good: names are the same (-> therefore, IDs are the same), except for NBSP, which is fine
+    
+    ## get dt_ace from file (ff), check if ACE IDs are the same
+    ## dt_ace_ff <- fread(ARTNEWS_COLLECTOR_ENTRIES_FILE)
+    
+    ## all(dt_ace$is_couple == dt_ace_ff$is_couple)
+    ## yup they are: the David Bowie and Iman entry is no longer fucked by NBSP
+    ## dt_ace[grepl("Bowie", clctr_name)]
+
+    ## compare the current and the on from file: only difference is NBSP
+    ## dt_cprn <- join(dt_ace, dt_ace_ff[, .(clctr_name_ff = clctr_name, an_entry_id)], on = "an_entry_id") %>%
+    ##     .[clctr_name != clctr_name_ff] %>%
+    ##     .[, dist := stringdist(clctr_name, clctr_name_ff)] %>% 
+    ##     .[, .(clctr_name, clctr_name_ff, dist)] 
+
+    ## dt_cprn[, .N, dist]
+
+    fwrite(dt_ace[, .(an_entry_id, clctr_name, is_couple)], paste0(ARTNEWS_COLLECTOR_ENTRIES_FILE))
 
 }
 
