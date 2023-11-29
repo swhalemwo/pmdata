@@ -18,8 +18,7 @@ gd_artnews_time <- function(ARTNEWS_TIME_FILE = PMDATA_LOCS$ARTNEWS_TIME_FILE) {
     
 }
 
-PMDATA_LOCS <- gc_pmdata_locs()
-gd_artnews_time()
+## gd_artnews_time()
 
 
 #' generate the artnews collector file
@@ -72,40 +71,21 @@ gwd_artnews_collector_person <- function(
         
 
 
-        
-## ONLY RUN ONCE:
-## this duplicates couple rows so that manual deletion is easier
-## names are not standardized for automatic detection of both names
-## gwd_artnews_collector_person()
-
-#' add the APE ID to ARTNEWS_COLLECTOR_PERSON_FILE
-#' 
-mwd_artnews_collector_person <- function(
-    ARTNEWS_COLLECTOR_PERSON_FILE_ORG = PMDATA_LOCS$ARTNEWS_COLLECTOR_PERSON_FILE_ORG,
-    ARTNEWS_APECPRN_FILE = PMDATA_LOCS$ARTNEWS_APECPRN_FILE) {
+#' generates the ARTNEWS_APECPRN_FILE: here similar names are harmonized
+#' it is later read in to rename deviant names, to get APE IDs refer to the same person
+#' this is not supposed to be run again: It has been run once after string similarity calculation, the results of which have been written to file and manually checked
+#' a later subset check (John William Meyer -> John Meyer) has led to a bunch of additions to that ARTNEWS_APECPRN_FILE
+#' @param dt_acpe_w_id1 the dt with AE, ACPE, APE ids, used for string similarity and name-word subset checks
+#' @param ARTNEWS_APECPRN_FILE the file to write the similar sounding names to
+gwd_apecprn <- function(dt_acpe_w_id1, ARTNEWS_APECPRN_FILE) {
     if (as.character(match.call()[[1]]) %in% fstd){browser()}
     1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
-
 
     ## this should not be in package declaration: stringdist used only once for setup?
     ## maybe add later when I have the maintenance added
     library(stringdist, include.only = c("stringdist", "stringdistmatrix"))
     
-
-    dt_acpe <- fread(ARTNEWS_COLLECTOR_PERSON_FILE_ORG) %>%
-        .[, an_person_id := 1:.N] # assign ID first
-
-    if  (any_duplicated(dt_acpe$an_person_collector_id)) {stop("ACPEs not unique")}
     
-
-    ## get cases where name is literally duplicate
-    dt_simpledups <- dt_acpe[, .N, clctr_name][N>1] %>%
-        dt_acpe[., on = "clctr_name"] %>% # get all APE
-        .[, .SD[which.min(an_person_id)], clctr_name]   # get first ID
-
-    ## reassign simple duplicates with update join 
-    dt_acpe_w_id1 <- copy(dt_acpe)[dt_simpledups, an_person_id := i.an_person_id, on = "clctr_name"]
-
     ## prep for pairwise comparison
     dt_strindist_prep <- dt_acpe_w_id1[, .(an_person_id, clctr_name)] %>% funique
 
@@ -129,40 +109,19 @@ mwd_artnews_collector_person <- function(
         .[, .(ace_right = paste(sort(unique(an_entry_id)), collapse = "--")), clctr_name]
 
     
-    library(furrr)
-    plan(multicore, workers = 4)
-    plan(sequential)
-
-    
-    dt_stringdist_long[grepl("Capriles", clctr_name) & grepl("Capriles", clctr_name2)]
-
-    ## subsetting: whether all terms of one are terms of other, e.g. "John Meier" and "John Meyer Smith" and 
-    dt_subset <- dt_stringdist_long %>% copy() %>% # head(n=10000) %>% 
-        .[, `:=`(terms1 = list(strsplit(clctr_name, split = " ")),
-                 terms2 = list(strsplit(as.character(clctr_name2), split = " "))),          
+    ## subsetting: whether all terms of one are terms of other, e.g. "John Meier" and "John Meyer Smith"
+    ## for now, these entries are added manually to ARTNEWS_APECPRN_FILE
+    dt_subset <- dt_stringdist_long %>% copy() %>% # head(n=1000) %>% 
+        .[, `:=`(terms1 = as.list(strsplit(clctr_name, split = " ")),
+                 terms2 = as.list(strsplit(as.character(clctr_name2), split = " "))),          
           .(clctr_name, clctr_name2)] %>%
-        .[, subset := future_map2_int(terms1, terms2, ~(all(.x %in% .y)|all(.y %in% .x)))]
+        .[, subset := map2_int(terms1, terms2, ~all(.x %in% .y))]
+    ## just one direction is fine since dt_stringdist long contains both a,b and b,a
 
-    dt_subset %>% .[subset==1 & dist != 0]
-
-    ## this should subset match, but doesn't
-    dt_subset[grepl("Capriles", clctr_name) & grepl("Capriles", clctr_name2)] %>% copy() %>% 
-        .[, kappa := map2_int(terms1, terms2, ~all(.x %in% .y))] %>% adf
-
-    ## elsewhere it can match the identical situation
-    dt_ree <- data.table(x=list(list("Miguel", "Capriles")), y= list(list("Miguel", "Angel", "Capriles")))
-    dt_ree %>% adf
-    dt_ree[, kappa := map2_int(x, y, ~all(.x %in% .y))]
-    dt_ree[, lapply(.SD, \(x,y) x %in% y), .SDcols = .c(x,y)]
+    ## dt_subset %>% .[subset==1 & dist != 0] %>% print(n=50)
+    if (fnrow(dt_subset[subset==1 & dist != 0]) > 0) {stop("not all subsets are dealt with")}
     
-                 
-
-    l1 <- list("Miguel","Capriles")
-    l2 <- list("Miguel", "Angel", "Capriles")
-
-    all(l1 %in% l2) | all(l2 %in% l1)
-
-
+    
     ## get all relevant comparisons
     dt_ape_cprn <- dt_stringdist_close[dt_ace_left, on = "clctr_name"] %>% # join left
         .[dt_ace_right, on = .(clctr_name2 = clctr_name)] %>% # join right
@@ -172,16 +131,17 @@ mwd_artnews_collector_person <- function(
     
     dt_ape_cprn[grepl("Vogel", clctr_name)]
 
-    fwrite(dt_ape_cprn, ARTNEWS_APECPRN_FILE)
+    stop("this function is not supposed to be run")
+    ## THIS HAS TO REMAIN UNCOMMENTED: ARTNEWS_APECPRN_FILE is written only once, then manually edited
+    ## fwrite(dt_ape_cprn, ARTNEWS_APECPRN_FILE)
 
-    dt_artnews_time <- fread(PMDATA_LOCS$ARTNEWS_TIME_FILE)
-    dt_artnews_time[grepl("Hahnloser", clctr_name)] %>% print(n=30)
-    dt_artnews_time[grepl("Lewis", clctr_name) & grepl("Joseph|Joe", clctr_name)] %>% print(n=30)
+    ## helper code to look up names in time_file to check for whether different collector names are the same,
+    ## being in subsequent years is such an indicator
+    ## dt_artnews_time <- fread(PMDATA_LOCS$ARTNEWS_TIME_FILE)
+    ## dt_artnews_time[grepl("Tobin", clctr_name)] %>% print(n=30)
+    ## dt_artnews_time[grepl("Charlotte", clctr_name) & grepl("Weber", clctr_name)] %>% print(n=30)
 
     
-    dt_acpe[grepl("Capriles", clctr_name)]
-
-    ## if (nrow(dt_apce) != nrow(dt_apce_w_id)) {stop("number of rows not the same")}
 
 
 
@@ -194,4 +154,62 @@ mwd_artnews_collector_person <- function(
 }
 
 
+
+        
+## ONLY RUN ONCE:
+## this duplicates couple rows so that manual deletion is easier
+## names are not standardized for automatic detection of both names
+## gwd_artnews_collector_person()
+
+#' add the APE ID to ARTNEWS_COLLECTOR_PERSON_FILE
+#' 
+mwd_artnews_collector_person <- function(
+    ARTNEWS_COLLECTOR_PERSON_FILE_ORG = PMDATA_LOCS$ARTNEWS_COLLECTOR_PERSON_FILE_ORG,
+    ARTNEWS_APECPRN_FILE = PMDATA_LOCS$ARTNEWS_APECPRN_FILE) {
+    if (as.character(match.call()[[1]]) %in% fstd){browser()}
+    1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
+
+
+        ## read in the renamer
+    dt_apecprn_checked <- fread(ARTNEWS_APECPRN_FILE)[is_same_APE==1]
+
+    ## check that correct_name corresponds to one of clctr_name and clctr_name2
+    if (!all(dt_apecprn_checked[, clctr_name == correct_name | clctr_name2==correct_name])) {stop("fix names")}
+
+    ## construct renamer dt to rename wrong names via update join
+    dt_apecprn_renamer <- copy(dt_apecprn_checked)[
+       , .(wrong_name = fifelse(clctr_name == correct_name, clctr_name2, clctr_name), correct_name)]
+    
+    
+    ## read in collector person file,  update wrong names with update join
+    dt_acpe <- fread(ARTNEWS_COLLECTOR_PERSON_FILE_ORG) %>%
+        .[, an_person_id := 1:.N] %>% # assign ID
+        .[dt_apecprn_renamer, clctr_name := i.correct_name, on = .(clctr_name = wrong_name)] ## fix names
+    
+    if (any_duplicated(dt_acpe$an_person_collector_id)) {stop("ACPEs not unique")}
+    
+
+    ## get cases where name is literally duplicate
+    dt_simpledups <- dt_acpe[, .N, clctr_name][N>1] %>%
+        dt_acpe[., on = "clctr_name"] %>% # get all APE
+        .[, .SD[which.min(an_person_id)], clctr_name]   # get first ID
+
+    ## reassign simple duplicates with update join 
+    dt_acpe_w_id1 <- copy(dt_acpe)[dt_simpledups, an_person_id := i.an_person_id, on = "clctr_name"] %>%
+        .[, an_person_id := paste0("APE", an_person_id)]
+
+    ## not actually run, but keep this line here to indicate that gwd_apecprn generates ARTNEWS_APECPRN_FILE, which
+    ## is then manually checked for duplicate persons
+    ## ## gwd_apecprn(dt_acpe_w_id1, ARTNEWS_APECPRN_FILE)
+    
+    
+    if (nrow(dt_apce) != nrow(dt_acpe_w_id1)) {stop("number of rows not the same")}
+    return(dt_acpe_w_id1)
+}
+
+
+PMDATA_LOCS <- gc_pmdata_locs()
+
+
 mwd_artnews_collector_person()
+fread(PMDATA_LOCS$ARTNEWS_COLLECTOR_ENTRIES_FILE)
