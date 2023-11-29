@@ -1,6 +1,27 @@
 
 * Private Museum Project Data Management
 
+** overview
+:PROPERTIES:
+:ID:       4268d077-adb7-4660-8681-6a2aa795e3f2
+:END:
+| data source | downloading       | parsing   | importing |
+|-------------+-------------------+-----------+-----------|
+| PMDB        | manually?         | not necc. |           |
+| ARTnews     | scraping          | yes       |           |
+| WID         | download, unpack, | not nec   |           |
+|             | CH setup          |           |           |
+| MOW         | not possible      | yes       |           |
+| CAF/RTGB    | not possible      | not necc  |           |
+| Fraeser     |                   |           |           |
+| Artfacs     |                   |           |           |
+| WB          |                   |           |           |
+| UN          |                   |           |           |
+| OECD        |                   |           |           |
+| Eurostat    |                   |           |           |
+
+
+
 ** how to update data files
 
 *** PMDB_FILE
@@ -23,5 +44,14 @@ Parsing of the XML file is done in python ("mow.py"), which produces three csv f
 links between MOW and PMDB are created through manual fuzzy string matching via the consult frameworks of emacs ("match_pmdb_mow.el" provides the function, "mow-museums.el" is the list of MOW museums so that they can be imported into emacs) and R ("match_pmdb_mow.R", which handles generates the museum entries to check, and also details the post-match checks).
 
 This produces "mow_pmdb_matchres.csv": a list of PMDB ID and where available, the correponding MOW ID.
+
+
+*** ARTnews top 200 collector rannking
+
+- put flow chart here
+- put data base relations here
+
+  
+
 
 
