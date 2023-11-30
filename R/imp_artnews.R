@@ -394,3 +394,22 @@ gd_artnews_person <- function(
 ## stuff to move to overall import function
 ## - t_gwd_artnews_clctr()
 ## - t_gwd_artnews_collector_person()
+
+
+gd_pmdbfndr <- function() {
+    if (as.character(match.call()[[1]]) %in% fstd){browser()}
+    1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
+    
+
+    dt_pmdb <- gd_pmdb_excl(only_pms = F) %>% gd_pmdb()
+
+    dt_fndr <- copy(dt_pmdb)[order(ID), .(ID, name, founder_name)] %>%
+        .[, founder_id := paste0("FID", 1:.N)]
+
+    
+    dt_fndr[, .N, founder_name][N > 1]
+
+
+}
+
+gd_pmdbfndr()
