@@ -3,7 +3,8 @@
 gd_artnews_time <- function(ARTNEWS_TIME_FILE = PMDATA_LOCS$ARTNEWS_TIME_FILE) {
     if (as.character(match.call()[[1]]) %in% fstd){browser()}
     1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
-    
+
+    clctr_name <- location <- NULL
 
     dt_artnews_time <- fread(ARTNEWS_TIME_FILE)
 
@@ -27,10 +28,10 @@ gd_artnews_time <- function(ARTNEWS_TIME_FILE = PMDATA_LOCS$ARTNEWS_TIME_FILE) {
 #' @param ARTNEWS_COLLECTOR_ENTRIES_FILE the output that gets produced the first time (fwrite has to be manually uncommented): unique collectors, with ID (Artnews-collector-entity, ACE) and heuristic of whether they are a couple. This file is also read back in to test whether every collector in time-ranking has had his couple_status checked manually.
 t_gwd_artnews_clctr <- function(ARTNEWS_TIME_FILE = PMDATA_LOCS$ARTNEWS_TIME_FILE,
                               ARTNEWS_COLLECTOR_ENTRIES_FILE = PMDATA_LOCS$ARTNEWS_COLLECTOR_ENTRIES_FILE) {
-    if (as.character(match.call()[[1]]) %in% fstd){browser()}
+    if (as.character(match.call()[1]) %in% fstd){browser()}
     1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
 
-
+    is_couple <- clctr_name <- is_couple <- ace_nbr <- an_entry_id <- an_collector_person_id <- clctr_name <- NULL
 
     dt_artnews_time <- fread(ARTNEWS_TIME_FILE)
 
@@ -41,14 +42,18 @@ t_gwd_artnews_clctr <- function(ARTNEWS_TIME_FILE = PMDATA_LOCS$ARTNEWS_TIME_FIL
     ## get dt_ace from file (ff), check that all entries in ranking have been checked (by being in on-disk file)
     dt_ace_ff <- fread(ARTNEWS_COLLECTOR_ENTRIES_FILE)
 
-    if (fnrow(dt_ace[!dt_ace_ff, on = "an_entry_id"]) > 0) {
-        stop(paste0("not all clctr_names that are present in the ranking have been checked",
-                    " in ARTNEWS_COLLECTOR_ENTRIES_FILE. make sure they are covered, e.g. by ",
-                    "adding manually entries to ARTNEWS_COLLECTOR_ENTRIES_FILE or re-running the fwrite-call.",
-                    "make sure tho that this doesn't yeet other or even more clctr_names."))
-    }
+    res <- F
+    res <- fnrow(dt_ace[!dt_ace_ff, on = "an_entry_id"]) == 0
+
+    ## if (fnrow(dt_ace[!dt_ace_ff, on = "an_entry_id"]) > 0) {
+    ##     stop(paste0("not all clctr_names that are present in the ranking have been checked",
+    ##                 " in ARTNEWS_COLLECTOR_ENTRIES_FILE. make sure they are covered, e.g. by ",
+    ##                 "adding manually entries to ARTNEWS_COLLECTOR_ENTRIES_FILE or re-running the fwrite-call.",
+    ##                 "make sure tho that this doesn't yeet other or even more clctr_names."))
+    ## }
     
-    return(invisible(T))
+    ## return(invisible(T))
+    return(res)
 
     ## fwrite is uncommented -> has to be manually enabled if error arises
     ## fwrite(dt_ace[, .(an_entry_id, clctr_name, is_couple)], paste0(ARTNEWS_COLLECTOR_ENTRIES_FILE))
@@ -102,8 +107,10 @@ t_gwd_artnews_collector_person <- function(
           ARTNEWS_COLLECTOR_ENTRIES_FILE = PMDATA_LOCS$ARTNEWS_COLLECTOR_ENTRIES_FILE,
           ARTNEWS_COLLECTOR_PERSON_FILE = PMDATA_LOCS$ARTNEWS_COLLECTOR_PERSON_FILE,
           ARTNEWS_COLLECTOR_PERSON_FILE_ORG = PMDATA_LOCS$ARTNEWS_COLLECTOR_PERSON_FILE_ORG) {
-    if (as.character(match.call()[[1]]) %in% fstd){browser()}
+    if (as.character(match.call()[1]) %in% fstd){browser()}
     1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
+
+    is_couple <- ace_nbr <- an_entry_id <- an_collector_person_id <- clctr_name <- NULL
 
     
     dt_an_clctr_entries <- fread(ARTNEWS_COLLECTOR_ENTRIES_FILE)
@@ -117,14 +124,20 @@ t_gwd_artnews_collector_person <- function(
 
     dt_an_person_prep_ff <- fread(ARTNEWS_COLLECTOR_PERSON_FILE_ORG)
 
-    if (fnrow(dt_an_person_prep[!dt_an_person_prep_ff, on = "an_collector_person_id"]) > 0) {
-        stop("not all an_collector_person_ids that are follow from ARTNEWS_COLLECTOR_ENTRIES_FILE",
-             "(via couple indicator) have been checked in ARTNEWS_COLLECTOR_ENTRIES_FILE. ",
-             "make sure they are covered, e.g. by ",
-             "adding manually entries to  ARTNEWS_COLLECTOR_PERSON_FILE_ORG or re-running the fwrite-call ",
-             "exporting that to org-table, making changes there, and exporting that again.",
-             "make sure tho that this doesn't yeet other or even more an_collector_person_id s.")
-    }
+    tres <- F
+    tres <- fnrow(dt_an_person_prep[!dt_an_person_prep_ff, on = "an_collector_person_id"]) == 0
+
+    return(tres)
+    
+
+    ## if (fnrow(dt_an_person_prep[!dt_an_person_prep_ff, on = "an_collector_person_id"]) > 0) {
+    ##     stop("not all an_collector_person_ids that are follow from ARTNEWS_COLLECTOR_ENTRIES_FILE",
+    ##          "(via couple indicator) have been checked in ARTNEWS_COLLECTOR_ENTRIES_FILE. ",
+    ##          "make sure they are covered, e.g. by ",
+    ##          "adding manually entries to  ARTNEWS_COLLECTOR_PERSON_FILE_ORG or re-running the fwrite-call ",
+    ##          "exporting that to org-table, making changes there, and exporting that again.",
+    ##          "make sure tho that this doesn't yeet other or even more an_collector_person_id s.")
+    ## }
 
     ## fwrite is uncommented -> has to be manually enabled if error arises
     ## fwrite(dt_an_person_prep, ARTNEWS_COLLECTOR_PERSON_FILE)
@@ -135,11 +148,13 @@ t_gwd_artnews_collector_person <- function(
 
 #' check whether any collector is a subset of another collector, e.g. "John Meyer" is a subset of "John W. Meyer"
 #' only compares collectors who share at least one element
-#' @param dt_acpe_w_id dt with a bunch of stuff, including clctr_name, which is all that matters
+#' @param dt_acpe_w_id1 dt with a bunch of stuff, including clctr_name, which is all that matters
 t_subset <- function(dt_acpe_w_id1) {
+
+    clctr_name <- clctr_name_split <- clctr_name2 <- terms1 <- terms2 <- NULL
     
     ## library(parallel)
-    library(stringi) ## 
+    ## library(stringi) ## 
 
     ## dt_test_selfjoin <- data.table(clctr_name = "James Kapppa Alsdorf",
     ##                                clctr_name_split = c("James", "Kappa", "Alsdorf"))
@@ -192,19 +207,22 @@ t_subset <- function(dt_acpe_w_id1) {
 }
 
 
-#' generates the ARTNEWS_APECPRN_FILE: here similar names are harmonized
+#' test or generate the ARTNEWS_APECPRN_FILE: here similar names are harmonized
 #' it is later read in to rename deviant names, to get APE IDs to refer to the same person
 #' this is not supposed to be run again: It has been run once after string similarity calculation, the results of which have been written to file and manually checked
 #' a later subset check (John William Meyer -> John Meyer) has led to a bunch of additions to ARTNEWS_APECPRN_FILE
 #' @param dt_acpe_w_id1 the dt with AE, ACPE, APE ids, used for string similarity and name-word subset checks
 #' @param ARTNEWS_APECPRN_FILE the file to write the similar sounding names to
 t_gwd_apecprn <- function(dt_acpe_w_id1, ARTNEWS_APECPRN_FILE) {
-    if (as.character(match.call()[[1]]) %in% fstd){browser()}
+
+    if (as.character(match.call()[1]) %in% fstd){browser()}
     1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
+
+    an_person_id <- clctr_name <- clctr_name2 <- an_entry_id <- ace_left <- ace_right <- NULL
 
     ## this should not be in package declaration: stringdist used only once for setup?
     ## maybe add later when I have the maintenance added
-    library(stringdist, include.only = c("stringdist", "stringdistmatrix"))
+    ## library(stringdist, include.only = c("stringdist", "stringdistmatrix"))
     
     ## test whether any collector is subset of another one
     t_subset(dt_acpe_w_id1)
@@ -213,7 +231,8 @@ t_gwd_apecprn <- function(dt_acpe_w_id1, ARTNEWS_APECPRN_FILE) {
     dt_strindist_prep <- dt_acpe_w_id1[, .(an_person_id, clctr_name)] %>% funique
 
 
-    dt_stringdist_mat <- stringdistmatrix(dt_strindist_prep[, clctr_name], dt_strindist_prep[, clctr_name],
+    dt_stringdist_mat <- stringdist::stringdistmatrix(
+                                        dt_strindist_prep[, clctr_name], dt_strindist_prep[, clctr_name],
                                           useNames = "strings") %>% adt %>% 
                          .[, clctr_name := dt_strindist_prep[, clctr_name]]
 
@@ -241,15 +260,21 @@ t_gwd_apecprn <- function(dt_acpe_w_id1, ARTNEWS_APECPRN_FILE) {
     
     dt_ape_cprn[grepl("Vogel", clctr_name)]
 
-    dt_apecprn_ff <- fread(ARTNEWS_APECPRN_FILE)
+    dt_apecprn_ff <- fread(ARTNEWS_APECPRN_FILE) ## ff = from file
 
-    if (fnrow(dt_ape_cprn[!dt_apecprn_ff, on = .(clctr_name, clctr_name2)]) > 0) {
-        stop(paste0("not all pairs with similar names have been checked in ARTNEWS_APECPRN_FILE",
-                    "make sure they are covered, e.g. by adding manually entries to ARTNEWS_APECPRN_FILE",
-                    "or re-running the fwrite-call.",
-                    "make sure tho that this doesn't yeet other or even more clctr_names."))
-    }
+    ## check that every entry in dt_ape_cprn is covered in dt_apecpprn_ff
+    res <- F
+    res <- fnrow(dt_ape_cprn[!dt_apecprn_ff, on = .(clctr_name, clctr_name2)]) == 0
 
+    return(res)
+    
+    ## if (fnrow(dt_ape_cprn[!dt_apecprn_ff, on = .(clctr_name, clctr_name2)]) > 0) {
+    ##     stop(paste0("not all pairs with similar names have been checked in ARTNEWS_APECPRN_FILE",
+    ##                 "make sure they are covered, e.g. by adding manually entries to ARTNEWS_APECPRN_FILE",
+    ##                 "or re-running the fwrite-call.",
+    ##                 "make sure tho that this doesn't yeet other or even more clctr_names."))
+    ## }
+    
   
     ## THIS HAS TO REMAIN UNCOMMENTED: ARTNEWS_APECPRN_FILE is written only once, then manually edited
     ## fwrite(dt_ape_cprn, ARTNEWS_APECPRN_FILE)
@@ -260,13 +285,8 @@ t_gwd_apecprn <- function(dt_acpe_w_id1, ARTNEWS_APECPRN_FILE) {
     ## dt_artnews_time[grepl("Tobin", clctr_name)] %>% print(n=30)
     ## dt_artnews_time[grepl("Charlotte", clctr_name) & grepl("Weber", clctr_name)] %>% print(n=30)
 
-    
-
-
-
     ## dt_apce[, .N, clctr_name][N>1] %>% 
     ## dt_apce[grepl("Rachel Mellon", clctr_name)]
-
 
     ## dt_ace <- fread(PMDATA_LOCS$ARTNEWS_COLLECTOR_ENTRIES_FILE)
     ## dt_ace[grepl("Mellon", clctr_name)]
@@ -280,14 +300,18 @@ t_gwd_apecprn <- function(dt_acpe_w_id1, ARTNEWS_APECPRN_FILE) {
 ## names are not standardized for automatic detection of both names
 ## t_gwd_artnews_collector_person()
 
-#' add the APE ID to ARTNEWS_COLLECTOR_PERSON_FILE
-#' 
+#' generate the artnews data.table with ACE, ACPE, and APE (link entries to persons)
+#' @param ARTNEWS_COLLECTOR_PERSON_FILE_ORG the file with single person per line (created by t_gwd_artnews_collector_person, and then manually edited in org-mode with org-table-export)
+#' @param ARTNEWS_APECPRN_FILE file indicating whether two different names refer to the same person (generated by t_gwd_apecprn and then manually checked)
+#' @export
 gd_artnews_collector_person <- function(
     ARTNEWS_COLLECTOR_PERSON_FILE_ORG = PMDATA_LOCS$ARTNEWS_COLLECTOR_PERSON_FILE_ORG,
     ARTNEWS_APECPRN_FILE = PMDATA_LOCS$ARTNEWS_APECPRN_FILE) {
-    if (as.character(match.call()[[1]]) %in% fstd){browser()}
-    1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
 
+    if (as.character(match.call()[1]) %in% fstd){browser()}
+    1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
+    is_same_APE <- clctr_name <- correct_name <- clctr_name2 <- an_person_id <- i.correct_name <- NULL
+    wrong_name <- N <- i.an_person_id <- NULL
 
     ## read in the renamer
     dt_apecprn_checked <- fread(ARTNEWS_APECPRN_FILE)[is_same_APE==1]
@@ -317,23 +341,19 @@ gd_artnews_collector_person <- function(
     dt_acpe_w_id1 <- copy(dt_acpe)[dt_simpledups, an_person_id := i.an_person_id, on = "clctr_name"] %>%
         .[, an_person_id := paste0("APE", an_person_id)]
 
-    ## not actually run, but keep this line here to indicate that gwd_apecprn generates ARTNEWS_APECPRN_FILE, which
-    ## is then manually checked for duplicate persons
-    t_gwd_apecprn(dt_acpe_w_id1, ARTNEWS_APECPRN_FILE)
-    t_gwd_artnews_clctr()
-    t_gwd_apecprn(dt_acpe_w_id1, ARTNEWS_APECPRN_FILE)
     
     if (nrow(dt_acpe) != nrow(dt_acpe_w_id1)) {stop("number of rows not the same")}
     return(dt_acpe_w_id1)
+    
 }
 
 
-PMDATA_LOCS <- gc_pmdata_locs()
+## PMDATA_LOCS <- gc_pmdata_locs()
 
-t1 <- Sys.time()
-gd_artnews_collector_person()
-t2 <- Sys.time()
-
+## t1 <- Sys.time()
+## gd_artnews_collector_person()
+## t2 <- Sys.time()
+## t2-t1
 
 ## fread(PMDATA_LOCS$ARTNEWS_COLLECTOR_ENTRIES_FILE)
 

@@ -1,17 +1,23 @@
 
 # Placeholder with simple test
-expect_equal(1 + 1, 2, info = "check if tinytest works")
+## expect_equal(1 + 1, 2, info = "check if tinytest works")
 
 ## expect_equal(1+1, 3)
 
 ## expect_true(F)
 
 source("~/Dropbox/technical_stuff_general/dotfiles/.Rprofile")
+fstd <- c()
 
 PMDATA_LOCS <- gc_pmdata_locs()
 ## expect_equal(length(PMDATA_LOCS), 5)
 
+## **  ---------- MOW CHECKS -------------------
+
 ## restrict PMDB to PMs that are relevant to analysis
+
+## turn of warnings to not clutter the tinytest output when it throws an error
+options(warn=-1)
 dt_pmdb_excl <- gd_pmdb_excl(PMDATA_LOCS$PMDB_FILE, only_pms = F) %>%
     .[museum_status %in% c("private museum", "no longer a private museum", "closed")]
 
@@ -19,12 +25,62 @@ dt_pmdb_excl <- gd_pmdb_excl(PMDATA_LOCS$PMDB_FILE, only_pms = F) %>%
 dt_pmdb <- gd_pmdb(dt_pmdb_excl, verbose = F)
 
 dt_mow_pmdb_match <- pmdata:::gd_mow_pmdb_matchres(PMDATA_LOCS$MOW_PMDB_MATCHRES_FILE)
+options(warn=0)
+
 
 ## check that each PM with status open, closed or NLPM has been checked for match in MOW
 expect_true(dt_mow_pmdb_match[dt_pmdb, on = .(PMDB_ID = ID)][, all(!is.na(MOW_ID))],
              info = "check that each PM with status open, closed or NLPM has been checked for match in MOW")
 
+## ** -------------- ARTnews checks -----------
+
 ## expect_true(F)
+print("kappa")
+dt_acpe_w_id1 <- gd_artnews_collector_person(
+                      ARTNEWS_COLLECTOR_PERSON_FILE_ORG = PMDATA_LOCS$ARTNEWS_COLLECTOR_PERSON_FILE_ORG,
+                      ARTNEWS_APECPRN_FILE = PMDATA_LOCS$ARTNEWS_APECPRN_FILE)
+
+## just_some_test()
+
+
+expect_true(pmdata:::t_gwd_apecprn(dt_acpe_w_id1, PMDATA_LOCS$ARTNEWS_APECPRN_FILE),
+            ## info = "kappa")
+            info = paste0("test that all pairs with similar names have been checked in ARTNEWS_APECPRN_FILE",
+                          "make sure they are covered, e.g. by adding manually entries to ARTNEWS_APECPRN_FILE",
+                          "or re-running the fwrite-call.",
+                          "make sure tho that this doesn't yeet other or even more clctr_names."))
+
+expect_true(pmdata:::t_gwd_artnews_clctr(PMDATA_LOCS$ARTNEWS_TIME_FILE,
+                                         PMDATA_LOCS$ARTNEWS_COLLECTOR_PERSON_FILE),
+            info = paste0("test all clctr_names that are present in the ranking have been checked",
+                          " in ARTNEWS_COLLECTOR_ENTRIES_FILE. make sure they are covered, e.g. by ",
+                          "adding manually entries to ARTNEWS_COLLECTOR_ENTRIES_FILE or re-running ",
+                          "the fwrite-call.",
+                          "make sure tho that this doesn't yeet other or even more clctr_names."))
+
+expect_true(pmdata:::t_gwd_artnews_collector_person(
+                        ARTNEWS_COLLECTOR_ENTRIES_FILE = PMDATA_LOCS$ARTNEWS_COLLECTOR_ENTRIES_FILE,
+                        ARTNEWS_COLLECTOR_PERSON_FILE = PMDATA_LOCS$ARTNEWS_COLLECTOR_PERSON_FILE,
+                        ARTNEWS_COLLECTOR_PERSON_FILE_ORG = PMDATA_LOCS$ARTNEWS_COLLECTOR_PERSON_FILE_ORG),
+            info = paste0("test that all an_collector_person_ids that are follow ",
+                          "from ARTNEWS_COLLECTOR_ENTRIES_FILE",
+                          "(via couple indicator) have been checked in ARTNEWS_COLLECTOR_ENTRIES_FILE. ",
+                          "make sure they are covered, e.g. by ",
+                          "adding manually entries to  ARTNEWS_COLLECTOR_PERSON_FILE_ORG or ",
+                          "re-running the fwrite-call ",
+                          "exporting that to org-table, making changes there, and exporting that again.",
+                          "make sure tho that this doesn't yeet other or even more an_collector_person_id s."))
+            
+
+
+   
+
+
+
+
+            
+## t_gwd_artnews_clctr()
+## t_gwd_apecprn(dt_acpe_w_id1, ARTNEWS_APECPRN_FILE)
 
 
 

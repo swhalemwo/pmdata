@@ -4,6 +4,8 @@
 #' @importFrom purrr map
 #' @importFrom magrittr `%>%`
 #' @importFrom countrycode countrycode
+#' @importFrom stringdist stringdistmatrix
+#' @importFrom stringi stri_split_fixed
 #' @import data.table
 #' @import collapse
 #' @rawNamespace import(stats, except = D) # don't import D, which comes from collapse

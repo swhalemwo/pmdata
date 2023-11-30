@@ -216,103 +216,103 @@
 ## stringdist_full_join(dt_match, dt_match_old, by = "name", max_dist =3) %>% adt %>% tail
 ## fuzzyjoin also not helpful probably overmatches
 
-## ** from imp_artnews: slow subset checks
+## ## ** from imp_artnews: slow subset checks
 
-    ## old slow version: group_by is just a mess, much slowdown
-    ## ## subsetting: whether all terms of one are terms of other, e.g. "John Meier" and "John Meyer Smith"
-    ## ## for now, these entries are added manually to ARTNEWS_APECPRN_FILE
-    ## t1 <- Sys.time()
-    ## dt_subset <- dt_stringdist_long %>% copy() %>%  # head(n=1200000) %>% 
-    ##     .[, `:=`(terms1 = as.list(strsplit(clctr_name, split = " ")),
-    ##              terms2 = as.list(strsplit(as.character(clctr_name2), split = " ")))] %>% 
-    ##     ## .(clctr_name, clctr_name2)] %>%
-    ##     .[, subset := map2_int(terms1, terms2, ~all(.x %in% .y))]
-    ## ## just one direction is fine since dt_stringdist long contains both a,b and b,a
-    ## t2 <- Sys.time()
-    ## t2-t1
+##     ## old slow version: group_by is just a mess, much slowdown
+##     ## ## subsetting: whether all terms of one are terms of other, e.g. "John Meier" and "John Meyer Smith"
+##     ## ## for now, these entries are added manually to ARTNEWS_APECPRN_FILE
+##     ## t1 <- Sys.time()
+##     ## dt_subset <- dt_stringdist_long %>% copy() %>%  # head(n=1200000) %>% 
+##     ##     .[, `:=`(terms1 = as.list(strsplit(clctr_name, split = " ")),
+##     ##              terms2 = as.list(strsplit(as.character(clctr_name2), split = " ")))] %>% 
+##     ##     ## .(clctr_name, clctr_name2)] %>%
+##     ##     .[, subset := map2_int(terms1, terms2, ~all(.x %in% .y))]
+##     ## ## just one direction is fine since dt_stringdist long contains both a,b and b,a
+##     ## t2 <- Sys.time()
+##     ## t2-t1
 
 
-    ## try to speed up the matching by first splitting names, using equality checks, and aggregate afterwards
-    ## doesn't work: aggregation is expensive:
-    ## even with collapse I don't think I can get it to under 2 secs
+##     ## try to speed up the matching by first splitting names, using equality checks, and aggregate afterwards
+##     ## doesn't work: aggregation is expensive:
+##     ## even with collapse I don't think I can get it to under 2 secs
     
-    ## presplit
+##     ## presplit
 
-    ## dt_subset %>% .[subset==1 & dist != 0] %>% print(n=50)
-    ## if (fnrow(dt_subset_prep[subset==1 & dist != 0]) > 0)     
+##     ## dt_subset %>% .[subset==1 & dist != 0] %>% print(n=50)
+##     ## if (fnrow(dt_subset_prep[subset==1 & dist != 0]) > 0)     
 
 
-    ## maybe can filter out unique terms? can filter out everybody with one unique term
-    dt_setops <- copy(dt_clctrname_split_prep)[, nbr_occs := .N, clctr_name_split] %>%
-        .[, `:=`(has_unique_term = any(nbr_occs==1), all_unique = all(nbr_occs==1)) , clctr_name]
-        ## .[, .(clctr_name, has_unique_term)] %>% funique %>% .[, .N, has_unique_term] # 397
-        ## .[, .(clctr_name, all_unique)] %>% funique %>% .[, .N, all_unique] 173
-    ## there are only 400 who don't have unique term
-    ## but they could be subset of collectors with unique terms -> only doing 40% of comparisons should be enough
-    ## there are another 173 who have all unique terms
+##     ## maybe can filter out unique terms? can filter out everybody with one unique term
+##     dt_setops <- copy(dt_clctrname_split_prep)[, nbr_occs := .N, clctr_name_split] %>%
+##         .[, `:=`(has_unique_term = any(nbr_occs==1), all_unique = all(nbr_occs==1)) , clctr_name]
+##         ## .[, .(clctr_name, has_unique_term)] %>% funique %>% .[, .N, has_unique_term] # 397
+##         ## .[, .(clctr_name, all_unique)] %>% funique %>% .[, .N, all_unique] 173
+##     ## there are only 400 who don't have unique term
+##     ## but they could be subset of collectors with unique terms -> only doing 40% of comparisons should be enough
+##     ## there are another 173 who have all unique terms
     
-    ## reduce number of comparisons
-    dt_stringdist_long[!dt_setops[has_unique_term==T, .(clctr_name = funique(clctr_name))], on = "clctr_name"] %>%
-        .[!dt_setops[all_unique==T, .(clctr_name2 = funique(clctr_name))], on = "clctr_name2"]
-    ## can bring it down to 30% necessary
-
-    
+##     ## reduce number of comparisons
+##     dt_stringdist_long[!dt_setops[has_unique_term==T, .(clctr_name = funique(clctr_name))], on = "clctr_name"] %>%
+##         .[!dt_setops[all_unique==T, .(clctr_name2 = funique(clctr_name))], on = "clctr_name2"]
+##     ## can bring it down to 30% necessary
 
     
 
-    ## expand twice
-    t4 <- Sys.time()
-    dt_namesplit_prep1 <- dt_cltrname_split_prep[dt_stringdist_long[clctr_name != clctr_name2],
-                                                 on = "clctr_name", allow.cartesian = T] %>% funique
-    t5 <- Sys.time()
-    dt_namesplit_stringi <- copy(dt_namesplit_prep1) %>%
-        .[, jj := stri_extract_first_fixed(clctr_name2, pattern = clctr_name_split)]
-    t6 <- Sys.time()
-    t6-t5
+    
 
-    ## aggregation in data.table is "kinda" slow
-    ## %>% .[, .(member = all(!is.na(jj))), .(clctr_name, clctr_name2)]
-    
-    
-    
-    ## aggregating with collapse: but still takes a while
+##     ## expand twice
+##     t4 <- Sys.time()
+##     dt_namesplit_prep1 <- dt_cltrname_split_prep[dt_stringdist_long[clctr_name != clctr_name2],
+##                                                  on = "clctr_name", allow.cartesian = T] %>% funique
+##     t5 <- Sys.time()
+##     dt_namesplit_stringi <- copy(dt_namesplit_prep1) %>%
+##         .[, jj := stri_extract_first_fixed(clctr_name2, pattern = clctr_name_split)]
+##     t6 <- Sys.time()
+##     t6-t5
 
-    ## aggregating without grouping 
-    ## catFUN = \(x) len(x))
+##     ## aggregation in data.table is "kinda" slow
+##     ## %>% .[, .(member = all(!is.na(jj))), .(clctr_name, clctr_name2)]
     
-    ## aggregating with grouping: 
-    t7 <- Sys.time()
     
-    ## aggregating with grouping: 1.3
-    dt_namesplit_stringi_gpd <- fgroup_by(dt_namesplit_stringi, c("clctr_name", "clctr_name2"))
-    collapg(dt_namesplit_stringi_gpd, cols = "jj", catFUN = \(x) all(!is.na(x)), parallel = T, mc.cores = 2)
+    
+##     ## aggregating with collapse: but still takes a while
 
-    ## aggregating without grouping: 1.75
-    ## collap(dt_namesplit_stringi, ~clctr_name + clctr_name2, cols = "jj",
-    ##        catFUN = \(x) all(!is.na(x)), parallel = T, mc.cores = 4, return.order = F)
-    t8 <- Sys.time()
-    t8-t7
+##     ## aggregating without grouping 
+##     ## catFUN = \(x) len(x))
     
+##     ## aggregating with grouping: 
+##     t7 <- Sys.time()
     
-    ## expanding twice
+##     ## aggregating with grouping: 1.3
+##     dt_namesplit_stringi_gpd <- fgroup_by(dt_namesplit_stringi, c("clctr_name", "clctr_name2"))
+##     collapg(dt_namesplit_stringi_gpd, cols = "jj", catFUN = \(x) all(!is.na(x)), parallel = T, mc.cores = 2)
 
-    dt_namesplit_prep2 <- dt_cltrname_split_prep[, .(
-        clctr_name2_split = clctr_name_split, clctr_name2 = clctr_name)][
-        dt_namesplit_prep1, on = "clctr_name2", allow.cartesian=T]
-    t5 <- Sys.time()
+##     ## aggregating without grouping: 1.75
+##     ## collap(dt_namesplit_stringi, ~clctr_name + clctr_name2, cols = "jj",
+##     ##        catFUN = \(x) all(!is.na(x)), parallel = T, mc.cores = 4, return.order = F)
+##     t8 <- Sys.time()
+##     t8-t7
     
     
-    ## aggregate expanded table
-    ## check itself is fine, but aggregating 1.2m groups takes some seconds
+##     ## expanding twice
 
-    dt_namesplit_prep2 %>% # head(5005)
-        ## setkey(clctr_name, clctr_name2, clctr_name_split) %>% 
-        ## .[clctr_name != clctr_name2] %>%
-        ## .[, .(clctr_name, clctr_name_split, clctr_name2_split, clctr_name2)] %>%
-        ## .[, clctr_name := factor(clctr_name, levels =funique(clctr_name))] %>% # .[order(clctr_name)] %>% 
-        ## .[clctr_name_split == clctr_name2_split, has_match := T, verbose = T]
-        ## .[, has_match0 := clctr_name_split == clctr_name2_split]
-        .[, has_match1 := any(clctr_name_split == clctr_name2_split),
-          .(clctr_name, clctr_name2, clctr_name_split)]
-    ## t5 <- Sys.time()
-    ## t5-t4
+##     dt_namesplit_prep2 <- dt_cltrname_split_prep[, .(
+##         clctr_name2_split = clctr_name_split, clctr_name2 = clctr_name)][
+##         dt_namesplit_prep1, on = "clctr_name2", allow.cartesian=T]
+##     t5 <- Sys.time()
+    
+    
+##     ## aggregate expanded table
+##     ## check itself is fine, but aggregating 1.2m groups takes some seconds
+
+##     dt_namesplit_prep2 %>% # head(5005)
+##         ## setkey(clctr_name, clctr_name2, clctr_name_split) %>% 
+##         ## .[clctr_name != clctr_name2] %>%
+##         ## .[, .(clctr_name, clctr_name_split, clctr_name2_split, clctr_name2)] %>%
+##         ## .[, clctr_name := factor(clctr_name, levels =funique(clctr_name))] %>% # .[order(clctr_name)] %>% 
+##         ## .[clctr_name_split == clctr_name2_split, has_match := T, verbose = T]
+##         ## .[, has_match0 := clctr_name_split == clctr_name2_split]
+##         .[, has_match1 := any(clctr_name_split == clctr_name2_split),
+##           .(clctr_name, clctr_name2, clctr_name_split)]
+##     ## t5 <- Sys.time()
+##     ## t5-t4
