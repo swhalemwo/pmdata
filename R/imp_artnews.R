@@ -134,11 +134,64 @@ t_gwd_artnews_collector_person <- function(
 
 
 
+#' check whether any collector is a subset of another collector, e.g. "John Meyer" is a subset of "John W. Meyer"
+#' only compares collectors who share at least one element
+#' @param dt_acpe_w_id dt with a bunch of stuff, including clctr_name, which is all that matters
+t_subset <- function(dt_acpe_w_id1) {
+    
+    ## library(parallel)
+    library(stringi) ## 
+
+    ## dt_test_selfjoin <- data.table(clctr_name = "James Kapppa Alsdorf",
+    ##                                clctr_name_split = c("James", "Kappa", "Alsdorf"))
+
+    ## split collector name into words
+    dt_clctrname_split_prep <- dt_acpe_w_id1 %>% copy() %>% # head(10) %>% 
+        .[, .(clctr_name_split = unlist(tstrsplit(clctr_name, " "))), clctr_name]
+        ## rbind(dt_test_selfjoin)
+    
+    ## self-join on clctr_name_split to only compare collectors who share at least one element
+    ## e.g. compare only all James, all Alsdorfs etc
+    dt_clctrname_split_selfjoin <- copy(dt_clctrname_split_prep) %>%
+        .[.[, .(clctr_name2 = clctr_name, clctr_name_split)], on = "clctr_name_split", allow.cartesian = T] %>%
+        .[, .(clctr_name, clctr_name2)] %>% funique # can save some more time by only comparing unique pairs
+        
+    ## generate list columns, check membership
+    ## t1 <- Sys.time()
+    dt_subset_prep <- dt_clctrname_split_selfjoin %>% copy() %>% # head(n= 10) %>% 
+    ## dt_subset_prep <- dt_stringdist_long %>% copy() %>% # head(n= 10) %>% 
+        ## .[, `:=`(terms1 = as.list(strsplit(clctr_name, split = " ")),
+        ##          terms2 = as.list(strsplit(as.character(clctr_name2), split = " ")))]
+        ## .[,  `:=`(terms1 = stri_split_fixed(clctr_name, " ", simplify = F),
+        ##           terms2 = stri_split_fixed(as.character(clctr_name2), " ", simplify = F))]
+        .[, c("terms1", "terms2") := lapply(.SD, \(x) stri_split_fixed(x, " ")),
+          .SDcols = c("clctr_name", "clctr_name2")]
+    ## t2 <- Sys.time()
+    ## t2-t1
+    ## dt_subset_prep[, member := mcmapply(\(x,y) all(x %in% y), terms1, terms2, mc.cores = 6), verbose=T]
+    ## dt_subset_prep[all(x %in% y, terms1, terms2), verbose=T]
+    ## xx <- mapply(\(x,y) all(x %in% y), dt_subset_prep$terms1, dt_subset_prep$terms2)
+    ## dt_subset_prep[, all_members := dapply(.SD, \(...) all(c(...)[[1]] %in% c(...)[[2]]),
+    ## MARGIN = 1, mc.cores = 4), .SDcols = c("terms1", "terms2")] # not faster
+    dt_subset_prep[, subset := unlist(Map(\(x,y) all(x %in% y), terms1, terms2))]
+    ## dt_subset_prep[, subset := unlist(Map(\(x,y) all(match(x, y)), terms1, terms2))]    
+    ## t3 <- Sys.time()
+    ## t3-t2
+    ## t3-t1
+
+    if (fnrow(dt_subset_prep[subset==T & (clctr_name != clctr_name2)]) > 1) {
+        stop("not all subsets are dealt with")}
+        
+    ## could maybe shave of another few hundreds of seconds by stringi grepl matching (in scrap), but not worth it
+    
+        
+}
+
 
 #' generates the ARTNEWS_APECPRN_FILE: here similar names are harmonized
-#' it is later read in to rename deviant names, to get APE IDs refer to the same person
+#' it is later read in to rename deviant names, to get APE IDs to refer to the same person
 #' this is not supposed to be run again: It has been run once after string similarity calculation, the results of which have been written to file and manually checked
-#' a later subset check (John William Meyer -> John Meyer) has led to a bunch of additions to that ARTNEWS_APECPRN_FILE
+#' a later subset check (John William Meyer -> John Meyer) has led to a bunch of additions to ARTNEWS_APECPRN_FILE
 #' @param dt_acpe_w_id1 the dt with AE, ACPE, APE ids, used for string similarity and name-word subset checks
 #' @param ARTNEWS_APECPRN_FILE the file to write the similar sounding names to
 gwd_apecprn <- function(dt_acpe_w_id1, ARTNEWS_APECPRN_FILE) {
@@ -172,71 +225,8 @@ gwd_apecprn <- function(dt_acpe_w_id1, ARTNEWS_APECPRN_FILE) {
     dt_ace_right <- dt_acpe_w_id1[dt_stringdist_close, on = .(clctr_name = clctr_name2)] %>% 
         .[, .(ace_right = paste(sort(unique(an_entry_id)), collapse = "--")), clctr_name]
 
+
     
-    ## old slow version: group_by is just a mess, much slowdown
-    ## ## subsetting: whether all terms of one are terms of other, e.g. "John Meier" and "John Meyer Smith"
-    ## ## for now, these entries are added manually to ARTNEWS_APECPRN_FILE
-    ## t1 <- Sys.time()
-    ## dt_subset <- dt_stringdist_long %>% copy() %>%  # head(n=1200000) %>% 
-    ##     .[, `:=`(terms1 = as.list(strsplit(clctr_name, split = " ")),
-    ##              terms2 = as.list(strsplit(as.character(clctr_name2), split = " ")))] %>% 
-    ##     ## .(clctr_name, clctr_name2)] %>%
-    ##     .[, subset := map2_int(terms1, terms2, ~all(.x %in% .y))]
-    ## ## just one direction is fine since dt_stringdist long contains both a,b and b,a
-    ## t2 <- Sys.time()
-    ## t2-t1
-
-
-    ## library(parallel)
-    library(stringi)
-    
-    t1 <- Sys.time()
-    dt_subset_prep <- dt_stringdist_long %>% copy() %>% # head(n= 10) %>% 
-        ## .[, `:=`(terms1 = as.list(strsplit(clctr_name, split = " ")),
-        ##          terms2 = as.list(strsplit(as.character(clctr_name2), split = " ")))]
-        ## .[,  `:=`(terms1 = stri_split_fixed(clctr_name, " ", simplify = F),
-        ##           terms2 = stri_split_fixed(as.character(clctr_name2), " ", simplify = F))]
-        .[, c("terms1", "terms2") := lapply(.SD, \(x) stri_split_fixed(x, " ")),
-          .SDcols = c("clctr_name", "clctr_name2")]
-    t2 <- Sys.time()
-    ## t2-t1
-    ## dt_subset_prep[, member := mcmapply(\(x,y) all(x %in% y), terms1, terms2, mc.cores = 6), verbose=T]
-    ## dt_subset_prep[all(x %in% y, terms1, terms2), verbose=T]
-    ## xx <- mapply(\(x,y) all(x %in% y), dt_subset_prep$terms1, dt_subset_prep$terms2)
-    ## dt_subset_prep[, all_members := dapply(.SD, \(...) all(c(...)[[1]] %in% c(...)[[2]]),
-    ## MARGIN = 1, mc.cores = 4), .SDcols = c("terms1", "terms2")] # not faster
-    dt_subset_prep[, subset := unlist(Map(\(x,y) all(x %in% y), terms1, terms2))]
-    ## dt_subset_prep[, subset := unlist(Map(\(x,y) all(match(x, y)), terms1, terms2))]    
-    t3 <- Sys.time()
-    t3-t2
-    t3-t1
-
-    dt_subset_prep %>% head() %>% copy() %>% .[, subset2 := match(terms1, terms2)]
-    
-    dt_cltrname_split_prep <- dt_acpe_w_id1 %>% copy() %>% # head(10) %>% 
-        .[, .(clctr_name_split = unlist(tstrsplit(clctr_name, " "))), clctr_name]
-
-    ## expand twice
-    t4 <- Sys.time()
-    dt_cltrname_split_prep[dt_stringdist_long[clctr_name != clctr_name2],
-                           on = "clctr_name", allow.cartesian = T] %>% funique %>% 
-        dt_cltrname_split_prep[, .(clctr_name2_split = clctr_name_split, clctr_name2 = clctr_name)][
-            ., on = "clctr_name2", allow.cartesian=T] %>% # head(5005)
-        ## setkey(clctr_name, clctr_name2, clctr_name_split) %>% 
-        ## .[clctr_name != clctr_name2] %>%
-        ## .[, .(clctr_name, clctr_name_split, clctr_name2_split, clctr_name2)] %>%
-        ## .[, clctr_name := factor(clctr_name, levels =funique(clctr_name))] %>% # .[order(clctr_name)] %>% 
-        ## .[clctr_name_split == clctr_name2_split, has_match := T, verbose = T]
-        ## .[, has_match0 := clctr_name_split == clctr_name2_split]
-            .[, has_match1 := any(clctr_name_split == clctr_name2_split),
-          .(clctr_name, clctr_name2, clctr_name_split)]
-    t5 <- Sys.time()
-    t5-t4
-    
-
-
-    ## dt_subset %>% .[subset==1 & dist != 0] %>% print(n=50)
-    if (fnrow(dt_subset[subset==1 & dist != 0]) > 0) {stop("not all subsets are dealt with")}
     
     
     ## get all relevant comparisons
