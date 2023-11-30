@@ -50,7 +50,6 @@ t_gwd_artnews_clctr <- function(ARTNEWS_TIME_FILE = PMDATA_LOCS$ARTNEWS_TIME_FIL
     
     return(invisible(T))
 
-    ## stop("this function is not supposed to be run again")
     ## fwrite is uncommented -> has to be manually enabled if error arises
     ## fwrite(dt_ace[, .(an_entry_id, clctr_name, is_couple)], paste0(ARTNEWS_COLLECTOR_ENTRIES_FILE))
 
@@ -156,6 +155,7 @@ t_subset <- function(dt_acpe_w_id1) {
         .[.[, .(clctr_name2 = clctr_name, clctr_name_split)], on = "clctr_name_split", allow.cartesian = T] %>%
         .[, .(clctr_name, clctr_name2)] %>% funique # can save some more time by only comparing unique pairs
         
+    
     ## generate list columns, check membership
     ## t1 <- Sys.time()
     dt_subset_prep <- dt_clctrname_split_selfjoin %>% copy() %>% # head(n= 10) %>% 
@@ -179,8 +179,12 @@ t_subset <- function(dt_acpe_w_id1) {
     ## t3-t2
     ## t3-t1
 
-    if (fnrow(dt_subset_prep[subset==T & (clctr_name != clctr_name2)]) > 1) {
-        stop("not all subsets are dealt with")}
+    ## print(nrow(dt_subset_prep))
+    ## print(dt_subset_prep[grepl("Alsdorf", clctr_name)])
+
+    if (fnrow(dt_subset_prep[subset==T & (clctr_name != clctr_name2)]) > 0) {
+        stop(paste0("not all subsets are dealt with. add them to ARTNEWS_APECPRN_FILE.",
+                    "if there is a subset match that is not a real match, add an exception here or elsewhere"))}
         
     ## could maybe shave of another few hundreds of seconds by stringi grepl matching (in scrap), but not worth it
     
@@ -194,7 +198,7 @@ t_subset <- function(dt_acpe_w_id1) {
 #' a later subset check (John William Meyer -> John Meyer) has led to a bunch of additions to ARTNEWS_APECPRN_FILE
 #' @param dt_acpe_w_id1 the dt with AE, ACPE, APE ids, used for string similarity and name-word subset checks
 #' @param ARTNEWS_APECPRN_FILE the file to write the similar sounding names to
-gwd_apecprn <- function(dt_acpe_w_id1, ARTNEWS_APECPRN_FILE) {
+t_gwd_apecprn <- function(dt_acpe_w_id1, ARTNEWS_APECPRN_FILE) {
     if (as.character(match.call()[[1]]) %in% fstd){browser()}
     1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
 
@@ -202,7 +206,9 @@ gwd_apecprn <- function(dt_acpe_w_id1, ARTNEWS_APECPRN_FILE) {
     ## maybe add later when I have the maintenance added
     library(stringdist, include.only = c("stringdist", "stringdistmatrix"))
     
-    
+    ## test whether any collector is subset of another one
+    t_subset(dt_acpe_w_id1)
+        
     ## prep for pairwise comparison
     dt_strindist_prep <- dt_acpe_w_id1[, .(an_person_id, clctr_name)] %>% funique
 
@@ -226,9 +232,6 @@ gwd_apecprn <- function(dt_acpe_w_id1, ARTNEWS_APECPRN_FILE) {
         .[, .(ace_right = paste(sort(unique(an_entry_id)), collapse = "--")), clctr_name]
 
 
-    
-    
-    
     ## get all relevant comparisons
     dt_ape_cprn <- dt_stringdist_close[dt_ace_left, on = "clctr_name"] %>% # join left
         .[dt_ace_right, on = .(clctr_name2 = clctr_name)] %>% # join right
@@ -238,7 +241,16 @@ gwd_apecprn <- function(dt_acpe_w_id1, ARTNEWS_APECPRN_FILE) {
     
     dt_ape_cprn[grepl("Vogel", clctr_name)]
 
-    stop("this function is not supposed to be run")
+    dt_apecprn_ff <- fread(ARTNEWS_APECPRN_FILE)
+
+    if (fnrow(dt_ape_cprn[!dt_apecprn_ff, on = .(clctr_name, clctr_name2)]) > 0) {
+        stop(paste0("not all pairs with similar names have been checked in ARTNEWS_APECPRN_FILE",
+                    "make sure they are covered, e.g. by adding manually entries to ARTNEWS_APECPRN_FILE",
+                    "or re-running the fwrite-call.",
+                    "make sure tho that this doesn't yeet other or even more clctr_names."))
+    }
+
+  
     ## THIS HAS TO REMAIN UNCOMMENTED: ARTNEWS_APECPRN_FILE is written only once, then manually edited
     ## fwrite(dt_ape_cprn, ARTNEWS_APECPRN_FILE)
 
@@ -270,14 +282,14 @@ gwd_apecprn <- function(dt_acpe_w_id1, ARTNEWS_APECPRN_FILE) {
 
 #' add the APE ID to ARTNEWS_COLLECTOR_PERSON_FILE
 #' 
-mwd_artnews_collector_person <- function(
+gd_artnews_collector_person <- function(
     ARTNEWS_COLLECTOR_PERSON_FILE_ORG = PMDATA_LOCS$ARTNEWS_COLLECTOR_PERSON_FILE_ORG,
     ARTNEWS_APECPRN_FILE = PMDATA_LOCS$ARTNEWS_APECPRN_FILE) {
     if (as.character(match.call()[[1]]) %in% fstd){browser()}
     1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
 
 
-        ## read in the renamer
+    ## read in the renamer
     dt_apecprn_checked <- fread(ARTNEWS_APECPRN_FILE)[is_same_APE==1]
 
     ## check that correct_name corresponds to one of clctr_name and clctr_name2
@@ -307,18 +319,22 @@ mwd_artnews_collector_person <- function(
 
     ## not actually run, but keep this line here to indicate that gwd_apecprn generates ARTNEWS_APECPRN_FILE, which
     ## is then manually checked for duplicate persons
-    ## ## gwd_apecprn(dt_acpe_w_id1, ARTNEWS_APECPRN_FILE)
+    t_gwd_apecprn(dt_acpe_w_id1, ARTNEWS_APECPRN_FILE)
+    t_gwd_artnews_clctr()
+    t_gwd_apecprn(dt_acpe_w_id1, ARTNEWS_APECPRN_FILE)
     
-    
-    if (nrow(dt_apce) != nrow(dt_acpe_w_id1)) {stop("number of rows not the same")}
+    if (nrow(dt_acpe) != nrow(dt_acpe_w_id1)) {stop("number of rows not the same")}
     return(dt_acpe_w_id1)
 }
 
 
-## PMDATA_LOCS <- gc_pmdata_locs()
+PMDATA_LOCS <- gc_pmdata_locs()
+
+t1 <- Sys.time()
+gd_artnews_collector_person()
+t2 <- Sys.time()
 
 
-## mwd_artnews_collector_person()
 ## fread(PMDATA_LOCS$ARTNEWS_COLLECTOR_ENTRIES_FILE)
 
 
