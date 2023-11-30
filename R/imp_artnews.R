@@ -367,7 +367,7 @@ gd_artnews_person <- function(
 
     dt_artnews_person <- dt_artnews_collector_person[, .(an_person_id, clctr_name)] %>% funique
 
-    if (dt_artnews_person[, any(map(.SD, any_duplicated))]) {stop("fix duplicates")}
+    if (dt_artnews_person[, any(sapply(.SD, any_duplicated))]) {stop("fix duplicates")}
 
     return(dt_artnews_person)
 
