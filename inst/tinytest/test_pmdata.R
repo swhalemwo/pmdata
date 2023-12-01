@@ -13,14 +13,20 @@ fstd <- c()
 PMDATA_LOCS <- gc_pmdata_locs()
 ## expect_equal(length(PMDATA_LOCS), 5)
 
-## ** ---------------- PMDB checks ------------
+## ** ----------- PMDB import --------------
 ## turn of warnings to not clutter the tinytest output when it throws an error
 options(warn=-1)
+
+## restrict PMDB to PMs that are relevant to analysis
 dt_pmdb_excl <- gd_pmdb_excl(PMDATA_LOCS$PMDB_FILE, only_pms = F) %>%
     .[museum_status %in% c("private museum", "no longer a private museum", "closed")]
 
 ## define objects 
 dt_pmdb <- gd_pmdb(dt_pmdb_excl, verbose = F)
+
+options(warn=0)
+
+## ** ---------------- PMDB checks ------------
 
 
 expect_false(dt_pmdb[, .(founder_name, founder_id)] %>% funique %>%
@@ -29,13 +35,18 @@ expect_false(dt_pmdb[, .(founder_name, founder_id)] %>% funique %>%
              info = "check that a founder_id refers to a unique name")
 
 
+expect_true(pmdata:::t_gwd_pmdb_founder_person(
+                         dt_pmdb[museum_status %in% c("private museum", "no longer a private museum", "closed")],
+                         PMDB_FOUNDER_PERSON_FILE_ORG = PMDATA_LOCS$PMDB_FOUNDER_PERSON_FILE_ORG,
+                         PMDB_FOUNDER_PERSON_FILE_CSV = PMDATA_LOCS$PMDB_FOUNDER_PERSON_FILE_CSV),
+            info = paste0("check that every founder_id in dt_pmdb has been checked wrt to being part of couple.",
+                          "and that founder_person_id is unique"))
+
+
 ## **  ---------- MOW CHECKS -------------------
 
-## restrict PMDB to PMs that are relevant to analysis
-
-
 dt_mow_pmdb_match <- pmdata:::gd_mow_pmdb_matchres(PMDATA_LOCS$MOW_PMDB_MATCHRES_FILE)
-options(warn=0)
+
 
 
 ## check that each PM with status open, closed or NLPM has been checked for match in MOW

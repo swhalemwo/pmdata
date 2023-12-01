@@ -35,7 +35,9 @@ gc_pmdata_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_so
     ARTNEWS_DIR_old <- "/home/johannes/ownCloud/org_pop_data/artnews/"
         
     data_locs <- list(
-        PMDB_FILE = paste0(DATA_DIR, "pmdb/Private museum database_v5.csv"),
+        PMDB_FILE = paste0(DATA_DIR, "pmdb/Private museum database_v6.csv"),
+        PMDB_FOUNDER_PERSON_FILE_ORG = paste0(DATA_DIR, "pmdb/pmdb_founder_person.org"),
+        PMDB_FOUNDER_PERSON_FILE_CSV = paste0(DATA_DIR, "pmdb/pmdb_founder_person.csv"),
         MOW_PMDB_MATCHRES_FILE = paste0(DATA_DIR, "mow/mow_pmdb_matchres.csv"),
         MOW_INFO_FILE = paste0(DATA_DIR, "mow/mow.csv"),
         MOW_CLSFCN_FILE = paste0(DATA_DIR, "mow/classification.csv"),
