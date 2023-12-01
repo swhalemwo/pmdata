@@ -176,6 +176,7 @@ gc_rename_list <- function() {
         temp_exhibs       = c("Exhibitions_temporary dummy", "Temporary exhibitions",
                             "Collection_exhibitions_temporary dummy"),
         founder_name      = c("Founder_name", "Founder name"),
+        founder_id        = c("Founder_ID"),
         buildgtype        = c("Building type standardized"),
         cafe_restrnt      = c("CafeRestaurant standardized"),
         webshop           = c("Webshop_standardized"),

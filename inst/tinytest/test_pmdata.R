@@ -6,16 +6,14 @@
 
 ## expect_true(F)
 
+library(collapse)
 source("~/Dropbox/technical_stuff_general/dotfiles/.Rprofile")
 fstd <- c()
 
 PMDATA_LOCS <- gc_pmdata_locs()
 ## expect_equal(length(PMDATA_LOCS), 5)
 
-## **  ---------- MOW CHECKS -------------------
-
-## restrict PMDB to PMs that are relevant to analysis
-
+## ** ---------------- PMDB checks ------------
 ## turn of warnings to not clutter the tinytest output when it throws an error
 options(warn=-1)
 dt_pmdb_excl <- gd_pmdb_excl(PMDATA_LOCS$PMDB_FILE, only_pms = F) %>%
@@ -23,6 +21,18 @@ dt_pmdb_excl <- gd_pmdb_excl(PMDATA_LOCS$PMDB_FILE, only_pms = F) %>%
 
 ## define objects 
 dt_pmdb <- gd_pmdb(dt_pmdb_excl, verbose = F)
+
+
+expect_false(dt_pmdb[, .(founder_name, founder_id)] %>% funique %>%
+             .[founder_id != ""] %>% # yeet cases without proper founder_id
+             .[, any(sapply(.SD, any_duplicated))],
+             info = "check that a founder_id refers to a unique name")
+
+
+## **  ---------- MOW CHECKS -------------------
+
+## restrict PMDB to PMs that are relevant to analysis
+
 
 dt_mow_pmdb_match <- pmdata:::gd_mow_pmdb_matchres(PMDATA_LOCS$MOW_PMDB_MATCHRES_FILE)
 options(warn=0)

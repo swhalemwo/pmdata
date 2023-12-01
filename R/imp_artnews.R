@@ -379,8 +379,6 @@ gd_artnews_person <- function(
                                                                
 
 
-## PMDATA_LOCS <- gc_pmdata_locs()
-
 ## t1 <- Sys.time()
 ## gd_artnews_collector_person()
 ## t2 <- Sys.time()
@@ -395,21 +393,48 @@ gd_artnews_person <- function(
 ## - t_gwd_artnews_clctr()
 ## - t_gwd_artnews_collector_person()
 
-
-gd_pmdbfndr <- function() {
+#' generate founder_id and add it to google docs
+#' really can't see how this can be run..
+md_pmdb_gdocs_add_fid <- function() {
     if (as.character(match.call()[[1]]) %in% fstd){browser()}
     1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
-    
+
+    ID <- name <- founder_name <- founder_id <- N <- founder_id_num <- i.founder_id <- NULL
+
 
     dt_pmdb <- gd_pmdb_excl(only_pms = F) %>% gd_pmdb()
 
+    ## create founder ID
     dt_fndr <- copy(dt_pmdb)[order(ID), .(ID, name, founder_name)] %>%
         .[, founder_id := paste0("FID", 1:.N)]
 
-    
-    dt_fndr[, .N, founder_name][N > 1]
+    ## create dt to give repeated founder names the same founder ID
+    dt_fndr_renamer <- dt_fndr[, .N, founder_name][N > 1] %>%
+        dt_fndr[, .(founder_name, founder_id)][., on = "founder_name"] %>%
+        .[, founder_id_num := as.integer(gsub("FID", "", founder_id))] %>%
+        .[, .SD[which.min(founder_id_num)], founder_name]
+
+    ## actually assign the first ID to repeated founders
+    dt_fndr_id_renamed <- copy(dt_fndr)[dt_fndr_renamer, founder_id := i.founder_id, on = "founder_name"] %>%
+        .[order(ID)] %>% .[, .(ID, founder_id, founder_name, name)]
+
+    ## yeet the FIDs in gdocs for all the entries without proper founder name
+    ## dt_fndr_id_renamed[founder_id == "FID5"] # FID5 is founder_name = ""
+
+    ## open founder IDs in lowriter to add them to google docs
+    ## library(jtls, include.only = "view_xl")
+    ## view_xl(dt_fndr_id_renamed)
+
+    ## manually check that museum_IDs and founder names are same, before deleting them
+    ## have to use dt_pmdb_excl since I don't want them in the long term
+    ## dt_pmdb_excl <- gd_pmdb_excl(only_pms = F)
+    ## dt_pmdb_excl[, all(museum_id_check == ID) & all(Founder_name == founder_name_check)]
+    ## dt_pmdb_excl[founder_name_check != Founder_name, .(Founder_name, founder_name_check)] %>% adf
+    ## looks good.. differences in founder_name are most likely due to string-processing
 
 
 }
 
-gd_pmdbfndr()
+## PMDATA_LOCS <- gc_pmdata_locs()
+
+## gd_pmdbfndr()
