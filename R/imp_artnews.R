@@ -125,8 +125,11 @@ t_gwd_artnews_collector_person <- function(
 
     dt_an_person_prep_ff <- fread(ARTNEWS_COLLECTOR_PERSON_FILE_ORG)
 
+    
+
     tres <- F
-    tres <- fnrow(dt_an_person_prep[!dt_an_person_prep_ff, on = "an_collector_person_id"]) == 0
+    tres <- all(fnrow(dt_an_person_prep[!dt_an_person_prep_ff, on = "an_collector_person_id"]) == 0,
+                dt_an_person_prep_ff[, !any_duplicated(an_collector_person_id)])
 
     return(tres)
     
@@ -145,6 +148,7 @@ t_gwd_artnews_collector_person <- function(
     
 }
 
+## t_gwd_artnews_collector_person()
 
 
 #' check whether any collector is a subset of another collector, e.g. "John Meyer" is a subset of "John W. Meyer"
@@ -475,7 +479,7 @@ t_gwd_pmdb_founder_person <- function(
 
     ## checkt that all founder_ids in PMDB are covered, and that founder_person_id is unique
     tres <- F
-    tres <- any(nrow(dt_founder_person_prep[!dt_founder_person_ff, on = "founder_id"]) == 0,
+    tres <- all(nrow(dt_founder_person_prep[!dt_founder_person_ff, on = "founder_id"]) == 0,
                 dt_founder_person_ff[, !any_duplicated(founder_person_id)]) # check that founder_person
 
     
