@@ -1,0 +1,514 @@
+| founder_id | founder_person_id | founder_name                                                                                                         |
+|------------+-------------------+----------------------------------------------------------------------------------------------------------------------|
+| FID210     | FID210a           | Jawad Adra, Fida Jdeed and Badr El-Hage                                                                              |
+| FID210     | FID210b           | Jawad Adra, Fida Jdeed and Badr El-Hage                                                                              |
+| FID210     | FID210c           | Jawad Adra, Fida Jdeed and Badr El-Hage                                                                              |
+| FID101     | FID101a           | David Neuman and Robert Weil                                                                                         |
+| FID101     | FID101b           | David Neuman and Robert Weil                                                                                         |
+| FID146     | FID146a           | Gordon Elliott and Michael Eyes                                                                                      |
+| FID146     | FID146b           | Gordon Elliott and Michael Eyes                                                                                      |
+| FID186     | FID186a           | David Su and Zihao Che                                                                                               |
+| FID186     | FID186b           | David Su and Zihao Che                                                                                               |
+| FID270     | FID270a           | Ralph E. Ogden and H. Peter Stern                                                                                    |
+| FID270     | FID270b           | Ralph E. Ogden and H. Peter Stern                                                                                    |
+| FID414     | FID414a           | Gerard Meulensteen and Vincent Polakovič                                                                             |
+| FID414     | FID414b           | Gerard Meulensteen and Vincent Polakovič                                                                             |
+| FID444     | FID444a           | George Michael and Kenny Goss                                                                                        |
+| FID444     | FID444b           | George Michael and Kenny Goss                                                                                        |
+| FID452     | FID452a           | Dirk Krämer and Klaus Maas                                                                                           |
+| FID452     | FID452b           | Dirk Krämer and Klaus Maas                                                                                           |
+| FID516     | FID516a           | Manuel and Miguel Rios                                                                                               |
+| FID516     | FID516b           | Manuel and Miguel Rios                                                                                               |
+| FID10      | FID10a            | Dakis Joannou                                                                                                        |
+| FID102     | FID102a           | Achim Freyer                                                                                                         |
+| FID105     | FID105a           | Philippe Méaille                                                                                                     |
+| FID11      | FID11a            | Paddy McKillen                                                                                                       |
+| FID112     | FID112a           | Qiao Zhibing                                                                                                         |
+| FID118     | FID118a           | Alexander V. Petala                                                                                                  |
+| FID120     | FID120a           | Charles Saatchi                                                                                                      |
+| FID121     | FID121a           | Hans Suter                                                                                                           |
+| FID122     | FID122a           | Dieter Bogner                                                                                                        |
+| FID124     | FID124a           | Baoquan Zhang                                                                                                        |
+| FID126     | FID126a           | Juan March Ordinas                                                                                                   |
+| FID129     | FID129a           | Frank Hense                                                                                                          |
+| FID131     | FID131a           | Hasso Plattner                                                                                                       |
+| FID132     | FID132a           | Arthur de Ganay                                                                                                      |
+| FID134     | FID134a           | Ignaz Walter                                                                                                         |
+| FID136     | FID136a           | Antonio Dalle Nogare                                                                                                 |
+| FID137     | FID137a           | Manfed Wandel                                                                                                        |
+| FID138     | FID138a           | Jean-Claude Volot                                                                                                    |
+| FID139     | FID139a           | Walter Vanhaerents                                                                                                   |
+| FID140     | FID140a           | Aslan Chekhoyev                                                                                                      |
+| FID142     | FID142a           | Alexander Glezer                                                                                                     |
+| FID143     | FID143a           | Antonio Pérez                                                                                                        |
+| FID147     | FID147a           | Soichiro Fukutake                                                                                                    |
+| FID15      | FID15a            | Masao Hoki                                                                                                           |
+| FID151     | FID151a           | Amadou Diaw                                                                                                          |
+| FID152     | FID152a           | Sangho Park                                                                                                          |
+| FID153     | FID153a           | Cheol-su Kim                                                                                                         |
+| FID154     | FID154a           | Jai-Kwan Kim                                                                                                         |
+| FID159     | FID159a           | Zacharias Portalakis                                                                                                 |
+| FID16      | FID16a            | Hanxing Chen                                                                                                         |
+| FID162     | FID162a           | Vehbi Koç                                                                                                            |
+| FID165     | FID165a           | Eduardo Costantini                                                                                                   |
+| FID167     | FID167a           | Édouard Carmignac                                                                                                    |
+| FID173     | FID173a           | Carlos Slim Helú                                                                                                     |
+| FID175     | FID175a           | Alain Servais                                                                                                        |
+| FID177     | FID177a           | Christian Levett                                                                                                     |
+| FID180     | FID180a           | Hans. D. Melchers                                                                                                    |
+| FID188     | FID188a           | Jan van den Broek                                                                                                    |
+| FID190     | FID190a           | David Walsh                                                                                                          |
+| FID193     | FID193a           | Maurizio Morra Greco                                                                                                 |
+| FID194     | FID194a           | Hans Georg Näder                                                                                                     |
+| FID197     | FID197a           | Oei Hong Djien                                                                                                       |
+| FID198     | FID198a           | Werner Jerke                                                                                                         |
+| FID199     | FID199a           | Joven Cuanang                                                                                                        |
+| FID200     | FID200a           | Antonio Vila Casas                                                                                                   |
+| FID205     | FID205a           | Axel Ciesielski                                                                                                      |
+| FID207     | FID207a           | Stefano Sciarretta                                                                                                   |
+| FID211     | FID211a           | Marc Barbey                                                                                                          |
+| FID212     | FID212a           | Basel Dalloul                                                                                                        |
+| FID214     | FID214a           | Lluís Bassat                                                                                                         |
+| FID216     | FID216a           | Markus Hannebauer                                                                                                    |
+| FID217     | FID217a           | Didier Guillon                                                                                                       |
+| FID220     | FID220a           | Walther Moreira Salles                                                                                               |
+| FID222     | FID222a           | Sotiris Felios                                                                                                       |
+| FID224     | FID224a           | Giuseppe Iannaccone                                                                                                  |
+| FID226     | FID226a           | Vittorio Gaddi                                                                                                       |
+| FID228     | FID228a           | William Louis Dreyfus                                                                                                |
+| FID229     | FID229a           | Josep Suñol                                                                                                          |
+| FID231     | FID231a           | Harald Falckenberg                                                                                                   |
+| FID232     | FID232a           | Sudhir Ahuja                                                                                                         |
+| FID233     | FID233a           | Peter Bosshard                                                                                                       |
+| FID234     | FID234a           | Manuel Chirivella                                                                                                    |
+| FID235     | FID235a           | Lothar C. Poll                                                                                                       |
+| FID236     | FID236a           | Eugenio López Alonso                                                                                                 |
+| FID239     | FID239a           | Joop van Caldenborgh                                                                                                 |
+| FID241     | FID241a           | Viatcheslav Moshe Kantor                                                                                             |
+| FID244     | FID244a           | Ahmet Kocabıyık                                                                                                      |
+| FID25      | FID25a            | Budi Tek                                                                                                             |
+| FID250     | FID250a           | Jochen Kienzle                                                                                                       |
+| FID253     | FID253a           | Jochen Zeitz                                                                                                         |
+| FID254     | FID254a           | Farhad Farjam                                                                                                        |
+| FID255     | FID255a           | Friedrich E. Rentschler                                                                                              |
+| FID261     | FID261a           | Alberto Rossini                                                                                                      |
+| FID262     | FID262a           | Kasturbhai Lalbhai                                                                                                   |
+| FID263     | FID263a           | Geert Steinmeijer                                                                                                    |
+| FID264     | FID264a           | Jack Lenor Larsen                                                                                                    |
+| FID267     | FID267a           | Vass László                                                                                                          |
+| FID268     | FID268a           | Christen Sveaas                                                                                                      |
+| FID269     | FID269a           | Basant Kumar Birla                                                                                                   |
+| FID272     | FID272a           | Bernardo Paz                                                                                                         |
+| FID273     | FID273a           | Wang Bing                                                                                                            |
+| FID274     | FID274a           | Wang Zhongjun                                                                                                        |
+| FID278     | FID278a           | Steven Oliver                                                                                                        |
+| FID283     | FID283a           | Philippe Augier                                                                                                      |
+| FID284     | FID284a           | Jaan Manitski                                                                                                        |
+| FID289     | FID289a           | Victor Mykhailovych Pinchuk                                                                                          |
+| FID29      | FID29a            | Donald Hess                                                                                                          |
+| FID291     | FID291a           | Sarp Evliyagil                                                                                                       |
+| FID299     | FID299a           | Nion McEvoy                                                                                                          |
+| FID300     | FID300a           | Frieder Burda                                                                                                        |
+| FID301     | FID301a           | Peter M. Brant                                                                                                       |
+| FID305     | FID305a           | Timo Miettinen                                                                                                       |
+| FID307     | FID307a           | Xiaohua Huang                                                                                                        |
+| FID310     | FID310a           | Majid Boustany                                                                                                       |
+| FID311     | FID311a           | Christian Ringnes                                                                                                    |
+| FID312     | FID312a           | Steffen Hildebrand                                                                                                   |
+| FID313     | FID313a           | Louis Norval                                                                                                         |
+| FID316     | FID316a           | Torsten Kunert                                                                                                       |
+| FID32      | FID32a            | Peter Marino                                                                                                         |
+| FID320     | FID320a           | Hamidreza Pejman                                                                                                     |
+| FID322     | FID322a           | Bob Rennie                                                                                                           |
+| FID323     | FID323a           | Jorge M. Pérez                                                                                                       |
+| FID324     | FID324a           | Mori Minoru                                                                                                          |
+| FID327     | FID327a           | Can Elgiz                                                                                                            |
+| FID328     | FID328a           | Bertran Conrad-Eybesfeld                                                                                             |
+| FID329     | FID329a           | David Roberts                                                                                                        |
+| FID331     | FID331a           | Martin Margulies                                                                                                     |
+| FID332     | FID332a           | Vladimir Seminikhin                                                                                                  |
+| FID333     | FID333a           | Peter W. Klein                                                                                                       |
+| FID335     | FID335a           | Ovidiu Șandor                                                                                                        |
+| FID34      | FID34a            | Carlos Rosón Gasalla                                                                                                 |
+| FID341     | FID341a           | Boonchai Bencharongkul                                                                                               |
+| FID345     | FID345a           | David Chau                                                                                                           |
+| FID346     | FID346a           | Rudy Akili                                                                                                           |
+| FID348     | FID348a           | Hans Rasmus Astrup                                                                                                   |
+| FID349     | FID349a           | Chang-il Kim                                                                                                         |
+| FID351     | FID351a           | Haryanto Adikoesoemo                                                                                                 |
+| FID352     | FID352a           | Ian Vorres                                                                                                           |
+| FID353     | FID353a           | George Economou                                                                                                      |
+| FID357     | FID357a           | Kyung Bae Suh                                                                                                        |
+| FID358     | FID358a           | Sang Ok Yu                                                                                                           |
+| FID359     | FID359a           | He Jianfeng                                                                                                          |
+| FID361     | FID361a           | François Pinault                                                                                                     |
+| FID365     | FID365a           | Reinhold Würth                                                                                                       |
+| FID368     | FID368a           | Frederick R. Weisman                                                                                                 |
+| FID371     | FID371a           | Achille Maramotti                                                                                                    |
+| FID379     | FID379a           | Newton Jibunoh                                                                                                       |
+| FID38      | FID38a            | Jens Faurschou                                                                                                       |
+| FID380     | FID380a           | Li Bing                                                                                                              |
+| FID382     | FID382a           | Hasnaine Yavarhoussen                                                                                                |
+| FID384     | FID384a           | Bill Shurniak                                                                                                        |
+| FID387     | FID387a           | Francisco Daurella                                                                                                   |
+| FID389     | FID389a           | Farhat Naim                                                                                                          |
+| FID391     | FID391a           | Yan Gu                                                                                                               |
+| FID393     | FID393a           | Robert Simon                                                                                                         |
+| FID398     | FID398a           | Hugo Voeten                                                                                                          |
+| FID399     | FID399a           | Antonio Coppola                                                                                                      |
+| FID401     | FID401a           | Mario Serpone                                                                                                        |
+| FID402     | FID402a           | Zilong Huang                                                                                                         |
+| FID413     | FID413a           | Bernard Magrez                                                                                                       |
+| FID417     | FID417a           | Hubert Bonnet                                                                                                        |
+| FID419     | FID419a           | Alan Faena                                                                                                           |
+| FID420     | FID420a           | Aldo Rubino                                                                                                          |
+| FID421     | FID421a           | Till Richter                                                                                                         |
+| FID422     | FID422a           | Hyungsoo Kim                                                                                                         |
+| FID423     | FID423a           | Matteo Viglietta                                                                                                     |
+| FID424     | FID424a           | Jim Hill                                                                                                             |
+| FID428     | FID428a           | Paolo Brodbeck                                                                                                       |
+| FID429     | FID429a           | Guobin Tan                                                                                                           |
+| FID434     | FID434a           | Seonbin Im                                                                                                           |
+| FID440     | FID440a           | Lionel Zinsou                                                                                                        |
+| FID441     | FID441a           | Edward Spencer-Churchill                                                                                             |
+| FID449     | FID449a           | Gil Andreas Bronner                                                                                                  |
+| FID45      | FID45a            | Bernar Venet                                                                                                         |
+| FID455     | FID455a           | Erol Tabanca                                                                                                         |
+| FID457     | FID457a           | Claudio Cosma                                                                                                        |
+| FID458     | FID458a           | Roberto Casamonti                                                                                                    |
+| FID463     | FID463a           | Anton Herbert                                                                                                        |
+| FID465     | FID465a           | John Madden                                                                                                          |
+| FID47      | FID47a            | Damien Hirst                                                                                                         |
+| FID473     | FID473a           | Songkyu Jeong                                                                                                        |
+| FID480     | FID480a           | Gung-won Nam                                                                                                         |
+| FID482     | FID482a           | Haeryong Park                                                                                                        |
+| FID484     | FID484a           | Taijung Um                                                                                                           |
+| FID488     | FID488a           | Rolf Hoff                                                                                                            |
+| FID489     | FID489a           | Masanori Fukuoka                                                                                                     |
+| FID494     | FID494a           | Tsuneo Mizuno                                                                                                        |
+| FID498     | FID498a           | Sunghwan Park                                                                                                        |
+| FID499     | FID499a           | Sootaek Yoo                                                                                                          |
+| FID500     | FID500a           | Hyeong-su Gwak                                                                                                       |
+| FID502     | FID502a           | Yongha Park                                                                                                          |
+| FID503     | FID503a           | Bong Suk Kim                                                                                                         |
+| FID504     | FID504a           | Alan Gibbs                                                                                                           |
+| FID505     | FID505a           | Junyeong Park                                                                                                        |
+| FID509     | FID509a           | Marek Roefler                                                                                                        |
+| FID510     | FID510a           | Amer Huneidi                                                                                                         |
+| FID511     | FID511a           | John Schmid                                                                                                          |
+| FID513     | FID513a           | Josef Froehlich                                                                                                      |
+| FID521     | FID521a           | Jean-Philippe Billarant                                                                                              |
+| FID522     | FID522a           | Jean-Louis Haguenauer                                                                                                |
+| FID523     | FID523a           | Marc Féraud                                                                                                          |
+| FID527     | FID527a           | Galen Weston                                                                                                         |
+| FID529     | FID529a           | Gary Nader                                                                                                           |
+| FID53      | FID53a            | Artur Ramón                                                                                                          |
+| FID532     | FID532a           | Raymond E. Johnson                                                                                                   |
+| FID536     | FID536a           | Igor Markin                                                                                                          |
+| FID542     | FID542a           | Xun Lu                                                                                                               |
+| FID544     | FID544a           | José María Hualde y Ruiz de Gámiz                                                                                    |
+| FID545     | FID545a           | Herbert Liaunig                                                                                                      |
+| FID549     | FID549a           | Ronald S. Lauder                                                                                                     |
+| FID555     | FID555a           | Demetrios Pieridis                                                                                                   |
+| FID556     | FID556a           | Vladimir Macura                                                                                                      |
+| FID557     | FID557a           | Mark Vanmoerkerke                                                                                                    |
+| FID558     | FID558a           | Bernard Arnault                                                                                                      |
+| FID563     | FID563a           | Marco Pallanti                                                                                                       |
+| FID566     | FID566a           | Jürgen A. Messmer                                                                                                    |
+| FID576     | FID576a           | Moisés Berezdivin                                                                                                    |
+| FID582     | FID582a           | Dong Hwan Ha                                                                                                         |
+| FID587     | FID587a           | Jung-Gil Hong                                                                                                        |
+| FID591     | FID591a           | Jong Kwon Kang                                                                                                       |
+| FID593     | FID593a           | Byung-gwan Ahn                                                                                                       |
+| FID595     | FID595a           | Ho-jin Lee                                                                                                           |
+| FID596     | FID596a           | Kun-hee Lee                                                                                                          |
+| FID597     | FID597a           | Kim Sang-man                                                                                                         |
+| FID598     | FID598a           | Mingguang Gong                                                                                                       |
+| FID605     | FID605a           | Thomas Grässlin                                                                                                      |
+| FID612     | FID612a           | Mingguang Zhu                                                                                                        |
+| FID617     | FID617a           | Heiner Friedrich                                                                                                     |
+| FID618     | FID618a           | Matti Koivurinta                                                                                                     |
+| FID619     | FID619a           | Siegfried Weishaupt                                                                                                  |
+| FID62      | FID62a            | Zheng Hao                                                                                                            |
+| FID626     | FID626a           | Carlo Bonetti                                                                                                        |
+| FID63      | FID63a            | Rik Reinking                                                                                                         |
+| FID630     | FID630a           | Wojciech Fibak                                                                                                       |
+| FID631     | FID631a           | François Schneider                                                                                                   |
+| FID641     | FID641a           | Shizuko Watari                                                                                                       |
+| FID642     | FID642a           | Junyoung Lee                                                                                                         |
+| FID643     | FID643a           | Pablo Atchugarry                                                                                                     |
+| FID68      | FID68a            | Erwin Kessler                                                                                                        |
+| FID7       | FID7a             | George Wong Kin-wah                                                                                                  |
+| FID72      | FID72a            | Marcos Amaro                                                                                                         |
+| FID73      | FID73a            | Paul Firos                                                                                                           |
+| FID74      | FID74a            | Lutz Teutloff                                                                                                        |
+| FID75      | FID75a            | Charles Riva                                                                                                         |
+| FID78      | FID78a            | Lip Lim                                                                                                              |
+| FID8       | FID8a             | Agung Rai                                                                                                            |
+| FID82      | FID82a            | Philippe Austruy                                                                                                     |
+| FID88      | FID88a            | Roberto Ramos                                                                                                        |
+| FID9       | FID9a             | Axel Haubrok                                                                                                         |
+| FID90      | FID90a            | Artur Walther                                                                                                        |
+| FID97      | FID97a            | Egidio Marzona                                                                                                       |
+| FID98      | FID98a            | Loek Dijkman                                                                                                         |
+| FID99      | FID99a            | Tony Cragg                                                                                                           |
+| FID110     | FID110a           | Braunsfelder family                                                                                                  |
+| FID110     | FID110b           | Braunsfelder family                                                                                                  |
+| FID445     | FID445a           | Howard and Cindy Rachofsky and Vernon Faulconer                                                                      |
+| FID445     | FID445b           | Howard and Cindy Rachofsky and Vernon Faulconer                                                                      |
+| FID100     | FID100a           | Anita and Poju Zabludowicz                                                                                           |
+| FID100     | FID100b           | Anita and Poju Zabludowicz                                                                                           |
+| FID107     | FID107a           | Yannick and Ben Jakober                                                                                              |
+| FID107     | FID107b           | Yannick and Ben Jakober                                                                                              |
+| FID111     | FID111a           | Ana Gervás and David Cantolla                                                                                        |
+| FID111     | FID111b           | Ana Gervás and David Cantolla                                                                                        |
+| FID115     | FID115a           | Laura Lee Brown and Steve Wilson                                                                                     |
+| FID115     | FID115b           | Laura Lee Brown and Steve Wilson                                                                                     |
+| FID123     | FID123a           | Jan and Marica Vilcek                                                                                                |
+| FID123     | FID123b           | Jan and Marica Vilcek                                                                                                |
+| FID125     | FID125a           | Joelle and Eric Romba                                                                                                |
+| FID125     | FID125b           | Joelle and Eric Romba                                                                                                |
+| FID127     | FID127a           | Heinz J. Angerlehner                                                                                                 |
+| FID127     | FID127b           | Heinz J. Angerlehner                                                                                                 |
+| FID13      | FID13a            | Elizabeth and Phillip Chun                                                                                           |
+| FID13      | FID13b            | Elizabeth and Phillip Chun                                                                                           |
+| FID135     | FID135a           | Michael Audain and Yoshiko Karasawa                                                                                  |
+| FID135     | FID135b           | Michael Audain and Yoshiko Karasawa                                                                                  |
+| FID141     | FID141a           | Manuel Alorda and Hanneke Derksen                                                                                    |
+| FID141     | FID141b           | Manuel Alorda and Hanneke Derksen                                                                                    |
+| FID150     | FID150a           | Eric Estorick and Salome Dessau                                                                                      |
+| FID150     | FID150b           | Eric Estorick and Salome Dessau                                                                                      |
+| FID158     | FID158a           | Leonid Mikhelson and Teresa Iarocci Mavica                                                                           |
+| FID158     | FID158b           | Leonid Mikhelson and Teresa Iarocci Mavica                                                                           |
+| FID160     | FID160a           | Inge and Cees de Bruin                                                                                               |
+| FID160     | FID160b           | Inge and Cees de Bruin                                                                                               |
+| FID163     | FID163a           | Khalid Shoman                                                                                                        |
+| FID163     | FID163b           | Khalid Shoman                                                                                                        |
+| FID169     | FID169a           | R. Crosby Kemper Jr. and Mary ""Bebe"" Hunt                                                                          |
+| FID169     | FID169b           | R. Crosby Kemper Jr. and Mary ""Bebe"" Hunt                                                                          |
+| FID170     | FID170a           | Pedro Barbosa and Patricia Moraes                                                                                    |
+| FID170     | FID170b           | Pedro Barbosa and Patricia Moraes                                                                                    |
+| FID171     | FID171a           | Marcelino Botín Sanz de Sautuola and his wife, Carmen Yllera                                                         |
+| FID171     | FID171b           | Marcelino Botín Sanz de Sautuola and his wife, Carmen Yllera                                                         |
+| FID18      | FID18a            | Lin Han and Wanwan Lei                                                                                               |
+| FID18      | FID18b            | Lin Han and Wanwan Lei                                                                                               |
+| FID183     | FID183a           | Carl and Marilynn Thoma                                                                                              |
+| FID183     | FID183b           | Carl and Marilynn Thoma                                                                                              |
+| FID191     | FID191a           | Dina and Jānis Zuzāns                                                                                                |
+| FID191     | FID191b           | Dina and Jānis Zuzāns                                                                                                |
+| FID195     | FID195a           | Marc and Livia Straus                                                                                                |
+| FID195     | FID195b           | Marc and Livia Straus                                                                                                |
+| FID196     | FID196a           | Marvin and Elayne Mordes                                                                                             |
+| FID196     | FID196b           | Marvin and Elayne Mordes                                                                                             |
+| FID2       | FID2a             | Shelley and Donald Rubin                                                                                             |
+| FID2       | FID2b             | Shelley and Donald Rubin                                                                                             |
+| FID20      | FID20a            | Ulla and Heinz Lohmann                                                                                               |
+| FID20      | FID20b            | Ulla and Heinz Lohmann                                                                                               |
+| FID209     | FID209a           | Estelle and Hervé Francès                                                                                            |
+| FID209     | FID209b           | Estelle and Hervé Francès                                                                                            |
+| FID22      | FID22a            | Laura Ruth and Fred Bidwel                                                                                           |
+| FID22      | FID22b            | Laura Ruth and Fred Bidwel                                                                                           |
+| FID227     | FID227a           | David and Carmen Kreeger                                                                                             |
+| FID227     | FID227b           | David and Carmen Kreeger                                                                                             |
+| FID252     | FID252a           | Giovanni and Marella Agnelli                                                                                         |
+| FID252     | FID252b           | Giovanni and Marella Agnelli                                                                                         |
+| FID259     | FID259a           | Liu Yiqian and Wang Wei                                                                                              |
+| FID259     | FID259b           | Liu Yiqian and Wang Wei                                                                                              |
+| FID260     | FID260a           | Giuliano and Pina Gori                                                                                               |
+| FID260     | FID260b           | Giuliano and Pina Gori                                                                                               |
+| FID265     | FID265a           | Anton and Huberte Rupert                                                                                             |
+| FID265     | FID265b           | Anton and Huberte Rupert                                                                                             |
+| FID27      | FID27a            | Bruna and Ricardo Pessoa de Queiroz                                                                                  |
+| FID27      | FID27b            | Bruna and Ricardo Pessoa de Queiroz                                                                                  |
+| FID271     | FID271a           | Mitchell and Emily Rales                                                                                             |
+| FID271     | FID271b           | Mitchell and Emily Rales                                                                                             |
+| FID275     | FID275a           | Marjolein de Groen and Peter Jordaan                                                                                 |
+| FID275     | FID275b           | Marjolein de Groen and Peter Jordaan                                                                                 |
+| FID279     | FID279a           | Suna and İnan Kıraç                                                                                                  |
+| FID279     | FID279b           | Suna and İnan Kıraç                                                                                                  |
+| FID281     | FID281a           | Marie-Louise and Gunnar Didrichsen                                                                                   |
+| FID281     | FID281b           | Marie-Louise and Gunnar Didrichsen                                                                                   |
+| FID295     | FID295a           | Aimé and Marguerite Maeght                                                                                           |
+| FID295     | FID295b           | Aimé and Marguerite Maeght                                                                                           |
+| FID296     | FID296a           | Christian and Karen Boros                                                                                            |
+| FID296     | FID296b           | Christian and Karen Boros                                                                                            |
+| FID3       | FID3a             | Eva Besen AO and Marc Besen AC                                                                                       |
+| FID3       | FID3b             | Eva Besen AO and Marc Besen AC                                                                                       |
+| FID309     | FID309a           | Petr and Pavlína Pudil                                                                                               |
+| FID309     | FID309b           | Petr and Pavlína Pudil                                                                                               |
+| FID317     | FID317a           | Dmitry and Rebecca Piterman                                                                                          |
+| FID317     | FID317b           | Dmitry and Rebecca Piterman                                                                                          |
+| FID319     | FID319a           | Daniel and Rachel Teo                                                                                                |
+| FID319     | FID319b           | Daniel and Rachel Teo                                                                                                |
+| FID33      | FID33a            | Corbett Lyon and Yueji Lyon                                                                                          |
+| FID33      | FID33b            | Corbett Lyon and Yueji Lyon                                                                                          |
+| FID334     | FID334a           | Don and Mera Rubell                                                                                                  |
+| FID334     | FID334b           | Don and Mera Rubell                                                                                                  |
+| FID338     | FID338a           | Swati Piramal and Ajay Piramal                                                                                       |
+| FID338     | FID338b           | Swati Piramal and Ajay Piramal                                                                                       |
+| FID339     | FID339a           | Danguolė and Viktoras Butkus                                                                                         |
+| FID339     | FID339b           | Danguolė and Viktoras Butkus                                                                                         |
+| FID343     | FID343a           | Basil and Elise Goulandris                                                                                           |
+| FID343     | FID343b           | Basil and Elise Goulandris                                                                                           |
+| FID364     | FID364a           | Andrew and Christine Hall                                                                                            |
+| FID364     | FID364b           | Andrew and Christine Hall                                                                                            |
+| FID37      | FID37a            | Brian and Eva Sweeney                                                                                                |
+| FID37      | FID37b            | Brian and Eva Sweeney                                                                                                |
+| FID370     | FID370a           | Claudine et Jean Marc Salomon                                                                                        |
+| FID370     | FID370b           | Claudine et Jean Marc Salomon                                                                                        |
+| FID372     | FID372a           | Tony and Elham Salamé                                                                                                |
+| FID372     | FID372b           | Tony and Elham Salamé                                                                                                |
+| FID376     | FID376a           | Paul Ege                                                                                                             |
+| FID376     | FID376b           | Paul Ege                                                                                                             |
+| FID383     | FID383a           | Javier Lumbreras and Lorena Pérez-Jácome                                                                             |
+| FID383     | FID383b           | Javier Lumbreras and Lorena Pérez-Jácome                                                                             |
+| FID385     | FID385a           | Gunda and Peter Niemann                                                                                              |
+| FID385     | FID385b           | Gunda and Peter Niemann                                                                                              |
+| FID4       | FID4a             | Anna and Jerzy Starak                                                                                                |
+| FID4       | FID4b             | Anna and Jerzy Starak                                                                                                |
+| FID408     | FID408a           | Tom and Mary James                                                                                                   |
+| FID408     | FID408b           | Tom and Mary James                                                                                                   |
+| FID411     | FID411a           | Elke and Arno Morenz                                                                                                 |
+| FID411     | FID411b           | Elke and Arno Morenz                                                                                                 |
+| FID418     | FID418a           | Rosella and Philip Rolla                                                                                             |
+| FID418     | FID418b           | Rosella and Philip Rolla                                                                                             |
+| FID42      | FID42a            | Désiré Feuerle and Sara Puig                                                                                         |
+| FID42      | FID42b            | Désiré Feuerle and Sara Puig                                                                                         |
+| FID425     | FID425a           | Pier Luigi and Natalina Remotti                                                                                      |
+| FID425     | FID425b           | Pier Luigi and Natalina Remotti                                                                                      |
+| FID43      | FID43a            | Devon and Pany Dikeou                                                                                                |
+| FID43      | FID43b            | Devon and Pany Dikeou                                                                                                |
+| FID431     | FID431a           | Yan Shijie and Cao Mei                                                                                               |
+| FID431     | FID431b           | Yan Shijie and Cao Mei                                                                                               |
+| FID435     | FID435a           | Angela and Massimo Lauro                                                                                             |
+| FID435     | FID435b           | Angela and Massimo Lauro                                                                                             |
+| FID436     | FID436a           | Nancy Olnick and Giorgio Spanu                                                                                       |
+| FID436     | FID436b           | Nancy Olnick and Giorgio Spanu                                                                                       |
+| FID438     | FID438a           | Ron and Ann Pizzuti                                                                                                  |
+| FID438     | FID438b           | Ron and Ann Pizzuti                                                                                                  |
+| FID447     | FID447a           | Theo Scholten and Lida Scholten-Miltenburg                                                                           |
+| FID447     | FID447b           | Theo Scholten and Lida Scholten-Miltenburg                                                                           |
+| FID453     | FID453a           | Robert and Nicky Wilson                                                                                              |
+| FID453     | FID453b           | Robert and Nicky Wilson                                                                                              |
+| FID459     | FID459a           | David Horvitz and Francie Bishop Good                                                                                |
+| FID459     | FID459b           | David Horvitz and Francie Bishop Good                                                                                |
+| FID460     | FID460a           | Paula and Silvio Frota                                                                                               |
+| FID460     | FID460b           | Paula and Silvio Frota                                                                                               |
+| FID461     | FID461a           | Paul and Helga Ege                                                                                                   |
+| FID461     | FID461b           | Paul and Helga Ege                                                                                                   |
+| FID471     | FID471a           | Anupam and Lekha Poddar                                                                                              |
+| FID471     | FID471b           | Anupam and Lekha Poddar                                                                                              |
+| FID506     | FID506a           | Jin and Rinko Hasegawa                                                                                               |
+| FID506     | FID506b           | Jin and Rinko Hasegawa                                                                                               |
+| FID514     | FID514a           | Sylvie and Daniel Salzmann (daughter and son in law of Pierre Arnaud) founded the Pierre Arnaud foundation, the predecessor of Fondation Opale |
+| FID514     | FID514b           | Sylvie and Daniel Salzmann (daughter and son in law of Pierre Arnaud) founded the Pierre Arnaud foundation, the predecessor of Fondation Opale |
+| FID518     | FID518a           | Giancarlo and Danna Olgiati                                                                                          |
+| FID518     | FID518b           | Giancarlo and Danna Olgiati                                                                                          |
+| FID519     | FID519a           | Gabriele and Anna Braglia                                                                                            |
+| FID519     | FID519b           | Gabriele and Anna Braglia                                                                                            |
+| FID52      | FID52a            | Theresa Tse and Michael Xufu Huang                                                                                   |
+| FID52      | FID52b            | Theresa Tse and Michael Xufu Huang                                                                                   |
+| FID533     | FID533a           | Anne-Marie and Pierre Trahan                                                                                         |
+| FID533     | FID533b           | Anne-Marie and Pierre Trahan                                                                                         |
+| FID546     | FID546a           | Herbert und Brigitte Gerisch                                                                                         |
+| FID546     | FID546b           | Herbert und Brigitte Gerisch                                                                                         |
+| FID553     | FID553a           | John Tomilson and Janine Hill                                                                                        |
+| FID553     | FID553b           | John Tomilson and Janine Hill                                                                                        |
+| FID56      | FID56a            | Raymond and Patsy Nasher                                                                                             |
+| FID56      | FID56b            | Raymond and Patsy Nasher                                                                                             |
+| FID562     | FID562a           | Charles and Leah Justin                                                                                              |
+| FID562     | FID562b           | Charles and Leah Justin                                                                                              |
+| FID564     | FID564a           | Gabriele Straub und Hanns-Gerhard Rösch                                                                              |
+| FID564     | FID564b           | Gabriele Straub und Hanns-Gerhard Rösch                                                                              |
+| FID565     | FID565a           | Dulce and João Carlos de Figueiredo Ferraz                                                                           |
+| FID565     | FID565b           | Dulce and João Carlos de Figueiredo Ferraz                                                                           |
+| FID569     | FID569a           | Giovanni and Valeria Giuliani                                                                                        |
+| FID569     | FID569b           | Giovanni and Valeria Giuliani                                                                                        |
+| FID57      | FID57a            | Geert Verbeke and Carla Verbeke-Lens                                                                                 |
+| FID57      | FID57b            | Geert Verbeke and Carla Verbeke-Lens                                                                                 |
+| FID570     | FID570a           | Elena and Claudio Cerasi                                                                                             |
+| FID570     | FID570b           | Elena and Claudio Cerasi                                                                                             |
+| FID574     | FID574a           | Mary and Andy Pilara                                                                                                 |
+| FID574     | FID574b           | Mary and Andy Pilara                                                                                                 |
+| FID6       | FID6a             | Bassilis and Marina Theocharakis                                                                                     |
+| FID6       | FID6b             | Bassilis and Marina Theocharakis                                                                                     |
+| FID604     | FID604a           | Mei and Allan Warburg                                                                                                |
+| FID604     | FID604b           | Mei and Allan Warburg                                                                                                |
+| FID632     | FID632a           | Jo and Marlies Eyck                                                                                                  |
+| FID632     | FID632b           | Jo and Marlies Eyck                                                                                                  |
+| FID640     | FID640a           | Yana and Zenko Aftanaziv                                                                                             |
+| FID640     | FID640b           | Yana and Zenko Aftanaziv                                                                                             |
+| FID86      | FID86a            | Eli and Edythe Broad                                                                                                 |
+| FID86      | FID86b            | Eli and Edythe Broad                                                                                                 |
+| FID89      | FID89a            | Eva-Maria Fahrner-Tutsek and Alexander Tutsek                                                                        |
+| FID89      | FID89b            | Eva-Maria Fahrner-Tutsek and Alexander Tutsek                                                                        |
+| FID94      | FID94a            | Jan and Meda Mladkova                                                                                                |
+| FID94      | FID94b            | Jan and Meda Mladkova                                                                                                |
+| FID520     | FID520a           | Fairfax N. Dorn and Virginia Lebermann                                                                               |
+| FID520     | FID520b           | Fairfax N. Dorn and Virginia Lebermann                                                                               |
+| FID1       | FID1a             | Heidi Goëss-Horten                                                                                                   |
+| FID106     | FID106a           | Nathalie Guiot                                                                                                       |
+| FID155     | FID155a           | Jeannette von Fürstenberg                                                                                            |
+| FID178     | FID178a           | Judith Neilson                                                                                                       |
+| FID219     | FID219a           | Astrid Ullens de Schooten Whettnall                                                                                  |
+| FID221     | FID221a           | Andra Lauffs-Wegner                                                                                                  |
+| FID23      | FID23a            | Kiran Nadar                                                                                                          |
+| FID238     | FID238a           | Maria Amalia Lacroze de Fortabat                                                                                     |
+| FID248     | FID248a           | Marli Hoppe-Ritter                                                                                                   |
+| FID256     | FID256a           | Maja Oeri                                                                                                            |
+| FID257     | FID257a           | Susanne Klatten                                                                                                      |
+| FID314     | FID314a           | Erika Hoffmann                                                                                                       |
+| FID356     | FID356a           | Rosa and Carlos de la Cruz                                                                                           |
+| FID375     | FID375a           | Agnès Troublé (Agnès B)                                                                                              |
+| FID377     | FID377a           | Alice Walton                                                                                                         |
+| FID395     | FID395a           | María Cristina Masaveu Peterson                                                                                      |
+| FID41      | FID41a            | Aida Mahmudova                                                                                                       |
+| FID416     | FID416a           | Galila Barzilaï-Hollander                                                                                            |
+| FID426     | FID426a           | Therese Abraham                                                                                                      |
+| FID427     | FID427a           | Melissa English                                                                                                      |
+| FID451     | FID451a           | Sylvia Ströher                                                                                                       |
+| FID462     | FID462a           | Inhee Lee                                                                                                            |
+| FID472     | FID472a           | Chasun Kim                                                                                                           |
+| FID474     | FID474a           | Doyoung Kim                                                                                                          |
+| FID475     | FID475a           | Sukhee Byeon                                                                                                         |
+| FID476     | FID476a           | Jiinsik Kim                                                                                                          |
+| FID477     | FID477a           | Yeonsoo Lee                                                                                                          |
+| FID478     | FID478a           | Jungju Hong                                                                                                          |
+| FID48      | FID48a            | Angela Rosengart                                                                                                     |
+| FID481     | FID481a           | Jung-Soon Koo                                                                                                        |
+| FID483     | FID483a           | Kyung Chu                                                                                                            |
+| FID492     | FID492a           | Chunsoon Park                                                                                                        |
+| FID508     | FID508a           | Tomie Sera                                                                                                           |
+| FID515     | FID515a           | Maria da Graça Carmona e Costa                                                                                       |
+| FID517     | FID517a           | Muriel Salem                                                                                                         |
+| FID530     | FID530a           | Miuccia Prada                                                                                                        |
+| FID535     | FID535a           | Stella Kesaeva                                                                                                       |
+| FID537     | FID537a           | Dasha Zhukova                                                                                                        |
+| FID54      | FID54a            | Beth Rudin DeWoody                                                                                                   |
+| FID547     | FID547a           | Marianne Langen                                                                                                      |
+| FID560     | FID560a           | Sarah Miller Meigs                                                                                                   |
+| FID561     | FID561a           | Joanna Madelska                                                                                                      |
+| FID58      | FID58a            | Marika Wachtmeister                                                                                                  |
+| FID580     | FID580a           | Joon-ui No                                                                                                           |
+| FID581     | FID581a           | Kang Ja Park                                                                                                         |
+| FID584     | FID584a           | Munsun Park                                                                                                          |
+| FID585     | FID585a           | Myung-ok Lee                                                                                                         |
+| FID588     | FID588a           | Soh Yeong Roh                                                                                                        |
+| FID589     | FID589a           | Youngsook Song                                                                                                       |
+| FID592     | FID592a           | Kyung Ja Kim                                                                                                         |
+| FID601     | FID601a           | Christiane Schaufler-Münch                                                                                           |
+| FID606     | FID606a           | Marina Varvarina                                                                                                     |
+| FID607     | FID607a           | Nicola Erni                                                                                                          |
+| FID611     | FID611a           | Haekyun Lee                                                                                                          |
+| FID614     | FID614a           | Noemi Givon                                                                                                          |
+| FID615     | FID615a           | Patrizia Sandretto Re Rebaudengo                                                                                     |
+| FID634     | FID634a           | Yoonsoon Kim                                                                                                         |
+| FID65      | FID65a            | Julia Stoschek                                                                                                       |
+| FID66      | FID66a            | Maja Hoffmann                                                                                                        |
+| FID67      | FID67a            | Jimena Blázquez Abascal                                                                                              |
+| FID69      | FID69a            | Grażyna Kulczyk                                                                                                      |
+| FID70      | FID70a            | Vera Chaves Barcellos                                                                                                |
+| FID77      | FID77a            | Helga de Alvear                                                                                                      |
+| FID95      | FID95a            | Ilana Goor                                                                                                           |
+| FID28      | FID28a            | Antinori family                                                                                                      |
+| FID620     | FID620a           | Hilti Family                                                                                                         |
