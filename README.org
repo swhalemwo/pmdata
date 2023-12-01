@@ -55,8 +55,8 @@ digraph D {
 
 
 *** MOW
-Museums of the World (MOW) is a database created and (somewhat) maintained by deGruyter. Access was acquired by the UvA library as part of the "Return of the Medici" project in 2021, after which the database was sent by deGruyter in machine-readable format (`MOW2020_Output.xml`, which cannot be shared). Parsing of the XML file is done in python (`mow.py`), which produces three csv files:
-- `mow.csv`: the main file with museum information: ID, name, location, opening year, number of branches/staff;
+Museums of the World (MOW) is a database created and (somewhat) maintained by deGruyter. Access was acquired by the UvA library as part of the "Return of the Medici" project in 2021, after which the database was sent by deGruyter in machine-readable format (=MOW2020_Output.xml=, which cannot be shared). Parsing of the XML file is done in python (=mow.py=), which produces three csv files:
+- mow.csv: the main file with museum information: ID, name, location, opening year, number of branches/staff;
   one line per museum (55k entries)
 - type.csv: links between museum ID and museum type (e.g. History Museum, Art Museum, Music Museum);
   multiple types are possible, therefore in long format (66k entries)
