@@ -28,14 +28,7 @@
 
 go to google sheets, downloads as .csv
 
-
-
-
-
-
 [[file:doc/pmdb_flow.png]]
-
-
 
 
 *** MOW
