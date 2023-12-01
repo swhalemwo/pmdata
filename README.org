@@ -27,7 +27,7 @@
 *** PMDB_FILE
 go to google sheets, downloads as .csv
 
-#+begin_src dot :file ./doc/pmdb_flow.pdf
+#+begin_src dot :file ./doc/pmdb_flow.png
 digraph D {
   node[shape = "record"]
   PMDB -> gd_pmdb_excl
@@ -47,7 +47,7 @@ digraph D {
 #+end_src
 
 #+RESULTS:
-[[file:./doc/pmdb_flow.pdf]]
+[[file:./doc/pmdb_flow.png]]
 
 
 *** MOW
