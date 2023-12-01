@@ -28,24 +28,8 @@
 
 go to google sheets, downloads as .csv
 
-#+begin_src dot :file doc/pmdb_flow.png
-digraph D {
-  node[shape = "record"]
-  PMDB -> gd_pmdb_excl
-  gd_pmdb_excl -> gd_pmdb
 
-  
 
-  gd_pmdb -> t_gwd_pmdb_founder_person
-  PMDB_FOUNDER_PERSON_FILE -> t_gwd_pmdb_founder_person[label="checks coverage"]
-  t_gwd_pmdb_founder_person -> PMDB_FOUNDER_PERSON_FILE[label="writes once"]
-
-  
-}
-#+end_src
-
-#+RESULTS:
-[[file:doc/pmdb_flow.png]]
 
 
 
