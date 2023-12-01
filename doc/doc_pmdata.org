@@ -2,7 +2,7 @@
 
 ** PMDB
 
-#+begin_src dot :file doc/pmdb_flow.png
+#+begin_src dot :file pmdb_flow.png
 digraph D {
   node[shape = "record"]
   PMDB -> gd_pmdb_excl
@@ -18,7 +18,168 @@ digraph D {
 }
 #+end_src
 
+#+RESULTS:
+[[file:pmdb_flow.png]]
+
 ** Artnews
+
+*** flowchart
+:PROPERTIES:
+:ID:       ca94a076-c5ad-481c-826d-6663c08be525
+:END:
+#+begin_src dot :file artnews_sketch.png
+digraph D {
+  node [shape = "box"];
+  // splines = false;
+  compound = true;
+
+  subgraph cluster_scraping {
+    label = "scraping"
+    artnews_scraping_all -> selenium
+    artnews_scraping_genre -> selenium2
+    
+  }
+
+  subgraph cluster_parsing {
+    label = "parsing"
+    selenium -> artnews_parsing_all
+    selenium2 -> artnews_parsing_genre
+    artnews_parsing_all -> ranking_all
+    ranking_all[label="ranking.csv"]
+    artnews_parsing_genre -> ranking_genre
+    ranking_genre[label="ranking_genre.csv"]
+  }
+
+
+  subgraph cluster_preprocessing {
+    label = "pre-processing";
+
+    t_gwd_artnews_clctr
+    t_gwd_artnews_collector_person
+    collector_person_file
+    artnews_apecprn_file[label="artnews_apecprn_file"]
+
+    manually_check_couple -> collector_entries_file
+    collector_entries_file -> t_gwd_artnews_clctr[label="checks coverage"]
+
+    manually_split_couples -> collector_person_file
+
+    t_gwd_artnews_clctr -> collector_entries_file[label="WRITES ONCE"]
+    ranking_all -> t_gwd_artnews_clctr
+
+    collector_entries_file -> t_gwd_artnews_collector_person
+    t_gwd_artnews_collector_person -> collector_person_file[label="WRITES ONCE"]
+    collector_person_file -> t_gwd_artnews_collector_person[label="checks coverage"]
+
+    manually_check_for_name_overlap -> artnews_apecprn_file
+
+    t_subset -> t_gwd_apecprn
+    collector_person_file -> t_gwd_apecprn
+    collector_person_file -> gd_artnews_collector_person
+    t_gwd_apecprn -> artnews_apecprn_file[label="WRITES ONCE"]
+    artnews_apecprn_file -> t_gwd_apecprn[label="checks coverage"]
+
+    
+    artnews_apecprn_file -> gd_artnews_collector_person
+
+    gd_artnews_collector_person -> gd_artnews_person
+
+    
+    
+    
+}
+
+ranking_all -> readin_artnews_all
+ranking_genre -> generate_artnews_data
+artnews_loc -> readin_artnews_all
+readin_artnews_all -> generate_artnews_data
+
+}
+
+
+
+#+end_src  
+
+#+RESULTS:
+[[file:artnews_sketch.png]]
+
+
+*** table relations
+:PROPERTIES:
+:ID:       9e444429-0574-45e9-aa4c-485c8a03b0d5
+:END:
+#+begin_src dot :file artnews_data_structure.png
+digraph D {
+  rankdir = "LR"
+  node[shape = "record"]
+
+  AN_time [
+	   label = "<f0> AN_time | <f1> position | <name> name | <ID_ACE> an_clctr_entry | year |  around 8k"
+	   ];
+
+
+  AN_collectors [
+	   label = "<f0> AN_collectors| <name> name | <ID> an_clctr_entry | is_couple? | around 900"
+	   ];
+
+  // like AN_collectors, but with couples split up
+  AN_collector_persons [
+	label = "AN_collector_person | name | <ID_ACPE> ACPE | <ID_ACE> an_cltr_entry | <ID_APE> ID_APE
+	| around 1200"];
+
+  
+  // persons are now unique: in AN_collector_persons, the same person can be part of different collectors
+  // e.g. once on her own, once as part of couple
+  AN_person [
+	   label = "<f0> AN_person | <f1> name | <ID_ACPE> an_clctr_person_entry | <ID_person> an_person_entry |
+	   around 1100"
+	   ];
+
+  PMDB_museums [
+		label = "<f1> PMDB_museums |  museum_name | <founder_name> founder_name | <founder_id> founder_id
+		| around 450"
+		];
+
+  PMDB_founders [
+		 label = "PMDB_founders | <founder_id> founder_id | is_couple | around 400"]
+
+
+  PMDB_collectors [
+		   label = "PMDB_collector_person | name | <ID>PMDB_collector_ID | around 700 "
+		   ]
+
+  // this table is necessary because of couples and multiple founders, i think?
+  // if there were no couples, i could link collector person via name?
+  // if there were no repeat founders, collector-person would be longer?
+  // idk why, but just feels more linkable
+  PMDB_founder_collector_links [
+				label = "PMDB_founder_collector_links | <founder_id> founder_id |
+				<collector_id> collector_id | around 510"]
+  
+  // this is what has to be manually created, maybe I can use my MOW framework
+  // this is what Luisa did 
+  PMDB_collector_AN_collector_links[
+				    label = "PMDB_collector_AN_collector_links |
+				    <PMDB_collector> PMDB_collector_ID |
+				    <AN_collector> AN_collector_ID"]
+
+  AN_time:ID_ACE -> AN_collectors:ID
+  // AN_collectors:ID -> AN_person:ID_clctr [dir=back]
+  AN_collectors:ID -> AN_collector_persons:ID_ACE
+  AN_collector_persons:ID_APE -> AN_person:ID_person
+  
+  PMDB_museums:founder_id -> PMDB_founders:founder_id
+  PMDB_founders:founder_id -> PMDB_founder_collector_links:founder_id
+  PMDB_founder_collector_links:collector_id -> PMDB_collectors:ID [dir=back]
+
+  PMDB_collectors:ID -> PMDB_collector_AN_collector_links:PMDB_collector
+  AN_person:ID_person -> PMDB_collector_AN_collector_links:AN_collector
+  
+}
+#+end_src
+
+#+RESULTS:
+[[file:artnews_data_structure.png]]
 
 
 
