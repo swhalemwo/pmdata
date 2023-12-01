@@ -49,6 +49,10 @@ digraph D {
 #+RESULTS:
 [[file:./doc/pmdb_flow.png]]
 
+[[file:doc/pmdb_flow.png]]
+
+[[file:doc/pmdb_flow.pdf]]
+
 
 *** MOW
 Museums of the World (MOW) is a database created and (somewhat) maintained by deGruyter.
