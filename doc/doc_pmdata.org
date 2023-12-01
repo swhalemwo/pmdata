@@ -21,7 +21,7 @@ digraph D {
 #+RESULTS:
 [[file:pmdb_flow.png]]
 
-
+[[file:pmdb_flow.png]]
 
 ** Artnews
 
@@ -106,6 +106,8 @@ readin_artnews_all -> generate_artnews_data
 [[file:artnews_sketch.png]]
 
 
+[[file:artnews_sketch.png]]
+
 *** table relations
 :PROPERTIES:
 :ID:       9e444429-0574-45e9-aa4c-485c8a03b0d5
@@ -181,6 +183,8 @@ digraph D {
 #+end_src
 
 #+RESULTS:
+[[file:artnews_data_structure.png]]
+
 [[file:artnews_data_structure.png]]
 
 
