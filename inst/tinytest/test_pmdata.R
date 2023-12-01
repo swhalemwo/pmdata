@@ -43,6 +43,16 @@ expect_true(pmdata:::t_gwd_pmdb_founder_person(
                           "and that founder_person_id is unique"))
 
 
+dt_pmdb_founder_person <- gd_pmdb_founder_person(
+    PMDB_FOUNDER_PERSON_FILE_CSV = PMDATA_LOCS$PMDB_FOUNDER_PERSON_FILE_CSV,
+    PMDB_PPECPRN_FILE = PMDATA_LOCS$PMDB_PPECPRN_FILE)
+
+expect_true(pmdata:::t_gwd_ppecprn(dt_pmdb_founder_person, PMDB_PPECPRN_FILE = PMDATA_LOCS$PMDB_PPECPRN_FILE),
+            info = paste0("test that every pair of founder names that have a low string distance ",
+                          "have been checked manually."))
+            
+
+
 ## **  ---------- MOW CHECKS -------------------
 
 dt_mow_pmdb_match <- pmdata:::gd_mow_pmdb_matchres(PMDATA_LOCS$MOW_PMDB_MATCHRES_FILE)
@@ -56,10 +66,10 @@ expect_true(dt_mow_pmdb_match[dt_pmdb, on = .(PMDB_ID = ID)][, all(!is.na(MOW_ID
 ## ** -------------- ARTnews checks -----------
 
 ## expect_true(F)
-print("kappa")
+
 dt_acpe_w_id1 <- gd_artnews_collector_person(
-                      ARTNEWS_COLLECTOR_PERSON_FILE_ORG = PMDATA_LOCS$ARTNEWS_COLLECTOR_PERSON_FILE_ORG,
-                      ARTNEWS_APECPRN_FILE = PMDATA_LOCS$ARTNEWS_APECPRN_FILE)
+    ARTNEWS_COLLECTOR_PERSON_FILE_ORG = PMDATA_LOCS$ARTNEWS_COLLECTOR_PERSON_FILE_ORG,
+    ARTNEWS_APECPRN_FILE = PMDATA_LOCS$ARTNEWS_APECPRN_FILE)
 
 ## just_some_test()
 
