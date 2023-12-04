@@ -10,6 +10,12 @@ library(collapse)
 source("~/Dropbox/technical_stuff_general/dotfiles/.Rprofile")
 fstd <- c()
 
+## add section for manually debuggging? hopefully works
+if (interactive()) {
+    library(pmdata)
+    library(tinytest)
+}
+    
 PMDATA_LOCS <- gc_pmdata_locs()
 ## expect_equal(length(PMDATA_LOCS), 5)
 
@@ -50,8 +56,15 @@ dt_pmdb_founder_person <- gd_pmdb_founder_person(
 expect_true(pmdata:::t_gwd_ppecprn(dt_pmdb_founder_person, PMDB_PPECPRN_FILE = PMDATA_LOCS$PMDB_PPECPRN_FILE),
             info = paste0("test that every pair of founder names that have a low string distance ",
                           "have been checked manually."))
-            
 
+## expect_equal(pmdata:::t_gwd_ppecprn(dt_pmdb_founder_person, PMDB_PPECPRN_FILE = PMDATA_LOCS$PMDB_PPECPRN_FILE),
+##              "j", info = "kappa")
+
+## expect_equal("jj", "kk")
+
+## expect_true("İnan Kıraç" > "Suna Kıraç")
+             
+             
 
 ## **  ---------- MOW CHECKS -------------------
 

@@ -203,6 +203,9 @@ t_subset <- function(dt_acpe_w_id1) {
     ## print(dt_subset_prep[grepl("Alsdorf", clctr_name)])
 
     if (fnrow(dt_subset_prep[subset==T & (clctr_name != clctr_name2)]) > 0) {
+
+        print(dt_subset_prep[subset==T & (clctr_name != clctr_name2)])
+        
         stop(paste0("not all subsets are dealt with. add them to ARTNEWS_APECPRN_FILE.",
                     "if there is a subset match that is not a real match, add an exception here or elsewhere"))}
         
@@ -521,7 +524,6 @@ t_gwd_ppecprn <- function(dt_pmdb_founder_person_wid,
     if (as.character(match.call()[1]) %in% fstd){browser()}
     1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
 
-    browser()
     pmdb_person_id <- founder_name <- founder_name2 <- NULL
     
     ## stringdist check
@@ -545,10 +547,27 @@ t_gwd_ppecprn <- function(dt_pmdb_founder_person_wid,
     dt_ppecprn_ff <- fread(PMDB_PPECPRN_FILE)
 
     ## check that all similar sounding names in PMDB are covered
-    tres <- F
-    tres <- fnrow(dt_ppecprn[!dt_ppecprn_ff, on = .(founder_name, founder_name2)]) == 0
+    ## tres <- T
+    ## tres <- F
+    ## tres <- fnrow(dt_ppecprn[!dt_ppecprn_ff, on = .(founder_name, founder_name2)]) == 0
 
-    print(dt_ppecprn[!dt_ppecprn_ff, on = .(founder_name, founder_name2)])
+    ## tres <- fnrow(dt_ppecprn[!dt_ppecprn_ff, on = .(founder_name, founder_name2)])
+
+    dt_redux <- dt_ppecprn[!dt_ppecprn_ff, on = .(founder_name, founder_name2)] %>%
+        .[, founder_name2 := as.character(founder_name2)]
+
+    tres <- fnrow(dt_redux) == 0
+        
+
+    
+    ## dt_redux[1, paste0(.SD, collapse = "--")]
+    
+    ## tres <- dt_redux[, paste0(.SD, collapse = "--")]
+
+    ## dt_ppecprn_ff[founder_name == "İnan Kıraç"]
+
+    
+    ## print(dt_ppecprn[!dt_ppecprn_ff, on = .(founder_name, founder_name2)])
 
     return(tres)
 
