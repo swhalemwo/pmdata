@@ -525,7 +525,9 @@ t_gwd_ppecprn <- function(dt_pmdb_founder_person_wid,
     1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
 
     pmdb_person_id <- founder_name <- founder_name2 <- NULL
-    
+
+    copy(dt_pmdb_founder_person_wid) %>% .[, .(clctr_name = founder_name)] %>% t_subset
+            
     ## stringdist check
     ## heavily adapted from t_gwd_apecprn: use stringdistmatrix, check close ones, write them to file
     ## check the file later on if every close one has been checked manually
