@@ -8,13 +8,33 @@ digraph D {
   PMDB -> gd_pmdb_excl
   gd_pmdb_excl -> gd_pmdb
 
-  
+
 
   gd_pmdb -> t_gwd_pmdb_founder_person
   PMDB_FOUNDER_PERSON_FILE -> t_gwd_pmdb_founder_person[label="checks coverage"]
   t_gwd_pmdb_founder_person -> PMDB_FOUNDER_PERSON_FILE[label="writes once"]
 
+  manually_split_couples -> PMDB_FOUNDER_PERSON_FILE
+  manually_check_for_name_overlap -> PMDB_PPECPRN_FILE
+
+  PMDB_PPECPRN_FILE -> gd_pmdb_founder_person
+  PMDB_FOUNDER_PERSON_FILE -> gd_pmdb_founder_person
   
+  PMDB_FOUNDER_PERSON_FILE -> t_gwd_ppecprn
+
+  // PMDB_PPECPRN_FILE -> t_gwd_pmdb_ppecprn[label="checks coverage", force=0]
+  // for some reason need dir back here to get proper order..
+  t_subset -> t_gwd_ppecprn
+  t_gwd_ppecprn -> PMDB_PPECPRN_FILE[label="writes once"]
+  t_gwd_ppecprn -> PMDB_PPECPRN_FILE[dir = "back", label="checks coverage"]
+  
+
+  gd_pmdb_founder_person -> gd_pmdb_person
+  
+
+
+
+
 }
 #+end_src
 
@@ -148,24 +168,24 @@ digraph D {
 		 label = "PMDB_founders | <founder_id> founder_id | is_couple | around 400"]
 
 
-  PMDB_collectors [
-		   label = "PMDB_collector_person | name | <ID>PMDB_collector_ID | around 700 "
+  PMDB_persons [
+		   label = "PMDB_persons | name | <pmdb_person_id>pmdb_person_id | around 700 "
 		   ]
 
   // this table is necessary because of couples and multiple founders, i think?
   // if there were no couples, i could link collector person via name?
   // if there were no repeat founders, collector-person would be longer?
   // idk why, but just feels more linkable
-  PMDB_founder_collector_links [
-				label = "PMDB_founder_collector_links | <founder_id> founder_id |
-				<collector_id> collector_id | around 510"]
+  PMDB_founder_person_links [
+				label = "PMDB_founder_person_links | <founder_id> founder_id |
+				<pmdb_person_id> pmdb_person_id | around 739"]
   
   // this is what has to be manually created, maybe I can use my MOW framework
   // this is what Luisa did 
-  PMDB_collector_AN_collector_links[
-				    label = "PMDB_collector_AN_collector_links |
-				    <PMDB_collector> PMDB_collector_ID |
-				    <AN_collector> AN_collector_ID"]
+  PMDB_person_AN_person_links[
+				    label = "PMDB_person_AN_person_links |
+				    <pmdb_person_id> pmdb_person_id |
+				    <an_collector_id> an_collector_id"]
 
   AN_time:ID_ACE -> AN_collectors:ID
   // AN_collectors:ID -> AN_person:ID_clctr [dir=back]
@@ -173,11 +193,11 @@ digraph D {
   AN_collector_persons:ID_APE -> AN_person:ID_person
   
   PMDB_museums:founder_id -> PMDB_founders:founder_id
-  PMDB_founders:founder_id -> PMDB_founder_collector_links:founder_id
-  PMDB_founder_collector_links:collector_id -> PMDB_collectors:ID [dir=back]
+  PMDB_founders:founder_id -> PMDB_founder_person_links:founder_id
+  PMDB_founder_person_links:pmdb_person_id -> PMDB_persons:pmdb_person_id [dir=back]
 
-  PMDB_collectors:ID -> PMDB_collector_AN_collector_links:PMDB_collector
-  AN_person:ID_person -> PMDB_collector_AN_collector_links:AN_collector
+  PMDB_persons:pmdb_person_id -> PMDB_person_AN_person_links:pmdb_person_id
+  AN_person:ID_person -> PMDB_person_AN_person_links:an_collector_id
   
 }
 #+end_src

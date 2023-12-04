@@ -646,6 +646,34 @@ gd_pmdb_founder_person <- function(
 
 }
 
+#' generate list of unique PMDB founder-persons, with their pmdb_person_id
+#' @param PMDB_FOUNDER_PERSON_FILE_CSV to be passed to gd_pmdb_founder_person
+#' @param PMDB_PPECPRN_FILE to be passed to gd_pmdb_founder_person
+#' @return dt_pmdb_person: dt with pmdb_person_id, founder_name, no duplicates in either
+gd_pmdb_person <- function(
+                           PMDB_FOUNDER_PERSON_FILE_CSV = PMDATA_LOCS$PMDB_FOUNDER_PERSON_FILE_CSV,
+                           PMDB_PPECPRN_FILE = PMDATA_LOCS$PMDB_PPECPRN_FILE) {
+
+
+    pmdb_person_id <- founder_name <- NULL
+
+    dt_pmdb_founder_person <- gd_pmdb_founder_person(PMDB_FOUNDER_PERSON_FILE_CSV,
+                                                     PMDB_PPECPRN_FILE)
+
+    dt_pmdb_person <- dt_pmdb_founder_person[, .(pmdb_person_id, founder_name)] %>% funique
+
+    if (dt_pmdb_person[, any(sapply(.SD, any_duplicated))]) {stop("fix duplicates")}
+
+    return(dt_pmdb_person)
+}
+        
+## gd_pmdb_person()   
+
+## t1 <- Sys.time()
+## gd_pmdb_founder_person()
+## t2 <- Sys.time()
+
+
 
 ## PMDATA_LOCS <- gc_pmdata_locs()
 
