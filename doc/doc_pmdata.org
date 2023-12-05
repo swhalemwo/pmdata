@@ -113,13 +113,13 @@ digraph D {
 
 ranking_all -> readin_artnews_all
 ranking_genre -> generate_artnews_data
-artnews_loc -> readin_artnews_all
 readin_artnews_all -> generate_artnews_data
 
+manually_standardize_locations -> ARTNEWS_LOCTABLE_FILE
+ARTNEWS_LOCTABLE_FILE -> t_gd_artnews_location_FIXME
+ranking_all -> t_gd_artnews_location_FIXME
+
 }
-
-
-
 #+end_src  
 
 #+RESULTS:

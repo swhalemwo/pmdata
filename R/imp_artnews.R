@@ -688,10 +688,14 @@ gd_pmdb_person <- function(
 #' @param ARTNEWS_LOCTABLE_FILE the loctable: non-standardized locations in Artnews to iso3c
 #' @param ARTNEWS_TIME_FILE the ranking time
 #' @export
-t_gd_an_loctable <- function(ARTNEWS_LOCTABLE_FILE = PMDATA_LOCS$ARTNEWS_LOCTABLE_FILE,
+t_gd_artnews_location <- function(ARTNEWS_LOCTABLE_FILE = PMDATA_LOCS$ARTNEWS_LOCTABLE_FILE,
                              ARTNEWS_TIME_FILE  = PMDATA_LOCS$ARTNEWS_TIME_FILE) {
     if (as.character(match.call()[[1]]) %in% fstd){browser()}
     1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
+
+    
+    clctr_name <- i.country2 <- id <- iso3c <- loc_split <- location <- NULL
+
     
     dt_an_time <- fread(ARTNEWS_TIME_FILE)
     
@@ -732,6 +736,7 @@ t_gd_an_loctable <- function(ARTNEWS_LOCTABLE_FILE = PMDATA_LOCS$ARTNEWS_LOCTABL
 ## PMDATA_LOCS <- gc_pmdata_locs()
 
 ## t1 <- Sys.time()
+## t_gd_artnews_location()
 ## t_gd_an_loctable()
 ## t2 <- Sys.time()
 
