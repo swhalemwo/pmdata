@@ -51,7 +51,8 @@ gc_pmdata_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_so
         ARTNEWS_COLLECTOR_PERSON_FILE     = paste0(DATA_DIR, "artnews/an_clctr_person.csv"),
         ARTNEWS_COLLECTOR_PERSON_FILE_ORG = paste0(DATA_DIR, "artnews/an_clctr_person_org.csv"),
         ARTNEWS_PERSON_FILE               = paste0(DATA_DIR, "artnews/an_person.csv"), # file for person uniqueness
-        ARTNEWS_APECPRN_FILE              = paste0(DATA_DIR, "artnews/an_apecprn.csv") # check person uniqueness
+        ARTNEWS_APECPRN_FILE              = paste0(DATA_DIR, "artnews/an_apecprn.csv"), # check person uniqueness
+        ARTNEWS_LOCTABLE_FILE             = paste0(DATA_DIR, "artnews/an_loctable.csv")
         
     )
     

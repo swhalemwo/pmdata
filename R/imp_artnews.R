@@ -667,6 +667,7 @@ gd_pmdb_person <- function(
     return(dt_pmdb_person)
 }
         
+## PMDATA_LOCS <- gc_pmdata_locs()
 ## gd_pmdb_person()   
 
 ## t1 <- Sys.time()
@@ -674,9 +675,66 @@ gd_pmdb_person <- function(
 ## t2 <- Sys.time()
 
 
+## gd_artnews_person()
 
-## PMDATA_LOCS <- gc_pmdata_locs()
 
 ## gd_pmdb_founder_person() %>% t_gwd_ppecprn
 
 
+#' read in the extra locations which are not auto matched by countrycode
+#' These have been previously generated during org_pop
+#' check that all of collector locations are covered: maybe that should be elsewhere
+#' FIXME: put into two functions with having written countrycode to file to save time and have proper testing
+#' @param ARTNEWS_LOCTABLE_FILE the loctable: non-standardized locations in Artnews to iso3c
+#' @param ARTNEWS_TIME_FILE the ranking time
+#' @export
+t_gd_an_loctable <- function(ARTNEWS_LOCTABLE_FILE = PMDATA_LOCS$ARTNEWS_LOCTABLE_FILE,
+                             ARTNEWS_TIME_FILE  = PMDATA_LOCS$ARTNEWS_TIME_FILE) {
+    if (as.character(match.call()[[1]]) %in% fstd){browser()}
+    1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
+    
+    dt_an_time <- fread(ARTNEWS_TIME_FILE)
+    
+    ## location doesn't change over time: every collector has one location for all observations
+    fnrow(dt_an_time[, .(clctr_name, location)]) == fnrow(dt_an_time[, .(clctr_name)])
+
+    ## get unique locations
+    dt_an_clctr_loc <- dt_an_time[, .(clctr_name, id, location)] %>% funique
+    
+    ## first split AN locations by ";", then see what can be matched by countrycode by default
+    dt_clctr_loc1 <- dt_an_clctr_loc[, .(loc_split = unlist(tstrsplit(location, ";"))), .(clctr_name, id)] %>%
+        .[, loc_split := trimws(loc_split)] %>% 
+        .[, iso3c := countrycode(loc_split, "country.name", "iso3c", warn = F)]
+
+    ## read in the location table
+    dt_an_loctable <- fread(ARTNEWS_LOCTABLE_FILE)
+
+    ## see which remaing are matched by dt_an_loctable
+    dt_clctr_loc1[dt_an_loctable, iso3c := i.country2, on= .(loc_split = location)]
+
+    ## see which are still remaining: this has to be zero
+    dt_clctr_loc1[is.na(iso3c), .(loc_split)] %>% funique %>% print(n=80)
+    dt_clctr_loc1[is.na(iso3c), .N] == 0
+
+    dt_clctr_loc1[, .(ACE_id = id, iso3c)] %>% funique
+
+
+    ## streamline dt_loctable: yeet the semicolon locations by pre-splitting them
+    ## selecting the needed ones only after dt_clctr_loc2 has been generated, to generate it again easily
+    ## ARTNEWS_LOCTABLE_FILE2 <-"/home/johannes/Dropbox/phd/pmdata/data_sources/artnews/an_loctable2.csv"
+    
+    ## dt_clctr_loc2[, .(location = loc_split, country2 = iso3c1)] %>% funique %>% fwrite(ARTNEWS_LOCTABLE_FILE)
+
+}
+
+
+
+## PMDATA_LOCS <- gc_pmdata_locs()
+
+## t1 <- Sys.time()
+## t_gd_an_loctable()
+## t2 <- Sys.time()
+
+
+
+                             
