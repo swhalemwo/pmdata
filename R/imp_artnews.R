@@ -717,10 +717,10 @@ t_gd_artnews_location <- function(ARTNEWS_LOCTABLE_FILE = PMDATA_LOCS$ARTNEWS_LO
     dt_clctr_loc1[dt_an_loctable, iso3c := i.country2, on= .(loc_split = location)]
 
     ## see which are still remaining: this has to be zero
-    dt_clctr_loc1[is.na(iso3c), .(loc_split)] %>% funique %>% print(n=80)
+    ## dt_clctr_loc1[is.na(iso3c), .(loc_split)] %>% funique %>% print(n=80)
     dt_clctr_loc1[is.na(iso3c), .N] == 0
 
-    dt_clctr_loc1[, .(ACE_id = id, iso3c)] %>% funique
+    return(funique(dt_clctr_loc1[, .(ACE_id = id, iso3c)]))
 
 
     ## streamline dt_loctable: yeet the semicolon locations by pre-splitting them
@@ -741,5 +741,48 @@ t_gd_artnews_location <- function(ARTNEWS_LOCTABLE_FILE = PMDATA_LOCS$ARTNEWS_LO
 ## t2 <- Sys.time()
 
 
-
+#' @param ARTNEWS_COLLECTOR_PERSON_FILE_ORG 
                              
+gwd_artnews_clctrs_tomatch <- function(
+                               ARTNEWS_COLLECTOR_PERSON_FILE_ORG = PMDATA_LOCS$ARTNEWS_COLLECTOR_PERSON_FILE_ORG,
+                               ARTNEWS_APECPRN_FILE = PMDATA_LOCS$ARTNEWS_APECPRN_FILE,
+                               ARTNEWS_LOCTABLE_FILE = PMDATA_LOCS$ARTNEWS_LOCTABLE_FILE,
+                               ARTNEWS_TIME_FILE = PMDATA_LOCS$ARTNEWS_TIME_FILE) {
+    if (as.character(match.call()[[1]]) %in% fstd){browser()}
+    1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
+
+    ## generated needed files
+    dt_artnews_person <- gd_artnews_person(ARTNEWS_COLLECTOR_PERSON_FILE_ORG, ARTNEWS_APECPRN_FILE)
+
+    dt_artnews_location <- t_gd_artnews_location(ARTNEWS_LOCTABLE_FILE, ARTNEWS_TIME_FILE)
+
+    dt_artnews_collector_person <- gd_artnews_collector_person(
+        ARTNEWS_COLLECTOR_PERSON_FILE_ORG, ARTNEWS_APECPRN_FILE)
+
+    ## start with APE, join with ACE to add iso3c, collapse iso3c on clctr
+    dt_info <- join(dt_artnews_person, dt_artnews_collector_person, how = "left", on = "an_person_id") %>%
+        dt_artnews_location[., on = .(ACE_id = an_entry_id)] %>%
+        .[, .(an_person_id, iso3c, clctr_name)] %>%
+        .[, .(info = paste0(iso3c, collapse = "-")), .(clctr_name, an_person_id)]
+
+    ## generate alist sections
+    artnews_segs <- dt_info[, sprintf("(\"%s\" . ((id . \"%s\") (info . \"%s\")))", clctr_name, an_person_id, info)]
+
+    ## combine into alist-string
+    artnews_alist_str <- c("(setq artnews-persons '(", artnews_segs, "))")
+
+    artnews_person_file_match <- paste0(dirname(ARTNEWS_APECPRN_FILE), "/artnews-persons.el")
+    
+    fileConn <- file(artnews_person_file_match)
+    writeLines(artnews_alist_str, fileConn)
+    close(fileConn)
+
+}
+
+## gwd_artnews_clctrs_tomatch()
+
+
+
+
+                                            
+    
