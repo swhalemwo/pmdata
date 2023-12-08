@@ -17,10 +17,10 @@ digraph D {
   manually_split_couples -> PMDB_FOUNDER_PERSON_FILE
   manually_check_for_name_overlap -> PMDB_PPECPRN_FILE
 
-  PMDB_PPECPRN_FILE -> gd_pmdb_founder_person
-  PMDB_FOUNDER_PERSON_FILE -> gd_pmdb_founder_person
+  // PMDB_PPECPRN_FILE -> gd_pmdb_founder_person
+  // PMDB_FOUNDER_PERSON_FILE -> gd_pmdb_founder_person
   
-  PMDB_FOUNDER_PERSON_FILE -> t_gwd_ppecprn
+  // PMDB_FOUNDER_PERSON_FILE -> t_gwd_ppecprn
 
   // PMDB_PPECPRN_FILE -> t_gwd_pmdb_ppecprn[label="checks coverage", force=0]
   // for some reason need dir back here to get proper order..
@@ -30,9 +30,16 @@ digraph D {
   
 
   gd_pmdb_founder_person -> gd_pmdb_person
-  
 
+  PMDB_PPECPRN_FILE -> t_gwd_pmdb_founder_person_wid
 
+  PMDB_FOUNDER_PERSON_FILE -> t_gwd_pmdb_founder_person_wid
+  t_gwd_pmdb_founder_person_wid -> PMDB_FOUNDER_PERSON_FILE_WID[label="writes once"]
+  PMDB_FOUNDER_PERSON_FILE_WID -> t_gwd_pmdb_founder_person_wid[label="checks identity"]
+
+  PMDB_FOUNDER_PERSON_FILE_WID -> gd_pmdb_founder_person
+
+  t_gwd_ppecprn -> PMDB_FOUNDER_PERSON_FILE_WID[dir=back,label="input"]
 
 
 }

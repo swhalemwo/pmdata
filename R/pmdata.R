@@ -40,6 +40,7 @@ gc_pmdata_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_so
         PMDB_FOUNDER_PERSON_FILE_ORG = paste0(DATA_DIR, "pmdb/pmdb_founder_person.org"),
         PMDB_FOUNDER_PERSON_FILE_CSV = paste0(DATA_DIR, "pmdb/pmdb_founder_person.csv"),
         PMDB_PPECPRN_FILE            = paste0(DATA_DIR, "pmdb/pmdb_ppecprn.csv"),
+        PMDB_FOUNDER_PERSON_FILE_WID = paste0(DATA_DIR, "pmdb/pmdb_founder_person_wid.csv"),
         ## MOW section 
         MOW_PMDB_MATCHRES_FILE = paste0(DATA_DIR, "mow/mow_pmdb_matchres.csv"),
         MOW_INFO_FILE          = paste0(DATA_DIR, "mow/mow.csv"),

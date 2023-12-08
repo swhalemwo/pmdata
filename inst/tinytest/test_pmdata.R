@@ -49,13 +49,22 @@ expect_true(pmdata:::t_gwd_pmdb_founder_person(
                           "and that founder_person_id is unique"))
 
 
-dt_pmdb_founder_person <- gd_pmdb_founder_person(
-    PMDB_FOUNDER_PERSON_FILE_CSV = PMDATA_LOCS$PMDB_FOUNDER_PERSON_FILE_CSV,
-    PMDB_PPECPRN_FILE = PMDATA_LOCS$PMDB_PPECPRN_FILE)
+## dt_pmdb_founder_person <- gd_pmdb_founder_person(PMDATA_LOCS$ARTNEWS_COLLECTOR_PERSON_FILE_WID)    
 
-expect_true(pmdata:::t_gwd_ppecprn(dt_pmdb_founder_person, PMDB_PPECPRN_FILE = PMDATA_LOCS$PMDB_PPECPRN_FILE),
+expect_true(pmdata:::t_gwd_ppecprn(PMDB_FOUNDER_PERSON_FILE_WID = PMDATA_LOCS$PMDB_FOUNDER_PERSON_FILE_WID,
+                                   PMDB_PPECPRN_FILE = PMDATA_LOCS$PMDB_PPECPRN_FILE),
             info = paste0("test that every pair of founder names that have a low string distance ",
                           "have been checked manually."))
+
+expect_true(pmdata:::t_gwd_pmdb_founder_person_wid(
+                         PMDB_FOUNDER_PERSON_FILE_CSV = PMDATA_LOCS$PMDB_FOUNDER_PERSON_FILE_CSV,
+                         PMDB_PPECPRN_FILE = PMDATA_LOCS$PMDB_PPECPRN_FILE,
+                         PMDB_FOUNDER_PERSON_FILE_WID = PMDATA_LOCS$PMDB_FOUNDER_PERSON_FILE_WID),
+            info = paste0("test that current file version of PMDB founder_ids, founder_person_id, founder_name ",
+                          "and pmdb_person_id is still the same as it would be if it were generated again",
+                          "if this test fails, you probably have to add entires to the input files"))
+                          
+
 
 ## expect_equal(pmdata:::t_gwd_ppecprn(dt_pmdb_founder_person, PMDB_PPECPRN_FILE = PMDATA_LOCS$PMDB_PPECPRN_FILE),
 ##              "j", info = "kappa")
