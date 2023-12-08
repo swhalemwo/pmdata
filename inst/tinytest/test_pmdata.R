@@ -80,18 +80,23 @@ expect_true(dt_mow_pmdb_match[dt_pmdb, on = .(PMDB_ID = ID)][, all(!is.na(MOW_ID
 
 ## expect_true(F)
 
-dt_acpe_w_id1 <- gd_artnews_collector_person(
-    ARTNEWS_COLLECTOR_PERSON_FILE_ORG = PMDATA_LOCS$ARTNEWS_COLLECTOR_PERSON_FILE_ORG,
-    ARTNEWS_APECPRN_FILE = PMDATA_LOCS$ARTNEWS_APECPRN_FILE)
+## dt_acpe_wid <- gd_artnews_collector_person(
+##     ARTNEWS_COLLECTOR_PERSON_FILE_ORG = PMDATA_LOCS$ARTNEWS_COLLECTOR_PERSON_FILE_ORG,
+##     ARTNEWS_APECPRN_FILE = PMDATA_LOCS$ARTNEWS_APECPRN_FILE)
+
+
+## dt_acpe_wid <- gd_artnews_collector_person(
+##     ARTNEWS_COLLECTOR_PERSON_FILE_WID = PMDATA_LOCS$ARTNEWS_COLLECTOR_PERSON_FILE_WID)
 
 ## just_some_test()
 
 
-expect_true(pmdata:::t_gwd_apecprn(dt_acpe_w_id1, PMDATA_LOCS$ARTNEWS_APECPRN_FILE),
+expect_true(pmdata:::t_gwd_apecprn(PMDATA_LOCS$ARTNEWS_COLLECTOR_PERSON_FILE_WID,
+                                   PMDATA_LOCS$ARTNEWS_APECPRN_FILE),
             ## info = "kappa")
-            info = paste0("test that all pairs with similar names have been checked in ARTNEWS_APECPRN_FILE",
+            info = paste0("test that all pairs with similar names have been checked in ARTNEWS_APECPRN_FILE. ",
                           "make sure they are covered, e.g. by adding manually entries to ARTNEWS_APECPRN_FILE",
-                          "or re-running the fwrite-call.",
+                          "or re-running the fwrite-call. ",
                           "make sure tho that this doesn't yeet other or even more clctr_names."))
 
 expect_true(pmdata:::t_gwd_artnews_clctr(PMDATA_LOCS$ARTNEWS_TIME_FILE,
@@ -116,7 +121,12 @@ expect_true(pmdata:::t_gwd_artnews_collector_person(
                           "make sure tho that this doesn't yeet other or even more an_collector_person_id s."))
             
 
-
+expect_true(pmdata:::t_gwd_artnews_collector_person_wid(
+                         ARTNEWS_COLLECTOR_PERSON_FILE_ORG = PMDATA_LOCS$ARTNEWS_COLLECTOR_PERSON_FILE_ORG,
+                         ARTNEWS_COLLECTOR_PERSON_FILE_WID = PMDATA_LOCS$ARTNEWS_COLLECTOR_PERSON_FILE_WID,
+                         ARTNEWS_APECPRN_FILE = PMDATA_LOCS$ARTNEWS_APECPRN_FILE),
+            info = paste0("test that all IDs and names are generated in the way they have been previously ",
+                          "when they were written to file"))
    
 
 

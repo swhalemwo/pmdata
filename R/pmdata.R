@@ -51,8 +51,10 @@ gc_pmdata_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_so
         ARTNEWS_COLLECTOR_PERSON_FILE     = paste0(DATA_DIR, "artnews/an_clctr_person.csv"),
         ARTNEWS_COLLECTOR_PERSON_FILE_ORG = paste0(DATA_DIR, "artnews/an_clctr_person_org.csv"),
         ARTNEWS_PERSON_FILE               = paste0(DATA_DIR, "artnews/an_person.csv"), # file for person uniqueness
+        ARTNEWS_COLLECTOR_PERSON_FILE_WID = paste0(DATA_DIR, "artnews/an_person_collector_wid.csv"), # with ID
         ARTNEWS_APECPRN_FILE              = paste0(DATA_DIR, "artnews/an_apecprn.csv"), # check person uniqueness
-        ARTNEWS_LOCTABLE_FILE             = paste0(DATA_DIR, "artnews/an_loctable.csv")
+        ARTNEWS_LOCTABLE_FILE             = paste0(DATA_DIR, "artnews/an_loctable.csv"),
+        ARTNEWS_PMDB_MATCHRES_FILE        = paste0(DATA_DIR, "artnews/an_pmdb_matchres.csv")
         
     )
     
@@ -62,6 +64,8 @@ gc_pmdata_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_so
 
 globalVariables(c("PMDATA_LOCS", ".","%>%", "fstd", "adt"))
 
+
+## PMDATA_LOCS <- gc_pmdata_locs()
 #' test me
 #' @export
 ## testf <- function() {

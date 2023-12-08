@@ -96,13 +96,23 @@ digraph D {
     manually_check_for_name_overlap -> artnews_apecprn_file
 
     t_subset -> t_gwd_apecprn
-    collector_person_file -> t_gwd_apecprn
-    collector_person_file -> gd_artnews_collector_person
+    // collector_person_file -> t_gwd_apecprn
+    
     t_gwd_apecprn -> artnews_apecprn_file[label="WRITES ONCE"]
     artnews_apecprn_file -> t_gwd_apecprn[label="checks coverage"]
 
-    
-    artnews_apecprn_file -> gd_artnews_collector_person
+
+    collector_person_file -> t_gwd_artnews_collector_wid
+    t_gwd_artnews_collector_wid -> artnews_collector_person_file_wid[label="writes once"]
+    artnews_collector_person_file_wid -> t_gwd_artnews_collector_wid[label="checks identity"]
+
+    t_gwd_apecprn -> artnews_collector_person_file_wid [dir=back,label="input"]
+
+
+    artnews_apecprn_file -> t_gwd_artnews_collector_wid
+    t_gwd_artnews_collector_wid -> gd_artnews_collector_person
+
+
 
     gd_artnews_collector_person -> gd_artnews_person
 
