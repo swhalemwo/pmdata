@@ -660,7 +660,9 @@ t_pmdb_artnews_match_coverage <- function(dt_pmdb,
 
 }
 
-## gd_artnews_time()
+## fread(PMDATA_LOCS$ARTNEWS_TIME_FILE)[grepl("Hahnloser", clctr_name)]
+
+
 
 
 ## gd_artnews_pmdb_matchres()
