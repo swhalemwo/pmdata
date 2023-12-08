@@ -660,7 +660,7 @@ t_pmdb_artnews_match_coverage <- function(dt_pmdb,
 
 }
 
-
+## gd_artnews_time()
 
 
 ## gd_artnews_pmdb_matchres()

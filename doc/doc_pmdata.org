@@ -124,17 +124,45 @@ digraph D {
     gd_artnews_collector_person -> gd_artnews_person
 
     
-    
-    
 }
+
+ARTNEWS_LOCTABLE_FILE
 
 ranking_all -> readin_artnews_all
 ranking_genre -> generate_artnews_data
 readin_artnews_all -> generate_artnews_data
 
-manually_standardize_locations -> ARTNEWS_LOCTABLE_FILE
-ARTNEWS_LOCTABLE_FILE -> t_gd_artnews_location_FIXME
-ranking_all -> t_gd_artnews_location_FIXME
+subgraph cluster_location {
+  label = "location"
+  manually_standardize_locations -> ARTNEWS_LOCTABLE_FILE
+  ARTNEWS_LOCTABLE_FILE -> t_gd_artnews_location_FIXME
+  ranking_all -> t_gd_artnews_location_FIXME
+}
+
+subgraph cluster_matching {
+  label =  "matching to PMDB"
+  
+  gd_artnews_person -> gwl_artnews_clctrs_tomatch
+  t_gd_artnews_location_FIXME -> gwl_artnews_clctrs_tomatch
+  gd_artnews_collector_person-> gwl_artnews_clctrs_tomatch
+
+  artnews_persons_el[label="artnews-persons.el"]
+
+  gwl_artnews_clctrs_tomatch -> artnews_persons_el
+  artnews_persons_el -> gw_artnews_pmdb_matches
+  artnews_persons_el -> manually_check_pmdb_AN_match
+  manually_check_pmdb_AN_match -> ARTNEWS_PMDB_MATCHRES_FILE
+  gw_artnews_pmdb_matches -> ARTNEWS_PMDB_MATCHRES_FILE
+
+  ARTNEWS_PMDB_MATCHRES_FILE -> t_pmdb_artnews_match_coverage
+  dt_pmdb -> t_pmdb_artnews_match_coverage
+  dt_pmdb -> gw_artnews_pmdb_matches
+
+
+  // artnews_collector_person_file_wid -> gwl_artnews_clctrs_tomatch
+  
+  //  ARTNEWS_LOCTABLE_FILE -> gwl_artnews_clctrs_tomatch
+}
 
 }
 #+end_src  
