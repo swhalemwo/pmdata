@@ -635,7 +635,32 @@ gd_artnews_pmdb_matchres <- function(ARTNEWS_PMDB_MATCHRES_FILE = PMDATA_LOCS$AR
     return(dt_res)
 }
 
-## FIXME: write test that checks wehther all PPEs have been checked
+#' test that all pmdb_founder_ids have been checked
+#'
+#' @param dt_pmdb provided in testing environment
+#' @param ARTNEWS_PMDB_MATCHRES_FILE file of matches between Artnews and PMDB
+#' @param PMDB_FOUNDER_PERSON_FILE_WID file including all pmdb_person_ids; check that these are covered by matchres
+t_pmdb_artnews_match_coverage <- function(dt_pmdb,
+                                          ARTNEWS_PMDB_MATCHRES_FILE = PMDATA_LOCS$ARTNEWS_PMDB_MATCHRES_FILE,
+                                          PMDB_FOUNDER_PERSON_FILE_WID = PMDATA_LOCS$PMDB_FOUNDER_PERSON_FILE_WID) {
+    if (as.character(match.call()[1]) %in% fstd){browser()}
+    1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
+
+    ## read in files
+    dt_pmdb_founder_wid <- gd_pmdb_founder_person(
+        PMDB_FOUNDER_PERSON_FILE_WID = PMDB_FOUNDER_PERSON_FILE_WID)
+
+    dt_artnews_pmdb_matchres <- gd_artnews_pmdb_matchres(ARTNEWS_PMDB_MATCHRES_FILE)
+
+    ## check that all pmdb_person_ids are covered in dt_artnews_pmdb_matchres
+    dt_redux <- dt_pmdb_founder_wid[!dt_artnews_pmdb_matchres, on = "pmdb_person_id"]
+
+    tres <- fnrow(dt_redux) == 0
+    return(tres)
+
+}
+
+
 
 
 ## gd_artnews_pmdb_matchres()
