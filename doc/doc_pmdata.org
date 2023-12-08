@@ -195,7 +195,7 @@ digraph D {
   PMDB_person_AN_person_links[
 				    label = "PMDB_person_AN_person_links |
 				    <pmdb_person_id> pmdb_person_id |
-				    <an_collector_id> an_collector_id"]
+				    <an_person_id> an_person_id"]
 
   AN_time:ID_ACE -> AN_collectors:ID
   // AN_collectors:ID -> AN_person:ID_clctr [dir=back]
@@ -204,10 +204,10 @@ digraph D {
   
   PMDB_museums:founder_id -> PMDB_founders:founder_id
   PMDB_founders:founder_id -> PMDB_founder_person_links:founder_id
-  PMDB_founder_person_links:pmdb_person_id -> PMDB_persons:pmdb_person_id [dir=back]
+  PMDB_founder_person_links:pmdb_person_id -> PMDB_persons:pmdb_person_id // [dir=back]
 
   PMDB_persons:pmdb_person_id -> PMDB_person_AN_person_links:pmdb_person_id
-  AN_person:ID_person -> PMDB_person_AN_person_links:an_collector_id
+  AN_person:ID_person -> PMDB_person_AN_person_links:an_person_id
   
 }
 #+end_src
@@ -216,6 +216,8 @@ digraph D {
 [[file:artnews_data_structure.png]]
 
 [[file:artnews_data_structure.png]]
+
+Tables PMDB_founders, PMDB_persons, AN_collectors and  AN_person were necessary in the process of constructing PDMB_person_AN_person_links, but are not really relevant for merging data. For that, PMDB_founder_person_links and AN_collector_person have all the necessary information by containing both pmdb/artnews_person_id and ID of the corresponding entity (collector entry for Artnews, founder_id for PMDB).
 
 
 

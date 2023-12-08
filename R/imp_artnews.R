@@ -809,10 +809,107 @@ gwl_artnews_clctrs_tomatch <- function(
 
 }
 
-## gwd_artnews_clctrs_tomatch()
+## gwl_artnews_clctrs_tomatch()
+
+
+## fread(PMDATA_LOCS$ARTNEWS_COLLECTOR_PERSON_FILE_ORG) %>%
+##     .[grepl("Ganz", clctr_name)]
 
 
 
 
                                             
     
+
+
+check_artnews_pmdb_match <- function(dt_pmdb_person_matchy, pmdb_person_id_each) {
+    if (as.character(match.call()[[1]]) %in% fstd){browser()}
+    1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
+
+    pmdb_person_id <- founder_name <- nationality <- NULL
+
+
+    do.call(sprintf, c(list(fmt = "%s, %s"),
+                       as.list(dt_pmdb_person_matchy[pmdb_person_id == pmdb_person_id_each,
+                                                     .(founder_name, nationality)]))) %>% print
+
+    APE_ID <- readline("Artnews ID: ")
+
+    # if entry doesn't start with "APE" assume missing data (just type "j" or whatever)
+    if (substring(APE_ID,1,3) != "APE") APE_ID <- "nomatch"
+
+    dt_res <- data.table(pmdb_person_id = pmdb_person_id_each, artnews_person_id = APE_ID)
+    fwrite(dt_res, PMDATA_LOCS$ARTNEWS_PMDB_MATCHRES_FILE, append = T)
+    
+    
+
+    
+
+}
+
+
+
+#' overall function to check the matches between PMDB and artnews
+#' map over each PMDB founder person, and check via consult whether it is present in Artnews
+#' can stop inbetween, with gd_artnews_pmdb_matchres I can keep track of current status
+#' have for now stopped providing the FILE_NAMES as arguments, are now relying on the lower level functions and PMDATA_LOCS specifications
+gw_artnews_pmdb_matches <- function() {
+    if (as.character(match.call()[[1]]) %in% fstd){browser()}
+    1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
+
+    founder_id <- nationality <- founder_name <- pmdb_person_id <- NULL
+    
+    ## convoluted way of getting nationality to founder person, this should all be stored in one place
+    dt_pmdb_founder_nat <- gd_pmdb_excl(only_pms = F) %>% gd_pmdb %>%
+        .[founder_id != "" & nationality != "", .(founder_id, nationality)] %>% funique 
+        
+
+    dt_pmdb_person <- gd_pmdb_person()
+    dt_pmdb_founder_person <- gd_pmdb_founder_person()
+
+    ## awkward filtering out of variation of nationality, FIXME in PMDB
+    dt_pmdb_person_matchy <- join(dt_pmdb_founder_person, dt_pmdb_founder_nat, how = "l", on = "founder_id") %>%
+        .[, .(founder_name, pmdb_person_id, nationality)] %>% funique %>%
+        .[, .SD[all(is.na(nationality)) | !is.na(nationality)], .(founder_name, pmdb_person_id)] 
+        ## .[grepl("Rachofsky", founder_name)]
+
+    ## see PMDB persons have already been checked
+    dt_artnews_pmdb_matches <- gd_artnews_pmdb_matchres()
+
+    ## see which PMDB persons still need to be check
+    pmdb_person_ids_to_check <- setdiff(dt_pmdb_person_matchy$pmdb_person_id,
+                                        dt_artnews_pmdb_matches$pmdb_person_id)
+    print(length(pmdb_person_ids_to_check))
+    ## actually do the checking
+
+    
+    map(pmdb_person_ids_to_check, ~check_artnews_pmdb_match(dt_pmdb_person_matchy, .x))
+    
+    ## pmdb_founder_ids_tocheck <- dt_pmdb_founder_matchy$
+
+}
+
+
+
+#' read in already checked PMDB persons
+#' @param ARTNEWS_PMDB_MATCHRES_FILE file with matches between artnews persons and PMDB persons
+gd_artnews_pmdb_matchres <- function(ARTNEWS_PMDB_MATCHRES_FILE = PMDATA_LOCS$ARTNEWS_PMDB_MATCHRES_FILE) {
+    
+
+    if (file.exists(ARTNEWS_PMDB_MATCHRES_FILE)) {
+        dt_res <- fread(ARTNEWS_PMDB_MATCHRES_FILE)
+    } else {
+        dt_res <- data.table(an_person_id = character(), pmdb_person_id = character())
+    }
+
+    return(dt_res)
+}
+
+## gd_artnews_pmdb_matchres()
+
+                               
+## gw_artnews_pmdb_matches()
+
+## gd_artnews_collector_person()
+
+## gd_pmdb_excl(only_pms = F) %>% gd_pmdb %>% .[!is.na(an_fyear), .N]
