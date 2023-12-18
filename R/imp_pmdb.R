@@ -564,6 +564,7 @@ t_gwd_pmdb_founder_person_wid <- function(
 
 #' provide the overall data.table for PMDB links between founder_id, founder_person_id, pmdb_person_id, founder_name
 #' @param PMDB_FOUNDER_PERSON_FILE_WID file with links between founder_id, pmdb_id, founder_name
+#' @export
 gd_pmdb_founder_person <- function(
                                    PMDB_FOUNDER_PERSON_FILE_WID = PMDATA_LOCS$PMDB_FOUNDER_PERSON_FILE_WID) {
     
