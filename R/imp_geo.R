@@ -57,5 +57,38 @@
 
 ## ## dt_ured[, .(country
 
+#' generate dt of country borders
+#'
+#' based on https://github.com/geodatasource/country-borders
+#' 
+#' @param COUNTRY_BOUNDARIES_FILE file with country borders
+#' @export
+gd_crybndrs <- function(COUNTRY_BOUNDARIES_FILE = PMDATA_LOCS$COUNTRY_BOUNDARIES_FILE) {
+    if (as.character(match.call()[[1]]) %in% fstd){browser()}
+    1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
 
-gd_cry_bndrs <- j
+    dt_crybndrs <- fread(COUNTRY_BOUNDARIES_FILE) %>% 
+        .[, `:=`(iso3c = countrycode(country_code, "iso2c", "iso3c"),
+                 iso3c_border = countrycode(country_border_code, "iso2c", "iso3c"))] %>% 
+        .[, `:=`(country_code = NULL, country_border_code = NULL)] %>%
+        .[, .(iso3c, iso3c_border, country_name, country_border_name)]
+        ## .[is.na(iso3c_border)] %>% print(n=300)
+
+    return(dt_crybndrs)
+
+
+}
+
+
+## gd_crybndrs()[iso3c == "IDN"]
+
+## gd_marbndrs <- function(MARITIME_BOUNDARIES_FILE = PMDATA_LOCS$MARITIME_BOUNDARIES_FILE) {
+##     if (as.character(match.call()[[1]]) %in% fstd){browser()}
+##     1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
+
+##     read.rdbf
+
+## }
+
+
+## gd_marbndrs()

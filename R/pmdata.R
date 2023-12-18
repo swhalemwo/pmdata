@@ -55,9 +55,13 @@ gc_pmdata_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_so
         ARTNEWS_COLLECTOR_PERSON_FILE_WID = paste0(DATA_DIR, "artnews/an_person_collector_wid.csv"), # with ID
         ARTNEWS_APECPRN_FILE              = paste0(DATA_DIR, "artnews/an_apecprn.csv"), # check person uniqueness
         ARTNEWS_LOCTABLE_FILE             = paste0(DATA_DIR, "artnews/an_loctable.csv"),
-        ARTNEWS_PMDB_MATCHRES_FILE        = paste0(DATA_DIR, "artnews/an_pmdb_matchres.csv")
-        
+        ARTNEWS_PMDB_MATCHRES_FILE        = paste0(DATA_DIR, "artnews/an_pmdb_matchres.csv"),
+        ## GEOGRAPHIC INFORMATION
+        COUNTRY_BOUNDARIES_FILE  = paste0(DATA_DIR, "cry_boundaries/geodatasource_land_boundaries.csv")
+        ## MARITIME_BOUNDARIES_FILE = paste0(DATA_DIR, "cry_boundaries/9051-world-maritime-boundaries.rdf")
     )
+        
+
     
 
     return(data_locs)
