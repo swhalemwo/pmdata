@@ -8,6 +8,7 @@
 #' @importFrom stringi stri_split_fixed
 #' @import data.table
 #' @import collapse
+#' @importFrom RSQLite dbConnect dbGetQuery SQLite
 #' @rawNamespace import(stats, except = D) # don't import D, which comes from collapse
 ## https://stackoverflow.com/questions/51899220/import-all-the-functions-of-a-package-except-one-when-building-a-package
 
@@ -57,8 +58,10 @@ gc_pmdata_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_so
         ARTNEWS_LOCTABLE_FILE             = paste0(DATA_DIR, "artnews/an_loctable.csv"),
         ARTNEWS_PMDB_MATCHRES_FILE        = paste0(DATA_DIR, "artnews/an_pmdb_matchres.csv"),
         ## GEOGRAPHIC INFORMATION
-        COUNTRY_BOUNDARIES_FILE  = paste0(DATA_DIR, "cry_boundaries/geodatasource_land_boundaries.csv")
+        COUNTRY_BOUNDARIES_FILE  = paste0(DATA_DIR, "cry_boundaries/geodatasource_land_boundaries.csv"),
         ## MARITIME_BOUNDARIES_FILE = paste0(DATA_DIR, "cry_boundaries/9051-world-maritime-boundaries.rdf")
+        ARTFACTS_SQLITE_DB = paste0(DATA_DIR, "artfacts/db_artfacts.sqlite")
+        
     )
         
 
