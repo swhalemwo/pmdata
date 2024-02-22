@@ -153,5 +153,7 @@ expect_true(pmdata:::t_pmdb_artnews_match_coverage(
 ## t_gwd_artnews_clctr()
 ## t_gwd_apecprn(dt_acpe_w_id1, ARTNEWS_APECPRN_FILE)
 
+expect_true(pmdata:::test_gd_circle(),
+            info = "test that circles are properly generated")
 
 
