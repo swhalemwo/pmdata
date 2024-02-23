@@ -67,6 +67,8 @@ gd_crybndrs <- function(COUNTRY_BOUNDARIES_FILE = PMDATA_LOCS$COUNTRY_BOUNDARIES
     if (as.character(match.call()[[1]]) %in% fstd){browser()}
     1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
 
+    country_code <- country_border_code <- iso3c <- iso3c_border <- country_name <- counry_border_name <- NULL
+
     dt_crybndrs <- fread(COUNTRY_BOUNDARIES_FILE) %>% 
         .[, `:=`(iso3c = countrycode(country_code, "iso2c", "iso3c"),
                  iso3c_border = countrycode(country_border_code, "iso2c", "iso3c"))] %>% 
