@@ -26,14 +26,16 @@
 gd_circle <- function(lat, lon, radius_meters, num_points = 100) {
     if (as.character(match.call()[[1]]) %in% fstd){browser()}
     
+    X <- Y <- NULL
+
     ## Create a point object
-    center_point <- st_as_sf(data.frame(lon = lon, lat=lat), coords = c("lon", "lat"), crs = 4326)
+    center_point <- sf::st_as_sf(data.frame(lon = lon, lat=lat), coords = c("lon", "lat"), crs = 4326)
 
     ## Create a buffer around the point (with a projected CRS)
-    buffer <- st_buffer(center_point, dist = radius_meters)
+    buffer <- sf::st_buffer(center_point, dist = radius_meters)
 
     ## extract coordinates as DT
-    dt_buffer <- st_coordinates(buffer) %>% adt %>%
+    dt_buffer <- sf::st_coordinates(buffer) %>% adt %>%
         .[, .(lon = X, lat = Y)]
 
     
@@ -43,6 +45,9 @@ gd_circle <- function(lat, lon, radius_meters, num_points = 100) {
 
 test_gd_circle <- function()  {
     #' test that circles are properly generated (taking curvature into account)
+
+    lat <- lon <- id <- vlu <- vrbl <- pole <- eq <- ID <- NULL
+
 
     dt_centers_test <- data.table(id = c("eq","pole"), lat = c(10,80), lon = c(0,0))
 
@@ -57,83 +62,122 @@ test_gd_circle <- function()  {
 
 }
 
-
-
-imp_ghsl <- function(DIR_GHSL = PMDATA_LOCS$DIR_GHSL) {
+#' generate population amounts around coordinates using GHSL
+#' @param dt_coords data.table with lat, lon (in degrees) and numeric ID
+#' @param id_vrbl variable in dt_coords to identify rows, must be unique
+#' @param year year of GHSL
+#' @param radius radius around coordinates in meters
+#' @param DIR_GHSL directory with the GHSL files, to be provided by PMDATA_LOCS
+#' @return data.table with population numbers
+#' @export 
+imp_ghsl <- function(dt_coords, id_vrbl, year, radius, DIR_GHSL = PMDATA_LOCS$DIR_GHSL) {
     if (as.character(match.call()[[1]]) %in% fstd){browser()}
-        
     1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
-    DIR_GHSL
 
-    file2k <- paste0(DIR_GHSL, "GHS_POP_E2000_GLOBE_R2023A_54009_1000_V1_0.tif")
-    library(terra)
-    library(sf)
+    id_num <- lat <- lon <- value <- weight <- NULL
+    
+    dt_coords <- copy(dt_coords) # copy coordinates to not overwrite input (for non-int IDs)
 
-    describe(file2k)
+    ## check that input data is correct
+    if (year %!in% seq(1975, 2030, 5)) {stop("year not available")}
+    if (dt_coords[, fnunique(get(id_vrbl))] != fnrow(dt_coords)) {stop("IDs not unique")}
 
+    
+
+    ## if ID is not unique, make it so (required for vect)
+    readjust_IDs <- F
+        if (!is.integer(dt_coords[, get(id_vrbl)])) {
+
+        ## create backup IDs to be able to rename dt_coords vrbl
+        dt_id <- dt_coords[, .SD, .SDcols = id_vrbl] %>%
+            .[, id_num := as.integer(factor(get(id_vrbl), levels = get(id_vrbl)))]
+                           
+        dt_coords[, (id_vrbl) := as.integer(factor(get(id_vrbl), levels = get(id_vrbl)))]
+
+        readjust_IDs <- T
+    }
+
+    file_raster_pop <- sprintf("%sGHS_POP_E%s_GLOBE_R2023A_54009_1000_V1_0.tif", DIR_GHSL, year)
+    ## describe(file_raster_pop)
 
     ## read raster
-    dr_pop2k <- rast(file2k)
-    ## dsf_pop2k <- st_read(file2k)
-
-    ## values(dr_pop2k)[1:10]
-
-    ## extract supports Spatvecotr -> maybe can generate circle
-    ## example with NY
+    dr_pop <- terra::rast(file_raster_pop)
     
-    lat_NY <- 40.7128  # Latitude of New York City
-    lon_NY <- -74.0060 # Longitude of New York City
+    ## generate circles for Spatvectors as matrix
+    mat_coord_circles <- dt_coords[, gd_circle(lat, lon, radius), id_vrbl] %>%
+        .[, .(object = get(id_vrbl), part = 1, x= lon, y=lat)] %>%
+        as.matrix # somehow matrix works best to convert to SpatVector later on
+    
+    ## generate SpatVector circles
+    SV_circles <- terra::vect(mat_coord_circles, crs = "WGS84", type = "polygons") %>%
+        terra::project(dr_pop) # align CRS
+    
+    ## extract raster cells matched by circle polygons, weigh by overlap
+    dt_popres <- terra::extract(dr_pop, SV_circles, weights = T) %>% adt %>%
+        setnames(new = c(id_vrbl,  "value", "weight")) %>% na.omit %>%
+        .[, .(pop = sum(value * weight), year = year), id_vrbl]
+        
+    # if non-integer IDs are used, put them back 
+    if (readjust_IDs) {
+        dt_popres <- join(dt_id, dt_popres,  on = c("id_num" = id_vrbl)) %>%
+            .[, .SD, .SDcols  = c(id_vrbl, "pop", "year")]
+    }
 
-    vx_ny <- gd_circle(lat_NY, lon_NY, 10000) %>% as.matrix %>% 
-        vect(type= "polygons", crs = "WGS84")
+    return(dt_popres)
+            
+}
+
+
+#' test that imp_ghsl works
+#' @param PMDATA_LOCS list of file locations (documented to make R CMD check happy)
+test_imp_ghsl <- function(PMDATA_LOCS) {
+    
+    ## if (as.character(match.call()[[1]]) %in% fstd){browser()}
+    #' it's testing time
+    ## lat_NY <- 40.7128  # Latitude of New York City
+    ## lon_NY <- -74.0060 # Longitude of New York City
+
+    ## vx_ny <- gd_circle(lat_NY, lon_NY, 10000) %>% as.matrix %>% 
+    ##     vect(type= "polygons", crs = "WGS84")
 
     ## plot(vx_ny)
     ## extract(dr_pop2k, vx_ny, weights = T) %>% adt %>% .[, #  %>% adt %>% names
 
     ## with actual locations
 
+    ID <- NULL
+
     dt_centers <- data.table(city = c("NY", "HH", "BJ"),
                              lat = c(40.7128, 53.5488, 39.9042),
                              lon = c(-74.0060, 9.9872, 116.4074))
-    
-    
-    dt_city_circles <- dt_centers[, gd_circle(lat, lon, 20e3), city] %>%
-        .[, .(object = as.numeric(factor(city)), part = 1, x= lon, y=lat)] %>%
-        as.matrix # somehow matrix works best to convert to SpatVector later on
-    
-        
-    ## plot(x = dt_city_circles$circle_lon, y=dt_city_circles$circle_lat)
 
-    v_ccls <- vect(dt_city_circles, crs = "WGS84", type = "polygons") %>% # geom = c("x", "y"))
-        project(dr_pop2k)
+    dt_centers_numid <- copy(dt_centers)[, ID := 1:3]
+
+
+    dt_res <- imp_ghsl(dt_centers, id_vrbl = "city", year=2000, radius = 3e4,
+                       DIR_GHSL = PMDATA_LOCS$DIR_GHSL)
+
+    dt_res_previously <- data.table(city = c("NY", "HH", "BJ"),
+                                    pop = c(11698576, 2506907, 10781604),
+                                    year = 2000)
+
+    ## compare: somehow default tolerance sqrt(.Machine$double.eps), which is 1.490116e-08 finds difference
+    all.equal(dt_res, dt_res_previously, tolerance = 0000000000000000000000000000000000.1)
     
-
-    extract(dr_pop2k, v_ccls, weights = T) %>% adt %>%
-        setnames(new = .c(ID,  value, weight)) %>% na.omit %>%
-        .[, sum(value * weight), ID]
-        
-
-    ## try another way of getting circles with st_buffer
-    
-    ## check if it works with extreme values
-
-    
-
-        
-
 
 }
 
-PMDATA_LOCS <- gc_pmdata_locs()
+
+
+## PMDATA_LOCS <- gc_pmdata_locs()
+## test_imp_ghsl(PMDATA_LOCS)
 
 ## imp_ghsl(PMDATA_LOCS$DIR_GHSL)
 
 
-    
-    
-    
-    
-    
-    
 
-    }
+    
+    
+    
+    
+    

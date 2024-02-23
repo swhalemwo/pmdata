@@ -6,8 +6,10 @@
 #' @importFrom countrycode countrycode
 #' @importFrom stringdist stringdistmatrix
 #' @importFrom stringi stri_split_fixed
-#' @import data.table
 #' @import collapse
+#' @import data.table
+#' @importFrom terra rast vect project extract
+#' @import sf
 #' @importFrom RSQLite dbConnect dbGetQuery SQLite
 #' @rawNamespace import(stats, except = D) # don't import D, which comes from collapse
 ## https://stackoverflow.com/questions/51899220/import-all-the-functions-of-a-package-except-one-when-building-a-package
@@ -34,7 +36,7 @@ gc_pmdata_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_so
     ## FIXME: move artnews to DATA_DIR: atm the ownCloud directory is big (~300 mb) due to including all the HTMLs
     ## the ARTNEWS_COLLECTOR_ENTRIES_FILE is already in the correct directory
     ARTNEWS_DIR_old <- "/home/johannes/ownCloud/org_pop_data/artnews/"
-        
+    
     data_locs <- list(
         ## PMDB section
         PMDB_FILE                    = paste0(DATA_DIR, "pmdb/Private museum database_v6.csv"),

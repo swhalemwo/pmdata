@@ -256,5 +256,7 @@ Tables PMDB_founders, PMDB_persons, AN_collectors and  AN_person were necessary 
 
 
 
+** Global Human Settlement Layer (GHSL)
 
+The GHSL is used to construct the population counts around private museum. It does so by generating a circular buffer around the museum's location, which is matched to the 1km GSHL population raster. Population of matched cells is summed, weighted by percentage of raster overlap for partly matched circle boundary cells. 
 

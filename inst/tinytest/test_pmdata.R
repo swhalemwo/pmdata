@@ -19,7 +19,7 @@ if (interactive()) {
 PMDATA_LOCS <- gc_pmdata_locs()
 ## expect_equal(length(PMDATA_LOCS), 5)
 
-## ** ----------- PMDB import --------------
+## ** -------------- PMDB import ------------
 ## turn of warnings to not clutter the tinytest output when it throws an error
 options(warn=-1)
 
@@ -32,7 +32,7 @@ dt_pmdb <- gd_pmdb(dt_pmdb_excl, verbose = F)
 
 options(warn=0)
 
-## ** ---------------- PMDB checks ------------
+## ** -------------- PMDB checks ------------
 
 
 expect_false(dt_pmdb[, .(founder_name, founder_id)] %>% funique %>%
@@ -75,7 +75,7 @@ expect_true(pmdata:::t_gwd_pmdb_founder_person_wid(
              
              
 
-## **  ---------- MOW CHECKS -------------------
+## **  ------------- MOW CHECKS -------------
 
 dt_mow_pmdb_match <- pmdata:::gd_mow_pmdb_matchres(PMDATA_LOCS$MOW_PMDB_MATCHRES_FILE)
 
@@ -85,7 +85,7 @@ dt_mow_pmdb_match <- pmdata:::gd_mow_pmdb_matchres(PMDATA_LOCS$MOW_PMDB_MATCHRES
 expect_true(dt_mow_pmdb_match[dt_pmdb, on = .(PMDB_ID = ID)][, all(!is.na(MOW_ID))],
              info = "check that each PM with status open, closed or NLPM has been checked for match in MOW")
 
-## ** -------------- ARTnews checks -----------
+## ** -------------- ARTnews checks ---------
 
 ## expect_true(F)
 
@@ -153,7 +153,12 @@ expect_true(pmdata:::t_pmdb_artnews_match_coverage(
 ## t_gwd_artnews_clctr()
 ## t_gwd_apecprn(dt_acpe_w_id1, ARTNEWS_APECPRN_FILE)
 
+## ** -------------- GHSL checks ------------
+
 expect_true(pmdata:::test_gd_circle(),
             info = "test that circles are properly generated")
+
+expect_true(pmdata:::test_imp_ghsl(PMDATA_LOCS),
+            info = "test that some pop generation is the same as in previous runs")
 
 
