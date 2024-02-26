@@ -110,7 +110,7 @@ dt_pmdb_gctcd <- geocode(atb(dt_pmdb_gctc), addr_name)
 geocode(atb(dt_pmdb_gctc), addr_name, method = "arcgis", limit = 5, return_input = F)
 
 
-## google api
+## ** google api
 
 dt_google_full <- geocode(atb(dt_pmdb_gctc), addr_name, method = "google", limit = 5, return_input = F, full_result = T)
 
