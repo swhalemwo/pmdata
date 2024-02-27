@@ -129,7 +129,7 @@ dt_pmdb_gcd %>% adt %>% .[, .N, geometry.location_type]
 ## GEOMETRIC_CENTER          83
 ## NA                        50
 
-## check boundaries -> no boundaries at all
+## check boundaries -> very few boundaries (~120), but viewports
 adt(dt_pmdb_gcd)[, map(.SD, ~sum(is.na(.x)))] %>% melt(measure.vars = names(.)) %>% print(n=300)
 
 
@@ -172,3 +172,7 @@ dt_pmdb_size[not(size_viewport > 8e4 & size_viewport < 1e5), .(address, lat, lon
 
 
 ## recheck boundaries
+dt_pmdb_size[!is.na(geometry.bounds.southwest.lat) & geometry.location_type == "ROOFTOP"]
+dt_pmdb_size[!is.na(geometry.bounds.southwest.lat), .N, geometry.location_type]
+
+dt_pmdb_size[!is.na(geometry.bounds.southwest.lat), .(formatted_address)] %>% print(n=300)
