@@ -117,3 +117,58 @@ dt_google_full <- geocode(atb(dt_pmdb_gctc), addr_name, method = "google", limit
 dt_markets_gcdd <- geocode(dt_markets, method = "google", addr, limit = 5, return_input = F)
 
 adt(dt_google_full)[4] %>% adf
+
+
+## ** explore feasibility of using boundaries as proxy for size
+FILE_GEOCODE_RES <- "/home/johannes/Dropbox/phd/pmdata/inst/manual_munging/google_geocode_res.Rds"
+dt_pmdb_gcd <- readRDS(FILE_GEOCODE_RES)
+
+dt_pmdb_gcd %>% adt %>% .[, .N, geometry.location_type]
+## ROOFTOP                  439
+## APPROXIMATE              111
+## GEOMETRIC_CENTER          83
+## NA                        50
+
+## check boundaries -> no boundaries at all
+adt(dt_pmdb_gcd)[, map(.SD, ~sum(is.na(.x)))] %>% melt(measure.vars = names(.)) %>% print(n=300)
+
+
+## get viewport 
+adt(dt_pmdb_gcd)[1, .SD, .SDcols = keep(names(dt_pmdb_gcd), ~grepl("geometry.viewport", .x))] %>%
+    melt(measure.vars = names(.)) %>% .[, coords := as.character(value)]
+
+
+gm_viewport <- function(lat_NE, long_NE, lat_SW, long_SW) {
+    if (as.character(match.call()[[1]]) %in% fstd){browser()}
+    #' generatei measure of size of viewport
+    df_coords <- matrix(c(lat_NE, long_NE,
+             lat_NE, long_SW,
+             lat_SW, long_SW,
+             lat_SW, long_NE,
+             lat_NE, long_NE),
+             ncol = 2, byrow = T) %>% adt %>% setnames(c("lat", "long")) %>% as.matrix %>% list
+
+    st_polygon(df_coords) %>% st_sfc(crs = 4326) %>% st_area %>% as.numeric
+
+}
+
+## measure viewport size
+dt_pmdb_size <- adt(dt_pmdb_gcd) %>%
+    .[geometry.location_type == "ROOFTOP",
+      size_viewport := gm_viewport(geometry.viewport.northeast.lat, geometry.viewport.northeast.lng,
+                                   geometry.viewport.southwest.lat, geometry.viewport.southwest.lng), .I]
+      
+## evaluate viewport sizes:
+## some super yuge ones, around 50% around 90k m^2
+
+dt_pmdb_size$size_viewport %>% hist(breaks = 300)
+
+dt_pmdb_size[size_viewport < 5e5, size_viewport] %>% hist(breaks = 100)
+
+dt_pmdb_size[size_viewport > 500000, .(address, lat, long, size_viewport)]
+dt_pmdb_size[!is.na(size_viewport), .N]
+             
+dt_pmdb_size[not(size_viewport > 8e4 & size_viewport < 1e5), .(address, lat, long, size_viewport)]
+
+
+## recheck boundaries
