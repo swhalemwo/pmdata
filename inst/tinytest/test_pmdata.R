@@ -65,6 +65,10 @@ expect_true(pmdata:::t_gwd_pmdb_founder_person_wid(
                           "if this test fails, you probably have to add entires to the input files"))
                           
 
+expect_true(dt_pmdb[museum_status %in% c("private museum", "closed")] %>%
+            .[is.na(lat) | is.na(long) | is.na(address_formatted), .N] == 0,
+            info = "check that all PMs have lat/long location")
+
 
 ## expect_equal(pmdata:::t_gwd_ppecprn(dt_pmdb_founder_person, PMDB_PPECPRN_FILE = PMDATA_LOCS$PMDB_PPECPRN_FILE),
 ##              "j", info = "kappa")

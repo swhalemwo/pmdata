@@ -214,6 +214,9 @@ gc_rename_list <- function() {
         reducedtickets    = c("Museum_reduced ticket groups"),
         multiplelocs      = c("Museum_multiple locations"),
         city              = c("Museum_city"),
+        lat               = c("Museum_latitude"),
+        long              = c("Museum_longitude"),
+        address_formatted = c("Museum_formatted_address"),
         cooperation       = c("Museum_cooperation with other musea_standardized"),
         mission           = c("Museum_mission"),
         staff_diversity   = c("Museum_staff diversity"),
@@ -287,7 +290,7 @@ gd_pmdb <- function(dt_pmdb_excl, verbose = F) {
                               FUN = \(x) gsub(",", "", x) %>% as.integer)
 
     ## convert numeric vars (decimal values) to numeric
-    num_vars <- c("trpadvsr_rating", "google_rating")
+    num_vars <- c("trpadvsr_rating", "google_rating", "lat", "long")
 
     dt_pmdb_num_cvrtd <- tfmv(dt_pmdb_rnmd_intd, vars = num_vars,
                               FUN = \(x) gsub(",", ".", x) %>% as.numeric)
