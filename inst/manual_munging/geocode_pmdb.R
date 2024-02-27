@@ -89,21 +89,31 @@ view_xl(dt_pmdb_gs)
 
 
 
-
-
-
-## messy cases: manually look them up
-
+## ** messy cases: manually look them up
 
 
 
 
 
+dt_pmdb_gcd2[dt_pmdb_large_dev, on = "ID"] %>%
+    .[order(ID), .(ID, address, lat, long, formatted_address, lat_sd, long_sd)] %>%
+    view_xl
 
 
-## dt_pmdb_gcd2 <- dt_pmdb_tgc[1:5, geocode(atb(.SD), addr, limit = 5, full_results = T, return_input = F), .I]
 
 
 
 
-## ** copying back
+
+
+
+
+
+
+
+
+
+
+
+
+
