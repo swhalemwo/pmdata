@@ -82,21 +82,14 @@ imp_ghsl <- function(dt_coords, id_vrbl, year, radius, DIR_GHSL = PMDATA_LOCS$DI
     if (year %!in% seq(1975, 2030, 5)) {stop("year not available")}
     if (dt_coords[, fnunique(get(id_vrbl))] != fnrow(dt_coords)) {stop("IDs not unique")}
 
+    ## create backup IDs to be able to rename dt_coords vrbl
+    dt_id <- dt_coords[, .SD, .SDcols = id_vrbl] %>%
+        .[, id_num := as.integer(factor(get(id_vrbl), levels = get(id_vrbl)))]
+
+    ## overwrite IDs to integer IDs
+    dt_coords[, (id_vrbl) := as.integer(factor(get(id_vrbl), levels = get(id_vrbl)))]
+
     
-
-    ## if ID is not unique, make it so (required for vect)
-    readjust_IDs <- F
-        if (!is.integer(dt_coords[, get(id_vrbl)])) {
-
-        ## create backup IDs to be able to rename dt_coords vrbl
-        dt_id <- dt_coords[, .SD, .SDcols = id_vrbl] %>%
-            .[, id_num := as.integer(factor(get(id_vrbl), levels = get(id_vrbl)))]
-                           
-        dt_coords[, (id_vrbl) := as.integer(factor(get(id_vrbl), levels = get(id_vrbl)))]
-
-        readjust_IDs <- T
-    }
-
     file_raster_pop <- sprintf("%sGHS_POP_E%s_GLOBE_R2023A_54009_1000_V1_0.tif", DIR_GHSL, year)
     ## describe(file_raster_pop)
 
@@ -116,15 +109,14 @@ imp_ghsl <- function(dt_coords, id_vrbl, year, radius, DIR_GHSL = PMDATA_LOCS$DI
     dt_popres <- terra::extract(dr_pop, SV_circles, weights = T) %>% adt %>%
         setnames(new = c(id_vrbl,  "value", "weight")) %>% na.omit %>%
         .[, .(pop = sum(value * weight), year = year), id_vrbl]
-        
-    # if non-integer IDs are used, put them back 
-    if (readjust_IDs) {
-        dt_popres <- join(dt_id, dt_popres,  on = c("id_num" = id_vrbl)) %>%
-            .[, .SD, .SDcols  = c(id_vrbl, "pop", "year")]
-    }
+    
+    ## put original IDs back
+    dt_popres <- join(dt_id, dt_popres,  on = c("id_num" = id_vrbl)) %>%
+        .[, .SD, .SDcols  = c(id_vrbl, "pop", "year")]
+
 
     return(dt_popres)
-            
+    
 }
 
 

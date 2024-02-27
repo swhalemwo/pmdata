@@ -5,20 +5,22 @@
 :PROPERTIES:
 :ID:       4268d077-adb7-4660-8681-6a2aa795e3f2
 :END:
-| data source | downloading       | parsing   | importing |
-|-------------+-------------------+-----------+-----------|
-| PMDB        | manually?         | not necc. |           |
-| ARTnews     | scraping          | yes       |           |
-| WID         | download, unpack, | not nec   |           |
-|             | CH setup          |           |           |
-| MOW         | not possible      | yes       |           |
-| CAF/RTGB    | not possible      | not necc  |           |
-| Fraeser     |                   |           |           |
-| Artfacs     |                   |           |           |
-| WB          |                   |           |           |
-| UN          |                   |           |           |
-| OECD        |                   |           |           |
-| Eurostat    |                   |           |           |
+| data source | downloading         | parsing   | importing |
+|-------------+---------------------+-----------+-----------|
+| PMDB        | manually?           | not necc. |           |
+| ARTnews     | scraping            | yes       |           |
+| WID         | download, unpack,   | not nec   |           |
+|             | CH setup            |           |           |
+| MOW         | not possible        | yes       |           |
+| CAF/RTGB    | not possible        | not necc  |           |
+| Fraeser     |                     |           |           |
+| Artfacs     |                     |           |           |
+| WB          |                     |           |           |
+| UN          |                     |           |           |
+| OECD        |                     |           |           |
+| Eurostat    |                     |           |           |
+| GSHL        | go to [[https://ghsl.jrc.ec.europa.eu/download.php?ds=pop][EC website]],   |           |           |
+|             | download/unzip file |           |           |
 
 
 
