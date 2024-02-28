@@ -608,3 +608,40 @@ gd_pmdb_person <- function(
 
 
 ## gd_pmdb_founder_person() %>% t_gwd_ppecprn
+
+
+## ** generate PMDB proximity numbers
+
+gd_pmdb_points <- function(dt_pmdb, radius) {
+    1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
+
+    long <- lat <- ID <- ID_buffer <- NULL
+
+    ## generate museum location as points
+    dt_pmdb_points <- st_as_sf(dt_pmdb[, .(ID, long, lat)], coords = c("long", "lat"), crs = 4326)
+
+    ## generate buffer polygons around points
+    dt_pmdb_buffer <- st_buffer(copy(dt_pmdb_points), dist = units::set_units(radius, "km")) %>%
+        setnames(old = "ID", new = "ID_buffer")
+
+    ## world_map <- map_data("world")
+    
+    ## ggplot() +
+    ##     geom_map(data = world_map, map = world_map, aes(long, lat, map_id = region)) + 
+    ##     geom_sf(dt_pmdb_buffer, mapping = aes(geometry = geometry)) +
+    ##     coord_sf(xlim = c(10, 15), ylim = c(50, 55)) 
+
+    ## actual intersection calculation
+    dt_intersection <- st_intersection(dt_pmdb_points, dt_pmdb_buffer)
+    
+    ## aggregating
+    dt_pmdb_proxcnt <- adt(dt_intersection)[, .(ID, ID_buffer)][, .N, ID] %>%
+        setnames(old = "N", new = paste0("proxcnt", radius))
+
+    return(dt_pmdb_proxcnt)
+
+    
+}
+
+
+
