@@ -24,7 +24,7 @@
 
 
 gd_circle <- function(lat, lon, radius_meters, num_points = 100) {
-    if (as.character(match.call()[[1]]) %in% fstd){browser()}
+    ## if (as.character(match.call()[[1]]) %in% fstd){browser()}
     
     X <- Y <- NULL
 

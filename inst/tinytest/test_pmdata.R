@@ -10,6 +10,9 @@ library(collapse)
 source("~/Dropbox/technical_stuff_general/dotfiles/.Rprofile")
 fstd <- c()
 
+library(ggplot2)
+
+
 ## add section for manually debuggging? hopefully works
 if (interactive()) {
     library(pmdata)
@@ -68,6 +71,7 @@ expect_true(pmdata:::t_gwd_pmdb_founder_person_wid(
 expect_true(dt_pmdb[museum_status %in% c("private museum", "closed")] %>%
             .[is.na(lat) | is.na(long) | is.na(address_formatted), .N] == 0,
             info = "check that all PMs have lat/long location")
+
 
 
 ## expect_equal(pmdata:::t_gwd_ppecprn(dt_pmdb_founder_person, PMDB_PPECPRN_FILE = PMDATA_LOCS$PMDB_PPECPRN_FILE),
@@ -166,3 +170,66 @@ expect_true(pmdata:::test_imp_ghsl(PMDATA_LOCS),
             info = "test that some pop generation is the same as in previous runs")
 
 
+test_gd_circle_plot <- function() {
+    ## plot some circles on a map to see that circles look ok
+    
+    FIG_DIR <- "/home/johannes/Dropbox/phd/pmdata/inst/figures/"
+    
+    ## generate some data
+    dt_centers <- data.table(city = c("NY", "HH", "BJ"),
+                             lat = c(40.7128, 53.5488, 39.9042),
+                             lon = c(-74.0060, 9.9872, 116.4074))
+
+    ## generate circles around them
+    dt_circles <- dt_centers[, pmdata:::gd_circle(lat, lon, 2e5), city] %>% 
+        .[, .(object = as.integer(factor(city)), part = 1, lon, lat)]
+    
+    ## pre-process for st_multipolygon: list of lists with numeric matrices          
+    l_circles <- split(dt_circles, dt_circles$object) %>% purrr::map(~list(as.matrix(.x[, .(lon, lat)])))
+    mp_circles <- sf::st_multipolygon(l_circles) %>% sf::st_sfc(crs = 4326)
+
+    ## load world data
+    world_map <- map_data("world")
+    
+    ## hamburg plot
+    p1 <- ggplot() +
+        geom_map(data = world_map, map = world_map, aes(long, lat, map_id = region)) + 
+        geom_sf(mp_circles, mapping = aes(geometry = geometry), alpha = 0.7) +
+        coord_sf(xlim = c(0, 15), ylim = c(50, 60)) +
+        labs(title = "200km circle (HH)")
+
+    ## generate other circles
+    dt_circles2 <- dt_centers[, pmdata:::gd_circle(lat, lon, 1e6), city] %>% 
+        .[, .(object = as.integer(factor(city)), part = 1, lon, lat)]
+
+    ## preprocess them as well
+    l_circles2 <- split(dt_circles2, dt_circles2$object) %>% purrr::map(~list(as.matrix(.x[, .(lon, lat)])))
+    
+    ## multi-polygon: st_multipolygon', list of lists with numeric matrices          
+    mp_circles2 <- sf::st_multipolygon(l_circles2) %>% sf::st_sfc(crs = 4326)
+
+    ## generate the plot
+    p2 <- ggplot() +
+        geom_map(data = world_map, map = world_map, aes(long, lat, map_id = region)) +
+        geom_sf(mp_circles2, mapping = aes(geometry = geometry), alpha = 0.7) +
+        labs(title = "1000km circle (NY, HH, BJ)")
+
+    ## generate the plot
+    p3 <- ggplot() +
+        geom_map(data = world_map, map = world_map, aes(long, lat, map_id = region)) + 
+        geom_sf(mp_circles2, mapping = aes(geometry = geometry), alpha = 0.7) +
+        coord_sf(xlim = c(-10, 25), ylim = c(40, 70)) +
+        labs(title = "1000km circle (HH)")
+    
+    library(patchwork)
+    ## plot to file
+
+    pdf(paste0(FIG_DIR, "circletest.pdf"), width = 8, height = 12)
+    plot((p2 / (p1 + p3)))
+    dev.off()
+
+    return(T)
+
+}
+
+expect_true(test_gd_circle_plot(),  info = "generate example circles")
