@@ -32,7 +32,7 @@ gd_circle <- function(lat, lon, radius_meters, num_points = 100) {
     center_point <- sf::st_as_sf(data.frame(lon = lon, lat=lat), coords = c("lon", "lat"), crs = 4326)
 
     ## Create a buffer around the point (with a projected CRS)
-    buffer <- sf::st_buffer(center_point, dist = radius_meters)
+    buffer <- sf::st_buffer(center_point, dist = units::set_units(radius_meters, "m"))
 
     ## extract coordinates as DT
     dt_buffer <- sf::st_coordinates(buffer) %>% adt %>%
