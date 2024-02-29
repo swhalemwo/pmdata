@@ -9,5 +9,5 @@ License: GPL-3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
-Imports: purrr, data.table, collapse, countrycode, magrittr, stringdist, stringi, RSQLite, terra, sf
+Imports: purrr, data.table, collapse, countrycode, magrittr, stringdist, stringi, RSQLite, terra, sf, units
 Suggests: tinytest

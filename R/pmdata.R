@@ -11,6 +11,7 @@
 #' @importFrom terra rast vect project extract
 #' @import sf
 #' @importFrom RSQLite dbConnect dbGetQuery SQLite
+#' @importFrom units set_units
 #' @rawNamespace import(stats, except = D) # don't import D, which comes from collapse
 ## https://stackoverflow.com/questions/51899220/import-all-the-functions-of-a-package-except-one-when-building-a-package
 

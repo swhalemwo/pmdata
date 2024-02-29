@@ -612,36 +612,42 @@ gd_pmdb_person <- function(
 
 ## ** generate PMDB proximity numbers
 
-gd_pmdb_points <- function(dt_pmdb, radius) {
-    1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
+#' generate count of PMs in area (proximity + count -> proxcnt) with radius around focal PM
+#' @param dt_pmdb DT with ID, long, lat
+#' @param radius radius in kilometers
+#' @return dt with number of museums around ID
+#' @export
+gd_pmdb_proxcnt <- function(dt_pmdb, radius) {
+    
+    ID <- lat <- long <- NULL
+    
+    ## set up points
+    dt_pmdb_points <- sf::st_as_sf(dt_pmdb[, .(ID, long, lat)], coords = c("long", "lat"), crs = 4326)
 
-    long <- lat <- ID <- ID_buffer <- NULL
+    ## set up distances (great circle)
+    mat_dists <- sf::st_distance(dt_pmdb_points)
 
-    ## generate museum location as points
-    dt_pmdb_points <- st_as_sf(dt_pmdb[, .(ID, long, lat)], coords = c("long", "lat"), crs = 4326)
-
-    ## generate buffer polygons around points
-    dt_pmdb_buffer <- st_buffer(copy(dt_pmdb_points), dist = units::set_units(radius, "km")) %>%
-        setnames(old = "ID", new = "ID_buffer")
-
+    ## aggregate
+    dt_pmdb_proxcnt <- data.table(ID = dt_pmdb[, ID],
+                           proxcnt = rowSums(mat_dists < units::set_units(radius, "km"))) %>%
+        setnames(old = "proxcnt", new = paste0("proxcnt", radius))
+    
+    ## plotting example
     ## world_map <- map_data("world")
     
     ## ggplot() +
     ##     geom_map(data = world_map, map = world_map, aes(long, lat, map_id = region)) + 
-    ##     geom_sf(dt_pmdb_buffer, mapping = aes(geometry = geometry)) +
-    ##     coord_sf(xlim = c(10, 15), ylim = c(50, 55)) 
+    ##     geom_sf(dt_pmdb_points, mapping = aes(geometry = geometry), color = "red") + 
+    ##     coord_sf(xlim = c(99, 103), ylim = c(-1, 1)) 
 
-    ## actual intersection calculation
-    dt_intersection <- st_intersection(dt_pmdb_points, dt_pmdb_buffer)
-    
-    ## aggregating
-    dt_pmdb_proxcnt <- adt(dt_intersection)[, .(ID, ID_buffer)][, .N, ID] %>%
-        setnames(old = "N", new = paste0("proxcnt", radius))
-
+        
     return(dt_pmdb_proxcnt)
-
     
 }
+
+
+
+
 
 
 

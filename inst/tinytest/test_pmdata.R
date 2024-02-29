@@ -233,3 +233,33 @@ test_gd_circle_plot <- function() {
 }
 
 expect_true(test_gd_circle_plot(),  info = "generate example circles")
+
+test_gd_pmdb_proxcnt <- function() {
+
+    
+    ## set up some stupid data on equator, one degree apart
+    dt_pmdb_test <- data.table(ID = c(1,2,3),
+                               lat = c(0,0,0),
+                               long = c(100, 101,102))
+
+    dt_res <- gd_pmdb_proxcnt(dt_pmdb_test, radius = 220.5)
+
+    dt_res_b4 <- data.table(ID = c(1,2,3), proxcnt220.5 = c(2,3,2))
+    
+
+    dtx <- sf::st_as_sf(dt_pmdb_test, coords = c("long", "lat"), crs =4326)
+    ## sf::st_buffer(dtx, dist = units::set_units(10, "km"))
+    ## sf::st_buffer(dtx, dist = 10000)
+
+    all.equal(dt_res, dt_res_b4, tolerance = 0.0000000001)
+    
+    ## world_map <- map_data("world")
+    ## ggplot() +
+    ##     geom_map(data = world_map, map = world_map, aes(long, lat, map_id = region)) + 
+    ##     geom_sf(dt_pmdb_buffer, mapping = aes(geometry = geometry)) +
+    ##     coord_sf(xlim = c(10, 15), ylim = c(50, 55)) 
+
+
+}
+
+expect_true(test_gd_pmdb_proxcnt(), info = "test PM distances")
