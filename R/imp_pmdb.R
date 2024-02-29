@@ -612,12 +612,12 @@ gd_pmdb_person <- function(
 
 ## ** generate PMDB proximity numbers
 
-#' generate count of PMs in area (proximity + count -> proxcnt) with radius around focal PM
+#' generate count of PMs in area (proximity + count -> proxcnt) with radius (km) around focal PM
 #' @param dt_pmdb DT with ID, long, lat
-#' @param radius radius in kilometers
+#' @param radius_km radius in kilometers
 #' @return dt with number of museums around ID
 #' @export
-gd_pmdb_proxcnt <- function(dt_pmdb, radius) {
+gd_pmdb_proxcnt <- function(dt_pmdb, radius_km) {
     
     ID <- lat <- long <- NULL
     
@@ -629,8 +629,8 @@ gd_pmdb_proxcnt <- function(dt_pmdb, radius) {
 
     ## aggregate
     dt_pmdb_proxcnt <- data.table(ID = dt_pmdb[, ID],
-                           proxcnt = rowSums(mat_dists < units::set_units(radius, "km"))) %>%
-        setnames(old = "proxcnt", new = paste0("proxcnt", radius))
+                           proxcnt = rowSums(mat_dists < units::set_units(radius_km, "km"))) %>%
+        setnames(old = "proxcnt", new = paste0("proxcnt", radius_km))
     
     ## plotting example
     ## world_map <- map_data("world")
