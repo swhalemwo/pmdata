@@ -1,73 +1,8 @@
 ## * import GHSL data
 
 
-# Function to create a circle polygon
-## gd_circle <- function(lat, lon, radius_meters, num_points = 100) {
-##     if (as.character(match.call()[[1]]) %in% fstd){browser()}
-##     ## Convert radius from meters to degrees (approximation)
-##     radius_degrees <- radius_meters / 111000
-    
-##     ## Generate angles
-##     angles <- seq(0, 2 * pi, length.out = num_points)
-    
-##     ## Generate coordinates of circle vertices
-##     circle_lat <- lat + radius_degrees * cos(angles)
-##     circle_lon <- lon + radius_degrees * sin(angles)
-    
-##     ## Create polygon
-##     dt_circle_poly <- data.table(lon = circle_lon, lat = circle_lat)
 
-    
-
-##     return(dt_circle_poly)
-## }
-
-
-#' ## generate coordinates for a circle
-## #' @param lat lattitude
-## #' @param lon longitude
-## #' @param radius_km radius in kilometers
-## #' @return DT with lon/lat coords for the circle boundary points
-## gd_circle <- function(lat, lon, radius_km) {
-##     ## if (as.character(match.call()[[1]]) %in% fstd){browser()}
-    
-##     X <- Y <- NULL
-
-##     ## Create a point object
-##     center_point <- sf::st_as_sf(data.frame(lon = lon, lat=lat), coords = c("lon", "lat"), crs = 4326)
-
-##     ## Create a buffer around the point (with a projected CRS)
-##     buffer <- sf::st_buffer(center_point, dist = units::set_units(radius_km, "km"))
-
-##     ## extract coordinates as DT
-##     dt_buffer <- sf::st_coordinates(buffer) %>% adt %>%
-##         .[, .(lon = X, lat = Y)]
-
-    
-##     return(dt_buffer)
-## }
-
-
-## test_gd_circle <- function()  {
-##     #' test that circles are properly generated (taking curvature into account)
-
-##     lat <- lon <- id <- vlu <- vrbl <- pole <- eq <- ID <- NULL
-
-
-##     dt_centers_test <- data.table(id = c("eq","pole"), lat = c(10,80), lon = c(0,0))
-
-##     dt_circres <- dt_centers_test[, gd_circle(lat, lon, 10), id]
-##     ## dt_circres3 <- dt_centers_test[, gd_circle3(lat, lon, 10e3), id]
-
-##     dt_circres %>% melt(id.vars = "id", variable.name = "vrbl", value.name = "vlu") %>%
-##         .[, .(min = min(vlu), max = max(vlu)), .(id, vrbl)] %>%
-##         .[, range := max - min] %>%
-##         .[vrbl == "lon"] %>% dcast(vrbl ~ id, value.var = "range") %>%
-##         .[, pole > eq]
-
-## }
-
-#' generate population amounts around coordinates using GHSL
+#' generate population amounts around coordinates using GHSL 
 #' @param dt_coords data.table with lat, lon (in degrees) and numeric ID
 #' @param id_vrbl variable in dt_coords to identify rows, must be unique
 #' @param year year of GHSL
@@ -94,27 +29,16 @@ imp_ghsl <- function(dt_coords, id_vrbl, year, radius_km, DIR_GHSL = PMDATA_LOCS
     ## overwrite IDs to integer IDs
     dt_coords[, (id_vrbl) := as.integer(factor(get(id_vrbl), levels = get(id_vrbl)))]
 
-    
     file_raster_pop <- sprintf("%sGHS_POP_E%s_GLOBE_R2023A_54009_1000_V1_0.tif", DIR_GHSL, year)
     ## describe(file_raster_pop)
 
     ## read raster
     dr_pop <- terra::rast(file_raster_pop)
     
-    ## ## generate circles for Spatvectors as matrix
-    ## mat_coord_circles <- dt_coords[, gd_circle(lat, lon, radius), id_vrbl] %>%
-    ##     .[, .(object = get(id_vrbl), part = 1, x= lon, y=lat)] %>%
-    ##     as.matrix # somehow matrix works best to convert to SpatVector later on
-    
-    ## terra::vect(dt_coords, crs = "WGS84")
-
+    ## generate SpatVector circles
     SV_circles <- terra::vect(dt_coords, crs = "WGS84") %>%  # can't set type for df, but is "points"
         terra::buffer(width = radius_km * 1000) %>%
         terra::project(dr_pop)
-
-    ## ## generate SpatVector circles
-    ## SV_circles <- terra::vect(mat_coord_circles, crs = "WGS84", type = "polygons") %>%
-    ##     terra::project(dr_pop) # align CRS
     
     ## extract raster cells matched by circle polygons, weigh by overlap
     dt_popres <- terra::extract(dr_pop, SV_circles, weights = T) %>% adt %>%
