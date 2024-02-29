@@ -622,14 +622,17 @@ gd_pmdb_proxcnt <- function(dt_pmdb, radius_km) {
     ID <- lat <- long <- NULL
     
     ## set up points
-    dt_pmdb_points <- sf::st_as_sf(dt_pmdb[, .(ID, long, lat)], coords = c("long", "lat"), crs = 4326)
+    ## dt_pmdb_points <- sf::st_as_sf(dt_pmdb[, .(ID, long, lat)], coords = c("long", "lat"), crs = 4326)
+    dt_pmdb_points <- terra::vect(dt_pmdb[, .(ID, long, lat)], geom = c("long", "lat"), crs = "WGS84")
 
     ## set up distances (great circle)
-    mat_dists <- sf::st_distance(dt_pmdb_points)
+    ## mat_dists <- sf::st_distance(dt_pmdb_points)
+    mat_dists <- terra::distance(dt_pmdb_points)
 
     ## aggregate
     dt_pmdb_proxcnt <- data.table(ID = dt_pmdb[, ID],
-                           proxcnt = rowSums(mat_dists < units::set_units(radius_km, "km"))) %>%
+                                  ## proxcnt = rowSums(mat_dists < units::set_units(radius_km, "km"))) %>%
+                                  proxcnt = rowSums(as.matrix(mat_dists) < radius_km*1000)) %>%
         setnames(old = "proxcnt", new = paste0("proxcnt", radius_km))
     
     ## plotting example

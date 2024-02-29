@@ -181,12 +181,15 @@ test_gd_pmdb_proxcnt <- function() {
 
     dt_res_b4 <- data.table(ID = c(1,2,3), proxcnt220.5 = c(2,3,2))
     
+    ## xx <- terra::vect(dt_pmdb_test, geom = c("long", "lat"), crs = "WGS84")
+    ## terra::distance(xx) %>% as.matrix
 
-    dtx <- sf::st_as_sf(dt_pmdb_test, coords = c("long", "lat"), crs =4326)
+
+    ## dtx <- sf::st_as_sf(dt_pmdb_test, coords = c("long", "lat"), crs =4326)
     ## sf::st_buffer(dtx, dist = units::set_units(10, "km"))
     ## sf::st_buffer(dtx, dist = 10000)
 
-    all.equal(dt_res, dt_res_b4, tolerance = 0.0000000001)
+    isTRUE(all.equal(dt_res, dt_res_b4, tolerance = 0.0000000001))
     
     ## world_map <- map_data("world")
     ## ggplot() +

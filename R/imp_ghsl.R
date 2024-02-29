@@ -92,7 +92,7 @@ test_gd_popcircle <- function(PMDATA_LOCS) {
 
     isTRUE(all.equal(dt_res, dt_res_previously,  tolerance = 0.01))
 
-        
+    
 
 }
 
@@ -106,8 +106,8 @@ test_gd_popcircle <- function(PMDATA_LOCS) {
 
 
 
-    
-    
-    
-    
-    
+
+
+
+
+
