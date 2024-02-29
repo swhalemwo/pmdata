@@ -10,7 +10,7 @@
 #' @param DIR_GHSL directory with the GHSL files, to be provided by PMDATA_LOCS
 #' @return data.table with population numbers
 #' @export 
-imp_ghsl <- function(dt_coords, id_vrbl, year, radius_km, DIR_GHSL = PMDATA_LOCS$DIR_GHSL) {
+gd_popcircle <- function(dt_coords, id_vrbl, year, radius_km, DIR_GHSL = PMDATA_LOCS$DIR_GHSL) {
     if (as.character(match.call()[[1]]) %in% fstd){browser()}
     1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
 
@@ -57,10 +57,10 @@ imp_ghsl <- function(dt_coords, id_vrbl, year, radius_km, DIR_GHSL = PMDATA_LOCS
 
 #' test that imp_ghsl works
 #' @param PMDATA_LOCS list of file locations (documented to make R CMD check happy)
-test_imp_ghsl <- function(PMDATA_LOCS) {
+test_gd_popcircle <- function(PMDATA_LOCS) {
 
     ## if (as.character(match.call()[[1]]) %in% fstd){browser()}
-        
+    
     #' it's testing time
     ## lat_NY <- 40.7128  # Latitude of New York City
     ## long_NY <- -74.0060 # Longitude of New York City
@@ -82,8 +82,8 @@ test_imp_ghsl <- function(PMDATA_LOCS) {
     dt_centers_numid <- copy(dt_centers)[, ID := 1:3]
 
 
-    dt_res <- imp_ghsl(dt_centers, id_vrbl = "city", year=2000, radius_km = 30,
-                       DIR_GHSL = PMDATA_LOCS$DIR_GHSL)
+    dt_res <- gd_popcircle(dt_centers, id_vrbl = "city", year=2000, radius_km = 30,
+                           DIR_GHSL = PMDATA_LOCS$DIR_GHSL)
 
     dt_res_previously <- data.table(city = c("NY", "HH", "BJ"),
                                     ## pop = c(11698576, 2506907, 10781604),

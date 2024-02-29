@@ -164,7 +164,7 @@ expect_true(pmdata:::t_pmdb_artnews_match_coverage(
 ## ** -------------- GHSL checks ------------
 
 
-expect_true(pmdata:::test_imp_ghsl(PMDATA_LOCS),
+expect_true(pmdata:::test_gd_popcircle(PMDATA_LOCS),
             info = "test that some pop generation is the same as in previous runs")
 
 
