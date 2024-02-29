@@ -3,7 +3,7 @@
 
 
 #' generate population amounts around coordinates using GHSL 
-#' @param dt_coords data.table with lat, lon (in degrees) and numeric ID
+#' @param dt_coords data.table with lat, long (in degrees) and numeric ID
 #' @param id_vrbl variable in dt_coords to identify rows, must be unique
 #' @param year year of GHSL
 #' @param radius_km radius around coordinates in meters
@@ -14,7 +14,7 @@ imp_ghsl <- function(dt_coords, id_vrbl, year, radius_km, DIR_GHSL = PMDATA_LOCS
     if (as.character(match.call()[[1]]) %in% fstd){browser()}
     1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
 
-    id_num <- lat <- lon <- value <- weight <- NULL
+    id_num <- lat <- long <- value <- weight <- NULL
     
     dt_coords <- copy(dt_coords) # copy coordinates to not overwrite input (for non-int IDs)
 
@@ -36,7 +36,7 @@ imp_ghsl <- function(dt_coords, id_vrbl, year, radius_km, DIR_GHSL = PMDATA_LOCS
     dr_pop <- terra::rast(file_raster_pop)
     
     ## generate SpatVector circles
-    SV_circles <- terra::vect(dt_coords, crs = "WGS84") %>%  # can't set type for df, but is "points"
+    SV_circles <- terra::vect(dt_coords, crs = "WGS84", geom = c("long", "lat")) %>%  # df always type = "points"
         terra::buffer(width = radius_km * 1000) %>%
         terra::project(dr_pop)
     
@@ -63,9 +63,9 @@ test_imp_ghsl <- function(PMDATA_LOCS) {
         
     #' it's testing time
     ## lat_NY <- 40.7128  # Latitude of New York City
-    ## lon_NY <- -74.0060 # Longitude of New York City
+    ## long_NY <- -74.0060 # Longitude of New York City
 
-    ## vx_ny <- gd_circle(lat_NY, lon_NY, 10000) %>% as.matrix %>% 
+    ## vx_ny <- gd_circle(lat_NY, long_NY, 10000) %>% as.matrix %>% 
     ##     vect(type= "polygons", crs = "WGS84")
 
     ## plot(vx_ny)
@@ -77,7 +77,7 @@ test_imp_ghsl <- function(PMDATA_LOCS) {
 
     dt_centers <- data.table(city = c("NY", "HH", "BJ"),
                              lat = c(40.7128, 53.5488, 39.9042),
-                             lon = c(-74.0060, 9.9872, 116.4074))
+                             long = c(-74.0060, 9.9872, 116.4074))
 
     dt_centers_numid <- copy(dt_centers)[, ID := 1:3]
 
