@@ -50,6 +50,11 @@ digraph D {
 
 [[file:pmdb_flow.png]]
 
+~gd_pmdb_excl~ and ~gd_pmdb~ process and run all kinds of test on the PMDB .csv file downloaded from google sheets. Outcome is dt_pmdb (1 row per museum) which serves as the basis for links to various other data sources, such as those  related to founder (founder_id), coordinates (lat/long), country (iso3c) and/or year (year).
+
+*** distances between private museums
+distances between private museums can be generated via `gd_pmdb_proxcnt`.
+
 ** Artnews
 
 *** flowchart
