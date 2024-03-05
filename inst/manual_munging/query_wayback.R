@@ -29,7 +29,7 @@ gd_wayback_entries <- function(pm_url) {
     con_wayback <- curl(wayback_api_url)
     res_wayback <- readLines(con_wayback) 
     
-    
+   
     dt_wayback <- data.table(raw = res_wayback) %>%
         .[, c("timestamp", "digest") := tstrsplit(raw, " ")] %>%
         .[, .(timestamp, digest)]
@@ -39,6 +39,15 @@ gd_wayback_entries <- function(pm_url) {
     return(dt_wayback)
 
 }
+
+url1 <- "https://starakfoundation.org/en/kolekcja"
+url2 <- "https://starakfoundation.org/"
+url1 <- "https://www.p-city.com/front/artSpace/overview"
+url2 <- "https://www.p-city.com/"
+
+gd_wayback_entries(url1)
+
+gd_wayback_entries(url2)
 
 gd_wayback_entries(dt_pmdb[2, website])
 

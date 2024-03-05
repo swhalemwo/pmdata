@@ -63,7 +63,9 @@ gc_pmdata_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_so
         ## MARITIME_BOUNDARIES_FILE = paste0(DATA_DIR, "cry_boundaries/9051-world-maritime-boundaries.rdf")
         ARTFACTS_SQLITE_DB = paste0(DATA_DIR, "artfacts/db_artfacts.sqlite"),
         ## GHSL (Global human settlement layer) from european commission
-        DIR_GHSL = paste0(DATA_DIR, "ghsl/")
+        DIR_GHSL = paste0(DATA_DIR, "ghsl/"),
+        ## WAYBACK results
+        FILE_WAYBACK_RES = paste0(DATA_DIR, "wayback/wayback.csv")
     )
         
 
