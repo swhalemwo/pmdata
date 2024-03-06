@@ -45,3 +45,17 @@ gd_af_links_exhb_ppl <- function(ARTFACTS_SQLITE_DB = PMDATA_LOCS$ARTFACTS_SQLIT
 }
 
 ## gd_af_links_exhb_ppl()
+
+#' read the file of matches between AF institutions (AF_IID) and PMDB
+#' one row per PM
+#' @param FILE_ARTFACTS_PMDB_MATCHRES location of the AF-PMDB match results file
+#' @return data.table with column PMDB_ID and AF_IID (integer where match exists, "nomatch" if no match exists)
+gd_af_pmdb_matchres <- function(FILE_ARTFACTS_PMDB_MATCHRES = PMDATA_LOCS$FILE_ARTFACTS_PMDB_MATCHRES) {
+    if (file.exists(FILE_ARTFACTS_PMDB_MATCHRES)) {
+        dt_res <- fread(FILE_ARTFACTS_PMDB_MATCHRES)
+    } else {
+        dt_res <- data.table(PMDB_ID = character(), AF_IID = character())
+    }
+
+    return(dt_res)
+}
