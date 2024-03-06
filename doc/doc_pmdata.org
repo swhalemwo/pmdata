@@ -265,3 +265,26 @@ Tables PMDB_founders, PMDB_persons, AN_collectors and  AN_person were necessary 
 
 The GHSL is used to construct the population counts around private museum. It does so by generating a circular buffer around the museum's location, which is matched to the 1km GSHL population raster. Population of matched cells is summed, weighted by percentage of raster overlap for partly matched circle boundary cells. 
 
+** Museums of the World
+Museums of the World (MOW) is a database created and (somewhat) maintained by deGruyter. Access was acquired by the UvA library as part of the *Return of the Medici* project in 2021, after which the database was sent by deGruyter in machine-readable format (=MOW2020_Output.xml=, which cannot be shared). Parsing of the XML file is done in python (=mow.py=), which produces three csv files:
+- =mow.csv=: the main file with museum information: ID, name, location, opening year, number of branches/staff;
+  one line per museum (55k entries)
+- =type.csv=: links between museum ID and museum type (e.g. History Museum, Art Museum, Music Museum);
+  multiple types are possible, therefore in long format (66k entries)
+- =classification.csv=: links between museum ID and content classification (e.g. Art, Painting, Textiles, Agriculture);
+  multiple types are possible, therefore in long format (59k entries)
+
+Links between MOW and PMDB are created through manual fuzzy string matching via the consult frameworks of emacs (=match_pmdb_mow.el= provides the function, =mow-museums.el= is the list of MOW museums so that they can be imported into emacs) and R (=match_pmdb_mow.R=, which handles generates the museum entries to check, and also details the post-match checks).
+
+This produces =mow_pmdb_matchres.csv=: a list of PMDB ID and where available, the correponding MOW ID.
+
+
+** Artfacts
+Artfacts is a database of exhibition data constructed at maintained by the Artfacts team, which compiles exhibition data from a number of sources. Access to the artists career data was acquired by the Medici team in 2023. The datasets consists of the entire artist careers of artists born after 1945 with at least 10 exhibitions. The data is organized into four tables: 
+- instns: ID, Name, InstitutionType, FoundationYear, City, Country
+- exhbs: InstitutionID, Title, BeginDate, EndDate, CityName, CountryName
+- people: ID, Name, Surname, BirthYhear, Nationality, Gender, ExhibitionCount
+- exhb_ppl_links: ExhibitionID, PeopleID
+
+[[file:~/Dropbox/phd/pmdata/data_sources/artfacts/crawler.pdf]]  
+
