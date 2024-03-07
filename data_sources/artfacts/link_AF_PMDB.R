@@ -5,7 +5,6 @@ library(purrr)
 
 options(width = 115)
 
-PMDATA_LOCS <- gc_pmdata_locs()
 
 gw_af_instns_el <- function() {
     if (as.character(match.call()[[1]]) %in% fstd){browser()}
@@ -42,13 +41,13 @@ gw_AF_PMDB_match <- function(dt_pmdb_matchy, pmdb_ID) {
                        as.list(dt_pmdb_matchy[ID==pmdb_ID, .(name, country, year_opened)]))) %>% print
 
     ## use artfacts-pmdb-match (C-c m) to fuzzy search whether PMDB museum is in Artfacts
-    AF_IID <- readline("AF-IID") # AF-IID: Artfacts institution ID
+    AF_IID <- readline("AF-IID: ") # AF-IID: Artfacts institution ID
 
     ## if entry is not integer (AF IIDs are integers), assume missing data (just type "j" or whatever)
     if (is.na(suppressWarnings(as.integer(AF_IID)))) af_IID <- "nomatch"
 
     dt_res <- data.table(PMDB_ID = pmdb_ID, AF_IID = AF_IID)
-    fwrite(dt_res, PDMATA_LOCS$FILE_ARTFACTS_PMDB_MATCHRES, append = T)
+    fwrite(dt_res, PMDATA_LOCS$FILE_ARTFACTS_PMDB_MATCHES, append = T)
 
 }
 
@@ -62,11 +61,17 @@ gw_AF_PMDB_matches <- function() {
         .[, .(ID, name, museum_status, year_opened, country = countrycode(iso3c, "iso3c", "country.name"))] %>%
         .[museum_status %!in% c("no private museum", "duplicate")]
 
-    dt_af_pmdb_matches <- gd_af_pmdb_matchres()
+    dt_af_pmdb_matches <- gd_af_pmdb_matches()
+
+    pmdb_IDs_tocheck <- setdiff(dt_pmdb_tomatch$ID, dt_af_pmdb_matches$PMDB_ID)
+
+    map(pmdb_IDs_tocheck, ~gw_AF_PMDB_match(dt_pmdb_tomatch, .x))
+
+}
 
     
+PMDATA_LOCS <- gc_pmdata_locs()
 
 
-dt_pmdb <- 
-check_AF_PMDB_match(dt_pmdb, 8)
+gw_AF_PMDB_matches()
     
