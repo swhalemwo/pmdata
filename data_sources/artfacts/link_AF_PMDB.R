@@ -78,3 +78,10 @@ PMDATA_LOCS <- gc_pmdata_locs()
 
 gw_AF_PMDB_matches()
     
+dt_af_exhbs <- gd_af_exhbs()
+
+dtx
+dt_af_exhbs[InstitutionID == 12706, .(start = as.Date(BeginDate))] 
+dt_af_exhbs[InstitutionID == 40247, .(start = as.Date(BeginDate))] 
+
+dt_af_exhbs[InstitutionID == 11 | InstitutionID == 30136, .(InstitutionID, Title)] %>% print(n=80)
