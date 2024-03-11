@@ -14,39 +14,113 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup,  echo = F, results = F, message = F}
 library(pmdata)
 library(data.table)
 adt <- as.data.table
 library(ggplot2)
 library(collapse)
+library(jtls)
+library(countrycode)
+library(purrr)
+library(scales, include.only = "rescale")
 PMDATA_LOCS <- gc_pmdata_locs()
 ```
 
 ##  introduction 
 
+First we generate a bunch of objects that will help us later: 
+
 ```{r datat_prep}
+## get af exhibitions
 dt_af_exhbs <- gd_af_exhbs()
 
+## get PMDB
 dt_pmdb <- suppressWarnings(gd_pmdb(gd_pmdb_excl(only_pms = F), verbose = NULL)) %>%    
     .[museum_status %in% c("private museum", "closed")]
 
-
+## import match file
 dt_matches_pmdb_af <- gd_af_pmdb_matches()
 
 ## compare coverage: 
 dt_pmdb_af <- join(dt_matches_pmdb_af, dt_pmdb[, .(ID, name, iso3c, museum_status)],
-                   on = c(PMDB_ID = "ID"), how = "inner")
+                   on = c(PMDB_ID = "ID"), how = "inner", verbose = F)
 
 ```
 
+Then we look at Artfacts coverage by museum status: 
 
-```{r af_cvrg}
+```{r af_cvrg, echo = F}
 ## .[grepl("carmignac", name, ignore.case = T)]
 dt_pmdb_af[, .N, .(museum_status, af_cvrg = fifelse(AF_IID != "nomatch", "AF_IID", "noAF_IID"))] %>%
     .[, prop := N/sum(N), museum_status] %>%
     .[, cell_fmtd :=sprintf("%s (%s %%)", N, format(100*prop, digits =2, nsmall = 2 ,))] %>%
-    dcast(af_cvrg ~ museum_status, value.var = "cell_fmtd")    
+    dcast(af_cvrg ~ museum_status, value.var = "cell_fmtd")
+    
 ```
+
+Overall coverage is `r dt_pmdb_af[, 100*sum(AF_IID != "nomatch")/.N]`%. Differences by museum status exist, but are not large. 
+
+
+
+```{r, echo = F}
+## calculate AF coverage by country and museum status
+dt_pmdb_af_cvrgvis <- dt_pmdb_af[, .N, .(museum_status, iso3c, AF_IID != "nomatch")] %>%
+    ## expand DT by all possible combinations
+    .[CJ(AF_IID, iso3c, museum_status, unique = T), on = .(iso3c, AF_IID, museum_status)] %>%
+    replace_NA(value = 0) %>%  # make values of combination not covered in the data 0
+    .[, N_cry_ms := sum(N), .(museum_status, iso3c)] %>% # count per country and museum status (ms)
+    .[, prop_covered := N/N_cry_ms] %>% # prop with AF_IID (by country and museum_status)
+    .[AF_IID == TRUE] %>% # only focus on covered percentages (not covered is 1- covered)
+    .[, museum_status := factor(museum_status, levels = c("private museum", "closed"))] %>% 
+    .[order(museum_status, prop_covered)] %>%  # reorder in for ggplot
+    .[, iso3c := factor(iso3c, funique(iso3c))] %>%
+    .[, reg6 := rcd_iso3c_reg6(iso3c)] %>%
+    .[!is.nan(prop_covered)] # %>% .[iso3c == "DEU"]
+
+```
+
+Next, let's look at coverage by region: 
+
+```{r, fig.dim = c(8, 8), echo = F}
+## coverage by  region
+dt_pmdb_af %>% copy() %>% 
+    .[, reg_sub := countrycode(iso3c, "iso3c", "un.regionsub.name",
+                               custom_match = c(TWN = "South-eastern Asia"))] %>%
+    .[, reg6 := rcd_iso3c_reg6(iso3c)] %>% 
+    .[, .N, .(museum_status, reg_sub, reg6, AF_IID != "nomatch")] %>%
+    .[, prop_covered := N/sum(N), .(museum_status, reg_sub, reg6)] %>% 
+    .[AF_IID == TRUE] %>%
+    .[, museum_status := factor(museum_status, levels = c("private museum", "closed"))] %>%
+    .[order(museum_status, prop_covered)] %>% .[, reg_sub := factor(reg_sub, funique(reg_sub))] %>% 
+    ggplot(aes(x=prop_covered, y=reg_sub, group = museum_status, color = museum_status, fill = museum_status)) +
+    geom_col(position = position_dodge2(preserve = "single")) +
+    ## geom_point() + 
+    facet_grid(reg6 ~ ., scales = "free", space = "free")
+```
+
+Europe seems to be covered best, Souther Asia worst (not all regions have museums which have closed, which is why not all bars are present). 
+
+
+Coverage also differs by country: 
+
+
+```{r,  fig.dim = c(8,9),  echo = F}
+dt_pmdb_af_cvrgvis %>% 
+    ggplot(aes(x = prop_covered, y = iso3c, color = museum_status, group = museum_status, size = N_cry_ms)) +
+    geom_point(position = position_dodge(width = 0.8)) +
+    geom_text(mapping = aes(label = N_cry_ms),
+              position = position_dodge(width = 0.8),
+              color = "black",
+              ## manually scale font size to make it fit in the bubbles
+              size = dt_pmdb_af_cvrgvis[order(reg6), rescale(N_cry_ms, to = c(2, 4))]) + 
+    facet_grid(reg6 ~ ., scales = "free_y", space = "free_y") +
+    scale_size_continuous(range = c(2,6))
+``` 
+
+
+European countries seem to be covered best (e.g. almost three quarters of Germany's 60 open museums are covered, compared to lesss than half of South Korea's 50). 
+
+Closed museums are also not covered well in Asia, e.g. none of the closed museums in 7 Asian countries are included, compared to only 1 European country and 1 African. 
 
 
