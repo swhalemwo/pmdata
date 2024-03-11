@@ -24,6 +24,7 @@ library(jtls)
 library(countrycode)
 library(purrr)
 library(scales, include.only = "rescale")
+library(ggrepel)
 PMDATA_LOCS <- gc_pmdata_locs()
 ```
 
@@ -123,4 +124,15 @@ European countries seem to be covered best (e.g. almost three quarters of German
 
 Closed museums are also not covered well in Asia, e.g. none of the closed museums in 7 Asian countries are included, compared to only 1 European country and 1 African. 
 
+Alternative way of plotting country coverage, but doesn't look so good: 
 
+```{r, fig.dim = c(10,8), echo = F}
+## 
+dt_pmdb_af_cvrgvis %>% copy() %>%
+    .[, museum_status_short := fifelse(museum_status == "closed", "CL", "OP")] %>%
+    .[, lbl := sprintf("%s -  %s", iso3c, museum_status_short)] %>% 
+    ggplot(aes(x=N_cry_ms, y = prop_covered, color = museum_status, label = iso3c)) +
+    geom_point() +
+    geom_text_repel(box.padding = 0.1, force_pull = 0)
+
+```
