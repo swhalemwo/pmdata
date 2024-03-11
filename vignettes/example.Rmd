@@ -1,0 +1,41 @@
+---
+title: "example"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{example}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(pmdata)
+library(data.table)
+adt <- as.data.table
+library(ggplot2)
+```
+
+
+## introduction
+good morning 
+I hate the tidyverse
+
+
+test tables: look good
+```{r}
+adt(mtcars)[, .N, cyl]
+```
+
+
+test figures:
+```{r}
+ggplot(mtcars, aes(x=mpg, y = hp)) + geom_point()
+```
+
+

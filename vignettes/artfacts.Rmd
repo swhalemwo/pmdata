@@ -1,0 +1,52 @@
+<!-- --- -->
+<!-- title: "artfacts" -->
+<!-- output: rmarkdown::html_vignette -->
+<!-- vignette: > -->
+<!--   %\VignetteIndexEntry{example} -->
+<!--   %\VignetteEngine{knitr::rmarkdown} -->
+<!--   %\VignetteEncoding{UTF-8} -->
+<!-- --- -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(pmdata)
+library(data.table)
+adt <- as.data.table
+library(ggplot2)
+library(collapse)
+PMDATA_LOCS <- gc_pmdata_locs()
+```
+
+##  introduction 
+
+```{r datat_prep}
+dt_af_exhbs <- gd_af_exhbs()
+
+dt_pmdb <- suppressWarnings(gd_pmdb(gd_pmdb_excl(only_pms = F), verbose = NULL)) %>%    
+    .[museum_status %in% c("private museum", "closed")]
+
+
+dt_matches_pmdb_af <- gd_af_pmdb_matches()
+
+## compare coverage: 
+dt_pmdb_af <- join(dt_matches_pmdb_af, dt_pmdb[, .(ID, name, iso3c, museum_status)],
+                   on = c(PMDB_ID = "ID"), how = "inner")
+
+```
+
+
+```{r af_cvrg}
+## .[grepl("carmignac", name, ignore.case = T)]
+dt_pmdb_af[, .N, .(museum_status, af_cvrg = fifelse(AF_IID != "nomatch", "AF_IID", "noAF_IID"))] %>%
+    .[, prop := N/sum(N), museum_status] %>%
+    .[, cell_fmtd :=sprintf("%s (%s %%)", N, format(100*prop, digits =2, nsmall = 2 ,))] %>%
+    dcast(af_cvrg ~ museum_status, value.var = "cell_fmtd")    
+```
+
+

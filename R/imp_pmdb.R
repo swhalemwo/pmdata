@@ -303,11 +303,14 @@ gd_pmdb <- function(dt_pmdb_excl, verbose = F) {
         .[melt(dt_pmdb_rnmd[, c("ID", int_vrbls), with = F], id.vars = "ID", value.name = "chr"),
           on = .(ID, variable)]
 
+    ## check which columns are not properly handled yet
     if (fnrow(dt_chrintcprn[is.na(int) & chr != ""]) > 0) {
-        if (verbose) {
-            print(dt_chrintcprn[is.na(int) & chr != ""], n = 1000)
-        } else {
-            print(dt_chrintcprn[is.na(int) & chr != ""])
+        if (!is.null(verbose)) {
+            if (verbose) {
+                print(dt_chrintcprn[is.na(int) & chr != ""], n = 1000)
+            } else {
+                print(dt_chrintcprn[is.na(int) & chr != ""])
+            }
         }
         warning("FIXME: some strings don't convert to ints")
     }
