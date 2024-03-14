@@ -33,8 +33,9 @@ PMDATA_LOCS <- gc_pmdata_locs()
 First we generate a bunch of objects that will help us later: 
 
 ```{r datat_prep}
-## get af exhibitions
+## get af exhibitions and institutions
 dt_af_exhbs <- gd_af_exhbs()
+dt_af_instns <- gd_af_instns()
 
 ## get PMDB
 dt_pmdb <- suppressWarnings(gd_pmdb(gd_pmdb_excl(only_pms = F), verbose = NULL)) %>%    
@@ -136,3 +137,62 @@ dt_pmdb_af_cvrgvis %>% copy() %>%
     geom_text_repel(box.padding = 0.1, force_pull = 0)
 
 ```
+
+## Artfacts coverage over time 
+
+```{r}
+## merge AF exhibitions to PMDB
+dt_pmdb_exhbs <- join(dt_af_exhbs,
+     dt_pmdb_af[AF_IID != "nomatch", .(InstitutionID = as.integer(AF_IID), PMDB_ID, name)], 
+     on = "InstitutionID", how = 'inner') %>%
+    .[, begin_year := year(BeginDate)]
+
+dt_af_exhbs_pmdb <- join(dt_af_exhbs,
+                         dt_pmdb_af[AF_IID != "nomatch", .(InstitutionID = as.integer(AF_IID), PMDB_ID, name)],
+                         on = "InstitutionID", how = 'left') %>%
+    .[, begin_year := year(BeginDate)]
+```
+
+Around `r format(100*(fnrow(dt_pmdb_exhbs)/fnrow(dt_af_exhbs)), digits = 2, nsmall = 2)` % of exhibitions in Artfacts are in private museums. 
+
+
+percentage of shows in private museums over time: increases quite over time
+
+```{r, fig.dim = c(8, 6), echo = F}
+dt_af_exhbs_pmdb[, .(prop_pmdb = sum(100*!is.na(PMDB_ID))/.N), begin_year] %>%
+    .[begin_year %between% c(1990, 2023)] %>% 
+    ggplot(aes(x=begin_year, y = prop_pmdb)) + geom_line()
+```
+
+distribution of types of institutions and exhibitions
+
+
+```{r}
+## get exhibition data with institution info (w, i, info)
+dt_af_exhbs_wiinfo <- join(dt_af_exhbs, dt_af_instns, on = c(InstitutionID = "ID")) %>%
+    .[, begin_year := year(BeginDate)]
+
+dt_af_exhbs_wiinfo[, .(nbr_type = fnunique(InstitutionID), nbr_exhbs = .N), InstitutionType] %>%
+    .[, `:=`(perc_type = 100*nbr_type/sum(nbr_type), perc_exhbs = 100*nbr_exhbs/sum(nbr_exhbs))] %>%
+    .[order(-nbr_exhbs)] %>% print(n=25)
+```
+
+
+type over time: 
+
+```{r, fig.dim = c(9,6), echo = F}
+
+rbind(
+    dt_af_exhbs_wiinfo[, .N, .(InstitutionType, begin_year)] %>%
+    .[begin_year %between% c(1990, 2022)] %>%
+    .[, .SD[any(N > 150)], InstitutionType] %>% # only types which at least once gets 150 exhbs per year
+    .[order(-N)] %>% .[, InstitutionType := factor(InstitutionType, levels = funique(InstitutionType))] %>%
+    .[, src := "type"],
+    dt_af_exhbs_wiinfo %>%
+    .[begin_year %between% c(1990, 2022)] %>%
+    .[, .N, begin_year] %>% .[, `:=`(src = "total", InstitutionType = "all")]) %>% 
+    ggplot(aes(x=begin_year, y=N, color = InstitutionType)) + geom_line()
+```
+
+huh some decrease by more than 50% from ~2012 onwards? 
+

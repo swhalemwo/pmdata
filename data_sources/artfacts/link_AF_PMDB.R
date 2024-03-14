@@ -78,28 +78,8 @@ gw_AF_PMDB_matches <- function() {
 
 
 
-## merge AF exhibitions to PMDB
-dt_pmdb_exhbs <- join(dt_af_exhbs,
-     dt_pmdb_af[AF_IID != "nomatch", .(InstitutionID = as.integer(AF_IID), PMDB_ID, name)], 
-     on = "InstitutionID", how = 'inner') %>%
-    .[, begin_year := year(BeginDate)]
 
-dt_pmdb_exhbs[, .N, .(PMDB_ID, begin_year)]
 
-## around 1% of exhibitions are in private museums...
 
-## percentage of exhibition in PMs over time: increases from 0.5 in 1995 to ~1.9 in 2023
-dt_af_exhbs_pmdb <- join(dt_af_exhbs,
-                         dt_pmdb_af[AF_IID != "nomatch", .(InstitutionID = as.integer(AF_IID), PMDB_ID, name)],
-     on = "InstitutionID", how = 'left')
 
-class(dt_af_exhbs_pmdb$BeginDate) <- "Date"
-class(dt_af_exhbs_pmdb$EndDate) <- "Date"
 
-dt_af_exhbs_pmdb[, begin_year := year(BeginDate)]
-
-dt_af_exhbs_pmdb[, .(prop_pmdb = sum(100*!is.na(PMDB_ID))/.N), begin_year] %>%
-    .[begin_year %between% c(1990, 2023)] %>% 
-    ggplot(aes(x=begin_year, y = prop_pmdb)) + geom_line()
-
-gd_af_instns()[, .N, InstitutionType][order(-N)] %>% print(n=80)
