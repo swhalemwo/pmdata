@@ -36,6 +36,7 @@ First we generate a bunch of objects that will help us later:
 ## get af exhibitions and institutions
 dt_af_exhbs <- gd_af_exhbs()
 dt_af_instns <- gd_af_instns()
+dt_af_links_exhb_ppl <- gd_af_links_exhb_ppl()
 
 ## get PMDB
 dt_pmdb <- suppressWarnings(gd_pmdb(gd_pmdb_excl(only_pms = F), verbose = NULL)) %>%    
@@ -188,7 +189,7 @@ rbind(
     .[, .SD[any(N > 150)], InstitutionType] %>% # only types which at least once gets 150 exhbs per year
     .[order(-N)] %>% .[, InstitutionType := factor(InstitutionType, levels = funique(InstitutionType))] %>%
     .[, src := "type"],
-    dt_af_exhbs_wiinfo %>%
+    dt_af_exhbs_wiinfo %>% # aggregate total 
     .[begin_year %between% c(1990, 2022)] %>%
     .[, .N, begin_year] %>% .[, `:=`(src = "total", InstitutionType = "all")]) %>% 
     ggplot(aes(x=begin_year, y=N, color = InstitutionType)) + geom_line()
@@ -196,3 +197,89 @@ rbind(
 
 huh some decrease by more than 50% from ~2012 onwards? 
 
+- 
+
+- see if it affects artists as well: 
+
+
+```{r, fig.dim = c(9, 8), echo = F}
+## artfacts exhb with people info 
+dt_af_exhbs_wpinfo <- join(dt_af_links_exhb_ppl, dt_af_exhbs_wiinfo, on = c(ExhibitionID = "ID"))
+    
+dt_af_exhbs_wpinfo[begin_year %between% c(1990, 2022)] %>%
+    .[, .(nbr_unq_people = fnunique(PeopleID), nbr_people = .N), .(InstitutionType, begin_year)] %>%
+    .[, .SD[any(nbr_people > 350)], InstitutionType] %>% 
+    melt(id.vars = c("InstitutionType", "begin_year"), variable.name = "measure", value.name = "count") %>% 
+    ggplot(aes(x=begin_year, y = count, color = InstitutionType)) +
+    geom_line() +
+    facet_grid(measure ~ ., scales = "free")
+```
+
+yes it does
+
+by country: 
+
+```{r, fig.dim = c(20, 12), echo = F}
+## count over time by institution type and country 
+dt_af_exhbs_wiinfo[, .N, .(InstitutionType, begin_year, CountryName)] %>%
+    .[begin_year %between% c(1990, 2022)] %>%
+    .[, .SD[any(N > 75)], .(InstitutionType, CountryName)] %>%
+    .[order(-N)] %>% .[, CountryName := factor(CountryName, levels = funique(CountryName))] %>% 
+    ggplot(aes(x=begin_year, y = N, color = InstitutionType)) +
+    geom_line() +
+    facet_wrap(~ CountryName, scales = "free_y") +
+    theme(strip.text = element_text(margin = margin(0,0,0,0, "cm")),
+          legend.position = "bottom",
+          axis.text.x = element_text(angle = 20))
+          
+```
+
+pretty much in all countries, both big and small (ordered by max size)
+
+
+is that decrease a within-institution effect? or "closures", i.e. exclusion? -> look at average numbers
+
+```{r, fig.dim = c(7, 8), echo = F}
+rbind(
+    ## average number of exhibitions by InstitutionType
+    dt_af_exhbs_wiinfo[, .N, .(InstitutionType, begin_year, InstitutionID)] %>%
+    .[begin_year %between% c(1990, 2022), .SD[any(sum(N) > 2000)], .(InstitutionType)] %>%
+    .[, .(vlu = mean(N), measure = "instn_avg_exhbcnt"), .(InstitutionType, begin_year)],
+    ## number of unique Institutions per type and year
+    dt_af_exhbs_wiinfo[, .(vlu = fnunique(InstitutionID), measure = "instn_unq_cnt"),
+                       .(InstitutionType, begin_year)] %>%
+    .[begin_year %between% c(1990, 2022), .SD[any(sum(vlu) > 2000)], .(InstitutionType)],
+    ## average number of exhibitions for an artist in institution type per year
+    dt_af_exhbs_wpinfo[, .N, .(PeopleID, begin_year, InstitutionType)] %>%
+    .[begin_year %between% c(1990, 2022), .SD[any(sum(N) > 10000)], .(InstitutionType)] %>%
+    .[, .(vlu = mean(N), measure = "artist_avg_exhbcnt"), .(begin_year, InstitutionType)]) %>% 
+    ggplot(aes(x=begin_year, y=vlu, color = InstitutionType)) +
+    geom_line() +
+    facet_grid(measure ~., scales = "free")
+```
+
+seems to be in all kinds of settings: declines from ~2012 onwards in all: 
+
+- number of institutions that have at least 1 show (instn_unq_cnt)
+
+- average number of exhibitions by active institutions (instns_avg_exhbcnt)
+
+- average number of artists exhibitions (artist_avg_exhbcount)
+
+
+possible explanations: 
+- data collection: AF has become more and more lazy since 2012 
+  but weird that it's so gradual.. 
+  they didn't give us good data
+
+- substantial: art field has shrunk since 2012? 
+
+way to deal with it for PM size indicator: 
+- rather than count of exhibitions, percent of total exhibitions? 
+  this has the funny property that it shrinks if exhibition count stays the same, but more museums are added
+- rank: e.g. which decile 
+  same issue: by more other museums doing more, rank can go down
+  
+AF: founded in 2001
+https://web.archive.org/web/20240000000000*/artfacts.net: less active in period 2014-2017
+website look same tho
