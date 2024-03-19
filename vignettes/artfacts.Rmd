@@ -1,5 +1,5 @@
 <!-- --- -->
-<!-- title: "artfacts" -->
+<!-- title: "jartfacts" -->
 <!-- output: rmarkdown::html_vignette -->
 <!-- vignette: > -->
 <!--   %\VignetteIndexEntry{example} -->
@@ -7,7 +7,7 @@
 <!--   %\VignetteEncoding{UTF-8} -->
 <!-- --- -->
 
-```{r, include = FALSE}
+```{r, include = FALSE, cache=TRUE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -32,11 +32,12 @@ PMDATA_LOCS <- gc_pmdata_locs()
 
 <!-- First we generate a bunch of objects that will help us later:  -->
 
-```{r datat_prep, echo = F}
+```{r datat_prep, echo = F, cache=TRUE}
 ## get af exhibitions and institutions
 dt_af_exhbs <- gd_af_exhbs()
 dt_af_instns <- gd_af_instns()
 dt_af_links_exhb_ppl <- gd_af_links_exhb_ppl()
+dt_af_people <- gd_af_people()
 
 ## get PMDB
 dt_pmdb <- suppressWarnings(gd_pmdb(gd_pmdb_excl(only_pms = F), verbose = NULL)) %>%    
@@ -65,7 +66,7 @@ Overall coverage (private museums in our database which are in our sample of the
 
 
 
-```{r, echo = F}
+```{r, echo = F, cache=TRUE}
 ## calculate AF coverage by country and museum status
 dt_pmdb_af_cvrgvis <- dt_pmdb_af[, .N, .(museum_status, iso3c, AF_IID != "nomatch")] %>%
     ## expand DT by all possible combinations
@@ -83,7 +84,7 @@ dt_pmdb_af_cvrgvis <- dt_pmdb_af[, .N, .(museum_status, iso3c, AF_IID != "nomatc
 
 Coverage by region: 
 
-```{r, fig.dim = c(8, 8), echo = F}
+```{r, fig.dim = c(8, 8), echo = F, cache=TRUE}
 ## coverage by  region
 dt_pmdb_af %>% copy() %>% 
     .[, reg_sub := countrycode(iso3c, "iso3c", "un.regionsub.name",
@@ -106,7 +107,7 @@ Europe seems to be covered best, Souther Asia worst (not all regions have museum
 Coverage also differs by country: 
 
 
-```{r,  fig.dim = c(8,9),  echo = F}
+```{r,  fig.dim = c(8,9),  echo = F, cache=TRUE}
 dt_pmdb_af_cvrgvis %>% 
     ggplot(aes(x = prop_covered, y = iso3c, color = museum_status, group = museum_status, size = N_cry_ms)) +
     geom_point(position = position_dodge(width = 0.8)) +
@@ -139,7 +140,7 @@ Closed museums are also not covered well in Asia, e.g. none of the closed museum
 
 ## Artfacts coverage over time 
 
-```{r, echo = F}
+```{r, echo = F, cache=TRUE}
 ## merge AF exhibitions to PMDB
 dt_pmdb_exhbs <- join(dt_af_exhbs,
      dt_pmdb_af[AF_IID != "nomatch", .(InstitutionID = as.integer(AF_IID), PMDB_ID, name)], 
@@ -157,7 +158,7 @@ Around `r format(100*(fnrow(dt_pmdb_exhbs)/fnrow(dt_af_exhbs)), digits = 2, nsma
 
 percentage of shows in private museums over time: increases quite over time
 
-```{r, fig.dim = c(8, 6), echo = F}
+```{r, fig.dim = c(8, 6), echo = F, cache=TRUE}
 dt_af_exhbs_pmdb[, .(prop_pmdb = sum(100*!is.na(PMDB_ID))/.N), begin_year] %>%
     .[begin_year %between% c(1990, 2023)] %>% 
     ggplot(aes(x=begin_year, y = prop_pmdb)) + geom_line()
@@ -166,7 +167,7 @@ dt_af_exhbs_pmdb[, .(prop_pmdb = sum(100*!is.na(PMDB_ID))/.N), begin_year] %>%
 distribution of types of institutions and exhibitions
 
 
-```{r, echo = F}
+```{r, echo = F, cache=TRUE}
 ## get exhibition data with institution info (w, i, info)
 dt_af_exhbs_wiinfo <- join(dt_af_exhbs, dt_af_instns, on = c(InstitutionID = "ID"), verbose = F) %>%
     .[, begin_year := year(BeginDate)]
@@ -176,14 +177,14 @@ dt_af_t_itype <- dt_af_exhbs_wiinfo[, .(nbr_type = fnunique(InstitutionID), nbr_
     .[order(-nbr_exhbs)]
 ```
 
-```{r}
+```{r, cache=TRUE}
 dt_af_t_itype %>% print(n=25, row.names = F, width = 60)
 ```
 Most exhibitions are in Galleries, Public Instititutions and NPOs.
 
 type over time: 
 
-```{r, fig.dim = c(9,6), echo = F}
+```{r, fig.dim = c(9,6), echo = F, cache=TRUE}
 
 rbind(
     dt_af_exhbs_wiinfo[, .N, .(InstitutionType, begin_year)] %>%
@@ -209,7 +210,7 @@ could be that coverage changes over time by:
 
 
 
-```{r, fig.dim = c(9, 8), echo = F}
+```{r, fig.dim = c(9, 8), echo = F, cache=TRUE}
 ## artfacts exhb with people info 
 dt_af_exhbs_wpinfo <- join(dt_af_links_exhb_ppl, dt_af_exhbs_wiinfo, on = c(ExhibitionID = "ID"), verbose = 0)
 ```
@@ -219,7 +220,7 @@ dt_af_exhbs_wpinfo <- join(dt_af_links_exhb_ppl, dt_af_exhbs_wiinfo, on = c(Exhi
 
 by country: 
 
-```{r, fig.dim = c(12, 8), echo = F}
+```{r, fig.dim = c(12, 8), echo = F, cache=TRUE}
 ## count over time by institution type and country 
 dt_af_exhbs_wiinfo[, .N, .(InstitutionType, begin_year, CountryName)] %>%
     .[begin_year %between% c(1990, 2022)] %>%
@@ -239,7 +240,7 @@ pretty much in all countries, both big and small (ordered by max size)
 
 is that decrease a within-institution effect? or "closures", i.e. exclusion? -> look at average numbers
 
-```{r, fig.dim = c(10, 6), echo = F}
+```{r, fig.dim = c(10, 6), echo = F, cache=TRUE}
 rbind(
     ## average number of exhibitions by InstitutionType
     dt_af_exhbs_wiinfo[, .N, .(InstitutionType, begin_year, InstitutionID)] %>%
@@ -301,3 +302,45 @@ way to deal with it for PM size indicator:
 <!-- AF: founded in 2001 -->
 <!-- https://web.archive.org/web/20240000000000*/artfacts.net: less active in period 2014-2017 -->
 <!-- website look same tho -->
+
+## artist descriptives
+
+Could be that decline is due to artists aging?
+
+```{r, echo = F, fig.dim = c(7, 5), cache=TRUE}
+dt_af_people[, .N, BirthYear] %>% ggplot(aes(x=BirthYear, y = N)) + geom_col()
+```
+
+peak in Birthyear is around 1977, they are in their 30s when exhibition counts decline.. 
+could it be that older artists retire? oldest are 67 then 
+-> look at average age by year
+
+
+```{r, echo = F, fig.dim = c(10,7), cache=TRUE}
+## with artist info
+dt_af_exhbs_wainfo <- join(dt_af_exhbs_wpinfo,
+                            setnames(copy(dt_af_people), old = "Name", new = "artist_name"), # add totals
+                           on = c(PeopleID = "ID"), verbose = 0)
+
+dt_af_exhbs_wainfo %>%
+    .[, .(mean_age = mean(begin_year - BirthYear), N = .N), .(InstitutionType, begin_year)] %>%
+    .[begin_year %between% c(1990, 2022), .SD[any(N > 2000)], InstitutionType] %>%
+    rbind(., 
+          .[, .(mean_age = weighted.mean(mean_age, w = N), InstitutionType = "all",  N = sum(N)), begin_year]) %>% 
+    ggplot(aes(x=begin_year, y = mean_age, color = InstitutionType)) + geom_line()
+```
+
+huh average age increases A LOT:  
+but is kinda plausible: in 1990 there are actually many artists who are born before 1945, and which are missing here
+the lack of them is pulling down the average  
+quite interesting that age continues to increase all the way:  
+-> even in 2022 there are still substantial amounts of pre-1945 artists around?  
+-> artists become older overall  
+
+actually this makes absolute measurement unreliable, even if there was no decline after 2012:  
+survival compares based on age (not year): in our subset, number of exhibitions in 1995 is different from that in 2015 at the same size, because in 1995 a larger portion is of pre-1945 artists -> number of exhibitions in 1995 is lower than in 2015 because more are missing (even if museums are otherwise identical)  
+
+also, this makes decline even worse: there should be muuuch more, because the further the time goes, the lower is the proportion of pre-1945 artists which get excluded
+
+
+

@@ -7,14 +7,14 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r, include = FALSE, cache = T}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 ```
 
-```{r setup}
+```{r setup, cache = T}
 library(pmdata)
 library(data.table)
 adt <- as.data.table
@@ -28,14 +28,15 @@ I hate the tidyverse
 
 
 test tables: look good
-```{r}
+```{r, cache=TRUE}
 adt(mtcars)[, .N, cyl]
 ```
 
 
 test figures:
-```{r}
+```{r, cache=TRUE}
 ggplot(mtcars, aes(x=mpg, y = hp)) + geom_point()
 ```
 
+i like pie a lot
 
