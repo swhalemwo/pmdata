@@ -28,11 +28,11 @@ library(ggrepel)
 PMDATA_LOCS <- gc_pmdata_locs()
 ```
 
-##  introduction 
+##  Merging Artfacts to PMDB
 
-First we generate a bunch of objects that will help us later: 
+<!-- First we generate a bunch of objects that will help us later:  -->
 
-```{r datat_prep}
+```{r datat_prep, echo = F}
 ## get af exhibitions and institutions
 dt_af_exhbs <- gd_af_exhbs()
 dt_af_instns <- gd_af_instns()
@@ -51,18 +51,17 @@ dt_pmdb_af <- join(dt_matches_pmdb_af, dt_pmdb[, .(ID, name, iso3c, museum_statu
 
 ```
 
-Then we look at Artfacts coverage by museum status: 
+Overall coverage (private museums in our database which are in our sample of the Artfacts database) is `r dt_pmdb_af[, 100*sum(AF_IID != "nomatch")/.N]`%. Differences by museum status exist, but are not very large: `r dt_pmdb_af[museum_status =="private museum", 100*sum(AF_IID != "nomatch")/.N]`% for open, `r dt_pmdb_af[museum_status =="closed", 100*sum(AF_IID != "nomatch")/.N]`% for closed.
 
-```{r af_cvrg, echo = F}
-## .[grepl("carmignac", name, ignore.case = T)]
-dt_pmdb_af[, .N, .(museum_status, af_cvrg = fifelse(AF_IID != "nomatch", "AF_IID", "noAF_IID"))] %>%
-    .[, prop := N/sum(N), museum_status] %>%
-    .[, cell_fmtd :=sprintf("%s (%s %%)", N, format(100*prop, digits =2, nsmall = 2 ,))] %>%
-    dcast(af_cvrg ~ museum_status, value.var = "cell_fmtd")
+
+<!-- ```{r af_cvrg, echo = F} -->
+<!-- ## .[grepl("carmignac", name, ignore.case = T)] -->
+<!-- dt_pmdb_af[, .N, .(museum_status, af_cvrg = fifelse(AF_IID != "nomatch", "AF_IID", "noAF_IID"))] %>% -->
+<!--     .[, prop := N/sum(N), museum_status] %>% -->
+<!--     .[, cell_fmtd :=sprintf("%s (%s %%)", N, format(100*prop, digits =2, nsmall = 2 ,))] %>% -->
+<!--     dcast(af_cvrg ~ museum_status, value.var = "cell_fmtd") -->
     
-```
-
-Overall coverage is `r dt_pmdb_af[, 100*sum(AF_IID != "nomatch")/.N]`%. Differences by museum status exist, but are not large. 
+<!-- ``` -->
 
 
 
@@ -80,10 +79,9 @@ dt_pmdb_af_cvrgvis <- dt_pmdb_af[, .N, .(museum_status, iso3c, AF_IID != "nomatc
     .[, iso3c := factor(iso3c, funique(iso3c))] %>%
     .[, reg6 := rcd_iso3c_reg6(iso3c)] %>%
     .[!is.nan(prop_covered)] # %>% .[iso3c == "DEU"]
-
 ```
 
-Next, let's look at coverage by region: 
+Coverage by region: 
 
 ```{r, fig.dim = c(8, 8), echo = F}
 ## coverage by  region
@@ -126,31 +124,31 @@ European countries seem to be covered best (e.g. almost three quarters of German
 
 Closed museums are also not covered well in Asia, e.g. none of the closed museums in 7 Asian countries are included, compared to only 1 European country and 1 African. 
 
-Alternative way of plotting country coverage, but doesn't look so good: 
+<!-- Alternative way of plotting country coverage, but doesn't look so good:  -->
 
-```{r, fig.dim = c(10,8), echo = F}
-## 
-dt_pmdb_af_cvrgvis %>% copy() %>%
-    .[, museum_status_short := fifelse(museum_status == "closed", "CL", "OP")] %>%
-    .[, lbl := sprintf("%s -  %s", iso3c, museum_status_short)] %>% 
-    ggplot(aes(x=N_cry_ms, y = prop_covered, color = museum_status, label = iso3c)) +
-    geom_point() +
-    geom_text_repel(box.padding = 0.1, force_pull = 0)
+<!-- ```{r, fig.dim = c(10,8), echo = F} -->
+<!-- ##  -->
+<!-- dt_pmdb_af_cvrgvis %>% copy() %>% -->
+<!--     .[, museum_status_short := fifelse(museum_status == "closed", "CL", "OP")] %>% -->
+<!--     .[, lbl := sprintf("%s -  %s", iso3c, museum_status_short)] %>%  -->
+<!--     ggplot(aes(x=N_cry_ms, y = prop_covered, color = museum_status, label = iso3c)) + -->
+<!--     geom_point() + -->
+<!--     geom_text_repel(box.padding = 0.1, force_pull = 0) -->
 
-```
+<!-- ``` -->
 
 ## Artfacts coverage over time 
 
-```{r}
+```{r, echo = F}
 ## merge AF exhibitions to PMDB
 dt_pmdb_exhbs <- join(dt_af_exhbs,
      dt_pmdb_af[AF_IID != "nomatch", .(InstitutionID = as.integer(AF_IID), PMDB_ID, name)], 
-     on = "InstitutionID", how = 'inner') %>%
+     on = "InstitutionID", how = 'inner', verbose = 0) %>%
     .[, begin_year := year(BeginDate)]
 
 dt_af_exhbs_pmdb <- join(dt_af_exhbs,
                          dt_pmdb_af[AF_IID != "nomatch", .(InstitutionID = as.integer(AF_IID), PMDB_ID, name)],
-                         on = "InstitutionID", how = 'left') %>%
+                         on = "InstitutionID", how = 'left', verbose = 0) %>%
     .[, begin_year := year(BeginDate)]
 ```
 
@@ -168,16 +166,20 @@ dt_af_exhbs_pmdb[, .(prop_pmdb = sum(100*!is.na(PMDB_ID))/.N), begin_year] %>%
 distribution of types of institutions and exhibitions
 
 
-```{r}
+```{r, echo = F}
 ## get exhibition data with institution info (w, i, info)
-dt_af_exhbs_wiinfo <- join(dt_af_exhbs, dt_af_instns, on = c(InstitutionID = "ID")) %>%
+dt_af_exhbs_wiinfo <- join(dt_af_exhbs, dt_af_instns, on = c(InstitutionID = "ID"), verbose = F) %>%
     .[, begin_year := year(BeginDate)]
 
-dt_af_exhbs_wiinfo[, .(nbr_type = fnunique(InstitutionID), nbr_exhbs = .N), InstitutionType] %>%
+dt_af_t_itype <- dt_af_exhbs_wiinfo[, .(nbr_type = fnunique(InstitutionID), nbr_exhbs = .N), InstitutionType] %>%
     .[, `:=`(perc_type = 100*nbr_type/sum(nbr_type), perc_exhbs = 100*nbr_exhbs/sum(nbr_exhbs))] %>%
-    .[order(-nbr_exhbs)] %>% print(n=25)
+    .[order(-nbr_exhbs)]
 ```
 
+```{r}
+dt_af_t_itype %>% print(n=25, row.names = F, width = 60)
+```
+Most exhibitions are in Galleries, Public Instititutions and NPOs.
 
 type over time: 
 
@@ -197,29 +199,27 @@ rbind(
 
 huh some decrease by more than 50% from ~2012 onwards? 
 
-- 
+could be that coverage changes over time by: 
 
-- see if it affects artists as well: 
+- country: some countries get covered less
+
+- artist: some artists get covered less -> exhibition numbers of active artists can stay stable/go up even when total number decreases
+
+- institution: some institutions get covered less: average exhibition numbers of active institutions can be stable/go up even when total number decreases
+
 
 
 ```{r, fig.dim = c(9, 8), echo = F}
 ## artfacts exhb with people info 
-dt_af_exhbs_wpinfo <- join(dt_af_links_exhb_ppl, dt_af_exhbs_wiinfo, on = c(ExhibitionID = "ID"))
-    
-dt_af_exhbs_wpinfo[begin_year %between% c(1990, 2022)] %>%
-    .[, .(nbr_unq_people = fnunique(PeopleID), nbr_people = .N), .(InstitutionType, begin_year)] %>%
-    .[, .SD[any(nbr_people > 350)], InstitutionType] %>% 
-    melt(id.vars = c("InstitutionType", "begin_year"), variable.name = "measure", value.name = "count") %>% 
-    ggplot(aes(x=begin_year, y = count, color = InstitutionType)) +
-    geom_line() +
-    facet_grid(measure ~ ., scales = "free")
+dt_af_exhbs_wpinfo <- join(dt_af_links_exhb_ppl, dt_af_exhbs_wiinfo, on = c(ExhibitionID = "ID"), verbose = 0)
 ```
 
-yes it does
+
+
 
 by country: 
 
-```{r, fig.dim = c(20, 12), echo = F}
+```{r, fig.dim = c(12, 8), echo = F}
 ## count over time by institution type and country 
 dt_af_exhbs_wiinfo[, .N, .(InstitutionType, begin_year, CountryName)] %>%
     .[begin_year %between% c(1990, 2022)] %>%
@@ -239,7 +239,7 @@ pretty much in all countries, both big and small (ordered by max size)
 
 is that decrease a within-institution effect? or "closures", i.e. exclusion? -> look at average numbers
 
-```{r, fig.dim = c(7, 8), echo = F}
+```{r, fig.dim = c(10, 6), echo = F}
 rbind(
     ## average number of exhibitions by InstitutionType
     dt_af_exhbs_wiinfo[, .N, .(InstitutionType, begin_year, InstitutionID)] %>%
@@ -252,34 +252,52 @@ rbind(
     ## average number of exhibitions for an artist in institution type per year
     dt_af_exhbs_wpinfo[, .N, .(PeopleID, begin_year, InstitutionType)] %>%
     .[begin_year %between% c(1990, 2022), .SD[any(sum(N) > 10000)], .(InstitutionType)] %>%
-    .[, .(vlu = mean(N), measure = "artist_avg_exhbcnt"), .(begin_year, InstitutionType)]) %>% 
+    .[, .(vlu = mean(N), measure = "artist_avg_exhbcnt"), .(begin_year, InstitutionType)],
+    ## Artist data
+    dt_af_exhbs_wpinfo[begin_year %between% c(1990, 2022)] %>%
+    .[, .(artist_unq_cnt = fnunique(PeopleID), artist_ttl_cnt = .N), .(InstitutionType, begin_year)] %>%
+    .[, .SD[any(artist_unq_cnt > 500)], InstitutionType] %>% 
+    melt(id.vars = c("InstitutionType", "begin_year"), variable.name = "measure", value.name = "vlu")) %>%
+    ## categorize some more
+    .[, `:=`(entity = factor(fifelse(grepl("^instn", measure), "instn", "artist"), levels = c("instn", "artist")),
+             measure2 = gsub("artist_|instn_", "", measure))] %>%
     ggplot(aes(x=begin_year, y=vlu, color = InstitutionType)) +
     geom_line() +
-    facet_grid(measure ~., scales = "free")
+    facet_wrap(entity ~ measure2, scales = "free") +
+    theme(legend.position = "bottom")
 ```
 
 seems to be in all kinds of settings: declines from ~2012 onwards in all: 
 
-- number of institutions that have at least 1 show (instn_unq_cnt)
+- instititutions: 
+    - number with at least 1 show (instn, unq_cnt)
+    - average number of exhibitions by active institutions (instn, avg_exhbcnt)
 
-- average number of exhibitions by active institutions (instns_avg_exhbcnt)
-
-- average number of artists exhibitions (artist_avg_exhbcount)
+- artists: 
+    - number of artists exhibited in total (artist, ttl_cnt)
+    - number of unique artists exhibited (artist, unq_cnt)
+    - average number of exhibitions (artist, avg_exhbcnt)
 
 
 possible explanations: 
-- data collection: AF has become more and more lazy since 2012 
-  but weird that it's so gradual.. 
-  they didn't give us good data
 
-- substantial: art field has shrunk since 2012? 
+- data collection: 
+  Artfacts data collection has become less complete since 2012? but weird that it's so gradual  
+  change in availability in their sources?  
+  data processing errors on their part?  
+
+
+- substantial: art field has shrunk since 2012?  
+  look at auction data? 
 
 way to deal with it for PM size indicator: 
-- rather than count of exhibitions, percent of total exhibitions? 
-  this has the funny property that it shrinks if exhibition count stays the same, but more museums are added
-- rank: e.g. which decile 
+
+- rather than count of exhibitions, percent of total exhibitions?  
+  this has the funny/undesirable property that it shrinks if exhibition count stays the same, but more museums are added
+  
+- rank: e.g. which decile  
   same issue: by more other museums doing more, rank can go down
   
-AF: founded in 2001
-https://web.archive.org/web/20240000000000*/artfacts.net: less active in period 2014-2017
-website look same tho
+<!-- AF: founded in 2001 -->
+<!-- https://web.archive.org/web/20240000000000*/artfacts.net: less active in period 2014-2017 -->
+<!-- website look same tho -->
