@@ -30,6 +30,7 @@ library(ggrepel)
 PMDATA_LOCS <- gc_pmdata_locs()
 ```
 
+
 ##  Merging Artfacts to PMDB
 
 <!-- First we generate a bunch of objects that will help us later:  -->
@@ -401,17 +402,51 @@ visualize quantile rank of PMs over time:
 
 ```{r, echo = F, cache = T, fig.dim = c(8,6)}
 
-dt_qntlviz <- copy(dt_af_qntlprep) %>%
+dt_qntlyear_viz <- copy(dt_af_qntlprep) %>%
+    .[, quantile := ecdf_fun(N, N), .(begin_year)] %>%
+    ## focus on countries with largest PMs population
+    .[!is.na(PMDB_ID) & begin_year <= 2020, .SD[fnunique(PMDB_ID) > 5], CountryName]
+
+dt_qntlCY_viz <- copy(dt_af_qntlprep) %>%
     .[, quantile := ecdf_fun(N, N), .(CountryName, begin_year)] %>%
     ## focus on countries with largest PMs population
     .[!is.na(PMDB_ID) & begin_year <= 2020, .SD[fnunique(PMDB_ID) > 5], CountryName]
 
                                         
-ggplot(dt_qntlviz, aes(x=begin_year, y=quantile, group = PMDB_ID)) +
+ggplot(dt_qntlCY_viz, aes(x=begin_year, y=quantile, group = PMDB_ID)) +
     geom_line(alpha = 0.2) +
     facet_wrap(~CountryName)
 
 ```
+
+look at difference between different quantile calculation methods:  
+- year  
+- country-year  
+
+```{r, echo = F, cache = T, fig.dim = c(8,6)}
+dt_qntl_cprcalcs <- rbind(copy(dt_qntlyear_viz)[, src := "year"],
+      copy(dt_qntlCY_viz)[, src := "CY"]) %>%
+    dcast(InstitutionID + PMDB_ID + begin_year + CountryName + N ~ src, value.var = "quantile") %>%
+    .[, diff := CY - year] %>%
+    .[, diff_cut := cut(diff, breaks = seq(floor(min(diff)*20)/20, ceiling(max(diff)*20)/20, by = 0.05))]
+
+dt_qntl_cprcalcs %>% ggplot(aes(x=diff)) + geom_density() +
+    facet_wrap(~CountryName, scales = "free_y") + geom_vline(xintercept = 0, linetype = "dashed")
+                                                             
+
+dt_qntl_cprcalcs %>% 
+    .[, .N, diff_cut] %>% .[, prop := round(100*N/sum(N), 2)] %>% 
+    ggplot(aes(x=diff_cut, y= N, label = prop)) + geom_col() + geom_text(nudge_y = 20)
+
+```
+
+strange: there quite some diff: 32% of PM-years have abs(diff) > 0.05,  
+hmm around 7% have abs(diff) > 0.1  
+quantile has SD = 0.24 in closing data, and that has a lot of within jankiness -> meaningful between-variation is maybe 0.15? 
+
+maybe also due most PMs being located in handful of countries, which are relatively well covered? 
+
+
 
 look only at Austrian PMs: 
 
