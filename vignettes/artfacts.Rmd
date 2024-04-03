@@ -9,10 +9,12 @@
 
 ```{r, include = FALSE, cache=TRUE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+                      collapse = TRUE,
+                      comment = "#>"
 )
 ```
+
+<!-- ## cache = FALSE, -->
 
 ```{r setup,  echo = F, results = F, message = F}
 library(pmdata)
@@ -121,7 +123,7 @@ dt_pmdb_af_cvrgvis %>%
 ``` 
 
 
-European countries seem to be covered best (e.g. almost three quarters of Germany's 60 open museums are covered, compared to lesss than half of South Korea's 50). 
+European countries seem to be covered best (e.g. almost three quarters of Germany's 60 open museums are covered, compared to lesss than half of South Korea's 50).  
 
 Closed museums are also not covered well in Asia, e.g. none of the closed museums in 7 Asian countries are included, compared to only 1 European country and 1 African. 
 
@@ -236,7 +238,7 @@ dt_af_exhbs_wiinfo[, .N, .(InstitutionType, begin_year, CountryName)] %>%
           
 ```
 
-pretty much in all countries, both big and small (ordered by max size)
+pretty much in all countries, both big and small (ordered by max size)  
 
 
 is that decrease a within-institution effect? or "closures", i.e. exclusion? -> look at average numbers
@@ -381,8 +383,7 @@ ecdf_fun <- function(x,perc) ecdf(x)(perc) # get quantile of value
 ## test with austria data
 dt_au <- copy(dt_af_qntlprep)[CountryName == "Austria"] %>%
     ## .[, quantile := ecdf_fun(N, N), .(CountryName, begin_year)]
-    .[, quantile := ecdf_fun(N, N), begin_year]
-    
+    .[, quantile := ecdf_fun(N, N), .(begin_year, CountryName)]    
 
 ```
 
@@ -400,10 +401,13 @@ visualize quantile rank of PMs over time:
 
 ```{r, echo = F, cache = T, fig.dim = c(8,6)}
 
-copy(dt_af_qntlprep) %>%
-    .[, quantile := ecdf_fun(N, N), .(CountryName, begin_year)] %>% 
-    .[!is.na(PMDB_ID) & begin_year <= 2020, .SD[fnunique(PMDB_ID) > 5], CountryName] %>% # focus on countries with largest PMs population
-    ggplot(aes(x=begin_year, y=quantile, group = PMDB_ID)) +
+dt_qntlviz <- copy(dt_af_qntlprep) %>%
+    .[, quantile := ecdf_fun(N, N), .(CountryName, begin_year)] %>%
+    ## focus on countries with largest PMs population
+    .[!is.na(PMDB_ID) & begin_year <= 2020, .SD[fnunique(PMDB_ID) > 5], CountryName]
+
+                                        
+ggplot(dt_qntlviz, aes(x=begin_year, y=quantile, group = PMDB_ID)) +
     geom_line(alpha = 0.2) +
     facet_wrap(~CountryName)
 
