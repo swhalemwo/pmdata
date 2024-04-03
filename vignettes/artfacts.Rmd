@@ -153,39 +153,6 @@ dt_af_exhbs_pmdb <- join(dt_af_exhbs,
     .[, begin_year := year(BeginDate)]
 ```
 
-```{r, echo = F, cache = T}
-## look at exhibition in PMs a bit more -> can it be used to build size indicator?
-## dt_af_exhbs_pmdb[complete.cases(PMDB_ID, begin_year), .N, .(PMDB_ID, begin_year)]
-
-## calculate deciles
-## dt_af_exhbs_pmdb[, .N, .(InstitutionID, CountryName, begin_year)]
-
-## construct institution trajectories: activity as quantile
-## include 0 for all the institutions that have no exhibitions in a year, but had at least one before/after
-dt_af_qntlprep <- dt_af_exhbs_pmdb[!is.na(begin_year), .(begin_year = min(begin_year):max(begin_year)),
-                 .(InstitutionID, PMDB_ID, CountryName)] %>%
-    join(dt_af_exhbs_pmdb[, .N, .(InstitutionID, begin_year)], on = c("InstitutionID", "begin_year")) %>%
-    replace_NA(cols = "N") # fill up no exhbs with 0
-    
-## calculate quantile with ecdf (more comfy than quantile())
-## https://stats.stackexchange.com/questions/50080/estimate-quantile-of-value-in-a-vector
-ecdf_fun <- function(x,perc) ecdf(x)(perc) # get quantile of value
-
-
-## dt_af_qntlprep[CountryName == "Germany" & begin_year == 2012] %>% copy() %>%
-##     .[, quantile := ecdf_fun(N, N)] %>% .[, .(N2 =.N), .(N, quantile)] %>% .[order(N)]
-
-## visualize quantile development of PMs
-copy(dt_af_qntlprep)[CountryName == "Austria"][, quantile := ecdf_fun(N, log(N+1)), .(CountryName, begin_year)] %>%
-    .[!is.na(PMDB_ID), .SD[fnunique(PMDB_ID) > 5], CountryName] %>% # focus on countries with largest PMs population
-    .[, .SD[fnunique(begin_year) > 1], PMDB_ID] %>% # focus only on PMs that have exhbs in more than 1 year
-    ggplot(aes(x=begin_year, y=quantile, color = factor(N), group = PMDB_ID)) + 
-    geom_line(show.legend = F) + geom_point() +
-    geom_text(mapping = aes(label= N), color = "black") + 
-    facet_wrap(~PMDB_ID)
-    
-
-```
 
 Around `r format(100*(fnrow(dt_pmdb_exhbs)/fnrow(dt_af_exhbs)), digits = 2, nsmall = 2)` % of exhibitions in Artfacts are in private museums. 
 
@@ -365,7 +332,7 @@ dt_af_exhbs_wainfo %>%
 ```
 
 huh average age increases A LOT:  
-but is kinda plausible: in 1990 there are actually many artists who are born before 1945, and which are missing here
+but is kinda plausible: in 1990 there are actually many artists who are born before 1945, and which are missing here  
 the lack of them is pulling down the average  
 quite interesting that age continues to increase all the way:  
 -> even in 2022 there are still substantial amounts of pre-1945 artists around?  
@@ -380,3 +347,129 @@ also, this makes decline even worse: there should be muuuch more, because the fu
 
 could also be that demographics are less complete later on: exhibition data is in AF, but not in our dataset because demographics are incomplete
 
+
+
+## museum size indicators 
+
+look at exhibition in PMs a bit more -> can it be used to build size indicator?
+
+total exhibitions counts change substantially over time -> having 3 exhibitions in 2005 has different meaning than in 2012
+-> would have to use quantile, rather than absolute count: otherwise I assume 3 in 2005 measure same thing as in 2012
+
+```{r, echo = F, cache = T}
+## dt_af_exhbs_pmdb[complete.cases(PMDB_ID, begin_year), .N, .(PMDB_ID, begin_year)]
+
+## calculate deciles
+## dt_af_exhbs_pmdb[, .N, .(InstitutionID, CountryName, begin_year)]
+
+## construct institution trajectories: activity as quantile
+## include 0 for all the institutions that have no exhibitions in a year, but had at least one before/after
+dt_af_qntlprep <- dt_af_exhbs_pmdb[!is.na(begin_year), .(begin_year = min(begin_year):max(begin_year)),
+                 .(InstitutionID, PMDB_ID, CountryName)] %>%
+    join(dt_af_exhbs_pmdb[, .N, .(InstitutionID, begin_year)], on = c("InstitutionID", "begin_year"),
+         verbose = 0) %>%
+    replace_NA(cols = "N") # fill up no exhbs with 0
+    
+## calculate quantile with ecdf (more comfy than quantile())
+## https://stats.stackexchange.com/questions/50080/estimate-quantile-of-value-in-a-vector
+ecdf_fun <- function(x,perc) ecdf(x)(perc) # get quantile of value
+
+
+## dt_af_qntlprep[CountryName == "Germany" & begin_year == 2012] %>% copy() %>%
+##     .[, quantile := ecdf_fun(N, N)] %>% .[, .(N2 =.N), .(N, quantile)] %>% .[order(N)]
+
+## test with austria data
+dt_au <- copy(dt_af_qntlprep)[CountryName == "Austria"] %>%
+    ## .[, quantile := ecdf_fun(N, N), .(CountryName, begin_year)]
+    .[, quantile := ecdf_fun(N, N), begin_year]
+    
+
+```
+
+all institutions: 
+```{r, echo = T, cache = T, echo = F,  fig.dim = c(8,6)}
+dt_af_qntlprep[, .(N2 = .N), N] %>% .[order(N2)] %>%
+    .[, N := factor(N, levels = N)] %>% 
+    ggplot(aes(x = N2, y=factor(N))) + geom_col() + 
+    geom_text(mapping = aes(label = N2))
+
+
+```
+
+visualize quantile rank of PMs over time: 
+
+```{r, echo = F, cache = T, fig.dim = c(8,6)}
+
+copy(dt_af_qntlprep) %>%
+    .[, quantile := ecdf_fun(N, N), .(CountryName, begin_year)] %>% 
+    .[!is.na(PMDB_ID) & begin_year <= 2020, .SD[fnunique(PMDB_ID) > 5], CountryName] %>% # focus on countries with largest PMs population
+    ggplot(aes(x=begin_year, y=quantile, group = PMDB_ID)) +
+    geom_line(alpha = 0.2) +
+    facet_wrap(~CountryName)
+
+```
+
+look only at Austrian PMs: 
+
+```{r, echo = F, cache =T, fig.dim = c(8,6)}
+
+
+
+dt_au %>% 
+    .[!is.na(PMDB_ID), .SD[fnunique(begin_year) > 1], PMDB_ID] %>% # only PMs that have exhbs in more than 1 year
+    ggplot(aes(x=begin_year, y=quantile, color = factor(N), group = PMDB_ID)) + 
+    geom_line(show.legend = F) + geom_point() +
+    geom_text(mapping = aes(label= N), color = "black") + 
+    facet_wrap(~PMDB_ID)
+
+```
+
+
+plot relation between counts and quantile:
+
+```{r, echo = F, cache = T}
+
+dt_au[begin_year >= 1990, .SD[1], .(begin_year, N)] %>%
+    .[N < 15] %>% 
+    ggplot(aes(x=begin_year, y=quantile, color = factor(N))) + geom_line() + geom_point()
+
+```
+
+plot relation between counts and quantile: 
+
+```{r, echo = F, cache =T}
+## hmm probably easier when defining quantiles manually
+copy(dt_af_qntlprep)[CountryName == "Austria", quantile(N, probs = seq(0, 1, 0.1)) %>% as.list, begin_year] %>%
+    melt(id.vars = "begin_year", variable.name = "thld", value.name = "vlu") %>%
+    .[begin_year >= 1990] %>%
+    .[thld != "100%"] %>%  # yeet 100% (is max value -> makes other shrink super much
+    ggplot(aes(x=begin_year, y=vlu, color = thld)) + geom_line()
+```
+
+
+hmm a lot of flickering: is variation larger within than between? -> xtsum
+
+why does log(quantile) not work? 
+
+look at within/between variance of quantile score: 
+```{r, echo = F, cache = T}
+
+library(jtls)
+dt_xtsum <- copy(dt_af_qntlprep) %>% 
+    .[, quantile := ecdf_fun(N, N), .(CountryName, begin_year)] %>% 
+    xtsum(varname = quantile, unit = InstitutionID)
+
+print(dt_xtsum)
+
+
+```
+only look at within/between variance of quantile score of PMs: 
+
+```{r, echo = F, cache = T}
+copy(dt_af_qntlprep) %>% 
+    .[, quantile := ecdf_fun(N, N), .(CountryName, begin_year)] %>%
+    .[!is.na(PMDB_ID)] %>%
+    xtsum(varname = quantile, unit = InstitutionID)
+```
+
+hmm around equal within/between variance: hard to say if that's plausible (would expect that more between than within variance), but it's not absurd either.. 
