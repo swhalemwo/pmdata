@@ -512,3 +512,21 @@ copy(dt_af_qntlprep) %>%
 ```
 
 hmm around equal within/between variance: hard to say if that's plausible (would expect that more between than within variance), but it's not absurd either.. 
+
+
+
+look at within-between variation of newest size measure: exhbqntl_roll (quantile of number of exhibitions in last 5 years):  
+FIXME: this is spaghetti code: back-sourcing stuff from closing paper in pmdata is big NONO  
+
+```{r, echo = F, cache = T}
+c_dirs <- gc_dirs(dir_proj = "/home/johannes/Dropbox/phd/papers/closing/") ## project dirs
+PMDATA_LOCS <- gc_pmdata_locs()
+source("/home/johannes/Dropbox/phd/papers/closing/scripts/regression.R")
+END_YEAR <- 2021
+dt_pmx <- suppressWarnings(gd_pmx(dt_pmdb))
+
+dt_af_size <- suppressWarnings(gd_af_size(dt_pmx))
+
+xtsum(dt_af_size, varname = exhbqntl_roll, unit = PMDB_ID)
+```
+well exhbqntl_roll has less within variation, which isn't super surprising since it's smoothed out, so it should be lower by definition.. 
