@@ -9,6 +9,7 @@
 #' @import data.table
 #' @importFrom terra rast vect project extract
 #' @importFrom RSQLite dbConnect dbGetQuery SQLite
+#' @importFrom wbstats wb_data
 #' @rawNamespace import(stats, except = D) # don't import D, which comes from collapse
 #' @rawNamespace import(collapse, except = fdroplevels)
 ## https://stackoverflow.com/questions/51899220/import-all-the-functions-of-a-package-except-one-when-building-a-package
