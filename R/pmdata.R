@@ -39,7 +39,7 @@ gc_pmdata_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_so
     
     data_locs <- list(
         ## PMDB section
-        PMDB_FILE                    = paste0(DATA_DIR, "pmdb/Private museum database_v10.csv"),
+        PMDB_FILE                    = paste0(DATA_DIR, "pmdb/Private museum database_v11.csv"),
         PMDB_FOUNDER_PERSON_FILE_ORG = paste0(DATA_DIR, "pmdb/pmdb_founder_person.org"),
         PMDB_FOUNDER_PERSON_FILE_CSV = paste0(DATA_DIR, "pmdb/pmdb_founder_person.csv"),
         PMDB_PPECPRN_FILE            = paste0(DATA_DIR, "pmdb/pmdb_ppecprn.csv"),
