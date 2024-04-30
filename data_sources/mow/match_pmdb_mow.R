@@ -163,9 +163,11 @@ gw_mow_pmdb_matches <- function() {
         .[, .(ID, name, museum_status, year_opened, country = countrycode(iso3c, "iso3c", "country.name"))] %>%
         .[museum_status %!in% c("no private museum", "duplicate")]
 
-    dt_mow_pmdb_matches <- gd_mow_pmdb_matches(gc_pmdata_locs()$MOW_PMDB_MATCHRES_FILE)
+    dt_mow_pmdb_matches <- gd_mow_pmdb_matchres(gc_pmdata_locs()$MOW_PMDB_MATCHRES_FILE)
  
     pmdb_IDS_to_check <- setdiff(dt_pmdb_matchy$ID, dt_mow_pmdb_matches$PMDB_ID)
+
+    ## print(pmdb_IDS_to_check)
 
     map(pmdb_IDS_to_check, ~check_mow_pmdb_match(dt_pmdb_matchy, .x))
 
@@ -178,6 +180,7 @@ gw_mow_pmdb_matches <- function() {
 
 ## here go the results
 ## MOW_PMDB_MATCH_RES_FILE <- paste0(dirname(gc_pmdata_locs()$MOW_INFO_FILE), "/mow_pmdb_match_res.csv")
+MOW_PMDB_MATCH_RES_FILE <- gc_pmdata_locs()$MOW_PMDB_MATCHRES_FILE
 
 gw_mow_pmdb_matches()
 

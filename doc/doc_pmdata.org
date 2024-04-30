@@ -1,4 +1,7 @@
 * documentation for PMDATA package
+:PROPERTIES:
+:ID:       37bd52f7-0d38-4b36-beb2-86d17a5ca795
+:END:
 
 ** PMDB
 
