@@ -405,7 +405,11 @@ t_pmdb_founder_name_change <- function(dt_pmdb,
         res <- T
     }
 
-    ## dt_founder_person2 <- merge(dt_founder_person_ff, dt_pmdb_founder_string_prep, by = "founder_id", all.x = T)
+    
+    ## dt_founder_person_ff <- fread(PMDATA_LOCS$PMDB_FOUNDER_PERSON_FILE_CSV)
+    
+    ## dt_founder_person2 <- merge(dt_founder_person_ff, dt_pmdb_founder_string_prep, by = "founder_id",
+    ##                             all.x = T, sort = F)
     
     ## dt_founder_person2[grepl("learsy", founder_string_pmdb, ignore.case = T)]
 
