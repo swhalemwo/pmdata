@@ -46,7 +46,7 @@ expect_false(dt_pmdb[, .(founder_name, founder_id)] %>% funique %>%
 
 expect_true(pmdata:::t_pmdb_founder_name_change(
                          dt_pmdb,
-                         PMDB_FOUNDER_PERSON2_FILE = PMDATA_LOCS$PMDB_FOUNDER_PERSON2_FILE),
+                         PMDB_FOUNDER_PERSON_FILE = PMDATA_LOCS$PMDB_FOUNDER_PERSON_FILE_CSV),
             info = "check that all founder have not changed since last check.")
 
 
@@ -54,7 +54,7 @@ expect_true(pmdata:::t_pmdb_founder_name_change(
 expect_true(pmdata:::t_gwd_pmdb_founder_person(
                          dt_pmdb[museum_status %in% c("private museum", "no longer a private museum", "closed")],
                          PMDB_FOUNDER_PERSON_FILE_ORG = PMDATA_LOCS$PMDB_FOUNDER_PERSON_FILE_ORG,
-                         PMDB_FOUNDER_PERSON_FILE_CSV = PMDATA_LOCS$PMDB_FOUNDER_PERSON2_FILE_CSV),
+                         PMDB_FOUNDER_PERSON_FILE_CSV = PMDATA_LOCS$PMDB_FOUNDER_PERSON_FILE_CSV),
             info = paste0("check that every founder_id in dt_pmdb has been checked wrt to being part of couple.",
                           "and that founder_person_id is unique"))
 
@@ -72,7 +72,8 @@ expect_true(pmdata:::t_gwd_pmdb_founder_person_wid(
                          PMDB_FOUNDER_PERSON_FILE_WID = PMDATA_LOCS$PMDB_FOUNDER_PERSON_FILE_WID),
             info = paste0("test that current file version of PMDB founder_ids, founder_person_id, founder_name ",
                           "and pmdb_person_id is still the same as it would be if it were generated again",
-                          "if this test fails, you probably have to add entires to the input files"))
+                          "if this test fails, you probably have to add entries to the input files.",
+                          "entries to PMDB_FOUNDER_PERSON_FILE_WID have to be added at the BOTTOM"))
                           
 
 expect_true(dt_pmdb[museum_status %in% c("private museum", "closed")] %>%

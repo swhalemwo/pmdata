@@ -376,10 +376,10 @@ md_pmdb_gdocs_add_fid <- function() {
 #' test that founder names don't change
 #' if founder names have changed, throw an error
 t_pmdb_founder_name_change <- function(dt_pmdb,
-                                       PMDB_FOUNDER_PERSON2_FILE_CSV = PMDATA_LOCS$PMDB_FOUNDER_PERSON2_FILE_CSV) {
+                                       PMDB_FOUNDER_PERSON_FILE_CSV = PMDATA_LOCS$PMDB_FOUNDER_PERSON_FILE_CSV) {
     if (as.character(match.call()[1]) %in% fstd){browser()}
 
-    founder_id <- founder_string_pmdb <- founder_name <- NULL
+    founder_id <- founder_string_pmdb <- founder_name <- founder_string_ff <- NULL
 
     ## dt_pmdb[, .(founder_id, founder_string_pmdb = founder_name)] # %>% 
         ## .[grepl("learsy", founder_name, ignore.case = T)]
@@ -387,7 +387,7 @@ t_pmdb_founder_name_change <- function(dt_pmdb,
     ## add founder_string_pmdb to PMDB_FOUNDER_PERSON_FILE_CSV to get name check
     
     ## read founder names from file (ff)
-    dt_founder_person_ff <- fread(PMDB_FOUNDER_PERSON2_FILE_CSV) %>%
+    dt_founder_person_ff <- fread(PMDB_FOUNDER_PERSON_FILE_CSV) %>%
         setnames(old = "founder_string_pmdb", new = "founder_string_ff")
     
     ## get founder names in current pmdb
@@ -414,7 +414,7 @@ t_pmdb_founder_name_change <- function(dt_pmdb,
     ## dt_founder_person2[grepl("learsy", founder_string_pmdb, ignore.case = T)]
 
     ## dt_founder_person2[founder_name != founder_string_pmdb] %>% print.data.table(n=300)
-
+    ## here writes to pmdb_founder_person2.csv, has since been renamed to pmdb_founder_person.csv
     ## fwrite(dt_founder_person2, "/home/johannes/Dropbox/phd/pmdata/data_sources/pmdb/pmdb_founder_person2.csv")
     return(res)
         
@@ -593,7 +593,7 @@ t_gwd_pmdb_founder_person_wid <- function(
     1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
 
     is_same_PPE <- founder_name <- correct_name <- founder_name2 <- pmdb_person_id <- i.correct_name <- NULL
-    wrong_name <- N <- i.pmdb_person_id <- NULL
+    wrong_name <- N <- i.pmdb_person_id <- founder_string_pmdb <- NULL
 
     dt_ppecprn_checked <- fread(PMDB_PPECPRN_FILE)[is_same_PPE == 1]
 
@@ -627,7 +627,15 @@ t_gwd_pmdb_founder_person_wid <- function(
     ## check that past files version is the same as what this file would have generated
     dt_pmdb_founder_person_wid_ff <- gd_pmdb_founder_person(PMDB_FOUNDER_PERSON_FILE_WID)
     
-    tres <- identical(dt_pmdb_founder_person_wid,dt_pmdb_founder_person_wid_ff)
+    
+    tres <- identical(copy(dt_pmdb_founder_person_wid)[, founder_string_pmdb := NULL],
+                      dt_pmdb_founder_person_wid_ff)
+
+    if (!tres) {
+        dt_pmdb_founder_person_wid[!dt_pmdb_founder_person_wid_ff, on = "founder_person_id"] %>% print
+        dt_pmdb_founder_person_wid_ff[!dt_pmdb_founder_person_wid, on = "founder_person_id"] %>% print
+    }
+
 
     ## setdiff(dt_pmdb_founder_person_wid_ff, dt_pmdb_founder_person_wid)
     
