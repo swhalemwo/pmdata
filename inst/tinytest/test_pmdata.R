@@ -158,7 +158,7 @@ expect_true(pmdata:::t_pmdb_artnews_match_coverage(
                          dt_pmdb,
                          ARTNEWS_PMDB_MATCHRES_FILE = PMDATA_LOCS$ARTNEWS_PMDB_MATCHRES_FILE,
                          PMDB_FOUNDER_PERSON_FILE_WID = PMDATA_LOCS$PMDB_FOUNDER_PERSON_FILE_WID),
-            info = "test that all entries in dt_pmdb have been checked for potential matchin PMDB")
+            info = "test that all entries in dt_pmdb have been checked for potential match in PMDB")
 
 
 ## if artnews data gets updated, I have to re-run all nomatch pmdb_founder_id:
