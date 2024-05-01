@@ -1,0 +1,740 @@
+founder_id,founder_person_id,founder_name,founder_string_pmdb
+FID1,FID1a,Heidi Goëss-Horten,Heidi Goëss-Horten
+FID10,FID10a,Dakis Joannou,Dakis Joannou
+FID100,FID100a,Anita Zabludowicz,Anita and Poju Zabludowicz
+FID100,FID100b,Poju Zabludowicz,Anita and Poju Zabludowicz
+FID101,FID101a,David Neuman,David Neuman and Robert Weil
+FID101,FID101b,Robert Weil,David Neuman and Robert Weil
+FID102,FID102a,Achim Freyer,Achim Freyer
+FID103,FID103a,Jean-Paul Najar,Jean-Paul Najar
+FID104,FID104a,Gene Sherman,Gene Sherman
+FID105,FID105a,Philippe Méaille,Philippe Méaille
+FID106,FID106a,Nathalie Guiot,Nathalie Guiot
+FID107,FID107a,Yannick Jakober,Yannick and Ben Jakober
+FID107,FID107b,Ben Jakober,Yannick and Ben Jakober
+FID108,FID108a,Francesco Conz,Francesco Conz
+FID109,FID109a,Gina Diez-Barroso de Franklin,Gina Diez-Barroso de Franklin
+FID11,FID11a,Paddy McKillen,Paddy McKillen
+FID110,FID110a,Braunsfelder family,Braunsfelder family
+FID111,FID111a,Ana Gervás,Ana Gervás and David Cantolla
+FID111,FID111b,David Cantolla,Ana Gervás and David Cantolla
+FID112,FID112a,Qiao Zhibing,Qiao Zhibing
+FID114,FID114a,Lothar-Günther Buchheim,Lothar-Günther Buchheim
+FID115,FID115a,Laura Lee Brown,Laura Lee Brown and Steve Wilson
+FID115,FID115b,Steve Wilson,Laura Lee Brown and Steve Wilson
+FID116,FID116a,Pétur Arason,Pétur Arason and Ragna Róbertsdóttir
+FID116,FID116b,Ragna Róbertsdóttir,Pétur Arason and Ragna Róbertsdóttir
+FID118,FID118a,Alexander V. Petala,Alexander V. Petala
+FID119,FID119a,William Arnett,
+FID12,FID12a,Fred W. Noyes Jr,"Fred W. Noyes, Jr"
+FID120,FID120a,Charles Saatchi,Charles Saatchi
+FID121,FID121a,Hans Suter,Hans Suter
+FID122,FID122a,Dieter Bogner,Dieter Bogner
+FID123,FID123a,Jan Vilcek,Jan and Marica Vilcek
+FID123,FID123b,Marica Vilcek,Jan and Marica Vilcek
+FID124,FID124a,Baoquan Zhang,Baoquan Zhang
+FID125,FID125a,Joelle Romba,Joelle and Eric Romba
+FID125,FID125b,Eric Romba,Joelle and Eric Romba
+FID126,FID126a,Juan March Ordinas,Juan March Ordinas
+FID127,FID127a,Heinz J. Angerlehner,Heinz J. Angerlehner
+FID128,FID128a,Carl-Jürgen Schroth,
+FID129,FID129a,Frank Hense,Frank Hense
+FID13,FID13a,Elizabeth Chun,Elizabeth and Phillip Chun
+FID13,FID13b,Phillip Chun,Elizabeth and Phillip Chun
+FID130,FID130a,M. Hakan Güruney,
+FID131,FID131a,Hasso Plattner,Hasso Plattner
+FID132,FID132a,Arthur de Ganay,Arthur de Ganay
+FID133,FID133a,Giseung Lee,
+FID134,FID134a,Ignaz Walter,Ignaz Walter
+FID135,FID135a,Michael Audain,Michael Audain and Yoshiko Karasawa
+FID135,FID135b,Yoshiko Karasawa,Michael Audain and Yoshiko Karasawa
+FID136,FID136a,Antonio Dalle Nogare,Antonio Dalle Nogare
+FID137,FID137a,Manfed Wandel,Manfed Wandel
+FID138,FID138a,Jean-Claude Volot,Jean-Claude Volot
+FID139,FID139a,Walter Vanhaerents,Walter Vanhaerents
+FID14,FID14a,César Martín Clemente,
+FID140,FID140a,Aslan Chekhoyev,Aslan Chekhoyev
+FID141,FID141a,Manuel Alorda,Manuel Alorda and Hanneke Derksen
+FID141,FID141b,Hanneke Derksen,Manuel Alorda and Hanneke Derksen
+FID142,FID142a,Alexander Glezer,Alexander Glezer
+FID143,FID143a,Antonio Pérez,Antonio Pérez
+FID144,FID144a,Not Vital,
+FID145,FID145a,José Antonio Trujillo del Valle,José Antonio Trujillo del Valle and Elsa López
+FID145,FID145b,Elsa López,José Antonio Trujillo del Valle and Elsa López
+FID146,FID146a,Gordon Elliott,Gordon Elliott and Michael Eyes
+FID146,FID146b,Michael Eyes,Gordon Elliott and Michael Eyes
+FID147,FID147a,Soichiro Fukutake,Soichiro Fukutake
+FID15,FID15a,Masao Hoki,Masao Hoki
+FID150,FID150a,Eric Estorick,Eric Estorick and Salome Dessau
+FID150,FID150b,Salome Dessau,Eric Estorick and Salome Dessau
+FID151,FID151a,Amadou Diaw,Amadou Diaw
+FID152,FID152a,Sangho Park,Sangho Park
+FID153,FID153a,Cheol-su Kim,Cheol-su Kim
+FID154,FID154a,Jai-Kwan Kim,Jai-Kwan Kim
+FID155,FID155a,Jeannette von Fürstenberg,Jeannette von Fürstenberg
+FID156,FID156a,Raymond Learsy,Melva Bucksbaum and Raymond Learsy
+FID157,FID157a,Armand Hammer,Armand Hammer
+FID158,FID158a,Leonid Mikhelson,Leonid Mikhelson and Teresa Iarocci Mavica
+FID158,FID158b,Teresa Iarocci Mavica,Leonid Mikhelson and Teresa Iarocci Mavica
+FID159,FID159a,Zacharias Portalakis,Zacharias Portalakis
+FID16,FID16a,Hanxing Chen,Hanxing Chen
+FID160,FID160a,Inge de Bruin,Inge and Cees de Bruin
+FID160,FID160b,Cees de Bruin,Inge and Cees de Bruin
+FID161,FID161a,Patrick Lannan,Patrick Lannan
+FID162,FID162a,Vehbi Koç,Vehbi Koç
+FID163,FID163a,Khalid Shoman,Khalid Shoman
+FID164,FID164a,Anette Brandhorst,
+FID164,FID164b,Udo Brandhorst,
+FID165,FID165a,Eduardo Costantini,Eduardo Costantini
+FID166,FID166a,Piet Viljoen,Piet Viljoen
+FID167,FID167a,Édouard Carmignac,Édouard Carmignac
+FID168,FID168a,Alexei Ananyev,Alexei Ananyev
+FID169,FID169a,R. Crosby Kemper Jr.,"R. Crosby Kemper Jr. and Mary ""Bebe"" Hunt"
+FID169,FID169b,Mary 'Bebe' Hunt,"R. Crosby Kemper Jr. and Mary ""Bebe"" Hunt"
+FID17,FID17a,Philipp Daniel Merckle,
+FID170,FID170a,Pedro Barbosa,Pedro Barbosa and Patricia Moraes
+FID170,FID170b,Patricia Moraes,Pedro Barbosa and Patricia Moraes
+FID171,FID171a,Marcelino Botín Sanz de Sautuola,"Marcelino Botín Sanz de Sautuola and his wife, Carmen Yllera"
+FID171,FID171b,Carmen Yllera,"Marcelino Botín Sanz de Sautuola and his wife, Carmen Yllera"
+FID172,FID172a,Thomas Olbricht,Thomas Olbricht
+FID173,FID173a,Carlos Slim Helú,Carlos Slim Helú
+FID175,FID175a,Alain Servais,Alain Servais
+FID177,FID177a,Christian Levett,Christian Levett
+FID178,FID178a,Judith Neilson,Judith Neilson
+FID179,FID179a,Joe Shlesinger,Joe Shlesinger and Samara Walbohm
+FID179,FID179b,Samara Walbohm,Joe Shlesinger and Samara Walbohm
+FID18,FID18a,Lin Han,Lin Han and Wanwan Lei
+FID18,FID18b,Wanwan Lei,Lin Han and Wanwan Lei
+FID180,FID180a,Hans. D. Melchers,Hans. D. Melchers
+FID181,FID181a,Nadia Samdani,
+FID181,FID181b,Rajeeb Samdani,
+FID182,FID182a,Louisa Stude Sarofim,
+FID183,FID183a,Carl Thoma,Carl and Marilynn Thoma
+FID183,FID183b,Marilynn Thoma,Carl and Marilynn Thoma
+FID186,FID186a,David Su,David Su and Zihao Che
+FID186,FID186b,Zihao Che,David Su and Zihao Che
+FID188,FID188a,Jan van den Broek,Jan van den Broek
+FID189,FID189a,Klaus J. Jacobs,Klaus J. Jacobs
+FID19,FID19a,Amaury de Solages,Amaury de Solages
+FID190,FID190a,David Walsh,David Walsh
+FID191,FID191a,Dina Zuzāns,Dina and Jānis Zuzāns
+FID191,FID191b,Jānis Zuzāns,Dina and Jānis Zuzāns
+FID192,FID192a,Hahnloser-Bühler-Jaeggli Family,"family: Hedy and Arthur Hahnloser-Bühler started the collection, their descendents founded the Hahnloser/Jaeggli Foundation and started exhibiting the works of the collection"
+FID193,FID193a,Maurizio Morra Greco,Maurizio Morra Greco
+FID194,FID194a,Hans Georg Näder,Hans Georg Näder
+FID195,FID195a,Marc Straus,Marc and Livia Straus
+FID195,FID195b,Livia Straus,Marc and Livia Straus
+FID196,FID196a,Marvin Mordes,Marvin and Elayne Mordes
+FID196,FID196b,Elayne Mordes,Marvin and Elayne Mordes
+FID197,FID197a,Oei Hong Djien,Oei Hong Djien
+FID198,FID198a,Werner Jerke,Werner Jerke
+FID199,FID199a,Joven Cuanang,Joven Cuanang
+FID2,FID2a,Shelley Rubin,Shelley and Donald Rubin
+FID2,FID2b,Donald Rubin,Shelley and Donald Rubin
+FID20,FID20a,Ulla Lohmann,Ulla and Heinz Lohmann
+FID20,FID20b,Heinz Lohmann,Ulla and Heinz Lohmann
+FID200,FID200a,Antonio Vila Casas,Antonio Vila Casas
+FID203,FID203a,Giovanni Springmeier,Giovanni Springmeier
+FID204,FID204a,Margit Biedermann,Margit Biedermann
+FID205,FID205a,Axel Ciesielski,Axel Ciesielski
+FID206,FID206a,Marc Gensollen,
+FID207,FID207a,Stefano Sciarretta,Stefano Sciarretta
+FID209,FID209a,Estelle Francès,Estelle and Hervé Francès
+FID209,FID209b,Hervé Francès,Estelle and Hervé Francès
+FID210,FID210a,Jawad Adra,"Jawad Adra, Fida Jdeed and Badr El-Hage "
+FID210,FID210b,Fida Jdeed,"Jawad Adra, Fida Jdeed and Badr El-Hage "
+FID210,FID210c,Badr El-Hage,"Jawad Adra, Fida Jdeed and Badr El-Hage "
+FID211,FID211a,Marc Barbey,Marc Barbey
+FID212,FID212a,Basel Dalloul,Basel Dalloul
+FID213,FID213a,Toshio Hara,Toshio Hara
+FID214,FID214a,Lluís Bassat,Lluís Bassat
+FID215,FID215a,Rene di Rosa,Rene and Veronica di Rosa
+FID215,FID215b,Veronica di Rosa,Rene and Veronica di Rosa
+FID216,FID216a,Markus Hannebauer,Markus Hannebauer
+FID217,FID217a,Didier Guillon,Didier Guillon
+FID218,FID218a,Hoor bint Sultan Al Qasimi,
+FID219,FID219a,Astrid Ullens de Schooten Whettnall,Astrid Ullens de Schooten Whettnall
+FID22,FID22a,Laura Ruth,Laura Ruth and Fred Bidwel
+FID22,FID22b,Fred Bidwel,Laura Ruth and Fred Bidwel
+FID220,FID220a,Walther Moreira Salles,Walther Moreira Salles
+FID221,FID221a,Andra Lauffs-Wegner,Andra Lauffs-Wegner
+FID222,FID222a,Sotiris Felios,Sotiris Felios
+FID223,FID223a,Douglas So JP,
+FID224,FID224a,Giuseppe Iannaccone,Giuseppe Iannaccone
+FID225,FID225a,Jan de Pont,
+FID226,FID226a,Vittorio Gaddi,Vittorio Gaddi
+FID227,FID227a,David Kreeger,David and Carmen Kreeger
+FID227,FID227b,Carmen Kreeger,David and Carmen Kreeger
+FID228,FID228a,William Louis Dreyfus,William Louis Dreyfus
+FID229,FID229a,Josep Suñol,Josep Suñol
+FID23,FID23a,Kiran Nadar,Kiran Nadar
+FID230,FID230a,Vlassis Frissiras,Vlassis Frissiras
+FID231,FID231a,Harald Falckenberg,Harald Falckenberg
+FID232,FID232a,Sudhir Ahuja,Sudhir Ahuja
+FID233,FID233a,Peter Bosshard,Peter Bosshard
+FID234,FID234a,Manuel Chirivella,Manuel Chirivella
+FID235,FID235a,Lothar C. Poll,Lothar C. Poll
+FID236,FID236a,Eugenio López Alonso,Eugenio López Alonso
+FID237,FID237a,Yi Guan,
+FID238,FID238a,Maria Amalia Lacroze de Fortabat,Maria Amalia Lacroze de Fortabat
+FID239,FID239a,Joop van Caldenborgh,Joop van Caldenborgh
+FID240,FID240a,Alden Pinnel,
+FID241,FID241a,Viatcheslav Moshe Kantor,Viatcheslav Moshe Kantor
+FID242,FID242a,Calouste Sarkis Gulbenkian,
+FID243,FID243a,Heiner Wemhöner,
+FID244,FID244a,Ahmet Kocabıyık,Ahmet Kocabıyık
+FID245,FID245a,Dianne Gringlas,Dianne Gringlas
+FID246,FID246a,Linda Pace,
+FID247,FID247a,Knud W. Jensen,Knud W. Jensen
+FID248,FID248a,Marli Hoppe-Ritter,Marli Hoppe-Ritter
+FID249,FID249a,Luis Sirvent,
+FID25,FID25a,Budi Tek,Budi Tek
+FID250,FID250a,Jochen Kienzle,Jochen Kienzle
+FID251,FID251a,James Dyson,
+FID251,FID251b,Deirdre Dyson,
+FID252,FID252a,Giovanni Agnelli,Giovanni and Marella Agnelli
+FID252,FID252b,Marella Agnelli,Giovanni and Marella Agnelli
+FID253,FID253a,Jochen Zeitz,Jochen Zeitz
+FID254,FID254a,Farhad Farjam,Farhad Farjam
+FID255,FID255a,Friedrich E. Rentschler,Friedrich E. Rentschler
+FID256,FID256a,Maja Oeri,Maja Oeri
+FID257,FID257a,Susanne Klatten,Susanne Klatten
+FID259,FID259a,Liu Yiqian,Liu Yiqian and Wang Wei
+FID259,FID259b,Wang Wei,Liu Yiqian and Wang Wei
+FID260,FID260a,Giuliano Gori,Giuliano and Pina Gori
+FID260,FID260b,Pina Gori,Giuliano and Pina Gori
+FID261,FID261a,Alberto Rossini,Alberto Rossini
+FID262,FID262a,Kasturbhai Lalbhai,Kasturbhai Lalbhai
+FID263,FID263a,Geert Steinmeijer,Geert Steinmeijer
+FID264,FID264a,Jack Lenor Larsen,Jack Lenor Larsen
+FID265,FID265a,Anton Rupert,Anton and Huberte Rupert
+FID265,FID265b,Huberte Rupert,Anton and Huberte Rupert
+FID266,FID266a,Bernd Hummel,Bernd Hummel
+FID267,FID267a,Vass László,Vass László
+FID268,FID268a,Christen Sveaas,Christen Sveaas
+FID269,FID269a,Basant Kumar Birla,Basant Kumar Birla
+FID27,FID27a,Bruna Pessoa de Queiroz,Bruna and Ricardo Pessoa de Queiroz
+FID27,FID27b,Ricardo Pessoa de Queiroz,Bruna and Ricardo Pessoa de Queiroz
+FID270,FID270a,Ralph E. Ogden,Ralph E. Ogden and H. Peter Stern
+FID270,FID270b,H. Peter Stern,Ralph E. Ogden and H. Peter Stern
+FID271,FID271a,Mitchell Rales,Mitchell and Emily Rales
+FID271,FID271b,Emily Rales,Mitchell and Emily Rales
+FID272,FID272a,Bernardo Paz,Bernardo Paz
+FID273,FID273a,Wang Bing,Wang Bing
+FID274,FID274a,Wang Zhongjun,Wang Zhongjun
+FID275,FID275a,Marjolein de Groen,Marjolein de Groen and Peter Jordaan
+FID275,FID275b,Peter Jordaan,Marjolein de Groen and Peter Jordaan
+FID276,FID276a,George Lucas,
+FID276,FID276b,Mellody Hobson,
+FID277,FID277a,Howard Rachofsky,Howard Rachofsky
+FID278,FID278a,Steven Oliver,Steven Oliver
+FID279,FID279a,Suna Kıraç,Suna and İnan Kıraç
+FID279,FID279b,İnan Kıraç,Suna and İnan Kıraç
+FID28,FID28a,Antinori family,Antinori family
+FID280,FID280a,Liam O'Keefe-Ayudhkij,Liam O'Keefe-Ayudhkij
+FID281,FID281a,Marie-Louise Didrichsen,Marie-Louise and Gunnar Didrichsen
+FID281,FID281b,Gunnar Didrichsen,Marie-Louise and Gunnar Didrichsen
+FID282,FID282a,Charlotte Bührle-Schalk,"Emil Bührle’s widow Charlotte Bührle-Schalk, his son Dr. Dieter Bührle and his daughter Hortense Anda-Bührle established the Foundation E.G. Bührle Collection in Zurich"
+FID282,FID282b,Dr. Dieter Bührle,"Emil Bührle’s widow Charlotte Bührle-Schalk, his son Dr. Dieter Bührle and his daughter Hortense Anda-Bührle established the Foundation E.G. Bührle Collection in Zurich"
+FID282,FID282c,Hortense Anda-Bührle,"Emil Bührle’s widow Charlotte Bührle-Schalk, his son Dr. Dieter Bührle and his daughter Hortense Anda-Bührle established the Foundation E.G. Bührle Collection in Zurich"
+FID283,FID283a,Philippe Augier,Philippe Augier
+FID284,FID284a,Jaan Manitski,Jaan Manitski
+FID285,FID285a,Dirk Scheringa,Dirk and Baukje Scheringa
+FID285,FID285b,Baukje Scheringa,Dirk and Baukje Scheringa
+FID286,FID286a,Vittorio Cini,
+FID287,FID287a,Michael Zampelas,Michael Zampelas
+FID288,FID288a,Nelson Rockefeller,
+FID289,FID289a,Victor Mykhailovych Pinchuk,Victor Mykhailovych Pinchuk
+FID29,FID29a,Donald Hess,Donald Hess
+FID290,FID290a,Christian Kaspar Schwarm,
+FID291,FID291a,Sarp Evliyagil,Sarp Evliyagil
+FID293,FID293a,Emily Rauh Pulitzer,Emily Rauh Pulitzer and Joseph Pulitzer Jr.
+FID293,FID293b,Joseph Pulitzer Jr.,Emily Rauh Pulitzer and Joseph Pulitzer Jr.
+FID294,FID294a,Amos Anderson,
+FID295,FID295a,Aimé Maeght,Aimé and Marguerite Maeght
+FID295,FID295b,Marguerite Maeght,Aimé and Marguerite Maeght
+FID296,FID296a,Christian Boros,Christian and Karen Boros
+FID296,FID296b,Karen Boros,Christian and Karen Boros
+FID297,FID297a,Gabriele Mazzotta,
+FID298,FID298a,Sultan Sooud Al Qassemi,
+FID299,FID299a,Nion McEvoy,Nion McEvoy
+FID3,FID3a,Eva Besen AO,Eva Besen AO and Marc Besen AC
+FID3,FID3b,Marc Besen AC,Eva Besen AO and Marc Besen AC
+FID300,FID300a,Frieder Burda,Frieder Burda
+FID301,FID301a,Peter M. Brant,Peter M. Brant
+FID304,FID304a,Pakhruddin Sulaiman,Pakhruddin Sulaiman
+FID305,FID305a,Timo Miettinen,Timo Miettinen
+FID307,FID307a,Xiaohua Huang,Xiaohua Huang
+FID308,FID308a,Xu Jiankang,
+FID309,FID309a,Petr Pudil,Petr and Pavlína Pudil
+FID309,FID309b,Pavlína Pudil,Petr and Pavlína Pudil
+FID310,FID310a,Majid Boustany,Majid Boustany
+FID311,FID311a,Christian Ringnes,Christian Ringnes
+FID312,FID312a,Steffen Hildebrand,Steffen Hildebrand
+FID313,FID313a,Louis Norval,Louis Norval
+FID314,FID314a,Erika Hoffmann,Erika Hoffmann
+FID315,FID315a,Zhiyong Zhang,
+FID316,FID316a,Torsten Kunert,Torsten Kunert
+FID317,FID317a,Dmitry Piterman,Dmitry and Rebecca Piterman
+FID317,FID317b,Rebecca Piterman,Dmitry and Rebecca Piterman
+FID318,FID318a,Roger H. Ogden,
+FID319,FID319a,Daniel Teo,Daniel and Rachel Teo
+FID319,FID319b,Rachel Teo,Daniel and Rachel Teo
+FID32,FID32a,Peter Marino,Peter Marino
+FID320,FID320a,Hamidreza Pejman,Hamidreza Pejman
+FID322,FID322a,Bob Rennie,Bob Rennie
+FID323,FID323a,Jorge M. Pérez,Jorge M. Pérez
+FID324,FID324a,Mori Minoru,Mori Minoru
+FID325,FID325a,Karl-Heinrich Müller,Karl-Heinrich Müller;
+FID326,FID326a,Ovidio Jacorossi,Ovidio Jacorossi
+FID327,FID327a,Can Elgiz,Can Elgiz
+FID328,FID328a,Bertran Conrad-Eybesfeld,Bertran Conrad-Eybesfeld
+FID329,FID329a,David Roberts,David Roberts
+FID33,FID33a,Corbett Lyon,Corbett Lyon and Yueji Lyon
+FID33,FID33b,Yueji Lyon,Corbett Lyon and Yueji Lyon
+FID331,FID331a,Martin Margulies,Martin Margulies
+FID332,FID332a,Vladimir Seminikhin,Vladimir Seminikhin
+FID333,FID333a,Peter W. Klein,Peter W. Klein
+FID334,FID334a,Don Rubell,Don and Mera Rubell
+FID334,FID334b,Mera Rubell,Don and Mera Rubell
+FID335,FID335a,Ovidiu Șandor,Ovidiu Șandor
+FID336,FID336a,Satoshi Omura,Satoshi Omura
+FID337,FID337a,Daniel J. Terra,Daniel J. Terra
+FID338,FID338a,Swati Piramal,Swati Piramal and Ajay Piramal
+FID338,FID338b,Ajay Piramal,Swati Piramal and Ajay Piramal
+FID339,FID339a,Danguolė Butkus,Danguolė and Viktoras Butkus
+FID339,FID339b,Viktoras Butkus,Danguolė and Viktoras Butkus
+FID34,FID34a,Carlos Rosón Gasalla,Carlos Rosón Gasalla
+FID340,FID340a,Sonja Henie,Sonja Henie and Niels Onstad
+FID340,FID340b,Niels Onstad,Sonja Henie and Niels Onstad
+FID341,FID341a,Boonchai Bencharongkul,Boonchai Bencharongkul
+FID342,FID342a,José Berardo,
+FID343,FID343a,Basil Goulandris,Basil and Elise Goulandris
+FID343,FID343b,Elise Goulandris,Basil and Elise Goulandris
+FID345,FID345a,David Chau,David Chau
+FID346,FID346a,Rudy Akili,Rudy Akili
+FID347,FID347a,Jerome Nerman,
+FID348,FID348a,Hans Rasmus Astrup,Hans Rasmus Astrup
+FID349,FID349a,Chang-il Kim,Chang-il Kim
+FID35,FID35a,Fausto Radici,Fausto Radici and Tullio Leggeri
+FID35,FID35b,Tullio Leggeri,Fausto Radici and Tullio Leggeri
+FID351,FID351a,Haryanto Adikoesoemo,Haryanto Adikoesoemo
+FID352,FID352a,Ian Vorres,Ian Vorres
+FID353,FID353a,George Economou,George Economou
+FID354,FID354a,Frank Cohen,Frank Cohen and Nicolai Frahm
+FID354,FID354b,Nicolai Frahm,Frank Cohen and Nicolai Frahm
+FID355,FID355a,Baron Guy Ullens,Baron Guy Ullens
+FID356,FID356a,Rosa de la Cruz,Rosa and Carlos de la Cruz
+FID356,FID356b,Carlos de la Cruz,Rosa and Carlos de la Cruz
+FID357,FID357a,Kyung Bae Suh,Kyung Bae Suh
+FID358,FID358a,Sang Ok Yu,Sang Ok Yu
+FID359,FID359a,He Jianfeng,He Jianfeng
+FID36,FID36a,Jorge Araújo,
+FID36,FID36b,Teresa Andresen,
+FID36,FID36c,Diogo Alpendurada,
+FID360,FID360a,Vijay Kumar Aggarwal,
+FID361,FID361a,François Pinault,François Pinault
+FID363,FID363a,Karin Hollweg,
+FID363,FID363b,Uwe Hollweg,
+FID364,FID364a,Andrew Hall,Andrew and Christine Hall
+FID364,FID364b,Christine Hall,Andrew and Christine Hall
+FID365,FID365a,Reinhold Würth,Reinhold Würth
+FID368,FID368a,Frederick R. Weisman,Frederick R. Weisman
+FID37,FID37a,Brian Sweeney,Brian and Eva Sweeney
+FID37,FID37b,Eva Sweeney,Brian and Eva Sweeney
+FID370,FID370a,Claudine Salomon,Claudine et Jean Marc Salomon
+FID370,FID370b,Jean Marc Salomon,Claudine et Jean Marc Salomon
+FID371,FID371a,Achille Maramotti,Achille Maramotti
+FID372,FID372a,Tony Salamé,Tony and Elham Salamé
+FID372,FID372b,Elham Salamé,Tony and Elham Salamé
+FID373,FID373a,Larry Aldrich,Larry Aldrich
+FID374,FID374a,Maurice Marciano,Maurice Marciano and Paul Marciano
+FID374,FID374b,Paul Marciano,Maurice Marciano and Paul Marciano
+FID375,FID375a,Agnès Troublé (Agnès B),Agnès Troublé (Agnès B)
+FID376,FID376a,Paul Ege,Paul Ege
+FID377,FID377a,Alice Walton,Alice Walton
+FID378,FID378a,John de Menil,John and Dominique de Menil
+FID378,FID378b,Dominique de Menil,John and Dominique de Menil
+FID379,FID379a,Newton Jibunoh,Newton Jibunoh
+FID38,FID38a,Jens Faurschou,Jens Faurschou
+FID380,FID380a,Li Bing,Li Bing
+FID381,FID381a,Christiaan Braun,Christiaan Braun
+FID382,FID382a,Hasnaine Yavarhoussen,Hasnaine Yavarhoussen
+FID383,FID383a,Javier Lumbreras,Javier Lumbreras and Lorena Pérez-Jácome
+FID383,FID383b,Lorena Pérez-Jácome,Javier Lumbreras and Lorena Pérez-Jácome
+FID384,FID384a,Bill Shurniak,Bill Shurniak
+FID385,FID385a,Gunda Niemann,Gunda and Peter Niemann
+FID385,FID385b,Peter Niemann,Gunda and Peter Niemann
+FID386,FID386a,Liliana Godia,Liliana Godia
+FID387,FID387a,Francisco Daurella,Francisco Daurella
+FID388,FID388a,Abraham Karabajakian,Abraham Karabajakian and Roger Akoury
+FID388,FID388b,Roger Akoury,Abraham Karabajakian and Roger Akoury
+FID389,FID389a,Farhat Naim,Farhat Naim
+FID39,FID39a,Fanzhi Zeng,Fanzhi Zeng
+FID390,FID390a,Gerard De Geer,Gerard De Geer
+FID391,FID391a,Yan Gu,Yan Gu
+FID392,FID392a,Fengzhou Liu,Fengzhou Liu
+FID393,FID393a,Robert Simon,Robert Simon
+FID395,FID395a,María Cristina Masaveu Peterson,María Cristina Masaveu Peterson
+FID398,FID398a,Hugo Voeten,Hugo Voeten
+FID399,FID399a,Antonio Coppola,Antonio Coppola
+FID4,FID4a,Anna Starak,Anna and Jerzy Starak
+FID4,FID4b,Jerzy Starak,Anna and Jerzy Starak
+FID40,FID40a,Lionel Logchies,
+FID40,FID40b,Kim Logchies,
+FID400,FID400a,Dimitris Daskalopoulos,
+FID401,FID401a,Mario Serpone,Mario Serpone
+FID402,FID402a,Zilong Huang,Zilong Huang
+FID403,FID403a,Adrian Baron von Steengracht,
+FID403,FID403b,Katharina Baronin von Steengracht,
+FID404,FID404a,Walter Wüthrich,
+FID405,FID405a,Karsten Schmitz,
+FID406,FID406a,Jürg Im Obersteg,Jürg and Karl Im Obersteg & Doris Obersteg Lech
+FID406,FID406b,Karl Im Obersteg,Jürg and Karl Im Obersteg & Doris Obersteg Lech
+FID406,FID406c,Doris Obersteg Lech,Jürg and Karl Im Obersteg & Doris Obersteg Lech
+FID407,FID407a,Renzo Musumeci Greco,
+FID408,FID408a,Tom James,Tom and Mary James
+FID408,FID408b,Mary James,Tom and Mary James
+FID409,FID409a,Klaus Biesenbach,
+FID409,FID409b,Alexandra Binswanger,
+FID409,FID409c,Clemens Homburger,
+FID409,FID409d,Philipp von Doering,
+FID409,FID409e,Alfonso Rutigliano,
+FID41,FID41a,Aida Mahmudova,Aida Mahmudova
+FID410,FID410a,Geraldine Michalke,Geraldine Michalke
+FID411,FID411a,Elke Morenz,Elke and Arno Morenz
+FID411,FID411b,Arno Morenz,Elke and Arno Morenz
+FID412,FID412a,Michael Kuhn,
+FID412,FID412b,Alexandra Rockelmann,
+FID413,FID413a,Bernard Magrez,Bernard Magrez
+FID414,FID414a,Gerard Meulensteen,Gerard Meulensteen and Vincent Polakovič
+FID414,FID414b,Vincent Polakovič,Gerard Meulensteen and Vincent Polakovič
+FID415,FID415a,Michel de Launoit,
+FID415,FID415b,Florence de Launoit,
+FID415,FID415c,Alice van den Abeele,
+FID415,FID415d,Raphaël Cruyt,
+FID416,FID416a,Galila Barzilaï-Hollander,Galila Barzilaï-Hollander
+FID417,FID417a,Hubert Bonnet,Hubert Bonnet
+FID418,FID418a,Rosella Rolla,Rosella and Philip Rolla
+FID418,FID418b,Philip Rolla,Rosella and Philip Rolla
+FID419,FID419a,Alan Faena,Alan Faena
+FID42,FID42a,Désiré Feuerle,Désiré Feuerle and Sara Puig
+FID42,FID42b,Sara Puig,Désiré Feuerle and Sara Puig
+FID420,FID420a,Aldo Rubino,Aldo Rubino
+FID421,FID421a,Till Richter,Till Richter
+FID422,FID422a,Hyungsoo Kim,Hyungsoo Kim
+FID423,FID423a,Matteo Viglietta,Matteo Viglietta
+FID424,FID424a,Jim Hill,Jim Hill
+FID425,FID425a,Pier Luigi,Pier Luigi and Natalina Remotti
+FID425,FID425b,Natalina Remotti,Pier Luigi and Natalina Remotti
+FID426,FID426a,Therese Abraham,Therese Abraham
+FID427,FID427a,Melissa English,Melissa English
+FID428,FID428a,Paolo Brodbeck,Paolo Brodbeck
+FID429,FID429a,Guobin Tan,Guobin Tan
+FID43,FID43a,Devon Dikeou,Devon and Pany Dikeou
+FID43,FID43b,Pany Dikeou,Devon and Pany Dikeou
+FID430,FID430a,Liyou Huang,
+FID431,FID431a,Yan Shijie,Yan Shijie and Cao Mei
+FID431,FID431b,Cao Mei,Yan Shijie and Cao Mei
+FID432,FID432a,Emile Hannouche,Emile Hannouche
+FID433,FID433a,Shinjong Na,Shinjong Na
+FID434,FID434a,Seonbin Im,Seonbin Im
+FID435,FID435a,Angela Lauro,Angela and Massimo Lauro
+FID435,FID435b,Massimo Lauro,Angela and Massimo Lauro
+FID436,FID436a,Nancy Olnick,Nancy Olnick and Giorgio Spanu
+FID436,FID436b,Giorgio Spanu,Nancy Olnick and Giorgio Spanu
+FID437,FID437a,Laura Kuenzli,
+FID438,FID438a,Ron Pizzuti,Ron and Ann Pizzuti
+FID438,FID438b,Ann Pizzuti,Ron and Ann Pizzuti
+FID44,FID44a,Patrick Lee,
+FID44,FID44b,Leung Chi-wo,
+FID44,FID44c,Phoebe Man Ching-ying,
+FID44,FID44d,Sara Wong Chi-hang,
+FID44,FID44e,Leung Mee-ping,
+FID44,FID44f,Tsang Tak-ping,
+FID44,FID44g,Lisa Cheung,
+FID440,FID440a,Lionel Zinsou,Lionel Zinsou
+FID441,FID441a,Edward Spencer-Churchill,Edward Spencer-Churchill
+FID442,FID442a,Agustín Coppel,
+FID443,FID443a,Nam Choel,Nam Choel
+FID444,FID444a,George Michael,George Michael and Kenny Goss
+FID444,FID444b,Kenny Goss,George Michael and Kenny Goss
+FID445,FID445a,Howard Rachofsky,Howard and Cindy Rachofsky and Vernon Faulconer
+FID445,FID445b,Cindy Rachofsky,Howard and Cindy Rachofsky and Vernon Faulconer
+FID445,FID445c,Vernon Faulconer,Howard and Cindy Rachofsky and Vernon Faulconer
+FID446,FID446a,Hans-Joachim Sander,
+FID447,FID447a,Theo Scholten,Theo Scholten and Lida Scholten-Miltenburg
+FID447,FID447b,Lida Scholten-Miltenburg,Theo Scholten and Lida Scholten-Miltenburg
+FID448,FID448a,Ramin Salsali,Ramin Salsali
+FID449,FID449a,Gil Andreas Bronner,Gil Andreas Bronner
+FID45,FID45a,Bernar Venet,Bernar Venet
+FID451,FID451a,Sylvia Ströher,Sylvia Ströher
+FID452,FID452a,Dirk Krämer,Dirk Krämer and Klaus Maas
+FID452,FID452b,Klaus Maas,Dirk Krämer and Klaus Maas
+FID453,FID453a,Robert Wilson,Robert and Nicky Wilson
+FID453,FID453b,Nicky Wilson,Robert and Nicky Wilson
+FID454,FID454a,Brian A Sweeney,
+FID455,FID455a,Erol Tabanca,Erol Tabanca
+FID456,FID456a,Maciel de Aguiar,Maciel de Aguiar
+FID457,FID457a,Claudio Cosma,Claudio Cosma
+FID458,FID458a,Roberto Casamonti,Roberto Casamonti
+FID459,FID459a,David Horvitz,David Horvitz and Francie Bishop Good
+FID459,FID459b,Francie Bishop Good,David Horvitz and Francie Bishop Good
+FID46,FID46a,Alain De Clerck,
+FID460,FID460a,Paula Frota,Paula and Silvio Frota
+FID460,FID460b,Silvio Frota,Paula and Silvio Frota
+FID461,FID461a,Paul Ege,Paul and Helga Ege
+FID461,FID461b,Helga Ege,Paul and Helga Ege
+FID462,FID462a,Inhee Lee,Inhee Lee
+FID463,FID463a,Anton Herbert,Anton Herbert
+FID465,FID465a,John Madden,John Madden
+FID466,FID466a,Jinzhu Shi,
+FID467,FID467a,Qiongbo Li,
+FID468,FID468a,Xiao Han,
+FID469,FID469a,Haiyuan Li,
+FID47,FID47a,Damien Hirst,Damien Hirst
+FID470,FID470a,Shuhua Du,
+FID471,FID471a,Anupam Poddar,Anupam and Lekha Poddar
+FID471,FID471b,Lekha Poddar,Anupam and Lekha Poddar
+FID472,FID472a,Chasun Kim,Chasun Kim
+FID473,FID473a,Songkyu Jeong,Songkyu Jeong
+FID474,FID474a,Doyoung Kim,Doyoung Kim
+FID475,FID475a,Sukhee Byeon,Sukhee Byeon
+FID476,FID476a,Jiinsik Kim,Jiinsik Kim
+FID477,FID477a,Yeonsoo Lee,Yeonsoo Lee
+FID478,FID478a,Jungju Hong,Jungju Hong
+FID479,FID479a,Konkuk Kang,Konkuk Kang
+FID48,FID48a,Angela Rosengart,Angela Rosengart
+FID480,FID480a,Gung-won Nam,Gung-won Nam
+FID481,FID481a,Jung-Soon Koo,Jung-Soon Koo
+FID482,FID482a,Haeryong Park,Haeryong Park
+FID483,FID483a,Kyung Chu,Kyung Chu
+FID484,FID484a,Taijung Um,Taijung Um
+FID485,FID485a,Ji-Woong Hong,
+FID486,FID486a,Kazuo Okad,
+FID487,FID487a,Ted Oliver,Ted Oliver
+FID488,FID488a,Rolf Hoff,Rolf Hoff
+FID489,FID489a,Masanori Fukuoka,Masanori Fukuoka
+FID49,FID49a,Marion Boulton Stroud,
+FID490,FID490a,Tatsumi Sato,
+FID491,FID491a,West Kowloon Cultural District Authority,
+FID492,FID492a,Chunsoon Park,Chunsoon Park
+FID493,FID493a,Ruth Sackner,Ruth and Marvin Sackner
+FID493,FID493b,Marvin Sackner,Ruth and Marvin Sackner
+FID494,FID494a,Tsuneo Mizuno,Tsuneo Mizuno
+FID495,FID495a,Nesrin Esirtgen,Nesrin Esirtgen
+FID497,FID497a,Jaeheung Lee,
+FID498,FID498a,Sunghwan Park,Sunghwan Park
+FID499,FID499a,Sootaek Yoo,Sootaek Yoo
+FID50,FID50a,Ernst Beyeler,Ernst and Hildy Beyeler
+FID50,FID50b,Hildy Beyeler,Ernst and Hildy Beyeler
+FID500,FID500a,Hyeong-su Gwak,Hyeong-su Gwak
+FID501,FID501a,Chul Soo Kang,Chul Soo Kang
+FID502,FID502a,Yongha Park,Yongha Park
+FID503,FID503a,Bong Suk Kim,Bong Suk Kim
+FID504,FID504a,Alan Gibbs,Alan Gibbs
+FID505,FID505a,Junyeong Park,Junyeong Park
+FID506,FID506a,Jin Hasegawa,Jin and Rinko Hasegawa
+FID506,FID506b,Rinko Hasegawa,Jin and Rinko Hasegawa
+FID507,FID507a,Sam Jedig,
+FID508,FID508a,Tomie Sera,Tomie Sera
+FID509,FID509a,Marek Roefler,Marek Roefler
+FID51,FID51a,Urs Raussmüller,Urs Raussmüller
+FID510,FID510a,Amer Huneidi,Amer Huneidi
+FID511,FID511a,John Schmid,John Schmid
+FID512,FID512a,Charis Karagiannis,Charis Karagiannis
+FID513,FID513a,Josef Froehlich,Josef Froehlich
+FID514,FID514a,Sylvie Salzmann,"Sylvie and Daniel Salzmann (daughter and son in law of Pierre Arnaud) founded the Pierre Arnaud foundation, the predecessor of Fondation Opale"
+FID514,FID514b,Daniel Salzmann,"Sylvie and Daniel Salzmann (daughter and son in law of Pierre Arnaud) founded the Pierre Arnaud foundation, the predecessor of Fondation Opale"
+FID515,FID515a,Maria da Graça Carmona e Costa,Maria da Graça Carmona e Costa
+FID516,FID516a,Manuel Rios,Manuel and Miguel Rios
+FID516,FID516b,Miguel Rios,Manuel and Miguel Rios
+FID517,FID517a,Muriel Salem,Muriel Salem
+FID518,FID518a,Giancarlo Olgiati,Giancarlo and Danna Olgiati
+FID518,FID518b,Danna Olgiati,Giancarlo and Danna Olgiati
+FID519,FID519a,Gabriele Braglia,Gabriele and Anna Braglia
+FID519,FID519b,Anna Braglia,Gabriele and Anna Braglia
+FID52,FID52a,Theresa Tse,Theresa Tse and Michael Xufu Huang
+FID52,FID52b,Michael Xufu Huang,Theresa Tse and Michael Xufu Huang
+FID520,FID520a,Fairfax N. Dorn,Fairfax N. Dorn and Virginia Lebermann
+FID520,FID520b,Virginia Lebermann,Fairfax N. Dorn and Virginia Lebermann
+FID521,FID521a,Jean-Philippe Billarant,Jean-Philippe Billarant
+FID522,FID522a,Jean-Louis Haguenauer,Jean-Louis Haguenauer
+FID523,FID523a,Marc Féraud,Marc Féraud
+FID524,FID524a,Florence Guerlain,Florence and Daniel Guerlain
+FID524,FID524b,Daniel Guerlain,Florence and Daniel Guerlain
+FID526,FID526a,Dennis Scholl,Dennis Scholl
+FID527,FID527a,Galen Weston,Galen Weston
+FID528,FID528a,Ella Fontanals-Cisneros,Ella Fontanals-Cisneros
+FID529,FID529a,Gary Nader,Gary Nader
+FID53,FID53a,Artur Ramón,Artur Ramón
+FID530,FID530a,Miuccia Prada,Miuccia Prada
+FID532,FID532a,Raymond E. Johnson,Raymond E. Johnson
+FID533,FID533a,Anne-Marie Trahan,Anne-Marie and Pierre Trahan
+FID533,FID533b,Pierre Trahan,Anne-Marie and Pierre Trahan
+FID534,FID534a,Petr Vois,Petr Vois
+FID535,FID535a,Stella Kesaeva,Stella Kesaeva
+FID536,FID536a,Igor Markin,Igor Markin
+FID537,FID537a,Dasha Zhukova,Dasha Zhukova
+FID538,FID538a,Ingvild Goetz,Ingvild Goetz
+FID539,FID539a,Avelino Marín Meroño,
+FID54,FID54a,Beth Rudin DeWoody,Beth Rudin DeWoody
+FID541,FID541a,Tong Zhu,
+FID542,FID542a,Xun Lu,Xun Lu
+FID543,FID543a,Baijia Lake International Culture Investment Group,
+FID544,FID544a,José María Hualde y Ruiz de Gámiz,José María Hualde y Ruiz de Gámiz
+FID545,FID545a,Herbert Liaunig,Herbert Liaunig
+FID546,FID546a,Herbert Gerisch,Herbert und Brigitte Gerisch
+FID546,FID546b,Brigitte Gerisch,Herbert und Brigitte Gerisch
+FID547,FID547a,Marianne Langen,Marianne Langen
+FID548,FID548a,Emily Fisher Landau,Emily Fisher Landau
+FID549,FID549a,Ronald S. Lauder,Ronald S. Lauder
+FID55,FID55a,Frans Oomen,
+FID553,FID553a,John Tomilson,John Tomilson and Janine Hill
+FID553,FID553b,Janine Hill,John Tomilson and Janine Hill
+FID554,FID554a,Joel Mallin,
+FID555,FID555a,Demetrios Pieridis,Demetrios Pieridis
+FID556,FID556a,Vladimir Macura,Vladimir Macura
+FID557,FID557a,Mark Vanmoerkerke,Mark Vanmoerkerke
+FID558,FID558a,Bernard Arnault,Bernard Arnault
+FID559,FID559a,Vincent Worms,
+FID559,FID559b,Joseph del Pesco,
+FID559,FID559c,Sandra Terdjman,
+FID56,FID56a,Raymond Nasher,Raymond and Patsy Nasher
+FID56,FID56b,Patsy Nasher,Raymond and Patsy Nasher
+FID560,FID560a,Sarah Miller Meigs,Sarah Miller Meigs
+FID561,FID561a,Joanna Madelska,Joanna Madelska
+FID562,FID562a,Charles Justin,Charles and Leah Justin
+FID562,FID562b,Leah Justin,Charles and Leah Justin
+FID563,FID563a,Marco Pallanti,Marco Pallanti
+FID564,FID564a,Gabriele Straub,Gabriele Straub und Hanns-Gerhard Rösch
+FID564,FID564b,Hanns-Gerhard Rösch,Gabriele Straub und Hanns-Gerhard Rösch
+FID565,FID565a,Dulce Carlos de Figueiredo Ferraz,Dulce and João Carlos de Figueiredo Ferraz
+FID565,FID565b,João Carlos de Figueiredo Ferraz,Dulce and João Carlos de Figueiredo Ferraz
+FID566,FID566a,Jürgen A. Messmer,Jürgen A. Messmer
+FID567,FID567a,Ruth Schmidheiny,Ruth Schmidheiny
+FID569,FID569a,Giovanni Giuliani,Giovanni and Valeria Giuliani
+FID569,FID569b,Valeria Giuliani,Giovanni and Valeria Giuliani
+FID57,FID57a,Geert Verbeke,Geert Verbeke and Carla Verbeke-Lens
+FID57,FID57b,Carla Verbeke-Lens,Geert Verbeke and Carla Verbeke-Lens
+FID570,FID570a,Elena Cerasi,Elena and Claudio Cerasi
+FID570,FID570b,Claudio Cerasi,Elena and Claudio Cerasi
+FID571,FID571a,Yevgeny Samoylov,Yevgeny Samoylov
+FID572,FID572a,Eve Ducharme,
+FID574,FID574a,Mary Pilara,Mary and Andy Pilara
+FID574,FID574b,Andy Pilara,Mary and Andy Pilara
+FID575,FID575a,Harry W. Anderson,
+FID575,FID575b,Mary Margaret Anderson,
+FID576,FID576a,Moisés Berezdivin,Moisés Berezdivin
+FID577,FID577a,Oswaldo Corrêa da Costa,Oswaldo Corrêa da Costa
+FID58,FID58a,Marika Wachtmeister,Marika Wachtmeister
+FID580,FID580a,Joon-ui No,Joon-ui No
+FID581,FID581a,Kang Ja Park,Kang Ja Park
+FID582,FID582a,Dong Hwan Ha,Dong Hwan Ha
+FID583,FID583a,Hae Uk Lee,
+FID584,FID584a,Munsun Park,Munsun Park
+FID585,FID585a,Myung-ok Lee,Myung-ok Lee
+FID587,FID587a,Jung-Gil Hong,Jung-Gil Hong
+FID588,FID588a,Soh Yeong Roh,Soh Yeong Roh
+FID589,FID589a,Youngsook Song,Youngsook Song
+FID59,FID59a,Natalia Grigorieva-Litvinskaya,Natalia Grigorieva-Litvinskaya
+FID590,FID590a,Yoonsoo Chun,
+FID591,FID591a,Jong Kwon Kang,Jong Kwon Kang
+FID592,FID592a,Kyung Ja Kim,Kyung Ja Kim
+FID593,FID593a,Byung-gwan Ahn,Byung-gwan Ahn
+FID595,FID595a,Ho-jin Lee,Ho-jin Lee
+FID596,FID596a,Kun-hee Lee,Kun-hee Lee
+FID597,FID597a,Kim Sang-man,Kim Sang-man
+FID598,FID598a,Mingguang Gong,Mingguang Gong
+FID6,FID6a,Bassilis Theocharakis,Bassilis and Marina Theocharakis
+FID6,FID6b,Marina Theocharakis,Bassilis and Marina Theocharakis
+FID601,FID601a,Christiane Schaufler-Münch,Christiane Schaufler-Münch
+FID602,FID602a,Kwee Swie Teng,Kwee Swie Teng
+FID603,FID603a,Jules Dhondt-Dhaenens,Jules & Irma Dhondt-Dhaenens
+FID603,FID603b,Irma Dhondt-Dhaenens,Jules & Irma Dhondt-Dhaenens
+FID604,FID604a,Mei Warburg,Mei and Allan Warburg
+FID604,FID604b,Allan Warburg,Mei and Allan Warburg
+FID605,FID605a,Thomas Grässlin,Thomas Grässlin
+FID606,FID606a,Marina Varvarina,Marina Varvarina
+FID607,FID607a,Nicola Erni,Nicola Erni
+FID609,FID609a,Sunarjo Sampoerna,
+FID61,FID61a,Charles Frye,
+FID61,FID61b,Emma Frye,
+FID610,FID610a,Wilfred Cass,Wilfred and Jeannette Cass
+FID610,FID610b,Jeannette Cass,Wilfred and Jeannette Cass
+FID611,FID611a,Haekyun Lee,Haekyun Lee
+FID612,FID612a,Mingguang Zhu,Mingguang Zhu
+FID613,FID613a,Igal Presler,Igal Presler
+FID614,FID614a,Noemi Givon,Noemi Givon
+FID615,FID615a,Patrizia Sandretto Re Rebaudengo,Patrizia Sandretto Re Rebaudengo
+FID617,FID617a,Heiner Friedrich,Heiner Friedrich
+FID618,FID618a,Matti Koivurinta,Matti Koivurinta
+FID619,FID619a,Siegfried Weishaupt,Siegfried Weishaupt
+FID62,FID62a,Zheng Hao,Zheng Hao
+FID620,FID620a,Hilti Family,Hilti Family
+FID624,FID624a,Maarten van Bommel-van Dam,
+FID624,FID624b,Reina van Bommel-van Dam,
+FID626,FID626a,Carlo Bonetti,Carlo Bonetti
+FID627,FID627a,Francesca von Habsburg (now: Francesca Thyssen-Bornemisza),Francesca von Habsburg (now: Francesca Thyssen-Bornemisza)
+FID628,FID628a,Karlheinz Essl,Karlheinz Essl
+FID63,FID63a,Rik Reinking,Rik Reinking
+FID630,FID630a,Wojciech Fibak,Wojciech Fibak
+FID631,FID631a,François Schneider,François Schneider
+FID632,FID632a,Jo Eyck,Jo and Marlies Eyck
+FID632,FID632b,Marlies Eyck,Jo and Marlies Eyck
+FID633,FID633a,Frank Cohen,Frank Cohen
+FID634,FID634a,Yoonsoon Kim,Yoonsoon Kim
+FID635,FID635a,Le-hwan Kim,Le-hwan Kim
+FID636,FID636a,Hans Koenig,Hans Koenig
+FID638,FID638a,Copelouzos Family,
+FID64,FID64a,Bill True,Bill and Ruth True
+FID64,FID64b,Ruth True,Bill and Ruth True
+FID640,FID640a,Yana Aftanaziv,Yana and Zenko Aftanaziv
+FID640,FID640b,Zenko Aftanaziv,Yana and Zenko Aftanaziv
+FID641,FID641a,Shizuko Watari,Shizuko Watari
+FID642,FID642a,Junyoung Lee,Junyoung Lee
+FID643,FID643a,Pablo Atchugarry,Pablo Atchugarry
+FID65,FID65a,Julia Stoschek,Julia Stoschek
+FID66,FID66a,Maja Hoffmann,Maja Hoffmann
+FID67,FID67a,Jimena Blázquez Abascal,Jimena Blázquez Abascal
+FID68,FID68a,Erwin Kessler,Erwin Kessler
+FID69,FID69a,Grażyna Kulczyk,Grażyna Kulczyk
+FID7,FID7a,George Wong Kin-wah,George Wong Kin-wah
+FID70,FID70a,Vera Chaves Barcellos,Vera Chaves Barcellos
+FID71,FID71a,Werner Coninx,Werner Coninx
+FID72,FID72a,Marcos Amaro,Marcos Amaro
+FID73,FID73a,Paul Firos,Paul Firos
+FID74,FID74a,Lutz Teutloff,Lutz Teutloff
+FID75,FID75a,Charles Riva,Charles Riva
+FID76,FID76a,Federico Klemm,Federico Klemm
+FID77,FID77a,Helga de Alvear,Helga de Alvear
+FID78,FID78a,Lip Lim,Lip Lim
+FID79,FID79a,Rajshree Pathy,Rajshree Pathy
+FID8,FID8a,Agung Rai,Agung Rai
+FID80,FID80a,Roberto Polo,
+FID81,FID81a,Pauline Karpidas,
+FID81,FID81b,Panos Karpidas,
+FID81,FID81c,Elizabeth Karpidas,
+FID82,FID82a,Philippe Austruy,Philippe Austruy
+FID83,FID83a,Boele Bregman,
+FID83,FID83b,Sjoerd de Vries,
+FID83,FID83c,Thom Mercuur,
+FID84,FID84a,Jürgen Blum,
+FID85,FID85a,Dağhan Özil,Dağhan Özil
+FID86,FID86a,Eli Broad,Eli and Edythe Broad
+FID86,FID86b,Edythe Broad,Eli and Edythe Broad
+FID87,FID87a,Giobatta Meneguzzo,Giobatta Meneguzzo
+FID88,FID88a,Roberto Ramos,Roberto Ramos
+FID89,FID89a,Eva-Maria Fahrner-Tutsek,Eva-Maria Fahrner-Tutsek and Alexander Tutsek
+FID89,FID89b,Alexander Tutsek,Eva-Maria Fahrner-Tutsek and Alexander Tutsek
+FID9,FID9a,Axel Haubrok,Axel Haubrok
+FID90,FID90a,Artur Walther,Artur Walther
+FID91,FID91a,Volker Kahmen,Volker Kahmen
+FID92,FID92a,Antoine De Galbert,Antoine De Galbert
+FID93,FID93a,Steve Rosenblum,Steve Rosenblum
+FID94,FID94a,Jan Mladkova,Jan and Meda Mladkova
+FID94,FID94b,Meda Mladkova,Jan and Meda Mladkova
+FID95,FID95a,Ilana Goor,Ilana Goor
+FID97,FID97a,Egidio Marzona,Egidio Marzona
+FID98,FID98a,Loek Dijkman,Loek Dijkman
+FID99,FID99a,Tony Cragg,Tony Cragg
