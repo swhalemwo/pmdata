@@ -56,7 +56,18 @@ digraph D {
 
 [[file:pmdb_flow.png]]
 
-~gd_pmdb_excl~ and ~gd_pmdb~ process and run all kinds of test on the PMDB .csv file downloaded from google sheets. Outcome is dt_pmdb (1 row per museum) which serves as the basis for links to various other data sources, such as those  related to founder (founder_id), coordinates (lat/long), country (iso3c) and/or year (year).
+~gd_pmdb_excl~ and ~gd_pmdb~ process and run all kinds of test on the PMDB.csv file downloaded from google sheets. Outcome is dt_pmdb (1 row per museum) which serves as the basis for links to various other data sources, such as those  related to founder (founder_id), coordinates (lat/long), country (iso3c) and/or year (year).
+
+*** updating pmdata files after PMDB has been updated
+
+~pmdata~ includes a number of files to make sure data (museums, collectors) can be straightforwardly combined with other datasets; failure to do so will result in failure at package build time. 
+
+In particular, if there are new museums entries, MOW inclusion needs to be checked (~gw_mow_pmdb_matches~, in ~match_pmdb_mow.R~)
+
+if there are new collector entries, they have to be: 
+- added to ~PMDB_FOUNDER_PERSON_FILE~ and ~PDMB_FOUNDER_PERSON_FILE_WID~ (tests will print entries to be added)
+- checked for artnews collector ranking inclusion (with ~gw_artnews_pmdb_matches~)
+
 
 *** distances between private museums
 distances between private museums can be generated via `gd_pmdb_proxcnt`.
