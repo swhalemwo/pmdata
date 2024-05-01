@@ -45,7 +45,7 @@ digraph D {
 
   PMDB_FOUNDER_PERSON_FILE_WID -> gd_pmdb_founder_person
 
-  t_gwd_ppecprn -> PMDB_FOUNDER_PERSON_FILE_WID[dir=back,label="input"]
+  t_gwd_ppecprn -> PMDB_FOUNDER_PERSON_FILE_WID[dir=back,weight = 2]
 
 
 }
