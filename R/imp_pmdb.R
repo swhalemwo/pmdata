@@ -463,11 +463,31 @@ t_gwd_pmdb_founder_person <- function(
     ## read back from file (ff), check that 
     dt_founder_person_ff <- fread(PMDB_FOUNDER_PERSON_FILE_CSV)
 
-    ## checkt that all founder_ids in PMDB are covered, and that founder_person_id is unique
-    tres <- F
-    tres <- all(nrow(dt_founder_person_prep[!dt_founder_person_ff, on = "founder_id"]) == 0,
-                dt_founder_person_ff[, !any_duplicated(founder_person_id)]) # check that founder_person
+    ## checkt that all founder_ids in PMDB are covered
+    
+    tres_cvrg <- F
+    dt_t_cvrg <- dt_founder_person_prep[!dt_founder_person_ff, on = "founder_id"]
 
+    if (fnrow(dt_t_cvrg) > 0) {
+        print(dt_t_cvrg)
+        tres_cvrg <- F
+    } else {
+        tres_cvrg <- T
+    }
+
+    ## check that founder_person_id is unique
+
+    dt_t_dupl <- dt_founder_person_ff[fduplicated(founder_person_id)]
+    if (fnrow(dt_t_dupl) > 0) {
+        print(dt_t_dupl)
+        tres_dupl <- F
+    } else {
+        tres_dupl <- T
+    }
+
+    
+    ## combine tests
+    tres <- all(tres_cvrg, tres_dupl)
     
     
     return(tres)

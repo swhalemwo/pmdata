@@ -20,6 +20,9 @@ digraph D {
   manually_split_couples -> PMDB_FOUNDER_PERSON_FILE
   manually_check_for_name_overlap -> PMDB_PPECPRN_FILE
 
+  PMDB_FOUNDER_PERSON_FILE -> t_pmdb_founder_name_change
+  gd_pmdb -> t_pmdb_founder_name_change
+
   // PMDB_PPECPRN_FILE -> gd_pmdb_founder_person
   // PMDB_FOUNDER_PERSON_FILE -> gd_pmdb_founder_person
   

@@ -44,10 +44,17 @@ expect_false(dt_pmdb[, .(founder_name, founder_id)] %>% funique %>%
              info = "check that a founder_id refers to a unique name")
 
 
+expect_true(pmdata:::t_pmdb_founder_name_change(
+                         dt_pmdb,
+                         PMDB_FOUNDER_PERSON2_FILE = PMDATA_LOCS$PMDB_FOUNDER_PERSON2_FILE),
+            info = "check that all founder have not changed since last check.")
+
+
+
 expect_true(pmdata:::t_gwd_pmdb_founder_person(
                          dt_pmdb[museum_status %in% c("private museum", "no longer a private museum", "closed")],
                          PMDB_FOUNDER_PERSON_FILE_ORG = PMDATA_LOCS$PMDB_FOUNDER_PERSON_FILE_ORG,
-                         PMDB_FOUNDER_PERSON_FILE_CSV = PMDATA_LOCS$PMDB_FOUNDER_PERSON_FILE_CSV),
+                         PMDB_FOUNDER_PERSON_FILE_CSV = PMDATA_LOCS$PMDB_FOUNDER_PERSON2_FILE_CSV),
             info = paste0("check that every founder_id in dt_pmdb has been checked wrt to being part of couple.",
                           "and that founder_person_id is unique"))
 
