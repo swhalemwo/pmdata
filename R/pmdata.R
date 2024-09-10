@@ -67,7 +67,9 @@ gc_pmdata_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_so
         ## GHSL (Global human settlement layer) from european commission
         DIR_GHSL = paste0(DATA_DIR, "ghsl/"),
         ## WAYBACK results
-        FILE_WAYBACK_RES = paste0(DATA_DIR, "wayback/wayback.csv")
+        FILE_WAYBACK_RES = paste0(DATA_DIR, "wayback/wayback.csv"),
+        ## EGMUS
+        DIR_DATA_EGMUS  = paste0(DATA_DIR, "egmus/")
     )
         
 
