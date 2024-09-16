@@ -58,6 +58,7 @@ gw_AF_PMDB_match <- function(dt_pmdb_matchy, pmdb_ID) {
 gw_AF_PMDB_matches <- function() {
     if (as.character(match.call()[[1]]) %in% fstd){browser()}
     1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
+    #' check all PMDBs that haven't been checked yet for inclusion in Artfacts data
     
     library(countrycode)
 
@@ -73,6 +74,8 @@ gw_AF_PMDB_matches <- function() {
     map(pmdb_IDs_tocheck, ~gw_AF_PMDB_match(dt_pmdb_tomatch, .x))
 
 }
+
+## gw_AF_PMDB_matches()
 
     
 

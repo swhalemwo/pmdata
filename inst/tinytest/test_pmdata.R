@@ -202,3 +202,32 @@ test_gd_pmdb_proxcnt <- function() {
 }
 
 expect_true(test_gd_pmdb_proxcnt(), info = "test PM distances")
+
+
+## ** ----------------- Artfact checks --------------------
+
+t_af_coverage <- function() {
+    ## if (as.character(match.call()[[1]]) %in% fstd){browser()}
+    #' test that all PMDB institutions have been checked
+    browser()
+
+    PMDATA_LOCS <- gc_pmdata_locs()
+    dt_af_pmdb_matches <- gd_af_pmdb_matches(PMDATA_LOCS$FILE_ARTFACTS_PMDB_MATCHES)
+
+    dt_tocheck <- dt_pmdb_excl[!dt_af_pmdb_matches, on = .(ID = PMDB_ID)]
+
+    ret_obj <- F
+    if (nrow(dt_tocheck) > 0) {
+        print(dt_tocheck[, .(name, ID, `Database updates`)])
+        ret_obj <- F
+    } else if (nrow(dt_tocheck) == 0) {
+        ret_obj <- T
+    }
+
+    return(ret_obj)
+
+}
+ 
+expect_true(t_af_coverage(), info = "test Artfacts coverage")
+
+
