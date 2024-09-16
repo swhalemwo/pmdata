@@ -160,7 +160,7 @@ gw_mow_pmdb_matches <- function() {
     library(countrycode)
 
     ## generate PMDB: these have to be checked
-    dt_pmdb_matchy <- gd_pmdb_excl(gc_pmdata_locs()$PMDB_FILE, only_pms = F) %>%
+    dt_pmdb_matchy <- gd_pmdb_excl(gc_pmdata_locs()$PMDB_FILE, sel = "all") %>%
         .[, .(ID, name, museum_status, year_opened, country = countrycode(iso3c, "iso3c", "country.name"))] %>%
         .[museum_status %!in% c("no private museum", "duplicate")]
 

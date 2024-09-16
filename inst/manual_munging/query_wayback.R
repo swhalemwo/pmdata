@@ -11,7 +11,7 @@ options(width = 115)
 
 PMDATA_LOCS <- gc_pmdata_locs()
 
-dt_pmdb_prep <- gd_pmdb_excl(only_pms = F) %>% gd_pmdb
+dt_pmdb_prep <- gd_pmdb_excl(sel = "all") %>% gd_pmdb
 
 dt_pmdb <- dt_pmdb_prep[, .(ID, name, museum_status, iso3c, city, website)] %>%
     .[museum_status %in% c("private museum", "closed")]

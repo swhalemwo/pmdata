@@ -27,7 +27,7 @@ PMDATA_LOCS <- gc_pmdata_locs()
 options(warn=-1)
 
 ## restrict PMDB to PMs that are relevant to analysis
-dt_pmdb_excl <- gd_pmdb_excl(PMDATA_LOCS$PMDB_FILE, only_pms = F) %>%
+dt_pmdb_excl <- gd_pmdb_excl(PMDATA_LOCS$PMDB_FILE, sel = "all") %>%
     .[museum_status %in% c("private museum", "no longer a private museum", "closed")]
 
 ## define objects 

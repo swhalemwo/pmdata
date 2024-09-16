@@ -593,7 +593,7 @@ gw_artnews_pmdb_matches <- function() {
     founder_id <- nationality <- founder_name <- pmdb_person_id <- NULL
     
     ## convoluted way of getting nationality to founder person, this should all be stored in one place
-    dt_pmdb_founder_nat <- gd_pmdb_excl(only_pms = F) %>% gd_pmdb %>%
+    dt_pmdb_founder_nat <- gd_pmdb_excl(sel = "all") %>% gd_pmdb %>%
         .[founder_id != "" & nationality != "", .(founder_id, nationality)] %>% funique 
         
 

@@ -43,7 +43,7 @@ dt_af_links_exhb_ppl <- gd_af_links_exhb_ppl()
 dt_af_people <- gd_af_people()
 
 ## get PMDB
-dt_pmdb <- suppressWarnings(gd_pmdb(gd_pmdb_excl(only_pms = F), verbose = NULL)) %>%    
+dt_pmdb <- suppressWarnings(gd_pmdb(gd_pmdb_excl(sel = "all"), verbose = NULL)) %>%    
     .[museum_status %in% c("private museum", "closed")]
 
 ## import match file

@@ -62,7 +62,7 @@ gw_AF_PMDB_matches <- function() {
     
     library(countrycode)
 
-    dt_pmdb_tomatch <- gd_pmdb_excl(only_pms = F) %>% gd_pmdb %>%
+    dt_pmdb_tomatch <- gd_pmdb_excl(sel = "all") %>% gd_pmdb %>%
         .[, .(ID, name, museum_status, year_opened, city,
               country = countrycode(iso3c, "iso3c", "country.name"))] %>%
         .[museum_status %!in% c("no private museum", "duplicate")]

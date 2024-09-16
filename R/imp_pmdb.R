@@ -84,7 +84,7 @@ vrbl_fndr <- function(df, penl_vrbls) {
 #' @param PMDB_FILE path to CSV download from google sheets, usually provided by PMDATA_LOCS
 #' @param only_pms whether to include only private museums that are currently open
 #' @export
-gd_pmdb_excl <- function(PMDB_FILE = PMDATA_LOCS$PMDB_FILE, only_pms) {
+gd_pmdb_excl <- function(PMDB_FILE = PMDATA_LOCS$PMDB_FILE, sel) {
     ## if (as.character(match.call()[[1]]) %in% fstd){browser()}
 
     ID <- country <- year_opened_str <- year_closed_str <- iso3c <- museum_status <- NULL
@@ -127,9 +127,16 @@ gd_pmdb_excl <- function(PMDB_FILE = PMDATA_LOCS$PMDB_FILE, only_pms) {
 
     if (fsubset(dt_pmdb_excl2, is.na(iso3c) & country != "") %>% fnrow > 0) {stop("not all countries are matched")}
 
-    if (only_pms) {
+    ## only currently open PMs
+    if (sel == "only_open_pm") {
         return(sbt(dt_pmdb_excl2, museum_status == "private museum"))
-    } else if (!only_pms) {
+        ## everything that ever was a PM
+    } else if (sel == "any_ever_pm") {
+        return(sbt(dt_pmdb_excl2, museum_status %in% c("private museum", "closed", "no longer a private museum")))
+        ## only those that always were PMs (open and closed)
+    } else if (sel == "only_always_pm") {
+        return(sbt(dt_pmdb_excl2, museum_status %in% c("private museum", "closed")))
+    } else if (sel == "all") {
         return(dt_pmdb_excl2)
     }
 
