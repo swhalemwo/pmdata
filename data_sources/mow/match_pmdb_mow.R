@@ -1,4 +1,5 @@
 library(pmdata)
+library(purrr)
 
 gw_mow_emacs_file <- function()  {
     if (as.character(match.call()[[1]]) %in% fstd){browser()}
@@ -163,7 +164,7 @@ gw_mow_pmdb_matches <- function() {
         .[, .(ID, name, museum_status, year_opened, country = countrycode(iso3c, "iso3c", "country.name"))] %>%
         .[museum_status %!in% c("no private museum", "duplicate")]
 
-    dt_mow_pmdb_matches <- gd_mow_pmdb_matchres(gc_pmdata_locs()$MOW_PMDB_MATCHRES_FILE)
+    dt_mow_pmdb_matches <- pmdata:::gd_mow_pmdb_matchres(gc_pmdata_locs()$MOW_PMDB_MATCHRES_FILE)
  
     pmdb_IDS_to_check <- setdiff(dt_pmdb_matchy$ID, dt_mow_pmdb_matches$PMDB_ID)
 
