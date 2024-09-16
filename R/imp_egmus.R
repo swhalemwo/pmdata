@@ -101,13 +101,17 @@ gc_egmus_colnames <- function() {
 
 
 #' read in EGMUS data
-#' @param FILE_EGMUS file path to EGMUS data
+#' 
+#' @param DIR_DATA_EGMUS path to EGMUS data
 #' @return data.table with EGMUS data 
 #' @export 
 gd_egmus <- function(DIR_DATA_EGMUS = PMDATA_LOCS$DIR_DATA_EGMUS) {
     if (as.character(match.call()[[1]]) %in% fstd){browser()}
     1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
 
+    V91 <- value <- vlu_new <- NULL
+
+    
     system(paste0("cd ", DIR_DATA_EGMUS, " && rm *_seded.csv")) # remove old seded files
 
     ## list files in directory
@@ -126,8 +130,8 @@ gd_egmus <- function(DIR_DATA_EGMUS = PMDATA_LOCS$DIR_DATA_EGMUS) {
 
     c_colnames <- gc_egmus_colnames()
 
-    if (len(setdiff(names(l_egmus_colnames), c_colnames)) != 0 |
-        len(setdiff(c_colnames, names(l_egmus_colnames)) != 0)) {
+    if (length(setdiff(names(l_egmus_colnames), c_colnames)) != 0 |
+        length(setdiff(c_colnames, names(l_egmus_colnames)) != 0)) {
         stop("egmus column names not good")}
 
     ## read in data, rename, yeet weird additional columns

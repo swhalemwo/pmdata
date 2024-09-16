@@ -375,6 +375,8 @@ md_pmdb_gdocs_add_fid <- function() {
 
 #' test that founder names don't change
 #' if founder names have changed, throw an error
+#' @param dt_pmdb data.table of PMDB
+#' @param PMDB_FOUNDER_PERSON_FILE_CSV FILE with founder-person links
 t_pmdb_founder_name_change <- function(dt_pmdb,
                                        PMDB_FOUNDER_PERSON_FILE_CSV = PMDATA_LOCS$PMDB_FOUNDER_PERSON_FILE_CSV) {
     if (as.character(match.call()[1]) %in% fstd){browser()}

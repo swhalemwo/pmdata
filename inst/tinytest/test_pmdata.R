@@ -209,7 +209,7 @@ expect_true(test_gd_pmdb_proxcnt(), info = "test PM distances")
 t_af_coverage <- function() {
     ## if (as.character(match.call()[[1]]) %in% fstd){browser()}
     #' test that all PMDB institutions have been checked
-    browser()
+    
 
     PMDATA_LOCS <- gc_pmdata_locs()
     dt_af_pmdb_matches <- gd_af_pmdb_matches(PMDATA_LOCS$FILE_ARTFACTS_PMDB_MATCHES)
