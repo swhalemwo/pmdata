@@ -138,7 +138,10 @@ gd_pmdb_excl <- function(PMDB_FILE = PMDATA_LOCS$PMDB_FILE, sel) {
         return(sbt(dt_pmdb_excl2, museum_status %in% c("private museum", "closed")))
     } else if (sel == "all") {
         return(dt_pmdb_excl2)
+    } else if (sel %!in% c("only_open_pm", "any_ever_pm", "only_always_pm", "all")) {
+        stop("sel is not one of only_open_pm, any_ever_pm, only_always_pm, all")
     }
+        
 
 }
 
