@@ -60,3 +60,12 @@ gd_af_pmdb_matches <- function(FILE_ARTFACTS_PMDB_MATCHES = PMDATA_LOCS$FILE_ART
 
     return(dt_res)
 }
+
+
+#' read the file of Artfacts institution classification
+#'
+#' @param FILE_ARTFACTS_INST_CLSFCN csv file with classifications
+#' @export
+gd_af_inst_clsfcn <- function(FILE_ARTFACTS_INST_CLSFCN = PMDATA_LOCS$FILE_ARTFACTS_INST_CLSFCN) {
+    fread(FILE_ARTFACTS_INST_CLSFCN)
+}
