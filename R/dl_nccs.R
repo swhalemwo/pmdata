@@ -1,6 +1,6 @@
-install.packages("devtools")
+## install.packages("devtools")
 library(devtools)
-devtools::install_github("UrbanInstitute/nccsdata")
+## devtools::install_github("UrbanInstitute/nccsdata")
 library(nccsdata)
 library(purrr)
 library(jtls)
@@ -12,9 +12,17 @@ library(parallel)
 
 
 
-dtx <- get_data(dsname = "core", time = "2010", ntee = "A", geo.city = "san francisco")
+## dtx <- get_data(dsname = "core", time = "2010", ntee = "A", geo.city = "san francisco")
 
-dt_a51 <- get_data(dsname = "bmf", time = "2010", ntee = "A51", geo.city = "san francisco")
+## dt_a51 <- get_data(dsname = "bmf", time = "2010", ntee = "A51", geo.city = "san francisco")
+
+dt_nccs_urls <- data.table(
+  orgtype = c("501C3-CHARITIES" ,  "501CE-NONPROFIT" , "501C3-PRIVFOUND"),
+  scope = c("PZ"           ,  "PZ"         , "PF"),
+  start_year = c(1989     ,  1989         , 1989),
+  end_year = c(2019       ,  2019         , 2019)) %>%
+  .[, .(year = start_year:end_year), .(orgtype, scope)] %>%
+  .[!(orgtype == "501C3-PRIVFOUND" & year %in% c(1993, 2016, 2017, 2018))] # yeet some years w/o data
 
   
 
@@ -27,9 +35,9 @@ download_nccs <- function(orgtype, scope, year) {
     url <- sprintf("https://nccsdata.s3.us-east-1.amazonaws.com/legacy/core/CORE-%s-%s-%s.csv",
                    year, orgtype, scope)
 
-    get_data(dsname = 'core', time = as.character(year), scope.orgtype = "NONPROFIT", scope.formtype = "PC")
+    ## get_data(dsname = 'core', time = as.character(year), scope.orgtype = "NONPROFIT", scope.formtype = "PC")
 
-    get_data(dsname = 'core', time = c("2021"))
+    ## get_data(dsname = 'core', time = c("2021"))
 
     target_file <- sprintf("%s/CORE-%s-%s-%s.csv", DIR_NCCS, year, orgtype, scope)
 
@@ -47,59 +55,6 @@ download_nccs <- function(orgtype, scope, year) {
 }
 
 
-dt_nccs_urls <- data.table(
-  orgtype = c("501C3-CHARITIES" ,  "501CE-NONPROFIT" , "501C3-PRIVFOUND"),
-  scope = c("PZ"           ,  "PZ"         , "PF"),
-  start_year = c(1989     ,  1989         , 1989),
-  end_year = c(2022       ,  2022         , 2022)) %>%
-  .[, .(year = start_year:end_year), .(orgtype, scope)] %>%
-  .[!(orgtype == "501C3-PRIVFOUND" & year %in% c(1993, 2016, 2017, 2018))] # yeet some years w/o data
-
-
-## lapply(split(dt_nccs_urls[1:2], 1:2), \(x) download_nccs(x$orgtype, x$scope, x$year))
-
-lapply(split(dt_nccs_urls, 1:nrow(dt_nccs_urls)), \(x) download_nccs(x$orgtype, x$scope, x$year))
-
-dt_nccs_urls[year > 2019] %>% split(1:9) %>% .[1] %>% lapply(\(x)download_nccs(x$orgtype, x$scope, x$year))
-
-
-
-
-## apply(split(dt_nccs_urls, 
-## dt2 <- get_data(dsname = "core",
-##                 scope.orgtype = "CHARITIES",
-##                 scope.formtype = "PZ", # should also make a separate call for PF
-##                 time = as.character(2010:2012),
-##                 ntee = "A51")
-
-
-
-con <- DBI::dbConnect(RClickhouse::clickhouse())
-dbListTables(con)
-                
-
-
-dt2[, .N, NTEECC][grepl("A", NTEECC)] %>% print(n=800)
-
-dtx <- fread("/home/johannes/nccs.csv")
-
-dtx[grepl("museum", NAME, ignore.case = T), .(NAME)]
-## oof not even sure if any US PM is in there? 
-
-
-dtx[, .SD, .SDcols = patterns("^ntee|Ntee|NTEE|NAME")]
-
-dtx[NTEECC == "A51"]
-
-
-
-
-
-
-
-DIR_NCCS <- "/run/media/johannes/data/nccs"
-
-l_nccs_files <- list.files(DIR_NCCS, full.names = T)
 
 
 gc_nccs_schema <- function(nccs_filepath, con) {
@@ -132,78 +87,12 @@ gc_nccs_schema <- function(nccs_filepath, con) {
     dt_schema[, `:=`(year = year_ext, orgtype = orgtype_ext, scope = scope_ext)]
 
     return(dt_schema)
-    
-
 }
 
-
-
-gc_nccs_schema(l_nccs_files[1], con)
-
-
-DBI::dbDisconnect(con)
-con <- DBI::dbConnect(RClickhouse::clickhouse(), dbname = "nccs")
-
-dt_schema <- mclapply(l_nccs_files, \(x) gc_nccs_schema(x, con), mc.cores = 6) %>% rbindlist
-
-## eval: how much do schemas differ? 
-dt_schema[, .(nbr_unique = uniqueN(schema)), vrbl][, .N, nbr_unique]
-
-
-## ** schema eval
-dt_schema[, (schema = unique(schema)), vrbl]
-
-dt_schema[vrbl == "EIN" & schema == "String"]
-
-## search where the EIN is char
-
-dt_debug <- fread(paste0(DIR_NCCS, "/CORE-2005-501CE-NONPROFIT-PZ.csv"))
-
-## check that conversion to lower case still keeps uniqueness
-dt_schema[, .(nunq_atm = uniqueN(vrbl), nunq_lower = uniqueN(tolower(vrbl))), .(orgtype, scope, year)] %>%
-    .[nunq_atm != nunq_lower]
+## gc_nccs_schema(l_nccs_files[1], con)
 
 
 
-dt_schema[, .SD["NTEECC" %!in% vrbl], .(year, orgtype, scope)]
-
-## search which columns are used for NTEE codes
-dt_schema[, .SD[!any(vrbl == "NTEECC")], .(year, orgtype, scope)] %>%
-    .[grepl("NTEE", vrbl)]
-    ## .[, .N, .(year, orgtype, scope)]
-
-dt_schema[, .N, vrbl][order(-N)] %>% print(n=80)
-
-dt_schema[year > 2000, .(N = .N, Nform = uniqueN(schema), vlu = paste0(unique(schema), collapse = ",")), vrbl] %>% 
-    .[order(-N)] %>% print(n=80)
-
-
-dt_schema[year == 2010 & (vrbl == "TOTREV2" | vrbl == "P1TOTREV")]
-
-
-
-dt_schema[orgtype == "CHARITIES" & year >= 2000][, head(.SD), year] %>% print(n=300)
-
-dt_schema[year >= 2000 & orgtype == "CHARITIES" & vrbl == "OUTNCCS"]
-
-dt_schema[vrbl == "OUTNCCS", .N, year]
-
-dt_schema[year == 2005][grepl("out", vrbl, ignore.case = T)]
-
-dt_schema[orgtype == "CHARITIES" & vrbl == "PROGREV"]
-dt_schema[orgtype == "NONPROFIT" & vrbl == "STYEAR"]
-
-dt_schema[orgtype == "PRIVFOUND" ][vrbl == "P1TOTREV"]
-dt_schema[orgtype == "PRIVFOUND" & year >= 2000][grepl("fis|yr", vrbl, ignore.case = T)]
-
-
-dt_schema[orgtype == "NONPROFIT" & grepl("p1psrev", vrbl, ignore.case = T)]
-dt_schema[year == 2002 & grepl("prog", vrbl, ignore.case = T)]
-dt_schema[grepl("longitude", vrbl, ignore.case = T)]
-dt_schema[grepl("address", vrbl, ignore.case = T)]
-
-dt_schema[orgtype == "CHARITIES" & grepl("totrev", vrbl, ignore.case = T)]
-dt_schema[orgtype == "CHARITIES" & vrbl == "FUNDBAL"]
 
 
 
@@ -255,7 +144,7 @@ gc_vrblcfg <- function(orgtype, year) {
     
 }
 
-gc_vrblcfg("NONPROFIT", 1995)
+## gc_vrblcfg("NONPROFIT", 1995)
 
 
 
@@ -291,16 +180,95 @@ gd_extract_museums <- function(nccs_filepath) {
     }
 
     return(dt_subset)
-    
-
-    
+       
 }
 
+## gd_extract_museums(l_nccs_files[35])
 
-gd_extract_museums(l_nccs_files[35])
+## * main
+
+
+## ** download
+if (interactive()) {stop("it's interactive time")}
+
+DIR_NCCS <- "/run/media/johannes/data/nccs"
+lapply(split(dt_nccs_urls, 1:nrow(dt_nccs_urls)), \(x) download_nccs(x$orgtype, x$scope, x$year))
+
+
+## ** schema construction
+
+l_nccs_files <- list.files(DIR_NCCS, full.names = T)
+con <- DBI::dbConnect(RClickhouse::clickhouse(), dbname = "nccs")
+dt_schema <- mclapply(l_nccs_files, \(x) gc_nccs_schema(x, con), mc.cores = 6, mc.preschedule = F) %>% rbindlist
+
+## *** schema eval
+
+## how much do schemas differ? 
+dt_schema[, .(nbr_unique = uniqueN(schema)), vrbl][, .N, nbr_unique]
+
+
+dt_schema[, (schema = unique(schema)), vrbl]
+
+## search where the EIN is char
+
+dt_debug <- fread(paste0(DIR_NCCS, "/CORE-2005-501CE-NONPROFIT-PZ.csv"))
+
+## check that conversion to lower case still keeps uniqueness
+dt_schema[, .(nunq_atm = uniqueN(vrbl), nunq_lower = uniqueN(tolower(vrbl))), .(orgtype, scope, year)] %>%
+    .[nunq_atm != nunq_lower]
+## looks good
+
+## ** constructing gc_vrblcfg by seeing how variable names differ across form/years
+
+dt_schema[, .SD["NTEECC" %!in% vrbl], .(year, orgtype, scope)]
+
+## search which columns are used for NTEE codes
+dt_schema[, .SD[!any(vrbl == "NTEECC")], .(year, orgtype, scope)] %>%
+    .[grepl("NTEE", vrbl)]
+    ## .[, .N, .(year, orgtype, scope)]
+
+dt_schema[, .N, vrbl][order(-N)] %>% print(n=80)
+
+dt_schema[year > 2000, .(N = .N, Nform = uniqueN(schema), vlu = paste0(unique(schema), collapse = ",")), vrbl] %>% 
+    .[order(-N)] %>% print(n=80)
+
+
+dt_schema[year == 2010 & (vrbl == "TOTREV2" | vrbl == "P1TOTREV")]
+
+
+
+dt_schema[orgtype == "CHARITIES" & year >= 2000][, head(.SD), year] %>% print(n=300)
+
+dt_schema[year >= 2000 & orgtype == "CHARITIES" & vrbl == "OUTNCCS"]
+
+dt_schema[vrbl == "OUTNCCS", .N, year]
+
+dt_schema[year == 2005][grepl("out", vrbl, ignore.case = T)]
+
+dt_schema[orgtype == "CHARITIES" & vrbl == "PROGREV"]
+dt_schema[orgtype == "NONPROFIT" & vrbl == "STYEAR"]
+
+dt_schema[orgtype == "PRIVFOUND" ][vrbl == "P1TOTREV"]
+dt_schema[orgtype == "PRIVFOUND" & year >= 2000][grepl("fis|yr", vrbl, ignore.case = T)]
+
+
+dt_schema[orgtype == "NONPROFIT" & grepl("p1psrev", vrbl, ignore.case = T)]
+dt_schema[year == 2002 & grepl("prog", vrbl, ignore.case = T)]
+dt_schema[grepl("longitude", vrbl, ignore.case = T)]
+dt_schema[grepl("address", vrbl, ignore.case = T)]
+
+dt_schema[orgtype == "CHARITIES" & grepl("totrev", vrbl, ignore.case = T)]
+dt_schema[orgtype == "CHARITIES" & vrbl == "FUNDBAL"]
+
+
+
+## ** museum 
+
 
 dt_muem <- mclapply(l_nccs_files, \(x) gd_extract_museums(x), mc.cores = 6, mc.preschedule = F) %>%
     rbindlist(use.names = T)
+
+## *** basic museum stats
 
 dt_muem[nteecc == "A51"]
 
@@ -341,45 +309,53 @@ ggplot(iris, aes(x = Sepal.Length, y = Species)) +
     theme_ridges()
 
 
+## *** basic museum survival 
+## check survival
+## get closed museums: not active since 2013: first get all,
+## then subtract from them the ones that are active post-2013
+
+dt_muem_closed <- dt_muem[, .(ein = unique(ein))] %>%
+    .[!dt_muem[styear > 2013, .(ein = unique(ein))], on = "ein"]
     
+## carry over other stats, will be lagged away anyways in survival
+dt_muem_closed_year <- dt_muem[dt_muem_closed, on = "ein"][, .SD[which.max(year)], ein] %>% copy %>%
+    .[, `:=`(year = year + 1, closed = 1)]
+
+## set up grid to fill up temporary non-filing
+dt_muem_grid <- dt_muem[, .(year = min(year):max(year)), ein]
+
+## join with closed
+
+dt_muem_cbn <- rbind(
+    merge(dt_muem_grid, dt_muem, by = c("ein", "year"), all.x = T)[, closed := 0],
+    dt_muem_closed_year)
 
 
 
-## ** count the artmuseums in each file
 
-gd_count_artmuseums <- function(nccs_filepath, con) {
-    if (as.character(match.call()[[1]]) %in% fstd){browser()}
-    1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
+dt_muem_cbn[, .(prop_closed = sum(closed)/.N, .N, n_closed = sum(closed)), .(styear, nteecc)] %>%
+    .[styear %between% c(2000, 2014),
+      .(prop_closed = mean(prop_closed), total_atrisk = sum(N), total_closed = sum(n_closed),
+        avg_closed = mean(n_closed), avg_atrisk = mean(N)), nteecc]
 
-    dt_nccs <- fread(nccs_filepath)
+## check whether same museum can have multiple neetcc
+dt_muem[, .(uniqueN_nteecc = uniqueN(nteecc)), ein][, .N, uniqueN_nteecc]
+## yeah quite some have multiple
 
-    year_ext <- as.integer(str_extract(nccs_filepath, "(?<=CORE-)(\\d{4})(?=-501)"))
-    orgtype_ext <- str_extract(nccs_filepath, "(?<=CORE-\\d{4}-501C[3E]-)([^-]+)(?=-P)")
-    scope_ext <- fifelse(orgtype_ext == "PRIVFOUND", "PF", "PZ")
-
-    if ("NTEECC" %in% names(dt_nccs)) {
-
-        dt_res <- dt_nccs[NTEECC == "A51", .(nAM=.N, year = year_ext, orgtype = orgtype_ext, scope = scope_ext)]
-
-        return(dt_res)
-    }
-    
-}
-
-gd_count_artmuseums(paste0(DIR_NCCS, "/CORE-2005-501CE-NONPROFIT-PZ.csv"), con)
-
-dt_nAM <- mclapply(l_nccs_files, \(x) gd_count_artmuseums(x, con), mc.cores = 6) %>% rbindlist
-## mostly charities
+## check whether museum can be in multiple years
+dt_muem[, .(muem_year_N = .N), .(ein, styear)][, .N, muem_year_N]
+## yup quite some are in multiple years
 
 
-## ** Sara data: time range
-dt_sara1 <- fread("/home/johannes/Dropbox/phd/sara/fmerged_990.csv")
-dt_sara1[, min(tax_pd, na.rm = T)]
 
-dt_sara2 <- fread("/home/johannes/Dropbox/phd/sara/fmerged_990pf.csv")
-dt_sara2[, min(TAX_PRD, na.rm =T)]
 
-## hmm they're for 2011
+
+## ## ** Sara data: time range
+## dt_sara1 <- fread("/home/johannes/Dropbox/phd/sara/fmerged_990.csv")
+## dt_sara1[, min(tax_pd, na.rm = T)]
+
+## dt_sara2 <- fread("/home/johannes/Dropbox/phd/sara/fmerged_990pf.csv")
+## dt_sara2[, min(TAX_PRD, na.rm =T)]
 
 
 ## ** big query? IRS directly?
