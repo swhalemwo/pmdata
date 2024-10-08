@@ -2,7 +2,7 @@ InstitutionType,clsfcn,reason,clsfcn2
 Private Galleries,gallery,obv,gallery
 "Editions, Prints, ...",gallery,"many have gallery in name",yeet
 Non-profit organizations,npo,obv,npo
-Public Institutions,muem_pub,obv,muem_pub
+Public Institutions,pubm,obv,pubm
 Project Spaces,npo,"sounds vague",npo
 Other Spaces,npo,"sounds vague",npo
 Online galleries,gallery,obv,gallery
