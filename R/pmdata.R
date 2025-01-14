@@ -69,6 +69,8 @@ gc_pmdata_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_so
         DIR_GHSL = paste0(DATA_DIR, "ghsl/"),
         ## WAYBACK results
         FILE_WAYBACK_RES = paste0(DATA_DIR, "wayback/wayback.csv"),
+        ## LOTSEARCH
+        DIR_LOTSEARCH = paste(DATA_DIR, "lotsearch/"),
         ## EGMUS
         DIR_DATA_EGMUS  = paste0(DATA_DIR, "egmus/")
     )
