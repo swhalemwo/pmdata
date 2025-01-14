@@ -264,6 +264,8 @@ dt_schema[orgtype == "CHARITIES" & vrbl == "FUNDBAL"]
 
 ## ** museum 
 
+dtx <- fread("/run/media/johannes/data/nccs/CORE-2019-501CE-NONPROFIT-PZ.csv")
+
 
 dt_muem <- mclapply(l_nccs_files, \(x) gd_extract_museums(x), mc.cores = 6, mc.preschedule = F) %>%
     rbindlist(use.names = T)
@@ -288,7 +290,7 @@ library(ggridges)
 
 ## distribution of assets
 dt_muem[, .(assets = mean(assets)), .(ein, nteecc)] %>%
-    .[, map(c("mean", "sd", "median"), ~get(.x)(assets, na.rm = T)), nteecc]
+    .[, map(c("mean", "sd", "median"), ~get(.x)(assets, na.rm = T)), nteecc] %>% atb
 ## art museums have yuge variation: median assets 194k, mean assets 13m: mean 70x the median oooooooof
     
 
@@ -299,15 +301,8 @@ dt_muem[, .(assets = mean(assets)), .(ein, nteecc)] %>%
 
 ## geom_density() +
 
-    facet_grid(nteecc ~ .)
 
-        
-ggplot(iris, aes(x = Sepal.Length, y = Species)) +
-    geom_density_ridges(rel_min_height = 0.005) +
-    scale_y_discrete(expand = c(0.01, 0)) +
-    scale_x_continuous(expand = c(0.01, 0)) +
-    theme_ridges()
-
+    
 
 ## *** basic museum survival 
 ## check survival
