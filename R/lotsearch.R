@@ -4,32 +4,32 @@ library(purrr)
 
 
 website_url <- "https://www.lotsearch.net"
-base_url <- "https://www.lotsearch.net/artist/browse/"
+base_url <- "https://www.lotsearch.net/artist/browse"
 
 
 gc_driver <- function() {
     "set up the driver"
 
-    driver <- remoteDriver(
+    drvr <- remoteDriver(
         remoteServerAddr = "localhost",
         port = 4445,
         browserName = "chrome"
     )
 
-    driver$open()
+    drvr$open()
     Sys.sleep(2)
 
-    driver$navigate(base_url)
+    drvr$navigate(base_url)
 
     Sys.sleep(5)
-    ## driver$navigate("https://google.com")
+    ## drvr$navigate("https://google.com")
 
-    ## driver$quit()
+    ## drvr$quit()
 
 
+    ## Using the ID selector to find the cookie accept button
     tryCatch({
-                                        # Using the ID selector to find the cookie accept button
-        cookie_button <- driver$findElement(using = "css selector", "#acceptCookies")
+        cookie_button <- drvr$findElement(using = "css selector", "#acceptCookies")
         cookie_button$clickElement()
         cat("Cookie consent button clicked successfully.\n")
     }, error = function(e) {
@@ -37,72 +37,127 @@ gc_driver <- function() {
     })
 
     Sys.sleep(2)
-    return(driver)
+    return(drvr)
 }
 
 
-# Extract all links (anchor tags) from the parsed HTML
+## Extract all links (anchor tags) from the parsed HTML
 ## all_links <- webpage %>% html_nodes("a") 
 ## all_links %>% len
 
-gl_browse_links <- function(all_links) {
-
+gl_links_browse <- function(all_links) {
+    #' get all browse links (section links)
     keep(all_links, ~grepl("^/artist/browse", html_attr(.x, "href")))
 }
 
-gl_browse_links_subletter <- function(browse_links_all) {
+gl_links_browse_subletter <- function(browse_links_all) {
     ## only keep browse links referring to subsections (including All)
     keep(browse_links_all, ~nchar(trimws(html_text(.x))) > 1)
 }
 
 
-gl_artist_links <- function(all_links) {
+gl_links_artist <- function(all_links) {
     ## generate artist link
     keep(all_links, ~grepl("^/artist/[^/]+$", html_attr(.x, "href")))
 }
 
-gd_artist_links <- function(l_artist_links, letter, subletter) {
+gd_links_artist <- function(l_artist_links, letter, subletter) {
+    #' write links to dt
 
     map(l_artist_links, ~list(url = paste0(website_url, html_attr(.x, 'href')),
-                              aname = trimws(html_text(.x)))) %>% rbindlist %>%
+                              atname = trimws(html_text(.x)))) %>% rbindlist %>%
         .[, `:=`(letter = letter, subletter = subletter)]
 }
-           
-dl_subletter_page <- function(letter, subletter) {
-    driver$navigate(URL)
 
+gl_links_all <- function() {
+    #' get all links on current website
+    
     html <- driver$getPageSource()[[1]]
 
     webpage <- read_html(html)
 
     all_links <- webpage %>% html_nodes("a")
 
-    dt_artist_links <- gl_artist_links(all_links) %>% gd_artist_links
+    return(all_links)
+}
+
+dl_subletter_page <- function(url, letter, subletter) {
+    #' navigate to a page and download all the artists links there
+    if (as.character(match.call()[[1]]) %in% fstd){browser()}
+    1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
+    
+    print(sprintf("letter: %s", letter))
+    print(sprintf("subletter: %s", subletter))
+    print(sprintf("url: %s", url))
+
+    
+
+    driver$navigate(url)
+
+    ## if the page is still loading, wait 5 seconds
+    Sys.sleep(2) # wait for navigate command to be send
+    while (driver$executeScript("return document.readyState") != "complete") {
+        print("waiting for page to load")
+        Sys.sleep(3)
+        
+    }
+
+    ## driver$navigate("https://spiegel.de")
+    ## xx <- driver$executeScript("return document.readyState")
+
+
+    l_links_all <- gl_links_all()
+    
+
+    dt_artist_links <- gl_links_artist(l_links_all) %>% gd_links_artist(letter, subletter)
 
     fwrite(dt_artist_links, PMDATA_LOCS$FILE_LOTSEARCH_RES, append = T)
 
-    
+}
 
 
 scrape_letter_site <- function(letter) {
-    # check what is already there
-    dt_res <- fread(PMDATA_LOCS$FILE_LOTSEARCH_RES)
+    #' download a letter site by downloading all the subletter sections
+    if (as.character(match.call()[[1]]) %in% fstd){browser()}
+    1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
+    ## check what is already there
 
-    ## check which are there
-    map(l_subletters_remaining, 
+    
+    dt_res <- if (file.exists(PMDATA_LOCS$FILE_LOTSEARCH_RES)) {
+                  fread(PMDATA_LOCS$FILE_LOTSEARCH_RES)
+              } else {
+                  data.table(url = character(), atname = character(), letter = character(), subletter = character())
+              }
+
+    l_links_all <- gl_links_all()
+    
+    ## check which have already been downloaded
+    l_links_subletter <- l_links_all %>% gl_links_browse %>% gl_links_browse_subletter
+    l_links_subletter_remaining <- keep(l_links_subletter, ~trimws(html_text(.x)) %!in% dt_res[letter == letter, unique(subletter)])
     
     
+    ## download remaining ones
+    
+    map(l_links_subletter_remaining, ~dl_subletter_page(paste0(website_url, html_attr(.x, 'href')),
+                                                        letter, trimws(html_text(.x))))
+}
 
-main_scraper <- function() {
+
+scrape_lotsearch <- function() {
+    
     map(LETTERS, scrape_letter_site)
+}
+## all_links %>% gl_links_artist %>% gd_links_artist(letter = "B", subletter = "All")
 
-## all_links %>% gl_artist_links %>% gd_artist_links(letter = "B", subletter = "All")
 
-
+if (interactive()) {stop("it's interactive time")}
 ## * main
+
+
+PMDATA_LOCS <- gc_pmdata_locs()
+
 driver <- gc_driver()
-# driver$navigate("https://www.lotsearch.net/artist/browse/B")
+## driver$quit()
 
-
-
-
+scrape_lotsearch()
+## driver$navigate("https://www.lotsearch.net/artist/browse/B")
