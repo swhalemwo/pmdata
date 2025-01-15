@@ -1,6 +1,11 @@
 library(rvest)
 library(RSelenium)
 library(purrr)
+library(pmdata)
+library(jtls)
+library(httr)
+library(jsonlite)
+
 
 
 website_url <- "https://www.lotsearch.net"
@@ -170,17 +175,249 @@ scrape_lotsearch <- function() {
     
     map(LETTERS, scrape_letter_site)
 }
+
+dl_artist_fintech <- function(url, proxy) {
+    if (as.character(match.call()[[1]]) %in% fstd){browser()}
+    1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
+    # browser()
+    
+    
+    Sys.sleep(1)
+
+    url_fintech <- gsub("/artist/", "/fintech/", url)
+
+    ## > proxy
+    ## "http://35.76.62.196:80"
+
+    
+
+    ret_obj <- tryCatch({
+
+        response <- GET(url_fintech, config = use_proxy(proxy))
+
+        ## xx <- GET(url_fintech, use_proxy("http://35.76.62.196", 80, auth = "any"))
+        
+        ## Check if the request was successful
+        if (response$status_code == 200) {
+            ## Parse the content as JSON and convert to a list
+            json_data <- content(response, as = "text")
+            ## data_list <- fromJSON(json_data)
+            ## return(data_list)
+        } else {
+            ## If the request was unsuccessful, print an error message
+            stop(paste("Failed to download data. Status code:", response$status_code))
+        }
+
+        filename <- sprintf("%s%s.json.gz", DIR_LOTSEARCH_AUCTION_DATA,
+                            gsub("https://www.lotsearch.net/fintech/", "", url_fintech))
+        
+        writeLines(json_data, gzfile(filename))
+
+        ret_obj <- list(status = "ok")
+        
+        
+    }, error = function(e) {
+        print(conditionMessage(e))
+
+        ret_obj <- list(status = "bad")
+    })
+    
+    return(ret_obj)
+    
+}
+
+## dl_artist_fintech("https://www.lotsearch.net/artist/lei-li", "http://65.1.244.232:80")
+
+
+dl_auction_data <- function() {
+    if (as.character(match.call()[[1]]) %in% fstd){browser()}
+    1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
+
+    dt_distres <- fread(FILE_STRINGMATCH) # first get similarity measures
+    dt_lsurls <- fread(PMDATA_LOCS$FILE_LOTSEARCH_RES)
+
+    l_artist_dldd <- list.files(paste0(PMDATA_LOCS$DIR_LOTSEARCH, "auction_data/")) %>%
+        gsub(".json.gz", "", .) %>% 
+        paste0("https://www.lotsearch.net/artist/", .)
+
+    l_urls_to_dl <- c(dt_distres[order(dist), unique(ls_url)], dt_lsurls[, unique(url)]) %>% unique() %>%
+        setdiff(., l_artist_dldd)
+    
+
+    l_good_proxies <- get_random_proxies(count=6L)
+    l_bad_proxies <- setNames(rep(0, len(unique(l_good_proxies))), unique(l_good_proxies))
+
+    
+    for (url in l_urls_to_dl) {
+        print(sprintf("url: %s", url))
+
+        while(T) {
+            attempt <- 0
+            proxy_to_use <- sample(l_good_proxies, 1)
+            ## proxy_to_use <- "http://65.1.244.232:80"
+
+            dl_res <- dl_artist_fintech(url, proxy_to_use)
+            
+            if (dl_res$status == "ok") {
+                break
+            } else {
+                l_bad_proxies[proxy_to_use] <- l_bad_proxies[proxy_to_use] + 1
+                l_good_proxies <- keep(l_good_proxies, ~.x != proxy_to_use)
+            }
+
+            if (len(l_good_proxies) < 5) {
+                l_new_proxies <- get_random_proxies(count=10L)
+                l_new_good_proxies <- keep(l_new_proxies, ~.x %!in% names(l_bad_proxies))
+                l_good_proxies <- c(l_good_proxies, setNames(rep(0), len(unique(l_new_good_proxies)))) # new good proxies to good proxies
+                l_bad_proxies <- c(l_bad_proxies, setNames(rep(0), len(unique(l_new_good_proxies))))
+            }
+        }
+    }
+ 
+}
+
+
+library(reticulate)
+use_virtualenv("/home/johannes/litanai/")
+source_python("~/Dropbox/phd/pmdata/inst/manual_munging/python_funcs.py")
+
+
+dl_auction_data()
+
+
+
+## dl_artist_fintech(l_urls_to_dl[1], proxy_to_use)
+
+
+# dt_distres[dist == 0] %>% head(n=5) %>% .[, ls_url] %>% map(dl_auction_data)
+
+
 ## all_links %>% gl_links_artist %>% gd_links_artist(letter = "B", subletter = "All")
 
 
-if (interactive()) {stop("it's interactive time")}
+
 ## * main
 
-
 PMDATA_LOCS <- gc_pmdata_locs()
+DIR_LOTSEARCH_AUCTION_DATA <- paste0(PMDATA_LOCS$DIR_LOTSEARCH, "auction_data/")
+
+FILE_BAD_URLS <- paste0(PMDATA_LOCS$DIR_LOTSEARCH, "bad_urls.csv")
+
+FILE_STRINGMATCH <- paste0(PMDATA_LOCS$DIR_LOTSEARCH, "dists.csv")
 
 driver <- gc_driver()
 ## driver$quit()
 
 scrape_lotsearch()
+scrape_letter_site("B")
 ## driver$navigate("https://www.lotsearch.net/artist/browse/B")
+
+
+## exploration
+
+
+dt_res <- fread(PMDATA_LOCS$FILE_LOTSEARCH_RES)
+
+## dt_res[, .N, .(letter, subletter)] %>% print.data.table(n=100)
+
+## dt_res[, uniqueN(url), letter]
+
+## dt_res[, uniqueN(url)]
+
+## ## how to match
+
+library(stringdist)
+library(fuzzyjoin)
+library(stringi)
+
+
+gwd_dists <- function(dt_af_people_match_subset, dt_lotsearch_people_match) {
+
+    dt_match <- stringdist_inner_join(dt_af_people_match_subset, dt_lotsearch_people_match,
+                                  by = "full_name", method = "jw",
+                                  distance_col = "dist",
+                                  max_dist = 0.15) %>% adt
+
+    fwrite(dt_match, FILE_STRINGMATCH, append = T)
+
+    }
+
+dt_af_people_match <- gd_af_people() %>%
+    .[, Name := fifelse(Name == "NULL", "", Name)] %>% 
+    .[, .(AF_PID = ID, full_name = tolower(trimws(sprintf("%s %s", trimws(Name), trimws(Surname)))) %>% stri_trans_general("Latin-ASCII"))] %>%
+    .[, first_char := substring(full_name, 1,1)]
+
+
+dt_lotsearch_people_match <- dt_res %>% .[, .(atname, url)] %>% funique %>% 
+    .[, c("Surname", "Name") := tstrsplit(atname, ", ", fixed = TRUE)] %>%
+    .[, .(ls_url= url, full_name = tolower(sprintf("%s %s", trimws(Name), trimws(Surname)) %>%
+                                           stri_trans_general("Latin-ASCII")))]
+
+
+
+
+# do all the 
+map(dt_af_people_match[, unique(first_char)], ~gwd_dists(dt_af_people_match[first_char == .x], dt_lotsearch_people_match))
+
+# do it again with null people corrected, only for null people
+gwd_dists(dt_af_people_match[gd_af_people()[Name == "NULL", .(ID)], on = .(AF_PID = ID)], dt_lotsearch_people_match)
+
+
+dt_distres <- fread(FILE_STRINGMATCH)
+
+
+dt_distres[dist == 0, .(.N, nunique_AF_PID = uniqueN(AF_PID), nunique_ls_url = uniqueN(ls_url))]
+
+
+dt_distres[dist < 0.07 & dist > 0]
+
+dt_distres[dist > 0.05 & dist < 0.07, .(full_name.x, full_name.y, dist)] %>% print.data.table(n=50)
+
+dt_af_people_match[grepl("qing", full_name)]
+
+dt_distres[gd_af_people()[Name == "NULL", .(ID)], on = .(AF_PID = ID), nomatch = NULL][dist < 0.05]
+
+
+
+gd_af_people()[grepl("qing", paste0(Surname, Name), ignore.case = T)]
+
+gd_af_people()[is.null(Name) == T]
+
+gd_af_people()[Surname == "Chen Qingqing", Name]
+
+gd_af_people()[Surname == "NULL"] %>% print.data.table(n=300)
+
+t1 = Sys.time()
+t2 = Sys.time()
+t2-t1
+
+
+dt_match[order(-dist)] %>% print.data.table(n=30)
+
+dt_af_people[grepl("van der", Name)]
+dt_af_people[grepl("van der", Surname)]
+
+
+stringdist_inner_join
+
+## ** reticulate
+
+library(reticulate)
+
+use_python("/usr/bin/python")
+use_virtualenv("/home/johannes/litanai/")
+source_python("~/Dropbox/phd/pmdata/inst/manual_munging/python_funcs.py")
+
+l_good_proxies <- get_random_proxies(count=5L)
+
+mod_nbr(5)
+
+## library(devtools)
+## install_github("selesnow/getProxy")
+
+## library(ryandexdirect)
+## library(getProxy)
+ 
+## getProxy(port = "3128", country = "RU", supportsHttps = TRUE, action = "start")
+
+## myToken <- yadirGetToken()
