@@ -61,12 +61,25 @@ gl_links_artist <- function(all_links) {
     keep(all_links, ~grepl("^/artist/[^/]+$", html_attr(.x, "href")))
 }
 
-gd_links_artist <- function(l_artist_links, letter, subletter) {
-    #' write links to dt
+gd_links_artist <- function(l_artist_links, letter, subletter, url) {
+    if (as.character(match.call()[[1]]) %in% fstd){browser()}
+    1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
+    #' convert links to dt
 
-    map(l_artist_links, ~list(url = paste0(website_url, html_attr(.x, 'href')),
-                              atname = trimws(html_text(.x)))) %>% rbindlist %>%
-        .[, `:=`(letter = letter, subletter = subletter)]
+    dt_links_artist <- map(l_artist_links, ~list(url = paste0(website_url, html_attr(.x, 'href')),
+                              atname = trimws(html_text(.x)))) %>% rbindlist
+
+    ## check if there are any links, if not, return empty dt and mark url as bad
+    if (nrow(dt_links_artist) > 0) {
+        dt_links_artist[, `:=`(letter = letter, subletter = subletter)]
+        
+    } else {
+        dt_links_artist <- data.table(url = character(), atname = character(), letter = character(), subletter = character())
+
+        fwrite(data.table(bad_url = gsub(website_url, "", url)), FILE_BAD_URLS, append = T)
+    }
+        
+    return(dt_links_artist)
 }
 
 gl_links_all <- function() {
@@ -102,6 +115,8 @@ dl_subletter_page <- function(url, letter, subletter) {
         
     }
 
+    ## driver$navigate("https://www.lotsearch.net/artist/browse/B/B.")
+
     ## driver$navigate("https://spiegel.de")
     ## xx <- driver$executeScript("return document.readyState")
 
@@ -109,7 +124,7 @@ dl_subletter_page <- function(url, letter, subletter) {
     l_links_all <- gl_links_all()
     
 
-    dt_artist_links <- gl_links_artist(l_links_all) %>% gd_links_artist(letter, subletter)
+    dt_artist_links <- gl_links_artist(l_links_all) %>% gd_links_artist(letter, subletter, url)
 
     fwrite(dt_artist_links, PMDATA_LOCS$FILE_LOTSEARCH_RES, append = T)
 
@@ -129,11 +144,19 @@ scrape_letter_site <- function(letter) {
                   data.table(url = character(), atname = character(), letter = character(), subletter = character())
               }
 
+    ## get bad urls (no artists, probably error messages)
+    l_bad_urls <- fread(FILE_BAD_URLS)[, bad_url]
+    
+    driver$navigate(paste0(base_url, "/", letter))
+
     l_links_all <- gl_links_all()
     
     ## check which have already been downloaded
     l_links_subletter <- l_links_all %>% gl_links_browse %>% gl_links_browse_subletter
-    l_links_subletter_remaining <- keep(l_links_subletter, ~trimws(html_text(.x)) %!in% dt_res[letter == letter, unique(subletter)])
+
+    l_links_subletter_remaining <- keep(l_links_subletter,
+                                        ~(trimws(html_text(.x)) %!in% dt_res[letter == letter, unique(subletter)]
+                                            & (html_attr(.x, 'href') %!in% l_bad_urls)))
     
     
     ## download remaining ones
