@@ -5,7 +5,12 @@ library(pmdata)
 library(jtls)
 library(httr)
 library(jsonlite)
+library(reticulate)
+library(DBI)
+library(RSQLite)
 
+use_virtualenv("/home/johannes/litanai/")
+source_python("~/Dropbox/phd/pmdata/inst/manual_munging/python_funcs.py")
 
 
 website_url <- "https://www.lotsearch.net"
@@ -182,7 +187,7 @@ dl_artist_fintech <- function(url, proxy) {
     # browser()
     
     
-    Sys.sleep(1)
+    Sys.sleep(0.5)
 
     url_fintech <- gsub("/artist/", "/fintech/", url)
 
@@ -193,7 +198,7 @@ dl_artist_fintech <- function(url, proxy) {
 
     ret_obj <- tryCatch({
 
-        response <- GET(url_fintech, config = use_proxy(proxy))
+        response <- GET(url_fintech, config = use_proxy(proxy), timeout(10))
 
         ## xx <- GET(url_fintech, use_proxy("http://35.76.62.196", 80, auth = "any"))
         
@@ -229,6 +234,24 @@ dl_artist_fintech <- function(url, proxy) {
 ## dl_artist_fintech("https://www.lotsearch.net/artist/lei-li", "http://65.1.244.232:80")
 
 
+
+
+
+refresh_proxies <- function() {
+    l_new_proxies <- get_random_proxies(count=20L)
+    walk(l_new_proxies, ~dbExecute(DB_LOTSEARCH,
+                                   paste0(c("INSERT OR IGNORE INTO proxies ",
+                                            "(proxy, good_attempts, bad_attempts) VALUES (?, 0,0)")),
+                                   params = list(.x)))
+    l_good_proxies <- dbGetQuery(DB_LOTSEARCH,
+                                 paste0(c("SELECT proxy from proxies where ",
+                                          "good_attempts > 1 OR bad_attempts < 4"))) %>% adt %>%
+                      .[, proxy]
+    print(len(l_good_proxies))
+    return(l_good_proxies)
+}
+
+
 dl_auction_data <- function() {
     if (as.character(match.call()[[1]]) %in% fstd){browser()}
     1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
@@ -240,36 +263,49 @@ dl_auction_data <- function() {
         gsub(".json.gz", "", .) %>% 
         paste0("https://www.lotsearch.net/artist/", .)
 
-    l_urls_to_dl <- c(dt_distres[order(dist), unique(ls_url)], dt_lsurls[, unique(url)]) %>% unique() %>%
-        setdiff(., l_artist_dldd)
+    l_urls_all <- c(dt_distres[order(dist), unique(ls_url)], dt_lsurls[, unique(url)]) %>% unique()
+    l_urls_to_dl <- setdiff(l_urls_all, l_artist_dldd)
     
-
-    l_good_proxies <- get_random_proxies(count=6L)
-    l_bad_proxies <- setNames(rep(0, len(unique(l_good_proxies))), unique(l_good_proxies))
-
+    l_good_proxies <- dbGetQuery(DB_LOTSEARCH,
+                                 "SELECT proxy from proxies where good_attempts > 1 OR bad_attempts < 4")$proxy
+ 
+    print(l_good_proxies)
+    print(len(l_good_proxies))
     
     for (url in l_urls_to_dl) {
-        print(sprintf("url: %s", url))
-
+        
         while(T) {
-            attempt <- 0
             proxy_to_use <- sample(l_good_proxies, 1)
-            ## proxy_to_use <- "http://65.1.244.232:80"
+            print(sprintf("url: %s, proxy :%s", url, proxy_to_use))
 
             dl_res <- dl_artist_fintech(url, proxy_to_use)
             
             if (dl_res$status == "ok") {
+                dbExecute(DB_LOTSEARCH, "INSERT OR IGNORE INTO proxies (proxy, good_attempts) VALUES (?, 1)",
+                          params = list(proxy_to_use))
+                dbExecute(DB_LOTSEARCH, "UPDATE proxies SET good_attempts = good_attempts + 1 WHERE proxy = ?",
+                          params = list(proxy_to_use))
+
                 break
             } else {
-                l_bad_proxies[proxy_to_use] <- l_bad_proxies[proxy_to_use] + 1
-                l_good_proxies <- keep(l_good_proxies, ~.x != proxy_to_use)
+                dbExecute(DB_LOTSEARCH, "INSERT OR IGNORE INTO proxies (proxy, bad_attempts) VALUES (?, 1)",
+                          params = list(proxy_to_use))
+                dbExecute(DB_LOTSEARCH, "UPDATE proxies SET bad_attempts = bad_attempts + 1 WHERE proxy = ?",
+                          params = list(proxy_to_use))
+
+                ratio_good <- dbGetQuery(DB_LOTSEARCH,
+                                         "select good_attempts, bad_attempts from proxies where proxy = ?",
+                                         params = list(proxy_to_use)) %>% adt %>%
+                              .[, good_attempts/(good_attempts + bad_attempts)]
+                print(sprintf("ratio_good: %s", ratio_good))
+
+                if (ratio_good < 0.5) {# only retire good proxies if they really don't do well
+                    l_good_proxies <- keep(l_good_proxies, ~.x != proxy_to_use)
+                }
             }
 
-            if (len(l_good_proxies) < 5) {
-                l_new_proxies <- get_random_proxies(count=10L)
-                l_new_good_proxies <- keep(l_new_proxies, ~.x %!in% names(l_bad_proxies))
-                l_good_proxies <- c(l_good_proxies, setNames(rep(0), len(unique(l_new_good_proxies)))) # new good proxies to good proxies
-                l_bad_proxies <- c(l_bad_proxies, setNames(rep(0), len(unique(l_new_good_proxies))))
+            if (len(l_good_proxies) < 5) { ## not enough proxies: get more
+                l_good_proxies <- refresh_proxies()
             }
         }
     }
@@ -277,22 +313,7 @@ dl_auction_data <- function() {
 }
 
 
-library(reticulate)
-use_virtualenv("/home/johannes/litanai/")
-source_python("~/Dropbox/phd/pmdata/inst/manual_munging/python_funcs.py")
 
-
-dl_auction_data()
-
-
-
-## dl_artist_fintech(l_urls_to_dl[1], proxy_to_use)
-
-
-# dt_distres[dist == 0] %>% head(n=5) %>% .[, ls_url] %>% map(dl_auction_data)
-
-
-## all_links %>% gl_links_artist %>% gd_links_artist(letter = "B", subletter = "All")
 
 
 
@@ -305,15 +326,24 @@ FILE_BAD_URLS <- paste0(PMDATA_LOCS$DIR_LOTSEARCH, "bad_urls.csv")
 
 FILE_STRINGMATCH <- paste0(PMDATA_LOCS$DIR_LOTSEARCH, "dists.csv")
 
-driver <- gc_driver()
+DB_LOTSEARCH <- dbConnect(SQLite(), paste0(PMDATA_LOCS$DIR_LOTSEARCH, "db_lotsearch.sqlite"))
+## dbExecute(DB_LOTSEARCH, "CREATE TABLE proxies (proxy TEXT PRIMARY KEY, bad_attempts INTEGER
+##     DEFAULT 0, good_attempts INTEGER DEFAULT 0)")
+
+
+dl_auction_data()
+
+stop("halt stop")
+
+# driver <- gc_driver()
 ## driver$quit()
 
-scrape_lotsearch()
-scrape_letter_site("B")
+## scrape_lotsearch()
+## scrape_letter_site("B")
 ## driver$navigate("https://www.lotsearch.net/artist/browse/B")
 
 
-## exploration
+## * exploration
 
 
 dt_res <- fread(PMDATA_LOCS$FILE_LOTSEARCH_RES)
