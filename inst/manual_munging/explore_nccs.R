@@ -60,7 +60,7 @@ download_nccs <- function(orgtype, scope, year) {
 gc_nccs_schema <- function(nccs_filepath, con) {
     if (as.character(match.call()[[1]]) %in% fstd){browser()}
     
-    dt_nccs <- fread(nccs_filepath)
+    dt_nccs <- fread(nccs_filepath, nrows = 5)
 
     ## RSQLite::dbDataType(con2, mtcars)
 
@@ -193,7 +193,7 @@ gd_extract_museums <- function(nccs_filepath) {
 ## ** download
 if (interactive()) {stop("it's interactive time")}
 
-DIR_NCCS <- "/run/media/johannes/data/nccs"
+DIR_NCCS <- "/run/media/johannes/data/nccs/core"
 lapply(split(dt_nccs_urls, 1:nrow(dt_nccs_urls)), \(x) download_nccs(x$orgtype, x$scope, x$year))
 
 
@@ -207,6 +207,8 @@ dt_schema <- mclapply(l_nccs_files, \(x) gc_nccs_schema(x, con), mc.cores = 6, m
 
 ## how much do schemas differ? 
 dt_schema[, .(nbr_unique = uniqueN(schema)), vrbl][, .N, nbr_unique]
+
+dt_schema[, .N, vrbl] %>% print(n=300)
 
 
 dt_schema[, (schema = unique(schema)), vrbl]
@@ -266,7 +268,8 @@ dt_schema[orgtype == "CHARITIES" & vrbl == "FUNDBAL"]
 
 ## ** museum 
 
-dtx <- fread("/run/media/johannes/data/nccs/CORE-2019-501CE-NONPROFIT-PZ.csv")
+## dtx <- fread("/run/media/johannes/data/nccs/core/CORE-2019-501CE-NONPROFIT-PZ.csv")
+## dtx <- fread("/run/media/johannes/data/nccs/core/CORE-2019-501C3-PRIVFOUND-PF.csv")
 
 
 dt_muem <- mclapply(l_nccs_files, \(x) gd_extract_museums(x), mc.cores = 6, mc.preschedule = F) %>%
@@ -357,6 +360,23 @@ dt_muem[, .(muem_year_N = .N), .(ein, styear)][, .N, muem_year_N]
 
 ## ** big query? IRS directly?
 
-dt_irs <- fread("~/Downloads/eo_ut.csv") %>% adt
-dt_irs <- fread("~/Downloads/11in54cm.xlsx") %>% adt
 
+
+## dt_irs <- fread("~/Downloads/eo_ut.csv") %>% adt
+## dt_irs <- fread("~/Downloads/11in54cm.xlsx") %>% adt
+
+## gc_vrblcfg
+## have contributions, revenue, program revenues, expenses, assets
+
+
+# 
+dt_soi <- fread("/run/media/johannes/data/nccs/soi/SOI-MICRODATA-2012-501C3-CHARITIES-PC.csv")
+keep(names(dt_soi), ~grepl("exp", .x, ignore.case = T))
+keep(names(dt_soi), ~grepl("rev", .x, ignore.case = T))
+
+# use consult/emas for this
+dt_core_vrbls <- fread("/run/media/johannes/data/nccs/CORE-HRMN_dd.csv")
+
+dt_muem
+dt_muem[nteecc == "A51"]
+dt_muem[, .N, nteecc]
