@@ -186,15 +186,13 @@ dl_artist_fintech <- function(url, proxy) {
     1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
     # browser()
     
-    
     Sys.sleep(0.5)
 
     url_fintech <- gsub("/artist/", "/fintech/", url)
 
-    ## > proxy
-    ## "http://35.76.62.196:80"
-
-    
+    # proxy <- "http://222.252.194.204:8080"
+    ## proxy <- "http://3.9.71.167:1080"
+    ## proxy <- "http://113.160.132.195:8080"
 
     ret_obj <- tryCatch({
 
@@ -207,16 +205,22 @@ dl_artist_fintech <- function(url, proxy) {
             ## Parse the content as JSON and convert to a list
             json_data <- content(response, as = "text")
             ## data_list <- fromJSON(json_data)
+            
             ## return(data_list)
         } else {
             ## If the request was unsuccessful, print an error message
             stop(paste("Failed to download data. Status code:", response$status_code))
         }
 
-        filename <- sprintf("%s%s.json.gz", DIR_LOTSEARCH_AUCTION_DATA,
-                            gsub("https://www.lotsearch.net/fintech/", "", url_fintech))
+        dbExecute(DB_LOTSEARCH, "INSERT INTO auction_res (url, auc_json) VALUES (?,?)",
+                  params = list(url, json_data))
+
+        ## dbGetQuery(DB_LOTSEARCH2, "SELECT url, auc_json from auction_res") %>% adt %>% .[, auc_json] %>% fromJSON
+
+        ## filename <- sprintf("%s%s.json.gz", DIR_LOTSEARCH_AUCTION_DATA,
+        ##                     gsub("https://www.lotsearch.net/fintech/", "", url_fintech))
         
-        writeLines(json_data, gzfile(filename))
+        ## writeLines(json_data, gzfile(filename))
 
         ret_obj <- list(status = "ok")
         
@@ -231,7 +235,7 @@ dl_artist_fintech <- function(url, proxy) {
     
 }
 
-## dl_artist_fintech("https://www.lotsearch.net/artist/lei-li", "http://65.1.244.232:80")
+## dl_artist_fintech("https://www.lotsearch.net/artist/lei-li", "http://222.252.194.204:8080")
 
 
 
@@ -259,9 +263,12 @@ dl_auction_data <- function() {
     dt_distres <- fread(FILE_STRINGMATCH) # first get similarity measures
     dt_lsurls <- fread(PMDATA_LOCS$FILE_LOTSEARCH_RES)
 
-    l_artist_dldd <- list.files(paste0(PMDATA_LOCS$DIR_LOTSEARCH, "auction_data/")) %>%
+    l_artist_dldd_prep1 <- list.files(paste0(PMDATA_LOCS$DIR_LOTSEARCH, "auction_data/")) %>%
         gsub(".json.gz", "", .) %>% 
         paste0("https://www.lotsearch.net/artist/", .)
+
+    l_artist_dldd_prep2 <- dbGetQuery(DB_LOTSEARCH, "SELECT distinct url from auction_res")
+    l_artist_dldd <- c(l_artist_dldd_prep1, l_artist_dldd_prep2) %>% unique
 
     l_urls_all <- c(dt_distres[order(dist), unique(ls_url)], dt_lsurls[, unique(url)]) %>% unique()
     l_urls_to_dl <- setdiff(l_urls_all, l_artist_dldd)
@@ -320,7 +327,8 @@ dl_auction_data <- function() {
 ## * main
 
 PMDATA_LOCS <- gc_pmdata_locs()
-DIR_LOTSEARCH_AUCTION_DATA <- paste0(PMDATA_LOCS$DIR_LOTSEARCH, "auction_data/")
+## DIR_LOTSEARCH_AUCTION_DATA <- paste0(PMDATA_LOCS$DIR_LOTSEARCH, "auction_data/")
+DIR_LOTSEARCH_AUCTION_DATA <- "/run/media/johannes/data/ownCloud2/pmdata/lotsearch/auction_data/"
 
 FILE_BAD_URLS <- paste0(PMDATA_LOCS$DIR_LOTSEARCH, "bad_urls.csv")
 
@@ -329,6 +337,8 @@ FILE_STRINGMATCH <- paste0(PMDATA_LOCS$DIR_LOTSEARCH, "dists.csv")
 DB_LOTSEARCH <- dbConnect(SQLite(), paste0(PMDATA_LOCS$DIR_LOTSEARCH, "db_lotsearch.sqlite"))
 ## dbExecute(DB_LOTSEARCH, "CREATE TABLE proxies (proxy TEXT PRIMARY KEY, bad_attempts INTEGER
 ##     DEFAULT 0, good_attempts INTEGER DEFAULT 0)")
+## dbExecute(DB_LOTSEARCH, "CREATE TABLE auction_res (url TEXT PRIMARY KEY, auc_json TEXT)")
+
 
 
 dl_auction_data()
