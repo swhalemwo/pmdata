@@ -82,7 +82,7 @@ vrbl_fndr <- function(df, penl_vrbls) {
 #'
 #' only a handful of columns are standardized here (countrycode, year_opened/year_closed, ID)
 #' @param PMDB_FILE path to CSV download from google sheets, usually provided by PMDATA_LOCS
-#' @param only_pms whether to include only private museums that are currently open
+#' @param sel selection of museums, one of: "only_open_pm", "any_ever_pm", "only_always_pm", "all"
 #' @export
 gd_pmdb_excl <- function(PMDB_FILE = PMDATA_LOCS$PMDB_FILE, sel) {
     ## if (as.character(match.call()[[1]]) %in% fstd){browser()}
