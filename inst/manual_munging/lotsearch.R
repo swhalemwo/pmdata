@@ -235,6 +235,42 @@ dl_artist_fintech <- function(url, proxy) {
     
 }
 
+insert_json_res_to_sqlite <- function() {
+    #' run this to update the sqlite db: previously each artist was downloaded as json and saved,
+    #' but later moved to saving json string in sqlitedb
+    #' first checks which artists that have been downloaded to json are not in DB
+    #' then inserts them into the DB
+    if (as.character(match.call()[[1]]) %in% fstd){browser()}
+    1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
+
+ 
+
+    l_json_files_dldd <- list.files(DIR_LOTSEARCH_AUCTION_DATA) %>%
+        gsub(".json.gz", "", .) %>% 
+        paste0("https://www.lotsearch.net/artist/", .)
+        
+    
+    l_sqlite_dldd <- dbGetQuery(DB_LOTSEARCH, "SELECT distinct url from auction_res")$url
+
+    
+    l_json_to_insert <- setdiff(l_json_files_dldd, l_sqlite_dldd)
+    ## intersect(l_json_files_dldd, l_sqlite_dldd)
+    
+    print(len(l_json_to_insert))
+
+    ## xx %>% gsub("https://www.lotsearch.net/artist/", "", .) %>%
+    ##     sprintf("%s%s.json.gz", DIR_LOTSEARCH_AUCTION_DATA, .) %>% gzfile %>% readLines
+    
+
+    map(l_json_to_insert, ~dbExecute(
+                             DB_LOTSEARCH, "INSERT INTO auction_res (url, auc_json) VALUES (?,?)",
+                             params = list(.x,
+                                           gsub("https://www.lotsearch.net/artist/", "", .) %>%
+                                           sprintf("%s%s.json.gz", DIR_LOTSEARCH_AUCTION_DATA, .) %>%
+                                           gzfile %>% readLines)))
+}
+
+
 ## dl_artist_fintech("https://www.lotsearch.net/artist/lei-li", "http://222.252.194.204:8080")
 
 
@@ -263,11 +299,11 @@ dl_auction_data <- function() {
     dt_distres <- fread(FILE_STRINGMATCH) # first get similarity measures
     dt_lsurls <- fread(PMDATA_LOCS$FILE_LOTSEARCH_RES)
 
-    l_artist_dldd_prep1 <- list.files(paste0(PMDATA_LOCS$DIR_LOTSEARCH, "auction_data/")) %>%
+    l_artist_dldd_prep1 <- list.files(DIR_LOTSEARCH_AUCTION_DATA) %>%
         gsub(".json.gz", "", .) %>% 
         paste0("https://www.lotsearch.net/artist/", .)
 
-    l_artist_dldd_prep2 <- dbGetQuery(DB_LOTSEARCH, "SELECT distinct url from auction_res")
+    l_artist_dldd_prep2 <- dbGetQuery(DB_LOTSEARCH, "SELECT distinct url from auction_res")$url
     l_artist_dldd <- c(l_artist_dldd_prep1, l_artist_dldd_prep2) %>% unique
 
     l_urls_all <- c(dt_distres[order(dist), unique(ls_url)], dt_lsurls[, unique(url)]) %>% unique()
@@ -338,6 +374,8 @@ DB_LOTSEARCH <- dbConnect(SQLite(), paste0(PMDATA_LOCS$DIR_LOTSEARCH, "db_lotsea
 ## dbExecute(DB_LOTSEARCH, "CREATE TABLE proxies (proxy TEXT PRIMARY KEY, bad_attempts INTEGER
 ##     DEFAULT 0, good_attempts INTEGER DEFAULT 0)")
 ## dbExecute(DB_LOTSEARCH, "CREATE TABLE auction_res (url TEXT PRIMARY KEY, auc_json TEXT)")
+
+## insert_json_res_to_sqlite() # only necessary to do once
 
 
 
