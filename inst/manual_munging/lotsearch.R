@@ -8,6 +8,11 @@ library(jsonlite)
 library(reticulate)
 library(DBI)
 library(RSQLite)
+library(parallel)
+library(stringdist)
+library(fuzzyjoin)
+library(stringi)
+
 
 use_virtualenv("/home/johannes/litanai/")
 source_python("~/Dropbox/phd/pmdata/inst/manual_munging/python_funcs.py")
@@ -355,7 +360,112 @@ dl_auction_data <- function() {
  
 }
 
+extract_json <- function(r_json, path, artist_url) {
+    #' abstraction of extracting the dts from a json
 
+    ## path <- list("indices", "priceIndices")
+
+    dt_res <- chuck(r_json, !!!path) %>% adt
+
+    if (nrow(dt_res) > 0) {
+        return(dt_res[, url := artist_url])
+    } else {
+        return (dt_res)
+    }
+
+}
+
+
+
+gl_artist_aucinfo <- function(artist_url, json_raw) {
+
+    r_json = fromJSON(json_raw)
+
+    l_res <- list(
+        geo_rev = extract_json(r_json, list("geoChart", "revenues"), artist_url),
+        geo_sold = extract_json(r_json, list("geoChart", "soldLots"), artist_url),
+        clustered_prices = extract_json(r_json, list("indices", "priceIndices"), artist_url),
+        price_indices = extract_json(r_json, list("indices", "lax"), artist_url),
+        lax = extract_json(r_json, list("clusteredPrices"), artist_url))
+
+    return(l_res)
+}
+
+
+
+
+gc_clean_colnames <- function(l_names) {
+    #' replace stuff that creates errors in sqlite
+    l_names %>% 
+        gsub("\\s+", "_", .) %>% # Replace spaces with '_'
+        gsub("\\W+", "_", .) %>% # Replace non-alphanumeric characters with '_'
+        tolower()
+}
+
+
+gw_auction_db <- function() {
+    #' transform lotsearch json auction data into clean dts and add them to sqlite
+    if (as.character(match.call()[[1]]) %in% fstd){browser()}
+    1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
+
+    dt_auc_raw <- dbGetQuery(DB_LOTSEARCH, "select url, auc_json from auction_res") %>% adt
+    
+    ## lapply(split(dt_nccs_urls, 1:nrow(dt_nccs_urls)), \(x) download_nccs(x$orgtype, x$scope, x$year))
+    l_auc_raw <- dt_auc_raw %>% .[1:.N] %>% split(1:nrow(.))
+
+    l_res_artist <- mclapply(l_auc_raw, \(x) gl_artist_aucinfo(x$url, x$auc_json), mc.cores = 6)
+
+    l_dtnames <- c("geo_rev", "geo_sold", "clustered_prices", "price_indices", "lax")
+
+    l_res <- map(l_dtnames, ~lapply(l_res_artist, \(artist_res) chuck(artist_res, .x)) %>% rbindlist) %>%
+        setNames(l_dtnames) %>%
+        map(~setnames(.x, old = names(.), new = gc_clean_colnames(names(.x))))
+
+    
+
+    imap(l_res, ~prep_sqlitedb(DB_LOTSEARCH, .x, .y, constraints = "PRIMARY KEY (id)", insert_data = T))
+    
+    ## prep_sqlitedb(DB_LOTSEARCH, l_res$geo_rev, "geo_rev", constraints = "PRIMARY KEY (id)", insert_data = T)
+
+}
+
+
+
+gwd_dists <- function(dt_af_people_match_subset, dt_lotsearch_people_match) {
+
+    dt_match <- stringdist_inner_join(dt_af_people_match_subset, dt_lotsearch_people_match,
+                                  by = "full_name", method = "jw",
+                                  distance_col = "dist",
+                                  max_dist = 0.15) %>% adt
+
+    fwrite(dt_match, FILE_STRINGMATCH, append = T)
+
+}
+
+gwd_af_ls_match <- function() {
+
+    
+    dt_af_people_match <- gd_af_people() %>%
+        .[, Name := fifelse(Name == "NULL", "", Name)] %>% 
+        .[, .(AF_PID = ID, full_name = tolower(trimws(sprintf("%s %s", trimws(Name), trimws(Surname)))) %>% stri_trans_general("Latin-ASCII"))] %>%
+        .[, first_char := substring(full_name, 1,1)]
+
+
+    dt_lotsearch_people_match <- dt_res %>% .[, .(atname, url)] %>% unique %>% 
+        .[, c("Surname", "Name") := tstrsplit(atname, ", ", fixed = TRUE)] %>%
+        .[, .(ls_url= url, full_name = tolower(sprintf("%s %s", trimws(Name), trimws(Surname)) %>%
+                                               stri_trans_general("Latin-ASCII")))]
+
+}
+
+
+
+
+# do all the 
+map(dt_af_people_match[, unique(first_char)], ~gwd_dists(dt_af_people_match[first_char == .x], dt_lotsearch_people_match))
+
+# do it again with null people corrected, only for null people
+gwd_dists(dt_af_people_match[gd_af_people()[Name == "NULL", .(ID)], on = .(AF_PID = ID)], dt_lotsearch_people_match)
 
 
 
@@ -370,7 +480,7 @@ FILE_BAD_URLS <- paste0(PMDATA_LOCS$DIR_LOTSEARCH, "bad_urls.csv")
 
 FILE_STRINGMATCH <- paste0(PMDATA_LOCS$DIR_LOTSEARCH, "dists.csv")
 
-DB_LOTSEARCH <- dbConnect(SQLite(), paste0(PMDATA_LOCS$DIR_LOTSEARCH, "db_lotsearch.sqlite"))
+DB_LOTSEARCH <- dbConnect(SQLite(), PMDATA_LOCS$FILE_DB_LOTSEARCH)
 ## dbExecute(DB_LOTSEARCH, "CREATE TABLE proxies (proxy TEXT PRIMARY KEY, bad_attempts INTEGER
 ##     DEFAULT 0, good_attempts INTEGER DEFAULT 0)")
 ## dbExecute(DB_LOTSEARCH, "CREATE TABLE auction_res (url TEXT PRIMARY KEY, auc_json TEXT)")
@@ -404,41 +514,9 @@ dt_res <- fread(PMDATA_LOCS$FILE_LOTSEARCH_RES)
 
 ## ## how to match
 
-library(stringdist)
-library(fuzzyjoin)
-library(stringi)
-
-
-gwd_dists <- function(dt_af_people_match_subset, dt_lotsearch_people_match) {
-
-    dt_match <- stringdist_inner_join(dt_af_people_match_subset, dt_lotsearch_people_match,
-                                  by = "full_name", method = "jw",
-                                  distance_col = "dist",
-                                  max_dist = 0.15) %>% adt
-
-    fwrite(dt_match, FILE_STRINGMATCH, append = T)
-
-    }
-
-dt_af_people_match <- gd_af_people() %>%
-    .[, Name := fifelse(Name == "NULL", "", Name)] %>% 
-    .[, .(AF_PID = ID, full_name = tolower(trimws(sprintf("%s %s", trimws(Name), trimws(Surname)))) %>% stri_trans_general("Latin-ASCII"))] %>%
-    .[, first_char := substring(full_name, 1,1)]
-
-
-dt_lotsearch_people_match <- dt_res %>% .[, .(atname, url)] %>% funique %>% 
-    .[, c("Surname", "Name") := tstrsplit(atname, ", ", fixed = TRUE)] %>%
-    .[, .(ls_url= url, full_name = tolower(sprintf("%s %s", trimws(Name), trimws(Surname)) %>%
-                                           stri_trans_general("Latin-ASCII")))]
 
 
 
-
-# do all the 
-map(dt_af_people_match[, unique(first_char)], ~gwd_dists(dt_af_people_match[first_char == .x], dt_lotsearch_people_match))
-
-# do it again with null people corrected, only for null people
-gwd_dists(dt_af_people_match[gd_af_people()[Name == "NULL", .(ID)], on = .(AF_PID = ID)], dt_lotsearch_people_match)
 
 
 dt_distres <- fread(FILE_STRINGMATCH)
@@ -448,6 +526,8 @@ dt_distres[dist == 0, .(.N, nunique_AF_PID = uniqueN(AF_PID), nunique_ls_url = u
 
 
 dt_distres[dist < 0.07 & dist > 0]
+
+dt_distres[dist < 0.02 & dist > 0]
 
 dt_distres[dist > 0.05 & dist < 0.07, .(full_name.x, full_name.y, dist)] %>% print.data.table(n=50)
 

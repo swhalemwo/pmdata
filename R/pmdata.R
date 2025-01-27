@@ -70,8 +70,10 @@ gc_pmdata_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_so
         ## WAYBACK results
         FILE_WAYBACK_RES = paste0(DATA_DIR, "wayback/wayback.csv"),
         ## LOTSEARCH
-        DIR_LOTSEARCH = paste0(DATA_DIR, "lotsearch/"),
-        FILE_LOTSEARCH_RES = paste0(DATA_DIR, "lotsearch/lotsearch_res.csv"),
+        DIR_LOTSEARCH              = paste0(DATA_DIR, "lotsearch/"),
+        FILE_LOTSEARCH_RES         = paste0(DATA_DIR, "lotsearch/lotsearch_res.csv"),
+        FILE_DB_LOTSEARCH          = paste0(DATA_DIR, "lotsearch/db_lotsearch.sqlite"),
+        FILE_LOTSEARCH_STRINGMATCH = paste0(DATA_DIR, "lotsearch/dists.csv"),
         ## EGMUS
         DIR_DATA_EGMUS  = paste0(DATA_DIR, "egmus/")
     )
