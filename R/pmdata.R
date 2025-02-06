@@ -10,6 +10,7 @@
 #' @importFrom terra rast vect project extract
 #' @importFrom RSQLite dbConnect dbGetQuery SQLite
 #' @importFrom wbstats wb_data
+#' @importFrom haven read_sav
 #' @rawNamespace import(stats, except = D) # don't import D, which comes from collapse
 #' @rawNamespace import(collapse, except = fdroplevels)
 ## https://stackoverflow.com/questions/51899220/import-all-the-functions-of-a-package-except-one-when-building-a-package
@@ -75,7 +76,10 @@ gc_pmdata_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_so
         FILE_DB_LOTSEARCH          = paste0(DATA_DIR, "lotsearch/db_lotsearch.sqlite"),
         FILE_LOTSEARCH_STRINGMATCH = paste0(DATA_DIR, "lotsearch/dists.csv"),
         ## EGMUS
-        DIR_DATA_EGMUS  = paste0(DATA_DIR, "egmus/")
+        DIR_DATA_EGMUS  = paste0(DATA_DIR, "egmus/"),
+        ## ARTPRICE
+        FILE_AP_ARTIST_YEAR = paste0(DATA_DIR, "artprice/2006_2021.sav"),
+        FILE_AP_ARTIST_ID = paste0(DATA_DIR, "artprice/artprice_artist_id.sav")
     )
         
 
