@@ -186,7 +186,7 @@ gd_ap_yr <- function(FILE_AP_ARTIST_YEAR = PMDATA_LOCS$FILE_AP_ARTIST_YEAR,
 
     ## have to check order: 
     ## ap840-ap714 has to come before ap714-ap636:
-    ## first rename to 840 to 714, then 714 to 636: otherwise I end up with 714
+    ## first rename to 840 to 714, then 714 to 636: otherwise I end up with 840 recoded to 714 but not 636
     ## could probably write some expensive test for that
 
     dt_ap_unqcheck <- gd_ap_unqcheck(FILE_AP_UNQCHECK) %>%
