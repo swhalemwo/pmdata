@@ -5,7 +5,7 @@
 #' @importFrom magrittr `%>%`
 #' @importFrom countrycode countrycode
 #' @importFrom stringdist stringdistmatrix
-#' @importFrom stringi stri_split_fixed
+#' @importFrom stringi stri_split_fixed stri_trans_general
 #' @import data.table
 #' @importFrom terra rast vect project extract
 #' @importFrom RSQLite dbConnect dbGetQuery SQLite

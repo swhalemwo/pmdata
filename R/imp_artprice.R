@@ -55,6 +55,8 @@ gd_ap_prep <- function(FILE_AP_ARTIST_YEAR = PMDATA_LOCS$FILE_AP_ARTIST_YEAR) {
 }
 
 
+
+
 #' generate-and-write OR tests whether all suspiciously close artprice names have been checked
 #'
 #' is run as part of package compilation (to not slow down imports)
@@ -69,53 +71,95 @@ t_gwd_ap_unqcheck <- function(
                               FILE_AP_UNQCHECK = PMDATA_LOCS$FILE_AP_UNQCHECK) {
     
     name <- ap_id <- ap_id2 <- id1 <- id2 <- cprn <- year_begin <- N <- cprn_fmt <- NULL
-    name.x <- name.y <- NULL
+    name.x <- name.y <- name_cleaned <- max_unq <- cnt_unq <- Var1 <- name_pob <- NULL
+    iso3c <- turnover <- name1 <- name2 <- NULL
+
     
-    dt_ap_id1 <- gd_ap_id(FILE_AP_ARTIST_ID)
-    dt_ap_id2 <- dt_ap_id1[, .(name, ap_id2 = ap_id)]
     
-    dt_dist <- stringdist_inner_join(dt_ap_id1, dt_ap_id2, max_dist = 0.2,
-                                     by = "name", method = "jw", distance_col = "dist") %>% adt
+    ## dt_ap_id1 <- gd_ap_id(FILE_AP_ARTIST_ID)
+    ## dt_ap_id2 <- dt_ap_id1[, .(name, ap_id2 = ap_id)]
+    
+    ## dt_dist <- stringdist_inner_join(dt_ap_id1, dt_ap_id2, max_dist = 0.2,
+    ##                                  by = "name", method = "jw", distance_col = "dist") %>% adt
+
+    dt_ap_id <- gd_ap_id(FILE_AP_ARTIST_ID)
+
+    dt_ap_name_cpnts <- dt_ap_id %>% 
+        .[, name_cleaned := gsub("\\s*\\(.*?\\)", "", name)] %>%
+        .[, .(name_cpnt = unlist(tstrsplit(trimws(tolower(name_cleaned)), " ")) %>%
+                  stri_trans_general("Latin-ASCII")), ap_id] 
+    
+    ## get all unique name component combinations: possible (pob) names
+    dt_ap_name_cbns <- dt_ap_name_cpnts %>% # head(500) %>%
+        .[, .(name_pob = do.call("expand.grid", c(list(map(1:.SD[,.N], ~.SD[, name_cpnt])),
+                                                  stringsAsFactors = F)) %>% 
+                  ## apply(1, paste0, collapse = ' ')), ap_id] # works, but then assessing only unique elements iffy
+                  cbind(max_unq = max(apply(., 1, uniqueN))) %>%
+                  cbind(cnt_unq = apply(., 1, uniqueN) -1) %>% # have to subtract 1 due to max_unq added already
+                  subset(max_unq == cnt_unq, select = Var1:get(paste0("Var", .SD[,.N]))) %>%
+                  apply(1, paste0, collapse = ' ')), ap_id]
+
+    dt_ap_name_cbns2 <- dt_ap_name_cbns[, .(ap_id2 = ap_id, name_pob)]
+
+    ## print(head(dt_ap_name_cbns))
+    dt_dist <- stringdist_inner_join(dt_ap_name_cbns, dt_ap_name_cbns2, max_dist = 0.1, by = "name_pob",
+                                     method = "jw", distance_col = "dist") %>% adt
 
     
     ## get comparisons to check: only where id1 > id2
-    dt_tocheck <- dt_dist[dist > 0 & dist < 0.1] %>%
+    dt_tocheck <- dt_dist[dist >= 0 & dist < 0.1] %>%
         .[, `:=`(id1 = as.integer(gsub("ap", "",ap_id)), id2 = as.integer(gsub("ap", "",ap_id2)))] %>%
         .[id1 > id2] %>% .[, `:=`(id1 = NULL, id2 = NULL)] %>% # filter out one way        
-        .[, cprn := paste0(ap_id, '-', ap_id2)] # create comparison object
-
+        .[, cprn := paste0(ap_id, '-', ap_id2)] %>% # create comparison object
+        .[, .SD[1], cprn]
+        
 
     ## merge to year: if both people of suspicious comparison appear in same year, they can't be identical
-    dt_ap_prep <- gd_ap_prep(FILE_AP_ARTIST_YEAR)
+    dt_ap_prep <- gd_ap_prep(FILE_AP_ARTIST_YEAR)[, .(name, year_begin, iso3c, turnover)]
 
     
-    dt_ap_prep2 <- merge(dt_ap_prep, dt_ap_id1, by = "name", all.x = T)
+    dt_ap_prep2 <- merge(dt_ap_prep, dt_ap_id, by = "name", all.x = T)
     if (dt_ap_prep2[is.na(ap_id), .N] > 0) stop("not all entries have artprice id, re-check/gen them")
 
     
-    ## get comparisons where in each year there is always only one
+    ## get the sus comparisons, 
+    ## merge comparison to each artist once, see how many times the comparison appears in a year
+    ## afterwards, re-add original artists names
     dt_sus_cprns <- merge(dt_ap_prep2, dt_tocheck[, .(ap_id, cprn)], by = "ap_id", all.x = T) %>%
         merge(dt_tocheck[, .(ap_id = ap_id2, cprn2 = cprn)], by = "ap_id", all.x = T, allow.cartesian = T) %>%
         melt(id.vars = "year_begin", measure.vars = c("cprn", "cprn2"), value.name = "cprn") %>% na.omit %>%
         .[, .N, .(cprn, year_begin)] %>%
-        .[, .SD[all(N == 1)], cprn] %>% .[, .(cprn = unique(cprn))]
+        .[, .SD[all(N == 1)], cprn] %>% .[, .(cprn = unique(cprn))] %>%
+        .[, c("ap_id1", "ap_id2") := tstrsplit(cprn, split = "-")] %>%
+        dt_ap_id[, .(name1 = name, ap_id1 = ap_id)][., on = "ap_id1"] %>%
+        dt_ap_id[, .(name2 = name, ap_id2 = ap_id)][., on = "ap_id2"] %>%
+        .[order(cprn)]
 
-    ## get all the sus artists
+
+    ## get all the sus artists (involved in sus comparisons)
     dt_sus_long <- dt_tocheck[dt_sus_cprns, on ="cprn"] %>%
-        .[, cprn_fmt := sprintf("%s (%s)\n%s (%s)", name.x, ap_id, name.y, ap_id2)] %>% 
+        .[, cprn_fmt := sprintf("%s (%s)\n%s (%s)", name1, ap_id, name2, ap_id2)] %>% 
         melt(id.vars = c("cprn", "cprn_fmt"), measure.vars = c("ap_id", "ap_id2"), value.name = "ap_id")
     
 
     ## ## plot suspicious ones
-    ## dt_ap_prep2[dt_sus_long, on = "ap_id"] %>%
-    ##     .[, kappa := as.numeric(factor(ap_id)), cprn_fmt] %>% 
+    ## p_sus <- dt_ap_prep2[dt_sus_long, on = "ap_id"] %>%
+    ##     .[, kappa := as.numeric(factor(ap_id)), cprn_fmt] %>%
+    ##     .[order(cprn)] %>%
+    ##     .[, cprn_fmt := factor(cprn_fmt, levels = unique(cprn_fmt))] %>%         
     ##     ggplot(aes(x=year_begin, y = log10(turnover), color = factor(kappa))) + geom_point() +
     ##     facet_wrap(~cprn_fmt, ncol = 4)
+
+    ## ggsave("/home/johannes/Dropbox/phd/pmdata/inst/figures/p_sus.pdf", height = 18, width = 10)
 
     ## write sus comparisons to file: this should only be run once and is therefore commented out
     ## default decisions is that none are to be merged
     ## use plotting/googling (the two blocks above) to check whether to merge artists
-    ## fwrite(copy(dt_sus_cprns)[, 'decision' := "keep_separate"], FILE_AP_UNQCHECK)
+    ## fwrite(dt_sus_cprns[, .(cprn, name1, name2, decision= "keep_separate")], FILE_AP_UNQCHECK)
+
+    ## a separate append call that was used for 0 dists, should probably never be uncommented
+    ## fwrite(dt_sus_cprns[!dt_sus_cprns_ff, on = "cprn"][, .(cprn, name1, name2, decision= "keep_separate")],
+    ##        FILE_AP_UNQCHECK, append = T)
 
     dt_sus_cprns_ff <- gd_ap_unqcheck(FILE_AP_UNQCHECK)
 
@@ -134,11 +178,16 @@ gd_ap_yr <- function(FILE_AP_ARTIST_YEAR = PMDATA_LOCS$FILE_AP_ARTIST_YEAR,
                      FILE_AP_UNQCHECK = PMDATA_LOCS$FILE_AP_UNQCHECK) {
     if (as.character(match.call()[[1]]) %in% fstd){browser()}
 
-    decision <- cprn <- ap_id <- i.ap_id_new <- ap_id_old <- NULL
+    decision <- cprn <- ap_id <- i.ap_id_new <- ap_id_old <- year_being <- NULL
 
     dt_ap_prep <- gd_ap_prep(FILE_AP_ARTIST_YEAR)
 
     dt_ap_id <- gd_ap_id(FILE_AP_ARTIST_ID)
+
+    ## have to check order: 
+    ## ap840-ap714 has to come before ap714-ap636:
+    ## first rename to 840 to 714, then 714 to 636: otherwise I end up with 714
+    ## could probably write some expensive test for that
 
     dt_ap_unqcheck <- gd_ap_unqcheck(FILE_AP_UNQCHECK) %>%
         .[decision == "merge"] %>%
@@ -149,7 +198,10 @@ gd_ap_yr <- function(FILE_AP_ARTIST_YEAR = PMDATA_LOCS$FILE_AP_ARTIST_YEAR,
     if (dt_ap_prep2[is.na(ap_id), .N] > 0) stop("not all entries have artprice id, re-check/gen them")
 
     ## rename with update join
-    dt_ap_prep3 <- copy(dt_ap_prep2)[dt_ap_unqcheck, ap_id := i.ap_id_new, on = .(ap_id = ap_id_old)]
+    dt_ap_prep3 <- copy(dt_ap_prep2)[dt_ap_unqcheck, ap_id := i.ap_id_new, on = .(ap_id = ap_id_old)] %>%
+        .[order(ap_id, year_begin)]
+
+    
 
     return(dt_ap_prep3)
 

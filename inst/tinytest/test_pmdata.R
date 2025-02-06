@@ -12,6 +12,7 @@ fstd <- c()
 
 library(ggplot2)
 library(fuzzyjoin, include.only = "stringdist_inner_join")
+library(stringi, include.only = "stri_trans_general")
 
 
 ## add section for manually debuggging? hopefully works
