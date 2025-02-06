@@ -347,7 +347,7 @@ md_pmdb_gdocs_add_fid <- function() {
     ID <- name <- founder_name <- founder_id <- N <- founder_id_num <- i.founder_id <- NULL
 
 
-    dt_pmdb <- gd_pmdb_excl(only_pms = F) %>% gd_pmdb()
+    dt_pmdb <- gd_pmdb_excl(sel = "all") %>% gd_pmdb()
 
     ## create founder ID
     dt_fndr <- copy(dt_pmdb)[order(ID), .(ID, name, founder_name)] %>%

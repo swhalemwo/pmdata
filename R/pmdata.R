@@ -11,6 +11,7 @@
 #' @importFrom RSQLite dbConnect dbGetQuery SQLite
 #' @importFrom wbstats wb_data
 #' @importFrom haven read_sav
+#' @importFrom fuzzyjoin stringdist_inner_join
 #' @rawNamespace import(stats, except = D) # don't import D, which comes from collapse
 #' @rawNamespace import(collapse, except = fdroplevels)
 ## https://stackoverflow.com/questions/51899220/import-all-the-functions-of-a-package-except-one-when-building-a-package
@@ -79,7 +80,8 @@ gc_pmdata_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_so
         DIR_DATA_EGMUS  = paste0(DATA_DIR, "egmus/"),
         ## ARTPRICE
         FILE_AP_ARTIST_YEAR = paste0(DATA_DIR, "artprice/2006_2021.sav"),
-        FILE_AP_ARTIST_ID = paste0(DATA_DIR, "artprice/artprice_artist_id.sav")
+        FILE_AP_ARTIST_ID = paste0(DATA_DIR, "artprice/artprice_artist_id.csv"),
+        FILE_AP_UNQCHECK = paste0(DATA_DIR, "artprice/artprice_unqcheck.csv")
     )
         
 

@@ -22,6 +22,8 @@ gd_af_ls_matches <- function(FILE_LOTSEARCH_STRINGMATCH = PMDATA_LOCS$FILE_LOTSE
     if (as.character(match.call()[[1]]) %in% fstd){browser()}
     1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;
 
+    AF_PID <- N_url <- ls_url <- NULL
+
     dt_ls_stringmatch <- fread(FILE_LOTSEARCH_STRINGMATCH)
 
     dt_match_prep <- dt_ls_stringmatch[dist < 0.02] %>% .[, .SD[which.min(dist)], AF_PID] %>%
