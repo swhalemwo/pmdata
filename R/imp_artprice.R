@@ -178,7 +178,7 @@ gd_ap_yr <- function(FILE_AP_ARTIST_YEAR = PMDATA_LOCS$FILE_AP_ARTIST_YEAR,
                      FILE_AP_UNQCHECK = PMDATA_LOCS$FILE_AP_UNQCHECK) {
     if (as.character(match.call()[[1]]) %in% fstd){browser()}
 
-    decision <- cprn <- ap_id <- i.ap_id_new <- ap_id_old <- year_being <- NULL
+    decision <- cprn <- ap_id <- i.ap_id_new <- ap_id_old <- year_begin <- NULL
 
     dt_ap_prep <- gd_ap_prep(FILE_AP_ARTIST_YEAR)
 
