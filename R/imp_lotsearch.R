@@ -7,12 +7,15 @@ gd_ls_aucres <- function(FILE_DB_LOTSEARCH = PMDATA_LOCS$FILE_DB_LOTSEARCH) {
 
     db_ls <- dbConnect(SQLite(), FILE_DB_LOTSEARCH)
 
-    dt_ls_aucres <- dbGetQuery(db_lotsearch, "select url, year, count, price from clustered_prices")
+    dt_ls_aucres <- dbGetQuery(db_ls, "select url, year, count, price from clustered_prices") %>% adt
 
     return(dt_ls_aucres)
 }
 
-
+#' import data.table of matches between lotsearch and artfacts
+#'
+#' @param FILE_LOTSEARCH_STRINGMATCH file with string similarity results
+#' @export
 gd_af_ls_matches <- function(FILE_LOTSEARCH_STRINGMATCH = PMDATA_LOCS$FILE_LOTSEARCH_STRINGMATCH) {
     ## FIXME: use proper stringmatch with proper SQLite table
     ## db_ls <- dbConnect(SQLite(), FILE_DB_LOTSEARCH)
