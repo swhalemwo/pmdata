@@ -31,9 +31,4 @@ gd_af_ls_matches <- function(FILE_LOTSEARCH_STRINGMATCH = PMDATA_LOCS$FILE_LOTSE
     ## dt_match_prep %>% .[N_url > 1] %>% .[order(ls_url)]
 
     return(dt_match_prep[N_url == 1, .(AF_PID, ls_url)])
-
-    
-
-    
-
 }
