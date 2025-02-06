@@ -1,23 +1,50 @@
-cprn,decision
-ap1085-ap963,keep_separate
-ap1085-ap979,keep_separate
-ap1121-ap775,keep_separate
-ap1127-ap129,merge
-ap1150-ap971,keep_separate
-ap1160-ap753,keep_separate
-ap1170-ap356,keep_separate
-ap1285-ap318,keep_separate
-ap1285-ap1218,keep_separate
-ap1292-ap351,keep_separate
-ap1293-ap580,keep_separate
-ap1325-ap1220,keep_separate
-ap1347-ap661,keep_separate
-ap1363-ap388,keep_separate
-ap1367-ap464,keep_separate
-ap1431-ap241,keep_separate
-ap1441-ap1373,keep_separate
-ap1469-ap562,keep_separate
-ap1469-ap1148,keep_separate
-ap1480-ap1348,keep_separate
-ap807-ap710,merge
-ap812-ap318,keep_separate
+cprn,name1,name2,decision
+ap1085-ap979,HUANG YAN,HUANG DAN,keep_separate
+ap1085-ap963,HUANG YAN,HUANG YIHAN,keep_separate
+ap1121-ap775,SHENG QI,SHEN QIN,keep_separate
+ap1127-ap129,LA CHAPELLE DAVID,LACHAPELLE DAVID,merge
+ap1138-ap971,LIU ZHENG,ZHENG LI,keep_separate
+ap1150-ap971,ZHENG YI,ZHENG LI,keep_separate
+ap1160-ap753,YANG GUOXIN,WANG GUOXIN,keep_separate
+ap1170-ap356,XIAO HONG,XIAO HUIRONG,keep_separate
+ap1217-ap972,TANG MULI,LI TANG,keep_separate
+ap1285-ap1218,WANG YUPING,WANG SHUPING,keep_separate
+ap1285-ap318,WANG YUPING,WANG YIN,keep_separate
+ap1292-ap351,LIU YUI,LIU YI,keep_separate
+ap1293-ap580,HUANG MING,HUANG MINGZHE,keep_separate
+ap1325-ap1220,ZHAO QI,ZHAO QING,keep_separate
+ap1347-ap661,CUI JIN,CAI JIN,keep_separate
+ap1363-ap388,RAN JINSONG,WANG JINSONG,keep_separate
+ap1367-ap464,JIN FENG,QIN FENG,keep_separate
+ap1402-ap663,ZHAO LU,LU HAO,keep_separate
+ap1431-ap241,XU JIN,XU JIANG,keep_separate
+ap1441-ap1373,ZHANG WEI,ZHANG FEI,keep_separate
+ap1452-ap994,AHMAD AWANG DAMIT,AWANG DAMIT AHMAD,merge
+ap1469-ap562,WANG YI,WANG YUQI,keep_separate
+ap1469-ap1148,WANG YI,HWANG JYI,keep_separate
+ap1480-ap1348,YUAN SHI,YUAN HUI,keep_separate
+ap1488-ap359,HYUNG-KOO KANG,KANG HYUNG KOO,merge
+ap1508-ap1428,Jia Chang (B. 1981),CHANG JIN,keep_separate
+ap1514-ap1317,Jimnez Deredia (B. 1954),DEREDIA JIMEMEZ,merge
+ap1520-ap1286,Gede Mahendra Yasa (B. 1967),MAHENDRA YASA GEDE,merge
+ap1529-ap97,Toms Sanchez (B. 1948),SANCHEZ TOMÁS,merge
+ap1549-ap338,Huang Yong (B. 1965),HUANG YONGPING,keep_separate
+ap1549-ap1331,Huang Yong (B. 1965),HUANG YONGYU,keep_separate
+ap1551-ap1258,Chen Lianfu (B. 1956),CHEN LIU,keep_separate
+ap1560-ap238,Chen Yan Ning (B. 1945),CHEN YANNING,merge
+ap1591-ap1003,"Stanley W, Casselman (B. 1963)",CASSELMAN STANLEY W.,merge
+ap1621-ap812,Wang Jiubin (B. 1965),WANG JIN,keep_separate
+ap1625-ap226,Liang Xueqin (B. 1948),XUE LIANG,keep_separate
+ap1636-ap1432,Barry X Ball (B. 1955),BALL BARRY X,merge
+ap1651-ap1276,Shan Fan (B. 1959),SHAO FAN,keep_separate
+ap1651-ap1278,Shan Fan (B. 1959),SHEN FAN,keep_separate
+ap1673-ap921,Huang Benrui (B. 1959),HUANG RUI,keep_separate
+ap1681-ap704,Timur Petrovich Novikov (1958-2002),NOVIKOV TIMUR PETROVICH,merge
+ap1693-ap1451,Valery Nikolaevich Koshlyakov (B. 1962),KOSHLYAKOV VALERY NIKOLAEVICH,merge
+ap1709-ap407,Young Wook Choi (B. 1964),CHOI SO YOUNG,keep_separate
+ap611-ap481,ZHAO JIANCHENG,HU JIANCHENG,keep_separate
+ap840-ap714,MR IWAMOTO MASAKATU,IWAMOTO MASAKATU,merge
+ap714-ap636,IWAMOTO MASAKATU,MASAKAZU IWAMOTO,merge
+ap807-ap710,HONG KYONG TACK,HONG KYOUNG TACK,merge
+ap812-ap318,WANG JIN,WANG YIN,keep_separate
+ap840-ap636,MR IWAMOTO MASAKATU,MASAKAZU IWAMOTO,merge
