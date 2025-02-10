@@ -21,7 +21,11 @@ gwd_ap_id <- function(FILE_AP_ARTIST_YEAR = PMDATA_LOCS$FILE_AP_ARTIST_YEAR,
 #'
 #' @param FILE_AP_ARTIST_ID file with artist names and IDs
 gd_ap_id <- function(FILE_AP_ARTIST_ID = PMDATA_LOCS$FILE_AP_ARTIST_ID) {
-    fread(FILE_AP_ARTIST_ID)
+    fread(FILE_AP_ARTIST_ID) %>%
+        .[, name_cleaned := gsub("\\s*\\(.*?\\)", "", name)] %>%
+        .[, name_cleaned2 := trimws(tolower(name_cleaned)) %>%
+                stri_trans_general("Latin-ASCII")] %>%
+        .[, .(ap_id, name = name_cleaned2)]
 }
 
 #' read the uniqueness checks back
@@ -84,10 +88,12 @@ t_gwd_ap_unqcheck <- function(
 
     dt_ap_id <- gd_ap_id(FILE_AP_ARTIST_ID)
 
-    dt_ap_name_cpnts <- dt_ap_id %>% 
-        .[, name_cleaned := gsub("\\s*\\(.*?\\)", "", name)] %>%
-        .[, .(name_cpnt = unlist(tstrsplit(trimws(tolower(name_cleaned)), " ")) %>%
-                  stri_trans_general("Latin-ASCII")), ap_id] 
+    dt_ap_name_cpnts <- dt_ap_id %>%
+        .[, .(name_cpnt = trimws(unlist(tstrsplit(name, " ")))), ap_id]
+    
+        ## .[, name_cleaned := gsub("\\s*\\(.*?\\)", "", name)] %>%
+        ## .[, .(name_cpnt = unlist(tstrsplit(trimws(tolower(name_cleaned)), " ")) %>%
+        ##           stri_trans_general("Latin-ASCII")), ap_id] 
     
     ## get all unique name component combinations: possible (pob) names
     dt_ap_name_cbns <- dt_ap_name_cpnts %>% # head(500) %>%
