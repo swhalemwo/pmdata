@@ -182,7 +182,6 @@ t_gwd_ap_unqcheck <- function(
 gd_ap_yr <- function(FILE_AP_ARTIST_YEAR = PMDATA_LOCS$FILE_AP_ARTIST_YEAR,
                      FILE_AP_ARTIST_ID = PMDATA_LOCS$FILE_AP_ARTIST_ID,
                      FILE_AP_UNQCHECK = PMDATA_LOCS$FILE_AP_UNQCHECK) {
-    if (as.character(match.call()[[1]]) %in% fstd){browser()}
 
     decision <- cprn <- ap_id <- i.ap_id_new <- ap_id_old <- year_begin <- NULL
 
@@ -194,7 +193,7 @@ gd_ap_yr <- function(FILE_AP_ARTIST_YEAR = PMDATA_LOCS$FILE_AP_ARTIST_YEAR,
     ## ap840-ap714 has to come before ap714-ap636:
     ## first rename to 840 to 714, then 714 to 636: otherwise I end up with 840 recoded to 714 but not 636
     ## could probably write some expensive test for that
-
+    ## would need some graph processing: each component
     dt_ap_unqcheck <- gd_ap_unqcheck(FILE_AP_UNQCHECK) %>%
         .[decision == "merge"] %>%
         .[, c("ap_id_old", "ap_id_new") := tstrsplit(cprn, "-")]
@@ -203,13 +202,19 @@ gd_ap_yr <- function(FILE_AP_ARTIST_YEAR = PMDATA_LOCS$FILE_AP_ARTIST_YEAR,
     dt_ap_prep2 <- merge(dt_ap_prep, dt_ap_id, by = "name", all.x = T)
     if (dt_ap_prep2[is.na(ap_id), .N] > 0) stop("not all entries have artprice id, re-check/gen them")
 
-    ## rename with update join
-    dt_ap_prep3 <- copy(dt_ap_prep2)[dt_ap_unqcheck, ap_id := i.ap_id_new, on = .(ap_id = ap_id_old)] %>%
+    ## rename old ap_ids and names with update join
+    dt_ap_prep3 <- copy(dt_ap_prep2)[dt_ap_unqcheck,
+                                     `:=`(ap_id = i.ap_id_new, name =i.name2), on = .(ap_id = ap_id_old)] %>%
         .[order(ap_id, year_begin)]
 
-    
+    ## dt_ap_prep3[grepl('chapelle', name, ignore.case = T)]
+    if (nrow(dt_ap_prep3[, head(.SD,1), .(ap_id, name)][, N := .N, ap_id][N >1]) > 0) stop("ap names not good")
 
     return(dt_ap_prep3)
-
     
 }
+
+
+
+
+
