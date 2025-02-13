@@ -34,3 +34,29 @@ gd_af_ls_matches <- function(FILE_LOTSEARCH_STRINGMATCH = PMDATA_LOCS$FILE_LOTSE
 
     return(dt_match_prep[N_url == 1, .(AF_PID, ls_url)])
 }
+
+## dt_af_people <- gd_af_people()
+
+## dt_af_people[grepl('van der', Surname) | grepl('van der', Name)]
+## ## Raaf van der            Sman   
+## ## Joachim van der           Vlugt 
+## ## Eloïse  van der Heyden 
+## ## Bea van der Heijden 
+## ## hahaha fuck consistency am i right
+
+## dt_ap_id <- gd_ap_id()
+## dt_ap_id[grepl('van de', name, ignore.case = T)]
+
+## dt_ap_id[grepl('b\\.', name, ignore.case = T)]
+
+## dt_ap_id[grepl('\\d', name, ignore.case = T)] %>% print.data.table(n=300)
+
+
+
+## dt_ap_id[grepl('wook choi', name, ignore.case = T)] 
+
+
+## gd_ls_ap_matches <- function(
+
+                             
+                             
