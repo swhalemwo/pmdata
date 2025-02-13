@@ -92,48 +92,5 @@ gc_pmdata_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_so
 
 globalVariables(c("PMDATA_LOCS", ".","%>%", "fstd", "adt"))
 
-
+## use this for developing
 ## PMDATA_LOCS <- gc_pmdata_locs()
-#' test me
-#' @export
-## testf <- function() {
-##     if (as.character(match.call()[[1]]) %in% fstd){browser()}
-        
-##     ## cooperation <- NULL
-##     ## acts <- NULL
-    
-##     ## walk(c("cooperation", "acts"), ~assign(.x, NULL, envir = environment(testf)))
-##     ## walk(c("cooperation", "acts"), ~assign(.x, NULL)) # , envir = environment(testf)))
-
-##     globalVariables
-##     suppressForeignCheck
-##     envx <- environment()
-##     walk(c("pepega", "keepo"), ~assign(.x, NULL, envir = envx))
-##     walk(c("pepega", "keepo"), ~assign(.x, NULL, envir = parent.frame()))
-    
-
-##     dtx <- data.table(pepega = 1)[, keepo := pepega + 2]
-
-##     ## print(cooperation)
-##     ## print(acts)
-## }
-
-## testf()
-
-## rm(cooperation)
-## rm(acts)
-
-                          
-
-#' ## test function
-## #'
-## #' this is some description
-## #' @export 
-## testf1 <- memoise(function() {
-##     15
-## })
-
-## #' @export 
-## testf2 <- memoise(function() {
-##     290 + testf1()
-## })
