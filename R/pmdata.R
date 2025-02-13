@@ -12,6 +12,7 @@
 #' @importFrom wbstats wb_data
 #' @importFrom haven read_sav
 #' @importFrom fuzzyjoin stringdist_inner_join
+#' @importFrom utils head
 #' @rawNamespace import(stats, except = D) # don't import D, which comes from collapse
 #' @rawNamespace import(collapse, except = fdroplevels)
 ## https://stackoverflow.com/questions/51899220/import-all-the-functions-of-a-package-except-one-when-building-a-package

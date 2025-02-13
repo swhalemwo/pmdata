@@ -17,14 +17,31 @@ gwd_ap_id <- function(FILE_AP_ARTIST_YEAR = PMDATA_LOCS$FILE_AP_ARTIST_YEAR,
     ## fwrite(dt_ap_artist_id, FILE_AP_ARTIST_ID)
 }
 
+#' clean artprice name: do some generic pre-processing: yeet birth year, lowercase, trim, latin-ascii
+#'
+#' @param string name string to clean
+artprice_clean_name <- function(string) {
+    string %>%
+        gsub("\\s*\\(.*?\\)", "", .) %>% # yeet birth year in bracktes
+        tolower %>%
+        trimws %>%
+        stri_trans_general("Latin-ASCII")
+
+}
+        
+
 #' read the artprice top 500 ranking id file
 #'
 #' @param FILE_AP_ARTIST_ID file with artist names and IDs
 gd_ap_id <- function(FILE_AP_ARTIST_ID = PMDATA_LOCS$FILE_AP_ARTIST_ID) {
+
+    name_cleaned2 <- name <- ap_id <- NULL
+    
     fread(FILE_AP_ARTIST_ID) %>%
-        .[, name_cleaned := gsub("\\s*\\(.*?\\)", "", name)] %>%
-        .[, name_cleaned2 := trimws(tolower(name_cleaned)) %>%
-                stri_trans_general("Latin-ASCII")] %>%
+        .[, name_cleaned2 := artprice_clean_name(name)] %>% 
+        ## .[, name_cleaned := gsub("\\s*\\(.*?\\)", "", name)] %>%
+        ## .[, name_cleaned2 := trimws(tolower(name_cleaned)) %>%
+        ##         stri_trans_general("Latin-ASCII")] %>%
         .[, .(ap_id, name = name_cleaned2)]
 }
 
@@ -121,7 +138,8 @@ t_gwd_ap_unqcheck <- function(
         
 
     ## merge to year: if both people of suspicious comparison appear in same year, they can't be identical
-    dt_ap_prep <- gd_ap_prep(FILE_AP_ARTIST_YEAR)[, .(name, year_begin, iso3c, turnover)]
+    dt_ap_prep <- gd_ap_prep(FILE_AP_ARTIST_YEAR)[, .(name, year_begin, iso3c, turnover)] %>%
+        .[, name := artprice_clean_name(name)]
 
     
     dt_ap_prep2 <- merge(dt_ap_prep, dt_ap_id, by = "name", all.x = T)
@@ -184,6 +202,7 @@ gd_ap_yr <- function(FILE_AP_ARTIST_YEAR = PMDATA_LOCS$FILE_AP_ARTIST_YEAR,
                      FILE_AP_UNQCHECK = PMDATA_LOCS$FILE_AP_UNQCHECK) {
 
     decision <- cprn <- ap_id <- i.ap_id_new <- ap_id_old <- year_begin <- NULL
+    name <- N <- i.name2 <- NULL
 
     dt_ap_prep <- gd_ap_prep(FILE_AP_ARTIST_YEAR)
 
