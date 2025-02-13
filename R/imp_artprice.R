@@ -38,11 +38,12 @@ gd_ap_id <- function(FILE_AP_ARTIST_ID = PMDATA_LOCS$FILE_AP_ARTIST_ID) {
     name_cleaned2 <- name <- ap_id <- NULL
     
     fread(FILE_AP_ARTIST_ID) %>%
-        .[, name_cleaned2 := artprice_clean_name(name)] %>% 
+        ## .[, name_cleaned2 := artprice_clean_name(name)] %>% 
         ## .[, name_cleaned := gsub("\\s*\\(.*?\\)", "", name)] %>%
         ## .[, name_cleaned2 := trimws(tolower(name_cleaned)) %>%
         ##         stri_trans_general("Latin-ASCII")] %>%
-        .[, .(ap_id, name = name_cleaned2)]
+        ## .[, .(ap_id, name = name_cleaned2)]
+        .[, .(ap_id, name)]
 }
 
 #' read the uniqueness checks back
@@ -103,7 +104,7 @@ t_gwd_ap_unqcheck <- function(
     ## dt_dist <- stringdist_inner_join(dt_ap_id1, dt_ap_id2, max_dist = 0.2,
     ##                                  by = "name", method = "jw", distance_col = "dist") %>% adt
 
-    dt_ap_id <- gd_ap_id(FILE_AP_ARTIST_ID)
+    dt_ap_id <- gd_ap_id(FILE_AP_ARTIST_ID)[, name := artprice_clean_name(name)]
 
     dt_ap_name_cpnts <- dt_ap_id %>%
         .[, .(name_cpnt = trimws(unlist(tstrsplit(name, " ")))), ap_id]
@@ -204,7 +205,8 @@ gd_ap_yr <- function(FILE_AP_ARTIST_YEAR = PMDATA_LOCS$FILE_AP_ARTIST_YEAR,
     decision <- cprn <- ap_id <- i.ap_id_new <- ap_id_old <- year_begin <- NULL
     name <- N <- i.name2 <- NULL
 
-    dt_ap_prep <- gd_ap_prep(FILE_AP_ARTIST_YEAR)
+    dt_ap_prep <- gd_ap_prep(FILE_AP_ARTIST_YEAR) 
+        ## .[, name := artprice_clean_name(name)]
 
     dt_ap_id <- gd_ap_id(FILE_AP_ARTIST_ID)
 
@@ -216,17 +218,21 @@ gd_ap_yr <- function(FILE_AP_ARTIST_YEAR = PMDATA_LOCS$FILE_AP_ARTIST_YEAR,
     dt_ap_unqcheck <- gd_ap_unqcheck(FILE_AP_UNQCHECK) %>%
         .[decision == "merge"] %>%
         .[, c("ap_id_old", "ap_id_new") := tstrsplit(cprn, "-")]
+        ## .[, name2 := artprice_clean_name(name2)]
 
     ## in case this (merging data to ids) happens more, functionalize
     dt_ap_prep2 <- merge(dt_ap_prep, dt_ap_id, by = "name", all.x = T)
     if (dt_ap_prep2[is.na(ap_id), .N] > 0) stop("not all entries have artprice id, re-check/gen them")
 
     ## rename old ap_ids and names with update join
-    dt_ap_prep3 <- copy(dt_ap_prep2)[dt_ap_unqcheck,
+    dt_ap_prep3 <- copy(dt_ap_prep2)[dt_ap_unqcheck, 
                                      `:=`(ap_id = i.ap_id_new, name =i.name2), on = .(ap_id = ap_id_old)] %>%
-        .[order(ap_id, year_begin)]
+        .[order(ap_id, year_begin)] %>%
+        .[, name := artprice_clean_name(name)]
 
     ## dt_ap_prep3[grepl('chapelle', name, ignore.case = T)]
+    dt_ap_prep3[, head(.SD,1), .(ap_id, name)][, N := .N, ap_id][N >1]
+    
     if (nrow(dt_ap_prep3[, head(.SD,1), .(ap_id, name)][, N := .N, ap_id][N >1]) > 0) stop("ap names not good")
 
     return(dt_ap_prep3)
@@ -235,5 +241,16 @@ gd_ap_yr <- function(FILE_AP_ARTIST_YEAR = PMDATA_LOCS$FILE_AP_ARTIST_YEAR,
 
 
 
+
+## gd_ap_yr()[, .(.N, uniqueN(ap_id)), year_begin]
+
+## gd_ap_yr()[, .N, .(name, ap_id, year_begin)][N > 1]
+
+## gd_ap_yr()[, cnt := .N, .(ap_id, year_begin)][cnt > 1]
+
+## gd_ap_prep()[year_begin == 2011 & grepl('lele', name, ignore.case = T)]
+
+## gd_ap_prep()[grepl("lele", name, ignore.case=T)]
+## gd_ap_prep()[grepl("liu wei 1972", name, ignore.case=T)]
 
 

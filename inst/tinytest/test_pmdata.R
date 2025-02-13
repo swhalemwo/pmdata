@@ -236,9 +236,9 @@ expect_true(t_af_coverage(), info = "test Artfacts coverage")
 ## ** ---------------- artprice checks --------------
 
 ## this takes like 30secs to run.. 
-## expect_true(pmdata:::t_gwd_ap_unqcheck(
-##                          FILE_AP_ARTIST_YEAR = PMDATA_LOCS$FILE_AP_ARTIST_YEAR,
-##                          FILE_AP_ARTIST_ID = PMDATA_LOCS$FILE_AP_ARTIST_ID,
-##                          FILE_AP_UNQCHECK = PMDATA_LOCS$FILE_AP_UNQCHECK),
-##             info = paste0(c("check that all suspicious (similar) sounding names have been checked",
-##                           " whether they are actually the same person")))
+expect_true(pmdata:::t_gwd_ap_unqcheck(
+                         FILE_AP_ARTIST_YEAR = PMDATA_LOCS$FILE_AP_ARTIST_YEAR,
+                         FILE_AP_ARTIST_ID = PMDATA_LOCS$FILE_AP_ARTIST_ID,
+                         FILE_AP_UNQCHECK = PMDATA_LOCS$FILE_AP_UNQCHECK),
+            info = paste0(c("check that all suspicious (similar) sounding names have been checked",
+                          " whether they are actually the same person")))
