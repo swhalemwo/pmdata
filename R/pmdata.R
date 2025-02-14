@@ -8,11 +8,15 @@
 #' @importFrom stringi stri_split_fixed stri_trans_general
 #' @import data.table
 #' @importFrom terra rast vect project extract
-#' @importFrom RSQLite dbConnect dbGetQuery SQLite
+#' @importFrom RSQLite dbConnect dbGetQuery SQLite dbWriteTable
 #' @importFrom wbstats wb_data
 #' @importFrom haven read_sav
 #' @importFrom fuzzyjoin stringdist_inner_join
 #' @importFrom utils head
+#' @importFrom gtools permutations
+#' @importFrom duckdb duckdb dbConnect dbWriteTable
+#' @importFrom glue glue
+#' @importFrom memoise memoise
 #' @rawNamespace import(stats, except = D) # don't import D, which comes from collapse
 #' @rawNamespace import(collapse, except = fdroplevels)
 ## https://stackoverflow.com/questions/51899220/import-all-the-functions-of-a-package-except-one-when-building-a-package
@@ -82,7 +86,9 @@ gc_pmdata_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_so
         ## ARTPRICE
         FILE_AP_ARTIST_YEAR = paste0(DATA_DIR, "artprice/2006_2021.sav"),
         FILE_AP_ARTIST_ID = paste0(DATA_DIR, "artprice/artprice_artist_id.csv"),
-        FILE_AP_UNQCHECK = paste0(DATA_DIR, "artprice/artprice_unqcheck.csv")
+        FILE_AP_UNQCHECK = paste0(DATA_DIR, "artprice/artprice_unqcheck.csv"),
+        ## MEMOISE CACHE FIXME
+        DIR_MEMOISE = "/home/johannes/tec/memoise_cache/"
     )
         
 
@@ -95,3 +101,7 @@ globalVariables(c("PMDATA_LOCS", ".","%>%", "fstd", "adt"))
 
 ## use this for developing
 ## PMDATA_LOCS <- gc_pmdata_locs()
+
+
+## gwd_ap_ls_match <- memoise(f = gwd_ap_ls_match, cache = gc_cache_pmdata())
+gd_duckdb_sim_ap_ls <- memoise(f = gd_duckdb_sim_ap_ls, cache = gc_cache_pmdata())

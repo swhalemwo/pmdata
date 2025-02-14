@@ -254,3 +254,177 @@ gd_ap_yr <- function(FILE_AP_ARTIST_YEAR = PMDATA_LOCS$FILE_AP_ARTIST_YEAR,
 ## gd_ap_prep()[grepl("liu wei 1972", name, ignore.case=T)]
 
 
+check_ap_ls_cprn <- function(dt_sus_cbn, dt_sus_cprns, cprn_to_check, FILE_DB_LOTSEARCH) {
+    ## browser()
+    
+    dt_sus_cprns[cprn == cprn_to_check] %>%
+        melt(id.vars = "cprn", measure.vars = c("name_ls", "name_ap")) %>% print.data.table
+
+
+    px <- dt_sus_cbn[cprn == cprn_to_check] %>%
+        ggplot(aes(x=year_begin, y=turnover, color = factor(src))) +
+        geom_point() + geom_line()
+    print(px)
+
+    
+    db_ls <- dbConnect(SQLite(), FILE_DB_LOTSEARCH)
+    
+    decision <- readline("merge (m) or keep separate (else): ")
+
+    if (decision == "m") {
+        readline("confirm?")
+        dbExecute(db_ls, "UPDATE sus_cprns_ap_ls SET decision = 'merge' WHERE cprn = ?",
+                  params = list(cprn_to_check))
+    } else if (decision == "k") {
+        print("no change")
+    }
+
+    if (decision %in% c("k", "m")) {
+        ## update checked indicator
+        dbExecute(db_ls, "UPDATE sus_cprns_ap_ls SET checked = 1 where cprn = ?", params = list(cprn_to_check))
+    }
+    
+}
+
+gd_duckdb_sim_ap_ls <- function(dt_ap_cpnts, dt_ls_cpnts) {
+
+   con <- dbConnect(duckdb())
+    dbWriteTable(con, "dt_ap_cpnts", dt_ap_cpnts, overwrite = T)
+    dbWriteTable(con, "dt_ls_cpnts", dt_ls_cpnts, overwrite = T)
+
+    
+    query <- glue("
+       select a.ap_id, b.ls_id, a.pob_name as pob_name_ap, b.pob_name as pob_name_ls,
+       jaro_winkler_similarity(a.pob_name, b.pob_name) as dist
+       from dt_ap_cpnts as a CROSS JOIN dt_ls_cpnts as b
+       where dist > 0.9")
+
+    ## dbGetQuery(con, "SELECT current_setting('memory_limit') AS threads;")
+    ## dbGetQuery(con, "SELECT * from duckdb_settings();") %>% adt %>% print.data.table(n = 800)
+
+    ## takes around 1 minute %>% 26m per secs, not bad
+    ## maybe not quite clickhouse level, but basically no memory
+    ##  dt_dist <- dbGetQuery(con, query) %>% adt
+    ## fwrite(dt_dist, "/home/johannes/Dropbox/phd/pmdata/data_sources/artprice/match_artprice_lotsearch.csv")
+    
+        dt_dist <- dbGetQuery(con, query) %>% adt
+        return(dt_dist)
+}
+
+
+## gd_duckdb_sim_ap_ls <- memoise(gd_duckdb_sim_ap_ls(
+
+
+
+
+gwd_ap_ls_match <- function(FILE_AP_ARTIST_ID = PMDATA_LOCS$FILE_AP_ARTIST_ID,
+                              FILE_DB_LOTSEARCH = PMDATA_LOCS$FILE_DB_LOTSEARCH) {
+
+    dt_ap_id <- gd_ap_id(FILE_AP_ARTIST_ID)[, name := artprice_clean_name(name)]
+
+    dt_ls_id <- gd_ls_id(FILE_DB_LOTSEARCH)
+
+    ## not perfect: permutations doesn't work well with repeated elements, but this should concern only super few people
+    ## strsplit("fischli & weiss peter & david", " ")[[1]] %>%
+    ##     ## permutations(n=uniqueN(.), r = uniqueN(.), v = .)
+    ##     permutations(n=len(.), r = len(.), v = .)
+
+    dt_ap_cpnts <- dt_ap_id %>% 
+        .[, .(pob_name  = strsplit(name, " ")[[1]] %>%
+                  permutations(n=uniqueN(.), r= uniqueN(.), v = .) %>%
+                  apply(1, paste0, collapse = " ")), ap_id]
+
+    dt_ls_cpnts <- dt_ls_id %>% head(1000) %>% 
+        .[, .(pob_name  = strsplit(fullname_clean, " ")[[1]] %>%
+                  permutations(n=uniqueN(.), r= uniqueN(.), v = .) %>%
+                  apply(1, paste0, collapse = " ")), ls_id]
+
+    dt_dist <- gd_duckdb_sim_ap_ls(dt_ap_cpnts, dt_ls_cpnts)
+    
+        
+    return(dt_dist)
+
+}
+
+#' generate disk cache used for time-intensive tasks (so far only tests)
+#'
+#' @param DIR_MEMOISE filepath of memoise cache
+#' @return memoise cache
+#' @export
+gc_cache_pmdata <- function(DIR_MEMOISE = gc_pmdata_locs()$DIR_MEMOISE) {
+    cm <- memoise::cache_filesystem(path = DIR_MEMOISE)
+    return(cm)
+}
+
+
+## #' see which ap and ls are similar (memoised)
+## #'
+## #' @param gwd_ap_ls_match function to memoise
+## #' @return dt_dist
+## #' @export
+
+## gc_pmdata_locs <- function() {
+##     list(DIR_MEMOISE = "/home/johannes/tec/memoise_cache/")
+## }
+
+## gwd_ap_ls_match <- memoise(f = gwd_ap_ls_match, cache = gc_cache_pmdata()) 
+
+## t_gwd_ap_ls_match2 <- function() {
+    
+##     dt_dist <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artprice/match_artprice_lotsearch.csv")
+
+##     ## can check: is the input the same: if it is, I don't need to redo similarity calculations
+
+##     ## around 500 match completely
+##     dt_matched <- dt_dist[dist == 1, .(ap_id, ls_id)] %>% unique
+
+##     ## look at close matches: yeet those that are matched already
+##     dt_sus_cprns <- dt_dist[dist > 0.93 & dist < 1, .(dist = min(dist)), .(ap_id, ls_id)] %>%
+##         .[!dt_matched, on = "ap_id"] %>% ## yeet the ap/ls ids that are matched already
+##         .[!dt_matched, on = "ls_id"] %>% 
+##         dt_ap_id[, .(ap_id, name_ap = name)][., on = "ap_id"] %>% # add ap/ls names
+##         dt_ls_id[, .(ls_id, name_ls = fullname_clean)][., on = "ls_id"] %>%
+##         .[, cprn := paste0(ls_id, "-", ap_id)]
+
+##     db_ls <- dbConnect(SQLite(), FILE_DB_LOTSEARCH)
+
+##     ## use SQLite database to keep track of checks: allows easier field update
+##     ## initial write, now 
+##     ## dbWriteTable(db_ls, "sus_cprns_ap_ls",
+##     ##              dt_sus_cprns[, .(ls_id, ap_id, cprn, name_ls, name_ap, dist, decision = "keep_separate",checked = 0, recheck = 0)],
+##     ##              overwrite = T)
+
+
+
+##     ## look at actual data to see if comparison makes sense
+##     dt_ap_yr <- gd_ap_yr() # artprice
+##     dt_ap_yr_sus <- dt_ap_yr[dt_sus_cprns[, .(ap_id = unique(ap_id))], on = "ap_id", nomatch = NULL]
+
+##     dt_ls_aucres <- merge(gd_ls_aucres(), dt_ls_id, by = "url") %>% # lotsearch
+##         .[, turnover := count*price]
+##     dt_ls_yr_sus <- dt_ls_aucres[dt_sus_cprns[, .(ls_id = unique(ls_id))], on = "ls_id", nomatch = NULL]
+        
+##     dt_ls_aucres[ls_id == "lsid2494"]
+
+
+##     ## first add ap/ls data to comparison separately
+##     dt_sus_ap_added <- merge(dt_ap_yr_sus, dt_sus_cprns[, .(ap_id, cprn)], by = "ap_id", allow.cartesian = T) %>%
+##         .[, .(id = ap_id, cprn, name = name, year_begin, turnover, src = "ap")]
+
+##     dt_sus_ls_added <- merge(dt_ls_yr_sus, dt_sus_cprns[, .(ls_id, cprn)], by = "ls_id", allow.cartesian = T) %>%
+##         .[, .(id = ls_id, cprn, name = fullname_clean, year_begin = year, turnover, src = 'ls')]
+    
+##     ## then combine for comparison
+##     dt_sus_cbn <- rbind(dt_sus_ap_added, dt_sus_ls_added) %>% .[year_begin >= 2006]
+
+    
+    
+    
+##     ## db_ls <- dbConnect(SQLite(), PMDATA_LOCS$FILE_DB_LOTSEARCH)
+##     dt_sus_cprns_to_check <- dbGetQuery(db_ls, "select * from sus_cprns_ap_ls where checked = 0") %>% adt
+##     ## check_ap_ls_cprn(dt_sus_cbn, dt_sus_cprns, "lsid636-ap639", FILE_DB_LOTSEARCH)
+
+##     map(dt_sus_cprns_to_check[, cprn], ~check_ap_ls_cprn(dt_sus_cbn, dt_sus_cprns, .x, FILE_DB_LOTSEARCH))
+    
+## }
+
