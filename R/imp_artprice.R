@@ -1,3 +1,5 @@
+
+
 #' generates and writes to file Artprice uniqe artist IDs
 #'
 #' re-running this will regenerate IDs, and thus requires rechecking for duplicates
@@ -28,7 +30,7 @@ artprice_clean_name <- function(string) {
         stri_trans_general("Latin-ASCII")
 
 }
-        
+
 
 #' read the artprice top 500 ranking id file
 #'
@@ -67,7 +69,7 @@ gd_ap_prep <- function(FILE_AP_ARTIST_YEAR = PMDATA_LOCS$FILE_AP_ARTIST_YEAR) {
 
     dt_ap_yr_prep <- read_sav(FILE_AP_ARTIST_YEAR) %>% adt %>%
         .[, year_begin := as.integer(substring(Jaarrapport, 1,4))] %>%
-        # recode ? to NA for country
+                                        # recode ? to NA for country
         .[iso3 != "?", iso3c := countrycode(iso3, "iso2c", "iso3c", custom_match = c("PO" = "PL"))] %>% 
         .[, .(name = Lastname_firstname, year_begin, turnover = Auctionsalesturnovereuro,
               top_price = Tophammerpriceeuro, lotssold = Lotssold, rank = Rank, iso3c)] %>%
@@ -109,9 +111,9 @@ t_gwd_ap_unqcheck <- function(
     dt_ap_name_cpnts <- dt_ap_id %>%
         .[, .(name_cpnt = trimws(unlist(tstrsplit(name, " ")))), ap_id]
     
-        ## .[, name_cleaned := gsub("\\s*\\(.*?\\)", "", name)] %>%
-        ## .[, .(name_cpnt = unlist(tstrsplit(trimws(tolower(name_cleaned)), " ")) %>%
-        ##           stri_trans_general("Latin-ASCII")), ap_id] 
+    ## .[, name_cleaned := gsub("\\s*\\(.*?\\)", "", name)] %>%
+    ## .[, .(name_cpnt = unlist(tstrsplit(trimws(tolower(name_cleaned)), " ")) %>%
+    ##           stri_trans_general("Latin-ASCII")), ap_id] 
     
     ## get all unique name component combinations: possible (pob) names
     dt_ap_name_cbns <- dt_ap_name_cpnts %>% # head(500) %>%
@@ -136,7 +138,7 @@ t_gwd_ap_unqcheck <- function(
         .[id1 > id2] %>% .[, `:=`(id1 = NULL, id2 = NULL)] %>% # filter out one way        
         .[, cprn := paste0(ap_id, '-', ap_id2)] %>% # create comparison object
         .[, .SD[1], cprn]
-        
+    
 
     ## merge to year: if both people of suspicious comparison appear in same year, they can't be identical
     dt_ap_prep <- gd_ap_prep(FILE_AP_ARTIST_YEAR)[, .(name, year_begin, iso3c, turnover)] %>%
@@ -206,7 +208,7 @@ gd_ap_yr <- function(FILE_AP_ARTIST_YEAR = PMDATA_LOCS$FILE_AP_ARTIST_YEAR,
     name <- N <- i.name2 <- NULL
 
     dt_ap_prep <- gd_ap_prep(FILE_AP_ARTIST_YEAR) 
-        ## .[, name := artprice_clean_name(name)]
+    ## .[, name := artprice_clean_name(name)]
 
     dt_ap_id <- gd_ap_id(FILE_AP_ARTIST_ID)
 
@@ -218,7 +220,7 @@ gd_ap_yr <- function(FILE_AP_ARTIST_YEAR = PMDATA_LOCS$FILE_AP_ARTIST_YEAR,
     dt_ap_unqcheck <- gd_ap_unqcheck(FILE_AP_UNQCHECK) %>%
         .[decision == "merge"] %>%
         .[, c("ap_id_old", "ap_id_new") := tstrsplit(cprn, "-")]
-        ## .[, name2 := artprice_clean_name(name2)]
+    ## .[, name2 := artprice_clean_name(name2)]
 
     ## in case this (merging data to ids) happens more, functionalize
     dt_ap_prep2 <- merge(dt_ap_prep, dt_ap_id, by = "name", all.x = T)
@@ -253,7 +255,15 @@ gd_ap_yr <- function(FILE_AP_ARTIST_YEAR = PMDATA_LOCS$FILE_AP_ARTIST_YEAR,
 ## gd_ap_prep()[grepl("lele", name, ignore.case=T)]
 ## gd_ap_prep()[grepl("liu wei 1972", name, ignore.case=T)]
 
-
+#' decide whether artprice-lotsearch comparison is to be merged
+#' also plot lines in both
+#' uses sqlite 
+#'
+#' @param dt_sus_cbn long data.table with the yearly data
+#' @param dt_sus_cprns data.table with all comparisons
+#' @param cprn_to_check comparison to check (string)
+#' @param FILE_DB_LOTSEARCH path to lotsearch sqlite db
+#' @returns nothing, works through side effect
 check_ap_ls_cprn <- function(dt_sus_cbn, dt_sus_cprns, cprn_to_check, FILE_DB_LOTSEARCH) {
     ## browser()
     
@@ -307,18 +317,39 @@ gd_duckdb_sim_ap_ls <- function(dt_ap_cpnts, dt_ls_cpnts) {
     ##  dt_dist <- dbGetQuery(con, query) %>% adt
     ## fwrite(dt_dist, "/home/johannes/Dropbox/phd/pmdata/data_sources/artprice/match_artprice_lotsearch.csv")
     
-        dt_dist <- dbGetQuery(con, query) %>% adt
-        return(dt_dist)
+    dt_dist <- dbGetQuery(con, query) %>% adt
+    return(dt_dist)
+}
+
+#' split a data.frame with ids and names into one with all possible name-component combinations
+#'
+#' e.g., John Smith, id1 results in
+#' John Smith, id1
+#' Smith John, id1
+#' necessary since naming conventions vary across (and often within) data sources
+#' @param dtx data.table to split
+#' @param name_col column holding the name
+#' @param id_col column which holds the ids
+#' @return data.table with names split
+gd_namecpnts <- function(dtx, name_col, id_col) {
+
+    dtx[, .(pob_name = strsplit(get(name_col), " ")[[1]] %>%
+                permutations(n=uniqueN(.), r = uniqueN(.), v = .) %>%
+                apply(1, paste0, collapse = " ")), get(id_col)]
+
 }
 
 
-## gd_duckdb_sim_ap_ls <- memoise(gd_duckdb_sim_ap_ls(
 
-
-
-
+#' generates dt of similar matches between artprice and lotsearch
+#'
+#' @param FILE_AP_ARTIST_ID FILE_AP_ARTIST_ID
+#' @param FILE_DB_LOTSEARCH FILE_DB_LOTSEARCH
+#' @return dt_dist
 gwd_ap_ls_match <- function(FILE_AP_ARTIST_ID = PMDATA_LOCS$FILE_AP_ARTIST_ID,
-                              FILE_DB_LOTSEARCH = PMDATA_LOCS$FILE_DB_LOTSEARCH) {
+                            FILE_DB_LOTSEARCH = PMDATA_LOCS$FILE_DB_LOTSEARCH) {
+
+    
 
     dt_ap_id <- gd_ap_id(FILE_AP_ARTIST_ID)[, name := artprice_clean_name(name)]
 
@@ -341,9 +372,8 @@ gwd_ap_ls_match <- function(FILE_AP_ARTIST_ID = PMDATA_LOCS$FILE_AP_ARTIST_ID,
 
     dt_dist <- gd_duckdb_sim_ap_ls(dt_ap_cpnts, dt_ls_cpnts)
     
-        
+    
     return(dt_dist)
-
 }
 
 #' generate disk cache used for time-intensive tasks (so far only tests)
