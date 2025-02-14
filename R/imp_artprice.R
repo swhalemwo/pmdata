@@ -296,9 +296,14 @@ check_ap_ls_cprn <- function(dt_sus_cbn, dt_sus_cprns, cprn_to_check, FILE_DB_LO
     
 }
 
+#' asdf
+#'
+#' @param dt_ap_cpnts data.table with artprice artist name component combinations
+#' @param dt_ls_cpnts data.table with lotsearch artist name component combinations
+#' 
 gd_duckdb_sim_ap_ls <- function(dt_ap_cpnts, dt_ls_cpnts) {
 
-   con <- dbConnect(duckdb())
+    con <- dbConnect(duckdb())
     dbWriteTable(con, "dt_ap_cpnts", dt_ap_cpnts, overwrite = T)
     dbWriteTable(con, "dt_ls_cpnts", dt_ls_cpnts, overwrite = T)
 
