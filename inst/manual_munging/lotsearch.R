@@ -558,6 +558,29 @@ dt_af_people[grepl("van der", Surname)]
 
 stringdist_inner_join
 
+## ** manual merging
+
+
+dt_af_ls_matches <- gd_af_ls_matches()
+
+dt_distres <- fread(FILE_STRINGMATCH)
+
+dt_distres[dist %between% c(0.02, 0.1)][!dt_af_ls_matches, on = "AF_PID"][!dt_af_ls_matches, on = "ls_url"] %>%
+    .[order(dist), .(full_name.x, full_name.y, dist)] %>% print(n=80)
+
+## get candidates to check: small distance and not checked
+
+
+gwl_af_ls_match(dt_tochk,FILE_LOTSEARCH_ARTFACTS_MATCH_MNL) {
+
+    print(dt_tochk)
+
+    
+
+
+}
+
+
 ## ** reticulate
 
 library(reticulate)

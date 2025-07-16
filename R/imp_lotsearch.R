@@ -26,7 +26,8 @@ gd_af_ls_matches <- function(FILE_LOTSEARCH_STRINGMATCH = PMDATA_LOCS$FILE_LOTSE
 
     dt_ls_stringmatch <- fread(FILE_LOTSEARCH_STRINGMATCH)
 
-    dt_match_prep <- dt_ls_stringmatch[dist < 0.02] %>% .[, .SD[which.min(dist)], AF_PID] %>%
+    dt_match_prep <- dt_ls_stringmatch[dist < 0.02] %>%
+        .[, .SD[which.min(dist)], AF_PID] %>%
         .[, N_url := .N, ls_url] # get marker of where a url matches multiple people
 
     ## FIXME: better dealing with cases where one ls url matches multiple AF_PIDs
