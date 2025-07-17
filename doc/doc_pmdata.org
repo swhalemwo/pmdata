@@ -274,7 +274,7 @@ digraph D {
 
 [[file:artnews_data_structure.png]]
 
-Tables PMDB_founders, PMDB_persons, AN_collectors and  AN_person were necessary in the process of constructing PDMB_person_AN_person_links, but are not really relevant for merging data. For that, PMDB_founder_person_links and AN_collector_person have all the necessary information by containing both pmdb/artnews_person_id and ID of the corresponding entity (collector entry for Artnews, founder_id for PMDB).
+Tables =PMDB_founders=, =PMDB_persons=, =AN_collectors= and =AN_person= were necessary in the process of constructing =PDMB_person_AN_person_links=, but are not required for merging data. For that, =PMDB_founder_person_links= and =AN_collector_person= have all the necessary information by containing both =pmdb/artnews_person_id= and =ID= of the corresponding entity (=collector= entry for =Artnews=, =founder_id= for =PMDB=).
 
 
 
@@ -298,19 +298,10 @@ This produces =mow_pmdb_matchres.csv=: a list of PMDB ID and where available, th
 
 ** Artfacts
 Artfacts is a database of exhibition data constructed at maintained by the Artfacts team, which compiles exhibition data from a number of sources. Access to the artists career data was acquired by the Medici team in 2023. The datasets consists of the entire artist careers of artists born after 1945 with at least 10 exhibitions. The data is organized into four tables: 
-- instns: ID, Name, InstitutionType, FoundationYear, City, Country
-- exhbs: InstitutionID, Title, BeginDate, EndDate, CityName, CountryName
-- people: ID, Name, Surname, BirthYhear, Nationality, Gender, ExhibitionCount
-- exhb_ppl_links: ExhibitionID, PeopleID
-
-https://github.com/swhalemwo/pmdata/blob/main/data_sources/artfacts/crawler.pdf
-
-[[file:~/Dropbox/phd/pmdata/data_sources/artfacts/crawler.pdf]]
-
-
-https://github.com/swhalemwo/pmdata/blob/main/data_sources/artfacts/crawler.png
-
-[[file:~/Dropbox/phd/pmdata/data_sources/artfacts/crawler.png]]
+- =instns=: =ID=, =Name=, =InstitutionType=, =FoundationYear=, =City=, =Country=
+- =exhbs=: =InstitutionID=, =Title=, =BeginDate=, =EndDate=, =CityName=, =CountryName=
+- =people=: =ID=, =Name=, =Surname=, =BirthYear=, =Nationality=, =Gender=, =ExhibitionCount=
+- =exhb_ppl_links=: =ExhibitionID=, =PeopleID=
 
 [[file:../data_sources/artfacts/crawler.png]]
 
