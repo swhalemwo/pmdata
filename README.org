@@ -3,28 +3,26 @@
 
 ** overview
 
+Standardized interface for data sources used in the project "The Return of the Medici? The Global Rise of Private Museums for Contemporary Art"
 
 
 
-:PROPERTIES:
-:ID:       4268d077-adb7-4660-8681-6a2aa795e3f2
-:END:
-| data source | downloading         | parsing   | importing |
-|-------------+---------------------+-----------+-----------|
-| PMDB        | manually?           | not necc. |           |
-| ARTnews     | scraping            | yes       |           |
-| WID         | download, unpack,   | not nec   |           |
-|             | CH setup            |           |           |
-| MOW         | not possible        | yes       |           |
-| CAF/RTGB    | not possible        | not necc  |           |
-| Fraeser     |                     |           |           |
-| Artfacs     |                     |           |           |
-| WB          |                     |           |           |
-| UN          |                     |           |           |
-| OECD        |                     |           |           |
-| Eurostat    |                     |           |           |
-| GSHL        | go to [[https://ghsl.jrc.ec.europa.eu/download.php?ds=pop][EC website]],   |           |           |
-|             | download/unzip file |           |           |
+
+| data source                         | abbreviation | downloading           | importing    |
+|-------------------------------------+--------------+-----------------------+--------------|
+| Private Museum Database             | PMDB         | private data          | gd_pmdb_*    |
+| ARTnews collector ranking           | ARTnews      | scraping (            | gd_artnews_* |
+| Museums of the World                | MOW          | private data          | gd_mow       |
+| Artfacs                             | AF           | private data          | gd_af_*      |
+| ArtPrice                            | AP           | private data          | gd_ap_yr     |
+| Lotsearch                           | LS           | private data          | gd_ls_*      |
+| World Bank                          | WB           | uses WB API           | gd_wb_*      |
+| Global Human Settlement Layer       | GSHL         | dl from [[https://ghsl.jrc.ec.europa.eu/download.php?ds=pop][EC website]]    | gd_popcircle |
+| European Group of Museum Statistics | EGMUS        | dl from [[https://www.egmus.eu/nc/en/statistics/complete_data/][EGMUS website]] | gd_egmus     |
+| Country Boundaries                  | crybndrs     | dl from [[https://www.geodatasource.com/addon/country-borders][GeoData]]       | gd_crybdnrs  |
+
+
+
 
 
 
@@ -47,3 +45,11 @@ go to google sheets, downloads as .csv
 
 
 
+** todos
+
+- [ ] add CAF/RTGB
+- [ ] add Fraeser
+- [ ] add World Inequality DB
+- [ ] add UN
+- [ ] add OECD
+- [ ] add eurostat
