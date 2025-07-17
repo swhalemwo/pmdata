@@ -70,7 +70,7 @@ if there are new collector entries, they have to be:
 
 
 *** distances between private museums
-distances between private museums can be generated via `gd_pmdb_proxcnt`.
+distances between private museums can be generated via =gd_pmdb_proxcnt=.
 
 ** Artnews
 
