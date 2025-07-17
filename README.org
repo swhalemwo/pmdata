@@ -11,7 +11,7 @@ Standardized interface for data sources used in the project "The Return of the M
 | data source                         | abbreviation | downloading           | importing    |
 |-------------------------------------+--------------+-----------------------+--------------|
 | Private Museum Database             | PMDB         | private data          | gd_pmdb_*    |
-| ARTnews collector ranking           | ARTnews      | scraping (            | gd_artnews_* |
+| ARTnews collector ranking           | ARTNEWS      | scraping (python      | gd_artnews_* |
 | Museums of the World                | MOW          | private data          | gd_mow       |
 | Artfacs                             | AF           | private data          | gd_af_*      |
 | ArtPrice                            | AP           | private data          | gd_ap_yr     |
@@ -23,23 +23,10 @@ Standardized interface for data sources used in the project "The Return of the M
 
 
 
+detailed docs: check [[file:doc/doc_pmdata.org]]
 
 
 
-** how to update data files
-
-*** PMDB
-
-go to google sheets, downloads as .csv
-
-[[file:doc/pmdb_flow.png]]
-
-
-
-*** ARTnews top 200 collector rannking
-
-- put flow chart here
-- put data base relations here
 
   
 

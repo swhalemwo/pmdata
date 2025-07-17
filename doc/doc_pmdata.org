@@ -303,5 +303,7 @@ Artfacts is a database of exhibition data constructed at maintained by the Artfa
 - people: ID, Name, Surname, BirthYhear, Nationality, Gender, ExhibitionCount
 - exhb_ppl_links: ExhibitionID, PeopleID
 
+https://github.com/swhalemwo/pmdata/blob/main/data_sources/artfacts/crawler.pdf
+
 [[file:~/Dropbox/phd/pmdata/data_sources/artfacts/crawler.pdf]]  
 
