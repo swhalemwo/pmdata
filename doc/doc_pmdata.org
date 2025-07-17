@@ -305,5 +305,16 @@ Artfacts is a database of exhibition data constructed at maintained by the Artfa
 
 https://github.com/swhalemwo/pmdata/blob/main/data_sources/artfacts/crawler.pdf
 
-[[file:~/Dropbox/phd/pmdata/data_sources/artfacts/crawler.pdf]]  
+[[file:~/Dropbox/phd/pmdata/data_sources/artfacts/crawler.pdf]]
 
+
+https://github.com/swhalemwo/pmdata/blob/main/data_sources/artfacts/crawler.png
+
+[[file:~/Dropbox/phd/pmdata/data_sources/artfacts/crawler.png]]
+
+
+
+
+I'm writing a github readme page as an org-file. i want to link to an image in another folder, so that it appears in the github page (not just as a link). i can link to images in the same folder by just using file:artnews_data_structure.png
+
+pmdata/doc/readme.org
