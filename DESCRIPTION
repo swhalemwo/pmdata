@@ -3,7 +3,7 @@ Title: Private Museum Data Processing
 Version: 0.0.1
 Authors@R: 
     person("Johannes", "Aengenheyster", , "j.aengenheyster@uva.nl", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+           comment = c(ORCID = "0009-0007-6063-8830"))
 Description: This package provides reusable functions for generating the various data objects used in the Private Museum research project at UvA.
 License: GPL-3
 Encoding: UTF-8
