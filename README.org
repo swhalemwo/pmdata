@@ -1,11 +1,7 @@
 
 * Private Museum Project Data Management
 
-** overview
-
 Standardized interface for data sources used in the project "The Return of the Medici? The Global Rise of Private Museums for Contemporary Art"
-
-
 
 
 | data source                         | abbreviation | downloading           | importing    |
@@ -22,13 +18,7 @@ Standardized interface for data sources used in the project "The Return of the M
 | Country Boundaries                  | crybndrs     | dl from [[https://www.geodatasource.com/addon/country-borders][GeoData]]       | gd_crybdnrs  |
 
 
-
 detailed docs: check [[file:doc/doc_pmdata.org]]
-
-
-
-
-  
 
 
 
