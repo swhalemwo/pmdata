@@ -188,7 +188,7 @@ gd_extract_museums <- function(nccs_filepath) {
 ## * main
 
 
-
+gd_extract_museums(l_nccs_files[1])
 
 ## ** download
 if (interactive()) {stop("it's interactive time")}
