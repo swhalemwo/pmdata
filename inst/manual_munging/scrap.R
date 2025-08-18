@@ -52,3 +52,29 @@ dt_geocoded_proc <- merge(adt(dt_geocoded), dtxx[, .(ID, address = addr)], by = 
 
 
 dt_geocoded3 <- dt_geocoded2 %>% copy %>% .[, ID := 1:7]
+
+
+
+dt_geocoded3[, imap(.SD, ~gen_extra_col_schema(.x, .y, ID)), .SDcols = l_vrbls]
+
+
+## testing of geocoding subcomponents
+gen_extra_col_schema(dt_geocoded2[, address_components], "address_components", 1:7)
+gen_extra_col_schema(dt_geocoded2[, types], "types", 1:7)
+gen_extra_col_schema(dt_geocoded2[, navigation_points], "navigation_points", 1:7)
+
+gen_extra_col_schema(dt_geocoded2, "geocoded2", 1:7)
+
+dt_geocoded2[, as.data.table(.SD), .I]
+
+dtx <- data.table(xx = split(dt_geocoded2, 1:dt_geocoded2[, .N]))
+dtx <- data.table(xx = split(adf(dt_geocoded2), 1:dt_geocoded2[, .N]))
+gen_extra_col_schema(dtx[, xx], "google", 1:7)
+
+
+## testing structure generation
+gl_assess_dt_struc(dt_geocoded2[, address_components], verbose = T)
+gl_assess_dt_struc(dt_geocoded2[, types], verbose = T)
+gl_assess_dt_struc(dt_geocoded2[, navigation_points], verbose = T)
+
+
