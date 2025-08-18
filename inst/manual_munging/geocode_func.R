@@ -32,32 +32,6 @@ jtls_geocode <- function(dtx, c_geocode) {
     
 }
 
-dtxx <- dt_pmdb[museum_status %in% c("private museum", "closed")] %>% 
-    .[10:15, .(ID, name, city, country = iso3c,
-                       addr = sprintf("%s, %s, %s", name, city, countrycode(iso3c, "iso3c", "country.name")))]
-
-
-## default
-dt_geocoded <- geocode(dtxx, address = addr, limit = 5, full_results = T, return_input = F)
-
-## google
-dt_geocoded2 <- geocode(dtxx, address = addr, limit = 5, full_results = T, return_input = F, method = "google") %>% adt
-
-dt_geocoded2 %>% adt %>% .[, address_components] #
-
-
-dbDataType(dbx, dt_geocoded2)
-
-map(dt_geocoded2, class) %>% as.vector
-sapply(dt_geocoded2, class) %>% keep(~.x == "list") %>% names
-l_vrbls <- sapply(dt_geocoded2, class) %>% keep(~.x == "list") %>% names
-
-dt_geocoded2[, .SD, .SDcols = l_vrbls]
-
-dt_geocoded2[, navigation_points]
-
-
-dt_geocoded_proc <- merge(adt(dt_geocoded), dtxx[, .(ID, address = addr)], by = "address")
 
 
 gl_assess_dt_struc <- function(col_vlu, verbose = F) {
@@ -107,14 +81,68 @@ gl_assess_dt_struc <- function(col_vlu, verbose = F) {
 
 }    
 
+gd_rcbn <- function(v_parse_false, l_dt_parsed) {
+    ## browser()
+    #' separate way of recombining columns that are not directly parseable
+
+    ## get datatypes to see whether I can use rbind or not
+    ## l_datatypes <- lapply(col_vlu[l_index_nonnull[[v_parse_false]]], \(row) map(row, class)) %>% unlist
+
+    ## l_datatypes <- lapply(l_dt_parsed, \(row) map(row, class)) %>% unlist
+
+    l_datatypes <- lapply(l_dt_parsed[[v_parse_false]], \(row) map(row, class)) %>% unlist
+
+    ## l_dt_parsed
+
+    if (!any(l_datatypes == "data.frame")) {
+
+        ## this works if there are no dfs in the columns
+
+        dt_cbn <- Reduce(rbind, l_dt_parsed[[v_parse_false]])
+
+    } else {
+
+        ## if there are dfs, i can't just use rbind but need to re-assemble
+
+        ## reassemble by changing to cols: map for each column, extract its value from all the rows
+        l_cols <- lapply(c("ID", v_parse_false), \(colx) map(l_dt_parsed[[v_parse_false]], ~chuck(.x, colx)))
+        
+        ## l_dt_parsed[[1]]
+        ## l_dt_parsed$location[[3]] %>% chuck("ID")
+
+        
+
+        ## this is what to get to, it seems to work 
+        ## dt_cbn <- data.frame(ID = unlist(l_cols[1]),
+        ##                      location = I(l_cols[[2]])) %>% adt
+        
+        ## do this automatically:
+        ## need a do.call -> need a list of arguments
+        ## i just need the number of the column, then can use setNames to add the column name
+
+        ## first set up ID column (number 1)
+        l_colargs <- list("ID" = unlist(l_cols[1]))
+
+        ## then add the others with I()
+        l_col_noparse_prep <- imap(v_parse_false, ~I(l_cols[[.y +1]])) %>% setNames(v_parse_false)
+
+        l_col_noparse_cbn <- c(l_colargs, l_col_noparse_prep)
+
+        dt_cbn <- do.call(data.frame, l_col_noparse_cbn) %>% adt
+    }
+
+    return(dt_cbn)
+}
+
 
 gen_extra_col_schema <- function(col_vlu, col_prefix, id_vlu) {
-    #' idea is that every non-standard column gets its own table
+    #' idea is that every non-standard column (list, data.frame) gets its own table
     #' need to see if schemas are all the same, then set up table
+    #' recursively goes through all the non-standard columns and checks whether they can be parsed
     
     ## check if entire col_vlu can be easily parsed: no list columns
     ## check whether column is vector
-
+    
     l_assess_dt_struc <- gl_assess_dt_struc(col_vlu)
     b_vec_and_parseable <- l_assess_dt_struc$b_vec_and_parseable
     l_parse_true <- l_assess_dt_struc$l_parse_true
@@ -146,80 +174,141 @@ gen_extra_col_schema <- function(col_vlu, col_prefix, id_vlu) {
         l_schemas <- map(col_vlu, ~dbDataType(dbx, .x[l_parse_true]))
 
         if (len(unique(l_schemas))>1) {stop("schemas not unique")}
-    
+
+        ## deal with dots in schemas: need to be quoted for sqlite
+        l_vrbl_schema <- imap(l_schemas[[1]],
+                              ~sprintf("%s %s", ifelse(grepl("\\.", .y), sprintf("\"%s\"", .y), .y), .x))
+
         cmd_setup <- sprintf("CREATE TABLE %s (ID %s, \n%s)\n", col_prefix,
                              dbDataType(dbx, id_vlu),
-                             paste0(imap(l_schemas[[1]], ~sprintf("%s %s", .y, .x)), collapse = ",\n"))
+                             paste0(l_vrbl_schema, collapse = ",\n"))
 
         cat(cmd_setup)
         dbSendQuery(dbx, cmd_setup)
     }
     
-    ## dealing with non-parseable things
-    ## can i use recursion? 
-    # i think I have to combine them first tho: now have 7 dfs, but that should only be 1 table
-    ## col_vlu[[1]]
+    ## dealing with non-parseable columns using recursion
+    ## i think I have to combine them first tho: now have 7 dfs, but that should only be 1 table
+    
     if (len(l_parse_false) > 0) {
     
-        l_index_nonnull <- !sapply(col_vlu, is.null) # get non-null entries
+        
+        ## l_index_nonnull <- map(l_parse_false, ~sapply(col_vlu, \(col) is.null(col[.x])))
 
+        ## for each l_parse_false variable, get the non-null indexes
+        ## need to do a looooooot of unpacking to get to the NULLs (2 nested loops not enough)
+        ## l_index_nonnull <- map(l_parse_false,
+        ##                        ~!sapply(col_vlu, \(col) sapply(col[[.x]], \(vlus) all(is.null(vlus))))) %>%
+        ##     setNames(l_parse_false)
+
+        l_index_nonnull <- map(l_parse_false,
+                               ~!sapply(col_vlu, \(row) all(sapply(row[[.x]], \(vlus) is.null(vlus))))) %>%
+            setNames(l_parse_false)
+
+
+        ## is.null(all(col_vlu[[1]][['types']]))
+        
+
+        ## mapply(\(x, y, z) sprintf("%s %s %s", x,y, z), letters[1:5], 1:5, letters[11:15])
+
+        
+        ## mapply seems to flatten?
+        
+        l_dt_parsed2 <- lapply(l_parse_false,
+                              \(col) map2(col_vlu[l_index_nonnull[[col]]], id_vlu[l_index_nonnull[[col]]],
+                                          ~{.x$ID <- .y; .x[c("ID", col)]})) %>% 
+            setNames(l_parse_false)
+
+        ## l_dt_cbn <- map(l_dt_parsed2, ~Reduce(rbind, .x)) ## %>% chuck("address_components") %>% str
+
+        l_dt_cbn <- map(l_parse_false, ~gd_rcbn(.x, l_dt_parsed2[.x])) %>%
+            setNames(l_parse_false)
+
+        ## l_dt_cbn <- gd_rcbn(col_vlu, l_parse_false, l_index_nonnull, l_dt_parsed2)
+
+        
+        ## xx <- "navigation_points"
+        ## col_vlu[l_index_nonnull[[xx]]]
+
+        
+        ## l_index_nonnull <- !sapply(col_vlu, is.null) # get non-null entries
+        ## l_index_nonnull <- !sapply(col_vlu, \(x) all(is.null((x[l_parse_false]))))
+        ## l_index_nonnull <- !sapply(col_vlu, \(x) is.null(x[[l_parse_false]])) # get non-null entries
+        
         ## need to make list to assign ID to each entry
-        l_dt_parsed <- map2(col_vlu[l_index_nonnull], id_vlu[l_index_nonnull],
-                            ~{.x$ID <- .y;
-                                ## row.names(.x) <- NULL; # yeet rownames, probably not needed
-                                .x[c("ID", l_parse_false)]})
+        ## l_dt_parsed <- map2(col_vlu[l_index_nonnull], id_vlu[l_index_nonnull],
+        ##                     ~{.x$ID <- .y;
+        ##                         ## row.names(.x) <- NULL; # yeet rownames, probably not needed
+        ##                         .x[c("ID", l_parse_false)]})
+        
 
-        ## get datatypes to see whether I can use rbind or not
-        l_datatypes <- lapply(col_vlu[l_index_nonnull], \(row) map(row, class)) %>% unlist
-        if (!any(l_datatypes == "data.frame")) {
-
-            ## this works if there are no dfs in the columns
-
-            dt_cbn <- Reduce(rbind, l_dt_parsed) %>% adt
-
-        } else {
-
-            ## if there are dfs, i can't just use rbind but need to re-assemble
-
-            ## reassemble by changing to cols: map for each column, extract its value from all the rows
-            l_cols <- lapply(c("ID", l_parse_false), \(colx) map(l_dt_parsed, ~chuck(.x, colx)))
-                        
-            ## this is what to get to, it seems to work 
-            ## dt_cbn <- data.frame(ID = unlist(l_cols[1]),
-            ##                      location = I(l_cols[[2]])) %>% adt
-            
-            ## do this automatically:
-            ## need a do.call -> need a list of arguments
-            ## i just need the number of the column, then can use setNames to add the column name
-
-            ## first set up ID column (number 1)
-            l_colargs <- list("ID" = unlist(l_cols[1]))
-
-            ## then add the others with I()
-            l_col_noparse_prep <- imap(l_parse_false, ~I(l_cols[[.y +1]])) %>% setNames(l_parse_false)
-
-            l_col_noparse_cbn <- c(l_colargs, l_col_noparse_prep)
-
-            dt_cbn <- do.call(data.frame, l_col_noparse_cbn) %>% adt
-        }
         
         ## gen_extra_col_schema(dt_cbn[, types], colname_new, dt_cbn[, ID])
 
-        map(l_parse_false, ~gen_extra_col_schema(dt_cbn[, get(.x)],
+        ## map(l_parse_false, ~gen_extra_col_schema(dt_cbn[, get(.x)],
+        ##                                          col_prefix = paste0(col_prefix, "_", .x),
+        ##                                          id_vlu = dt_cbn[, ID]))
+
+        map(l_parse_false, ~gen_extra_col_schema(l_dt_cbn[[.x]][[.x]],
                                                  col_prefix = paste0(col_prefix, "_", .x),
-                                                 id_vlu = dt_cbn[, ID]))
+                                                 id_vlu = l_dt_cbn[[.x]][["ID"]]))
         
     }
+    
+    ## xx <- "navigation_points"
+    ## gen_extra_col_schema(l_dt_cbn[[xx]][[xx]], col_prefix = paste0(col_prefix, "_", xx),
+    ##                      id_vlu = l_dt_cbn[[xx]][["ID"]])
+
+    
+
+
+    
+    ## }
 
 }
 
-dt_geocoded3 <- dt_geocoded2 %>% copy %>% .[, ID := 1:7]
+dt_tomap <- dt_pmdb[museum_status %in% c("private museum", "closed") & iso3c == "USA"] %>% 
+    .[10:15, .(ID, name, city, country = iso3c,
+                       addr = sprintf("%s, %s, %s", name, city, countrycode(iso3c, "iso3c", "country.name")))]
+
+
+## default
+dt_geocoded <- geocode(dtxx, address = addr, limit = 5, full_results = T, return_input = F)
+
+## google
+dt_geocoded2 <- geocode(dtxx, address = addr, limit = 5, full_results = T, return_input = F, method = "google") %>% adt
+
+## set up method vectors
+l_methods <- list("google" = list(mode = "single"),
+                  "osm" =    list(mode = "single"),
+                  "arcgis" = list(mode = "single"),
+                  "census" = list(mode = "single"))
+
+## do the actual coding
+l_dt_geocoded_prep1 <- imap(l_methods, ~geocode(dt_tomap, address = addr, limit = 5, full_results = T,
+                                                return_input = F, method = .y, mode = .x$mode))
+## merge back IDs
+l_dt_geocoded_prep2 <- map(l_dt_geocoded_prep1, ~merge(.x, dt_tomap[, .(ID, address = addr)]))
+
+## splitting into list
+l_dt_geocoded_prep3 <- imap(l_dt_geocoded_prep2,
+                            ~data.table(colx = split(adf(.x[names(.x) != "ID"]), 1:nrow(.x)), ID = .x$ID) %>%
+                            setnames(old = "colx", new = .y))
+
+imap(l_dt_geocoded_prep3, ~gen_extra_col_schema(.x[, get(.y)], .y, .x$ID))
+
+
+gen_extra_col_schema(l_dt_geocoded_prep3$osm$osm, "osm", l_dt_geocoded_prep3$osm$ID) ## works with new
+gen_extra_col_schema(l_dt_geocoded_prep3$google$google, "google", l_dt_geocoded_prep3$google$ID)
+
 
 system("rm /home/johannes/Dropbox/phd/pmdata/inst/manual_munging/db_geocode.sqlite")
 dbx <- dbConnect(SQLite(), DB_GEOCODE)
 
 dt_geocoded3[, imap(.SD, ~gen_extra_col_schema(.x, .y, ID)), .SDcols = l_vrbls]
 
+
+## testing of subcomponents
 gen_extra_col_schema(dt_geocoded2[, address_components], "address_components", 1:7)
 gen_extra_col_schema(dt_geocoded2[, types], "types", 1:7)
 gen_extra_col_schema(dt_geocoded2[, navigation_points], "navigation_points", 1:7)
@@ -229,12 +318,16 @@ gen_extra_col_schema(dt_geocoded2, "geocoded2", 1:7)
 dt_geocoded2[, as.data.table(.SD), .I]
 
 dtx <- data.table(xx = split(dt_geocoded2, 1:dt_geocoded2[, .N]))
-gen_extra_col_schema(dtx, "google", 1:7)
+dtx <- data.table(xx = split(adf(dt_geocoded2), 1:dt_geocoded2[, .N]))
+gen_extra_col_schema(dtx[, xx], "google", 1:7)
 
 
+## testing structure generation
 gl_assess_dt_struc(dt_geocoded2[, address_components], verbose = T)
 gl_assess_dt_struc(dt_geocoded2[, types], verbose = T)
 gl_assess_dt_struc(dt_geocoded2[, navigation_points], verbose = T)
+
+
 
 
 

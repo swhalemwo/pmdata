@@ -45,3 +45,10 @@ dt_geocoded2[, navigation_points]
 
 dt_geocoded_proc <- merge(adt(dt_geocoded), dtxx[, .(ID, address = addr)], by = "address")
 
+
+
+
+
+
+
+dt_geocoded3 <- dt_geocoded2 %>% copy %>% .[, ID := 1:7]
