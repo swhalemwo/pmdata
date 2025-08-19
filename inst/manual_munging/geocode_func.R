@@ -282,3 +282,108 @@ gwd_geocode_dt <- function(dtx) {
 
 
 }
+
+NODB_GEOCODE <- "~/Dropbox/phd/pmdata/inst/manual_munging/nodb_geocode.sqlite"
+
+gc_geocode_cfg <- function() {
+    #' specify the setup of different geocoding methods
+    
+
+    ## base geocode settings: if I wanna change them, I'll have to add them to all the methods
+    c_base <- list(address = quote(addr), limit = 5, full_results = T,
+                   return_input = F, # needed for limit > 1
+                   mode = "single")
+    
+    
+    lc_varying <- list("google" = list(method = "google"),
+                       "osm" =    list(method = "osm"),
+                       "arcgis" = list(method = "arcgis"),
+                       "census" = list(method = "census"))
+
+    ## combine: still gives access to all the names
+    map(lc_varying, ~c(.x, c_base)) 
+
+    
+
+    
+}
+
+
+
+nodb_creator <- function(dbname, container_key) {
+    src <- src_sqlite(dbname)
+
+    docdb_create(src, container_key, value = NULL)
+}
+
+
+nodb_inserter <- function(dbname, container_key, data) {
+    src <- src_sqlite(dbname)
+
+    docdb_create(src, container_key, data)
+}
+
+
+gwd_geocode_chunker <- function(data_to_geocode_chunk, container_key, dbname) {
+    #' geocode a chunk of data and insert it to the database
+    Sys.sleep(0.5)
+    ## get geocode settings and merge with actual geocoded data
+    l_args <- gc_geocode_cfg() %>% chuck(container_key) %>% c(list(.tbl = data_to_geocode_chunk))
+    
+    ## actual geocoding
+    dt_geocoded <- do.call(geocode, l_args)
+
+    ## merge IDs back: addr gets returneda as address %>% can return it
+    dt_geocoded_wid <- merge(dt_geocoded, data_to_geocode_chunk[, .(ID, address = addr)], on = "address")
+
+    
+    print(dt_geocoded_wid)
+    nodb_inserter(dbname, container_key, dt_geocoded_wid)
+
+    return(invisible(T))
+
+}
+
+
+gwd_geocode <- function(dt_to_geocode, container_key, dbname) {
+
+    ## get existing data
+    src_nosql <- src_sqlite(dbname)
+    src_sql <- dbConnect(SQLite(), dbname)
+
+    ## check which IDs are already there
+    cmd_IDs_present <- sprintf("select %s.json ->> 'ID' as ID from %s", container_key, container_key)
+    dt_IDs_present <- dbGetQuery(src_sql, cmd_IDs_present) %>% adt
+    dt_to_geocode_filtered <- dt_to_geocode[!dt_IDs_present, on = "ID"]
+
+    print(sprintf("data size: %s, already coded: %s, left to code: %s",
+                  dt_to_geocode[, .N], dt_IDs_present[, .N], dt_to_geocode_filtered[, .N]))
+
+    ## split into chunks
+    l_dt_to_geocode <- split(dt_to_geocode_filtered, 1:dt_to_geocode[, (.N/5)])
+
+    map(l_dt_to_geocode, gwd_geocode_chunker, container_key, dbname)
+    
+    ## get arguments
+    
+
+}
+
+system("rm /home/johannes/Dropbox/phd/pmdata/inst/manual_munging/nodb_geocode.sqlite")
+map(names(gc_geocode_cfg()), ~nodb_creator(NODB_GEOCODE, .x))
+
+nodb_creator(NODB_GEOCODE, "osm")
+nodb_inserter(NODB_GEOCODE, "osm", l_dt_geocoded_prep2$osm)
+
+gwd_geocode(dt_tomap, "osm", NODB_GEOCODE)
+
+dt_tomap <- dt_pmdb[museum_status %in% c("private museum", "closed") & iso3c == "USA"] %>% 
+    .[sample(1:.N, 13), .(ID, name, city, country = iso3c,
+                          addr = sprintf("%s, %s, %s", name, city, countrycode(iso3c, "iso3c", "country.name")))]
+
+
+map(names(gc_geocode_cfg()), ~gwd_geocode(dt_tomap, .x, NODB_GEOCODE))
+
+
+
+

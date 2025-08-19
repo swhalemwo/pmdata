@@ -78,3 +78,62 @@ gl_assess_dt_struc(dt_geocoded2[, types], verbose = T)
 gl_assess_dt_struc(dt_geocoded2[, navigation_points], verbose = T)
 
 
+
+
+## ** nosql exploration
+
+
+library(nodbi)
+NODB_GEOCODE <- "~/Dropbox/phd/pmdata/inst/manual_munging/nodb_geocode.sqlite"
+
+src <- src_sqlite(NODB_GEOCODE)
+
+docdb_create(src = src, key = "test", value = l_dt_geocoded_prep2$google)
+
+docdb_query(src, "test", '{"lat" : {"$gt" :30}}')
+
+docdb_query(src, "test", '{"lat" : {"$gt" :30}}', fields = '{"ID" :1, "lat": 1}')
+
+docdb_query(src, "test", '{"lat" : {"$gt" :30}}', fields = '{"ID" :1, "navigation_points": 1}') %>% adt
+
+docdb_create(src = src, key = "test", value = l_dt_geocoded_prep2$osm)
+
+docdb
+
+
+docdb_get(src, "test")[1:8, c("ID", "address", "lat", "long")]
+
+
+select test.json ->> 'address' as address
+from test, json_each(test.json, '$.ID')
+
+
+select test.json ->> 'address' as address1, test.json ->> 'lat' as lat
+from test
+
+src2 <- dbConnect(SQLite(), NODB_GEOCODE)
+dbGetQuery(src2, "select test.json ->> 'address' as address, test.json ->> 'lat' as lat from test")
+
+dbGetQuery(src2, "select test.json ->> 'address' as address, test.json ->> 'lat' as lat from test, json_each(test.json, '$.lat')
+where json_each.value > 30")
+
+
+dbGetQuery(src2, "    PRAGMA table_info(test);")
+
+## get the number of keys in the schema
+dbGetQuery(src2, "
+    SELECT key, COUNT(*) AS frequency
+    FROM (
+        SELECT json_each.key
+        FROM test
+        CROSS JOIN json_each(test.json)  -- Specify the table and column explicitly
+    ) AS keys
+    GROUP BY key
+    ORDER BY frequency DESC;
+")
+
+dbGetQuery(src2, "select test.json ->> 'navigation_points' as nav_points from test")
+
+dbGetQuery(src2, "select test.json ->> 'types' as types from test")
+
+
