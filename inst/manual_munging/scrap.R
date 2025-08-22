@@ -137,3 +137,167 @@ dbGetQuery(src2, "select test.json ->> 'navigation_points' as nav_points from te
 dbGetQuery(src2, "select test.json ->> 'types' as types from test")
 
 
+
+## ** geocoding exploration
+
+system("rm /home/johannes/Dropbox/phd/pmdata/inst/manual_munging/nodb_geocode.sqlite")
+map(names(gc_geocode_cfg()), ~nodb_creator(NODB_GEOCODE, .x))
+
+nodb_creator(NODB_GEOCODE, "osm")
+nodb_inserter(NODB_GEOCODE, "osm", l_dt_geocoded_prep2$osm)
+
+gwd_geocode(dt_tomap, "osm", NODB_GEOCODE)
+
+dt_tomap <- dt_pmdb[museum_status %in% c("private museum", "closed") & iso3c == "USA"] %>% 
+    .[sample(1:.N, 13), .(ID, name, city, country = iso3c,
+                          addr = sprintf("%s, %s, %s", name, city, countrycode(iso3c, "iso3c", "country.name")))]
+
+
+map(names(gc_geocode_cfg()), ~gwd_geocode(dt_tomap, .x, NODB_GEOCODE))
+
+src <- src_sqlite(NODB_GEOCODE)
+src2 <- dbConnect(SQLite(), NODB_GEOCODE)
+dbGetQuery(src2, "select google.json ->> 'address' as address, google.json ->> 'lat' as lat from google")
+
+docdb_get(src, key = "arcgis") %>% adt %>% .[ID ==142, .SD, .SDcols = c("lat", "long", "arcgis_address", "address", "score",
+                                                                        keep(names(.), ~grepl("name", .x, ignore.case = T)))] %>% adf
+
+                                                                        patterns("name"))]
+
+
+
+docdb_get(src, key = "google") %>% adt %>% .[ID == 142] %>% names
+
+
+## ** geocoding eval
+NODB_GEOCODE_AF <- "~/Dropbox/phd/pmdata/inst/manual_munging/nodb_geocode_artfacts.sqlite"
+src <- src_sqlite(NODB_GEOCODE_AF)
+src2 <- dbConnect(SQLite(), NODB_GEOCODE_AF)
+
+
+
+dt_af_instns_tomap <- gd_af_instns()[Country == "United States" & InstitutionType != "Private Galleries"] %>%
+    .[, .(ID, addr = sprintf("%s, %s, %s", Name, City, Country))]
+
+
+## ok this is really fucking slow %>% needs to be flattened
+dt_af_instns_geocoded_google <- docdb_get(src, key = "google") %>% adt
+
+
+dt_af_instns_geocoded_google[, uniqueN(ID)]
+dt_af_instns_geocoded_google[, .SD[nrow(.SD) > 1], ID, .SDcols = c("ID", "lat", "long", "partial_match")]
+
+## check what hasn't been mapped
+dt_af_instns_tomap[!dt_af_instns_geocoded_google[, .(ID = unique(ID))], on = "ID"]
+
+
+l_methods <- c("google", "arcgis" ,  "iq", "geocodio") # "census",  "osm")
+
+
+
+gd_compare_coords()
+
+
+## ** old geocode eval funcs
+
+
+gd_distmat <- function(dt_pts) {
+    ## from set of points, calculate all pairwise distances, put into long dt
+    
+    l_src <- dt_pts[, src]
+    mat_dist <- distm(dt_pts[, .(long, lat)], fun = distHaversine)
+    
+    colnames(mat_dist) <- l_src
+    rownames(mat_dist) <- l_src
+
+    mat_dist %>% adt(keep.rownames = "out") %>%
+        melt(id.vars = "out", variable.name = "incom", variable.factor = F, value.name = "dist")
+        ## .[, ID := dt_pts[, ID[1]]]
+}
+
+
+distm
+    distHaversine
+
+    
+xy <- rbind(c(0,0),c(90,90),c(10,10),c(-120,-45))
+distm(xy)
+xy2 <- rbind(c(0,0),c(10,-10))
+distm(xy, xy2)
+distHaversine(xy, xy2)
+distHaversine(xy)
+
+xy3 <- rbind(c(0,0),c(10,10), c(20,20), c(10,10))
+distHaversine(xy, xy3)
+
+sapply(1:4, \(x) distHaversine(xy[x,], xy3[x,])) ## looks good
+
+terra::vect(dt_pmdb[, .(ID, long, lat)], geom = c("long", "lat"), crs = "WGS84")
+library(sf)
+
+
+dt_pt[ID == 1203] %>% .[., on = 'ID', allow.cartesian = T]
+
+st_point
+
+dt_cbn %>% copy %>% .[, st_point(c(long, lat)), .I]
+
+
+dt_cbn %>% na.omit %>% .[ID == 1203] %>% gd_distmat
+
+dt_distmat <- dt_cbn %>% na.omit %>% .[, gd_distmat(.SD), ID]
+
+dt_distmat[, .(mean_dist_oneway = mean(dist), .N), out]
+
+dt_distmat[, .(mean_dist_twoway = mean(dist)/1e3, .N), .(incom, out)] %>%
+    .[out != "iq" & incom != "iq"] %>%
+    .[out != incom] %>% 
+    ggplot(aes(x=incom, y = out, fill =mean_dist_twoway, label = round(mean_dist_twoway,1))) +
+    geom_tile() + geom_text()
+
+dt_distmat %>% # [, .(mean_dist_twoway = mean(dist)/1e3, .N), .(incom, out)] %>%
+    .[out != "iq" & incom != "iq"] %>%
+    .[out != incom] %>%
+    .[incom > out] %>%
+    .[dist < 3e4] %>% 
+    ggplot(aes(x=dist/1e3, y = interaction(incom, out), fill = interaction(incom, out))) +
+    geom_density_ridges(alpha = 0.5, bandwidth = 0.2)
+## coord_cartesian(xlim = c(0, 30))
+
+
+## ** geocoding check mismatches (in gd_compare_coords)
+
+dt_grid_full[dist_km < 5, uniqueN(ID)]
+dt_grid_full[dist_km > 100, .N, .(src, src2)]
+
+
+dt_distmat[dist < 5000 & out != incom, uniqueN(ID)]
+
+dt_distmat[out == "google" & incom == "arcgis", .N, dist < 1e3]
+
+dt_af_instns <- gd_af_instns()
+
+
+merge(
+    dt_grid_full[src == "google" & src2 == "arcgis" & dist_km > 10],
+    dt_af_instns, by = "ID") %>% .[, .(ID, Name, geometry, geometry2, dist_km, City)] %>% print(n=80)
+
+                                        # %>% .[, .(Name, City, Country)] 
+
+dt_test <- data.table(addr = "George Eastman Museum, Rochester, NY, United States")
+dt_test_coded <- geocode(dt_test, address = "addr", method = "google") %>% adt
+dt_test_coded2 <- geocode(dt_test, address = "addr", method = "arcgis", limit = 5, return_input = F,
+                          full_results = T) %>% adt
+dt_test_coded[, sprintf("%s %s", lat, long)]
+dt_test_coded2[, .(xx = sprintf("%s %s", lat, long), score, attributes.Score)]
+
+
+src2
+
+dbGetQuery(src2, "select google.json ->> 'lat' as lat, google.json ->> 'long' as long from google, json_each(google.json, '$.ID')
+where json_each.value = 2452")
+
+
+
+dbGetQuery(src2, "select google.json ->> 'lat' as lat from google,
+json_each(google.json, '$.lat') wehre json_each.value > 30")

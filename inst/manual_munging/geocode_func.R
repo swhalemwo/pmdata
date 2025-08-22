@@ -262,6 +262,7 @@ imap(l_dt_geocoded_prep3, ~gen_extra_col_schema(.x[, get(.y)], .y, .x$ID))
 gen_extra_col_schema(l_dt_geocoded_prep3$osm$osm, "osm", l_dt_geocoded_prep3$osm$ID) ## works with new
 gen_extra_col_schema(l_dt_geocoded_prep3$google$google, "google", l_dt_geocoded_prep3$google$ID)
 
+dbAppendTable(dbx, "google", l_dt_geocoded_prep3$google$google[[1]])
 
 
 ## default
@@ -273,117 +274,73 @@ dt_geocoded2 <- geocode(dtxx, address = addr, limit = 5, full_results = T, retur
 
 
 
-gwd_geocode_dt <- function(dtx) {
-
-    ## set up sqlite
 
 
-    ## map 
+## gwd_flat_geocode("arcgis", NODB_GEOCODE_AF)
+## map(l_methods, ~gwd_flat_geocode(.x, NODB_GEOCODE_AF))
 
 
-}
-
-NODB_GEOCODE <- "~/Dropbox/phd/pmdata/inst/manual_munging/nodb_geocode.sqlite"
-
-gc_geocode_cfg <- function() {
-    #' specify the setup of different geocoding methods
-    
-
-    ## base geocode settings: if I wanna change them, I'll have to add them to all the methods
-    c_base <- list(address = quote(addr), limit = 5, full_results = T,
-                   return_input = F, # needed for limit > 1
-                   mode = "single")
-    
-    
-    lc_varying <- list("google" = list(method = "google"),
-                       "osm" =    list(method = "osm"),
-                       "arcgis" = list(method = "arcgis"),
-                       "census" = list(method = "census"))
-
-    ## combine: still gives access to all the names
-    map(lc_varying, ~c(.x, c_base)) 
 
     
 
+gd_compare_coords <- function(db_name, l_methods) {
+
+    src2 <- dbConnect(SQLite(), db_name)
+
+    ## map(l_methods, ~dbGetQuery(src2, sprintf("select * from %s_flat limit 1", .x)) %>% names) %>%
+    ## Reduce(intersect, .)
+
+    dt_cbn <- map(l_methods, ~dbGetQuery(src2, sprintf("select ID, lat, long from %s_flat", .x)) %>% adt %>%
+                                 .[, `:=`(lat = as.numeric(lat), long = as.numeric(long), src = .x)]) %>%
+        rbindlist %>%
+        .[order(ID)]
+
+
+    dt_cbn[, .(mean_na = mean(is.na(lat))), src]
+    ## census can go, osm is also pretty bad tbh
+
+    ## set up points
+    dt_pts <- st_as_sf(dt_cbn %>% na.omit, coords = c("long", "lat"), crs = st_crs(4326)) %>% adt
+
+    ## set up basic grid of points based on IDs and method
+    dt_grid_prep <- dt_pts[, .(ID, src)][dt_pts[, .(ID, src2 = src)], on  = "ID", allow.cartesian = T] %>%
+        .[src != src2]
+
+    ## merge points to grid
+    dt_grid_full <- merge(dt_grid_prep, dt_pts, by = c("ID", "src")) %>%
+        merge(dt_pts[, .(ID, src2 = src, geometry2 = geometry)], by = c("ID", "src2"))
+
+    ## calculate grid distances
+    dt_grid_full %>% .[, dist_km := st_distance(geometry, geometry2, by_element = T) %>%
+                       set_units(km) %>% as.numeric]
+    ## nice works, but need to check what distance means exactly: what unit? 
     
-}
+    return(dt_grid_full)
 
-
-
-nodb_creator <- function(dbname, container_key) {
-    src <- src_sqlite(dbname)
-
-    docdb_create(src, container_key, value = NULL)
-}
-
-
-nodb_inserter <- function(dbname, container_key, data) {
-    src <- src_sqlite(dbname)
-
-    docdb_create(src, container_key, data)
-}
-
-
-gwd_geocode_chunker <- function(data_to_geocode_chunk, container_key, dbname) {
-    #' geocode a chunk of data and insert it to the database
-    Sys.sleep(0.5)
-    ## get geocode settings and merge with actual geocoded data
-    l_args <- gc_geocode_cfg() %>% chuck(container_key) %>% c(list(.tbl = data_to_geocode_chunk))
-    
-    ## actual geocoding
-    dt_geocoded <- do.call(geocode, l_args)
-
-    ## merge IDs back: addr gets returneda as address %>% can return it
-    dt_geocoded_wid <- merge(dt_geocoded, data_to_geocode_chunk[, .(ID, address = addr)], on = "address")
+    dt_grid_full %>%
+        .[dist_km < 10] %>% 
+        ggplot(aes(x=dist_km, y = interaction(src, src2))) +
+        geom_density_ridges(bandwidth = 0.01) +
+        coord_cartesian(xlim = c(0, 5))
 
     
-    print(dt_geocoded_wid)
-    nodb_inserter(dbname, container_key, dt_geocoded_wid)
+    mat_dist <- st_distance(dt_pts[src == "google", geometry]) %>% set_units("km") %>% drop_units
 
-    return(invisible(T))
-
-}
-
-
-gwd_geocode <- function(dt_to_geocode, container_key, dbname) {
-
-    ## get existing data
-    src_nosql <- src_sqlite(dbname)
-    src_sql <- dbConnect(SQLite(), dbname)
-
-    ## check which IDs are already there
-    cmd_IDs_present <- sprintf("select %s.json ->> 'ID' as ID from %s", container_key, container_key)
-    dt_IDs_present <- dbGetQuery(src_sql, cmd_IDs_present) %>% adt
-    dt_to_geocode_filtered <- dt_to_geocode[!dt_IDs_present, on = "ID"]
-
-    print(sprintf("data size: %s, already coded: %s, left to code: %s",
-                  dt_to_geocode[, .N], dt_IDs_present[, .N], dt_to_geocode_filtered[, .N]))
-
-    ## split into chunks
-    l_dt_to_geocode <- split(dt_to_geocode_filtered, 1:dt_to_geocode[, (.N/5)])
-
-    map(l_dt_to_geocode, gwd_geocode_chunker, container_key, dbname)
     
-    ## get arguments
+
+    dt_pts_google <- dt_pts[src == "google"]
+
+    dt_pts_google[, n_nearby := rowSums(mat_dist < 0.05)]
+
+    merge(dt_pts_google, dt_af_instns[, .(ID, Name)], by = "ID") %>% 
+        .[order(-n_nearby)]
+
+    rowSums(mat_dist < 100)
     
 
 }
 
-system("rm /home/johannes/Dropbox/phd/pmdata/inst/manual_munging/nodb_geocode.sqlite")
-map(names(gc_geocode_cfg()), ~nodb_creator(NODB_GEOCODE, .x))
+l_methods <- c("google", "arcgis" ,  "iq", "geocodio")
+NODB_GEOCODE_AF <- "~/Dropbox/phd/pmdata/inst/manual_munging/nodb_geocode_artfacts.sqlite"
 
-nodb_creator(NODB_GEOCODE, "osm")
-nodb_inserter(NODB_GEOCODE, "osm", l_dt_geocoded_prep2$osm)
-
-gwd_geocode(dt_tomap, "osm", NODB_GEOCODE)
-
-dt_tomap <- dt_pmdb[museum_status %in% c("private museum", "closed") & iso3c == "USA"] %>% 
-    .[sample(1:.N, 13), .(ID, name, city, country = iso3c,
-                          addr = sprintf("%s, %s, %s", name, city, countrycode(iso3c, "iso3c", "country.name")))]
-
-
-map(names(gc_geocode_cfg()), ~gwd_geocode(dt_tomap, .x, NODB_GEOCODE))
-
-
-
-
+gd_compare_coords(NODB_GEOCODE_AF, l_methods)
