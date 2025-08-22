@@ -6,9 +6,12 @@
 #' @importFrom countrycode countrycode
 #' @importFrom stringdist stringdistmatrix
 #' @importFrom stringi stri_split_fixed stri_trans_general
+#' @importFrom stringr str_extract
+#' @importFrom parallel mclapply
+#' @importFrom purrr keep map
 #' @import data.table
 #' @importFrom terra rast vect project extract
-#' @importFrom RSQLite dbConnect dbGetQuery SQLite dbWriteTable
+#' @importFrom RSQLite dbConnect dbGetQuery SQLite dbWriteTable dbDisconnect
 #' @importFrom wbstats wb_data
 #' @importFrom haven read_sav
 #' @importFrom fuzzyjoin stringdist_inner_join
@@ -89,7 +92,10 @@ gc_pmdata_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_so
         FILE_AP_ARTIST_ID = paste0(DATA_DIR, "artprice/artprice_artist_id.csv"),
         FILE_AP_UNQCHECK = paste0(DATA_DIR, "artprice/artprice_unqcheck.csv"),
         ## MEMOISE CACHE FIXME
-        DIR_MEMOISE = "/home/johannes/tec/memoise_cache/"
+        DIR_MEMOISE = "/home/johannes/tec/memoise_cache/",
+        ## NCCS FILES
+        DIR_NCCS_CORE = "/run/media/johannes/data/nccs/core/",
+        FILE_NCCS_MUSEUMS = "/run/media/johannes/data/nccs/nccs_museums.csv"        
     )
         
 
