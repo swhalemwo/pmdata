@@ -317,7 +317,7 @@ gd_pmdb <- function(dt_pmdb_excl, verbose = F) {
     if (fnrow(dt_chrintcprn[is.na(int) & chr != ""]) > 0) {
         if (!is.null(verbose)) {
             if (verbose) {
-                print(dt_chrintcprn[is.na(int) & chr != ""], n = 1000)
+                print.data.table(dt_chrintcprn[is.na(int) & chr != ""], n = 1000)
             } else {
                 print(dt_chrintcprn[is.na(int) & chr != ""])
             }
