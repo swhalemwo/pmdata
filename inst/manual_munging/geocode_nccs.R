@@ -17,6 +17,7 @@ gc_geocode_cfg <- function() {
     
     lc_varying <- list(
         "google" =   list(method = "google", address = "addr_wname"),
+        "google_waddr" = list(method = "google", address = "addr_wname_address"),
         "geocodio_pobox" = list(method = "geocodio", address = "addr_pobox"))
         ## "geocodio_name" = list(method = "geocodio", address = quote(addr_wname)))
         
@@ -51,6 +52,7 @@ dt_nccs_muem <- gd_nccs_muem()[nteecc == "A51"]
 dt_nccs_muem_tomap <- dt_nccs_muem[, tail(.SD,1), ein] %>%
     .[, .(ID = ein,
           addr_wname = sprintf("%s, %s, %s, USA", name, city, state),
+          addr_wname_address = sprintf("%s, %s, %s, %s, %s, USA", name, address, city, state, zip),
           addr_pobox = sprintf("%s, %s, %s, %s, USA", address, city, state, zip))]
 
 ## dt_nccs_muem_tomap %>% copy %>% .[, nbr_ein := .N, addr_wname] %>% .[nbr_ein > 1]
