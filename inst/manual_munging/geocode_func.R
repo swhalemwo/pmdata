@@ -2,6 +2,12 @@ library(tidygeocoder)
 library(data.table)
 library(DBI)
 library(RSQLite)
+library(sf)
+library(units)
+library(ggridges)
+library(pmdata)
+library(jtls)
+library(purrr)
 
 Sys.setenv("GOOGLEGEOCODE_API_KEY" = show_pass_secret("google-geocode-api-key"))
 
@@ -12,6 +18,7 @@ setup_geocode_sqlite <- function(DB_GEOCODE) {
     dbx <- dbConnect(SQLite(), DB_GEOCODE)
 
 }
+
 
 
 DB_GEOCODE <- "~/Dropbox/phd/pmdata/inst/manual_munging/db_geocode.sqlite"
@@ -323,17 +330,34 @@ gd_compare_coords <- function(db_name, l_methods) {
         geom_density_ridges(bandwidth = 0.01) +
         coord_cartesian(xlim = c(0, 5))
 
-    
-    mat_dist <- st_distance(dt_pts[src == "google", geometry]) %>% set_units("km") %>% drop_units
 
+    ## check aggregate matching coverage
+    dt_grid_full[src > src2] %>% copy %>% .[order(dist_km)] %>% .[,prop := 1:.N/.N, .(src, src2)] %>%
+        ggplot(aes(x = dist_km, y = prop, color = interaction(src, src2))) +
+        geom_line() +
+        coord_cartesian(xlim = c(0,10))
+        
+    
+
+
+    ## check all pairwise distances of google: see which are in the same place
+    mat_dist <- st_distance(dt_pts[src == "google_waddr", geometry]) %>% set_units("km") %>% drop_units
     
 
     dt_pts_google <- dt_pts[src == "google"]
 
-    dt_pts_google[, n_nearby := rowSums(mat_dist < 0.05)]
+    dt_pts_google[, n_nearby := rowSums(mat_dist < 0.01)]
+    ## dt_af_instns <- gd_af_instns()
+    dt_nccs_artmuem <- gd_nccs_muem()[nteecc == "A51", tail(.SD, 1), .(ID = ein)]
+    
+    dt_nccs_artmuem[grepl("PO BOX", address)]
 
-    merge(dt_pts_google, dt_af_instns[, .(ID, Name)], by = "ID") %>% 
-        .[order(-n_nearby)]
+
+    merge(dt_pts_google, dt_nccs_artmuem[, .(ID, name, city, state)], by = "ID") %>% 
+        .[order(-n_nearby)] %>% .[n_nearby > 1] %>% .[city == "NEW YORK"]
+        ## .[, .N, city]
+
+    dt_nccs_artmuem[ID == 131624100, .(address)]
 
     rowSums(mat_dist < 100)
     
@@ -342,5 +366,15 @@ gd_compare_coords <- function(db_name, l_methods) {
 
 l_methods <- c("google", "arcgis" ,  "iq", "geocodio")
 NODB_GEOCODE_AF <- "~/Dropbox/phd/pmdata/inst/manual_munging/nodb_geocode_artfacts.sqlite"
-
 gd_compare_coords(NODB_GEOCODE_AF, l_methods)
+
+## 
+
+l_methods <- c("google", "google_waddr", "geocodio_pobox")
+NODB_GEOCODE_NCCS <- "~/Dropbox/phd/pmdata/inst/manual_munging/nodb_geocode_nccs.sqlite"
+map(l_methods, ~gwd_flat_geocode(.x, NODB_GEOCODE_NCCS)) # flatten tables
+gd_compare_coords(NODB_GEOCODE_NCCS, l_methods)
+
+
+## just use google to merge for now
+## maybe later more sophisticated 
