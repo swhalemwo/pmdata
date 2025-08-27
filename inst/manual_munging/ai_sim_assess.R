@@ -1,3 +1,17 @@
+library(tidygeocoder)
+library(data.table)
+library(DBI)
+library(RSQLite)
+library(sf)
+library(units)
+library(ggridges)
+library(pmdata)
+library(jtls)
+library(purrr)
+library(texreg)
+library(gbm)
+library(xgboost)
+
 NODB_GEOCODE_NCCS <- "~/Dropbox/phd/pmdata/inst/manual_munging/nodb_geocode_nccs.sqlite"
 NODB_GEOCODE_AF <- "~/Dropbox/phd/pmdata/inst/manual_munging/nodb_geocode_artfacts.sqlite"
 
@@ -25,28 +39,27 @@ dt_nccs_info <- gd_coords(NODB_GEOCODE_NCCS, "google_waddr", dt_nccs_artmuem_min
     setnames(old = names(.), new = paste0(names(.), "_nccs"))
 
 dt_af_instns_us <- gd_af_instns() %>% .[Country == "United States" & InstitutionType != "Private Galleries"] %>%
-    .[, .(ID, Name)]
+    .[, .(ID, name = Name)]
 
 dt_af_info <- gd_coords(NODB_GEOCODE_AF, "google", dt_af_instns_us) %>%
     setnames(old = names(.), new = paste0(names(.), "_af")) %>% .[]
 
-library(gtools, include.only = "permutations")
 
 ## old permutations: too expensive
 ## dt_af_cpnts <- dt_af_info %>% head(10) %>% 
-##     .[, .(pob_name  = strsplit(Name_af, " ")[[1]] %>%
+##     .[, .(pob_name  = strsplit(name_af, " ")[[1]] %>%
 ##               permutations(n=uniqueN(.), r= uniqueN(.), v = .) %>%
 ##               apply(1, paste0, collapse = " ")), ID_af]
 
 
 library(stringdist)
-l_stringdist_methods <- c("osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex") %>%
+l_stringdist_methods <- c("osa", "lv", "dl", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex") %>%
     setNames(.,.)
 
 imap(l_stringdist_methods, ~stringdist("some test here", "test some", method = .x))
 imap(l_stringdist_methods, ~stringdist("test some", "some test here", method = .x))
 
-merge(dt_af_info[1:10], dt_nccs_info[1:10], by = 1)
+
 
 ## set up grid
 lenx <- 5e3
@@ -57,18 +70,19 @@ dt_grid <- CJ(ID_af = dt_af_info[1:lenx, ID_af], ID_nccs = dt_nccs_info[1:lenx, 
 
 
 
-
+## test jaccard distances with varying qgrams
 l_qs <- 1:5
 
 t1 = Sys.time()
 dt_grid[, paste0("strdist_jac", l_qs)
-        := (map(l_qs, ~stringdist(tolower(Name_af), tolower(name_nccs), method = "jaccard", q = .x))), ID_nccs]
+        := (map(l_qs, ~stringdist(tolower(name_af), tolower(name_nccs), method = "jaccard", q = .x))), ID_nccs]
 t2 = Sys.time()
 dt_grid[, .N*5]/as.numeric(t2-t1)
 
+## add distances based on coordinates--
 dt_grid[, geodist := st_distance(geometry_af, geometry_nccs, by_element = T) %>% set_units("km") %>% drop_units]
 
-
+## ** exploring match data
 dt_grid %>% head %>% adf
 
 
@@ -82,22 +96,22 @@ dt_grid_subset[nbr_candidates == 1]
 dt_grid_subset[nbr_candidates > 5]
 
 
-dt_grid_subset[nbr_candidates == 1, .(name_nccs, Name_af, strdist_jac1, geodist)]
+dt_grid_subset[nbr_candidates == 1, .(name_nccs, name_af, strdist_jac1, geodist)]
 
 ## hermitage
-dt_grid_subset[ID_nccs == 10769997, .(name_nccs, Name_af, strdist_jac1, geodist)]
+dt_grid_subset[ID_nccs == 10769997, .(name_nccs, name_af, strdist_jac1, geodist)]
 
 
-dt_grid_subset[grepl("joslyn", ignore.case = T, Name_af), .(ein, Name_af, name_nccs)]
+dt_grid_subset[grepl("joslyn", ignore.case = T, name_af), .(ein, name_af, name_nccs)]
 
 dt_nccs_artmuem_full[ein %in% c(470384577, 470835035), .(year, styear, name, ein)] %>% print(n=80)
 
 
 dt_grid_subset[ID_af == 6805] ## single
 
-dt_grid_subset[ID_af == 7345, .(Name_af, name_nccs, strdist_jac1, geodist, ID_nccs, ID_af)] %>% print(n=80)## many
+dt_grid_subset[ID_af == 7345, .(name_af, name_nccs, strdist_jac1, geodist, ID_nccs, ID_af)] %>% print(n=80)## many
 
-dt_grid_subset[ID_af == 7345, .(Name_af, name_nccs, strdist_jac1, geodist, ID_nccs, ID_af)] %>% view_xl
+dt_grid_subset[ID_af == 7345, .(name_af, name_nccs, strdist_jac1, geodist, ID_nccs, ID_af)] %>% view_xl
 
 dt_example <- dt_grid_subset[ID_af == 7345, .(name_nccs, strdist_jac1, geodist, ID_nccs)]
 
