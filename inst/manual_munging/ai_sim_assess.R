@@ -11,6 +11,7 @@ library(purrr)
 library(texreg)
 library(gbm)
 library(xgboost)
+library(fixest)
 
 NODB_GEOCODE_NCCS <- "~/Dropbox/phd/pmdata/inst/manual_munging/nodb_geocode_nccs.sqlite"
 NODB_GEOCODE_AF <- "~/Dropbox/phd/pmdata/inst/manual_munging/nodb_geocode_artfacts.sqlite"
@@ -180,106 +181,77 @@ gd_grid_train <- function(size_nomatch = 2e3) {
 
 
 
+gd_strfeat_wq <- function(dtx, dt_qmod) {
+    #' generate string features for string similarities with q
 
-gd_grid_wfeat <- function(dt_grid_blank) {
+    dt_strfeat_wq <- dtx %>% copy %>%
+        .[, paste0(dt_qmod[, sprintf("strdist_%s_%s", mod, q)]) :=
+                (map2(dt_qmod[, mod], dt_qmod[, q],
+                      ~stringdist(tolower(name1), tolower(name2), method = .x, q = .y))), ID_pmdb]
 
-    l_qs <- 1:5 # qgrams for qmethods
-    l_qmods <- c("qgram", "jaccard", "cosine") # methods using Q
+    return(dt_strfeat_wq)
+}
 
-    ## "hamming" creates infinite dist
-    l_mod_noq <- c("osa", "lv", "dl", "lcs", "jw")
+gd_strfeat_noq <- function(dtx, l_mod_noq) {
+    #' generate string similarity features for which there is no q (only single input)
+    dt_strfeat_noq <- dtx %>% copy %>%
+        .[, paste0("strdist_", l_mod_noq) :=
+                map(l_mod_noq, ~stringdist(tolower(name1),
+                                           tolower(name2), method = .x)), ID_pmdb]
+        
 
-    dt_qmod <- CJ(q = l_qs, mod = l_qmods)## [, sprintf("%s_%s", mod, q)]
-
-    ## map2(dt_qmod[, mod], dt_qmod[, q], ~sprintf("%s%s", .x, .y))
+    return(dt_strfeat_noq)
+}
     
-    ## mapply(\(x,y) sprintf("%s%s", x,y), dt_qmod %>% as.list)
+
+
+
+
+gd_grid_wfeat <- function(dt_grid_blank, name1, name2, dt_qmod = NULL, l_mod_noq = NULL) {
+    #' construct features for similarity matching
+    
+    dt_grid_blank %>% setnames(old = c(name1, name2), new = c("name1", "name2"))
     
 
+    if (is.null(dt_qmod)) {
+        l_qs <- 1:5 # qgrams for qmethods
+        l_qmods <- c("qgram", "jaccard", "cosine") # methods using Q
+
+        dt_qmod <- CJ(q = l_qs, mod = l_qmods)## [, sprintf("%s_%s", mod, q)]
+    }
+
+    if (is.null(l_mod_noq)) {
+        ## "hamming" creates infinite dist -> yeet
+        l_mod_noq <- c("osa", "lv", "dl", "lcs", "jw")
+    }
+
+    
+    dt_grid_wfeat_q <- gd_strfeat_wq(dt_grid_blank, dt_qmod)
+
+    dt_grid_wfeat_both <- gd_strfeat_noq(dt_grid_wfeat_q, l_mod_noq)
+    
     ## dt_grid_blank <- dt_grid_blank[1:1e4]
 
     ## generate string similarities for q mods
-    dt_grid_blank[, paste0(dt_qmod[, sprintf("strdist_%s_%s", mod, q)]) :=
-                  (map2(dt_qmod[, mod], dt_qmod[, q],
-                        ~stringdist(tolower(name_pmdb), tolower(name_tgt), method = .x, q = .y))), ID_pmdb]
-
     
-    dt_grid_blank[, paste0("strdist_", l_mod_noq) :=
-                        map(l_mod_noq, ~stringdist(tolower(name_pmdb),
-                                                   tolower(name_tgt), method = .x)), ID_pmdb] %>%
-        names
+    dt_grid_wfeat_both %>% setnames(old = c("name1", "name2"), new = c(name1, name2))
 
     ## fill up missing columns
     l_cols_feat <- paste0("strdist_", c(dt_qmod[, sprintf("%s_%s", mod, q)], l_mod_noq))
-    setnafill(dt_grid_blank, fill = NA, nan = NA, cols = l_cols_feat)
+    setnafill(dt_grid_wfeat_both, fill = NA, nan = NA, cols = l_cols_feat)
 
-    dt_grid_wfeat <- dt_grid_blank[sample(1:.N, size = .N)]
+    dt_grid_wfeat_both <- dt_grid_wfeat_both[sample(1:.N, size = .N)] # shuffle
 
-    return(dt_grid_wfeat) # shuffle
+    return(dt_grid_wfeat_both)
 
 }
 
 
 dt_grid_blank <- gd_grid_train(size_nomatch = 1e2)
-dt_grid_wfeat <- gd_grid_wfeat(dt_grid_blank)
+dt_grid_wfeat <- gd_grid_wfeat(dt_grid_blank, "name_pmdb", "name_tgt")
 
 dt_grid_wfeat[, .SD[sample(1:.N, size = 5)], match] %>% write.csv(file = "")
     
-
-
-
-r_log1 <- glm(match ~ strdist_jac1, family = binomial, dt_grid)
-r_log12 <- glm(match ~ strdist_jac2, family = binomial, dt_grid)
-r_log2 <- glm(match ~ strdist_jac1 + strdist_jac2, family = binomial, dt_grid)
-r_log3 <- glm(match ~ strdist_jac1 + strdist_jac2 + strdist_jac3, family = binomial, dt_grid)
-r_log4 <- glm(match ~ strdist_jac1 + strdist_jac2 + strdist_jac3 + strdist_jac4, family = binomial, dt_grid)
-r_log5 <- glm(match ~ strdist_jac1 + strdist_jac2 + strdist_jac3 + strdist_jac4 + strdist_jac5, family = binomial, dt_grid)
-
-dt_grid[, map(.SD, mean), match, .SDcols = patterns("strdist_jac")]
-
-## see how distinctive they are: matches clearly distinct.. but is that enough?
-## will see when I have figured out the boosting.. 
-
-melt.data.table(dt_grid,  id.vars = c("ID_pmdb", "ID_tgt", "match"), measure.vars = paste0("strdist_jac", l_qs)) %>%
-    ggplot(aes(x = value, color = factor(match))) +
-    geom_density() + 
-    facet_grid(variable+match~., scales = "free") 
-
-dt_grid %>% ggplot(aes (x = strdist_jac5, color= factor(match))) + geom_density()
-
-screenreg(list(r_log1,r_log12,r_log2, r_log3, r_log4, r_log5))
-
-## ** mboost package
-
-r_boost <- glmboost(match ~ strdist_jac1 + strdist_jac2 + strdist_jac3 + strdist_jac5, dt_grid, family = Binomial(type = "glm", link = "logit"))
-AIC(r_boost, method = "corrected")
-
-
-cars.gb <- gamboost(dist ~ speed, data = cars, dfbase = 4,
-                    control = boost_control(mstop = 50))
-cars.gb
-
-AIC(cars.gb, method = "corrected")
-
-### plot fit for mstop = 1, ..., 50
-plot(dist ~ speed, data = cars)
-
-tmp <- sapply(1:mstop(AIC(cars.gb)), function(i)
-    lines(cars$speed, predict(cars.gb[i]), col = "red"))
-
-lines(cars$speed, predict(smooth.spline(cars$speed, cars$dist),
-                          cars$speed)$y, col = "green")
-
-### artificial example: sinus transformation
-x <- sort(runif(100)) * 10
-y <- sin(x) + rnorm(length(x), sd = 0.25)
-plot(x, y)
-### linear model
-lines(x, fitted(lm(y ~ sin(x) - 1)), col = "red")
-### GAM
-lines(x, fitted(gamboost(y ~ x,
-                         control = boost_control(mstop = 500))),
-      col = "green")
 
 
 
@@ -383,7 +355,8 @@ gd_xgb_assess(r_xgb,  dt_grid_test, mat_test)
 
 dt_grid_test[match == 1 & match_pred_num < 0.5, .(name_pmdb, name_tgt, match, match_pred)] %>% print(n=80)
 
-
+## somewhat systematic parameter exploration
+## set up params
 dt_boost_paramcbns <- expand.grid(
     eta = c(0.01, 0.05, 0.2, 0.5),
     max_depth = c(2,4,6,8),
@@ -405,12 +378,82 @@ assess_xgb_params <- function(eta, max_depth, n_rounds, subsample) {
     gd_xgb_assess(r_xgb, dt_grid_test, mat_test)
 }
 
+
 l_res <- map(l_boost_paramcbns, ~do.call(assess_xgb_params, .x))
 
-l_res %>% rbindlist %>% str
+dt_paramres <- l_res %>% rbindlist %>%
+    cbind(dt_boost_paramcbns)
+
+dt_paramres_long <- dt_paramres %>% melt(id.vars = names(dt_boost_paramcbns))
+    
+
+fx <- sprintf("value ~ mvsw(%s)", paste0(names(dt_boost_paramcbns), collapse = ",")) %>% as.formula
+feols(fx, dt_paramres_long[variable == "recall"])
+
+dt_paramres_long[variable == "recall"] %>% 
+    ggplot(aes(x = factor(n_rounds), y = value, color = factor(eta))) + geom_point() +
+    facet_grid(max_depth~subsample)
+
+dt_paramres[order(-recall)]
+
+## dt_paramres %>% ggplot(aes(x = n_rounds, 
+
+
+gd_xgb_topfeat <- function(r_xgb) {
+    #' use smaller, faster model: only take most influential predictors
+    #' feature construction is expensive so can use that to filter down number of cases to check
+
+    dt_topfeat <- xgb.importance(model = r_xgb) %>% .[, cum_gain := cumsum(Gain)] %>% .[cum_gain < 0.8]
+
+    return(dt_topfeat)
+}
 
 
 
+gr_xgb_smol <- function(r_xgb) {
+
+    dt_topfeat <- gd_xgb_topfeat(r_xgb)
+
+    mat_train <- xgb.DMatrix(dt_grid_train[, .SD, .SDcols = l_cols_feat] %>% as.matrix,
+                         label = dt_grid_train$match)
+
+    mat_train_smol <- dt_grid_train[, .SD, .SDcols = dt_topfeat[, Feature]] %>% as.matrix %>%
+        xgb.DMatrix(label = dt_grid_train$match)
+
+    mat_test_smol <- dt_grid_test[, .SD, .SDcols = dt_topfeat[, Feature]] %>% as.matrix %>%
+        xgb.DMatrix(label = dt_grid_test$match)
+    
+
+    l_watch_smol <- list(train = mat_train_smol, test = mat_test_smol)
+
+    r_xgb_smol <- xgb.train(params = params, data = mat_train_smol,
+                            nrounds =nrounds, verbose  = 1, watchlist = l_watch_smol)
+
+    dt_assess <- gd_xgb_assess(r_xgb_smol, dt_grid_test = dt_grid_test, mat_test = mat_test_smol)
+    print(dt_assess)
+    return(r_xgb_smol)
+}
+
+
+
+r_xgb_smol <- gr_xgb_smol(r_xgb)
+
+gd_dt_smol <- function(dt_grid_blank, r_xgb, r_xgb_smol) {
+    #' idea: apply a smaller model first (less time spent constructing features, which is expensive)
+
+    ## first see which columns are needed
+    l_topfeat <- gd_xgb_topfeat(r_xgb)[, Feature]
+
+    ## sort into q and noq
+
+    ## then construct those features for dt_grid_blank
+    
+    
+    
+
+
+}
+    
 
 
 

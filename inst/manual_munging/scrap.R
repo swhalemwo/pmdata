@@ -301,3 +301,62 @@ where json_each.value = 2452")
 
 dbGetQuery(src2, "select google.json ->> 'lat' as lat from google,
 json_each(google.json, '$.lat') wehre json_each.value > 30")
+
+## ** logistic regression approach -> bye bye
+
+
+r_log1 <- glm(match ~ strdist_jac1, family = binomial, dt_grid)
+r_log12 <- glm(match ~ strdist_jac2, family = binomial, dt_grid)
+r_log2 <- glm(match ~ strdist_jac1 + strdist_jac2, family = binomial, dt_grid)
+r_log3 <- glm(match ~ strdist_jac1 + strdist_jac2 + strdist_jac3, family = binomial, dt_grid)
+r_log4 <- glm(match ~ strdist_jac1 + strdist_jac2 + strdist_jac3 + strdist_jac4, family = binomial, dt_grid)
+r_log5 <- glm(match ~ strdist_jac1 + strdist_jac2 + strdist_jac3 + strdist_jac4 + strdist_jac5, family = binomial, dt_grid)
+
+dt_grid[, map(.SD, mean), match, .SDcols = patterns("strdist_jac")]
+
+## see how distinctive they are: matches clearly distinct.. but is that enough?
+## will see when I have figured out the boosting.. 
+
+melt.data.table(dt_grid,  id.vars = c("ID_pmdb", "ID_tgt", "match"), measure.vars = paste0("strdist_jac", l_qs)) %>%
+    ggplot(aes(x = value, color = factor(match))) +
+    geom_density() + 
+    facet_grid(variable+match~., scales = "free") 
+
+dt_grid %>% ggplot(aes (x = strdist_jac5, color= factor(match))) + geom_density()
+
+screenreg(list(r_log1,r_log12,r_log2, r_log3, r_log4, r_log5))
+
+## ** mboost package
+
+r_boost <- glmboost(match ~ strdist_jac1 + strdist_jac2 + strdist_jac3 + strdist_jac5, dt_grid, family = Binomial(type = "glm", link = "logit"))
+AIC(r_boost, method = "corrected")
+
+
+cars.gb <- gamboost(dist ~ speed, data = cars, dfbase = 4,
+                    control = boost_control(mstop = 50))
+cars.gb
+
+AIC(cars.gb, method = "corrected")
+
+### plot fit for mstop = 1, ..., 50
+plot(dist ~ speed, data = cars)
+
+tmp <- sapply(1:mstop(AIC(cars.gb)), function(i)
+    lines(cars$speed, predict(cars.gb[i]), col = "red"))
+
+lines(cars$speed, predict(smooth.spline(cars$speed, cars$dist),
+                          cars$speed)$y, col = "green")
+
+### artificial example: sinus transformation
+x <- sort(runif(100)) * 10
+y <- sin(x) + rnorm(length(x), sd = 0.25)
+plot(x, y)
+### linear model
+lines(x, fitted(lm(y ~ sin(x) - 1)), col = "red")
+### GAM
+lines(x, fitted(gamboost(y ~ x,
+                         control = boost_control(mstop = 500))),
+      col = "green")
+
+
+
