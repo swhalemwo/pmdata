@@ -360,3 +360,65 @@ lines(x, fitted(gamboost(y ~ x,
 
 
 
+
+
+## ** gbm
+
+
+set.seed(123)
+
+
+l_cols_feat <- keep(names(dt_grid_wfeat), ~grepl("strdist", .x))
+f_gbm <- l_cols_feat  %>% paste0(collapse = "+") %>%
+    sprintf("match ~ %s", .) %>% as.formula
+              
+
+r_gbm <- gbm(
+  formula = f_gbm,
+  distribution = "bernoulli",    # Binary classification
+  data = dt_grid_wfeat,          
+  n.trees = 100,                 # Number of trees
+  interaction.depth = 4,         # Depth of trees
+  n.minobsinnode = 10,           # Minimum number of observations in the tree node
+  shrinkage = 0.01,              # Learning rate
+  verbose = TRUE                 # Show progress
+)
+
+
+gbm.perf(r_gbm)
+
+confusionMatrix
+
+
+## ** exploring match data
+dt_grid %>% head %>% adf
+
+
+
+dt_grid_subset <- dt_grid[strdist_jac1 < 0.3 & geodist < 5] %>% copy
+
+
+dt_grid_subset[, nbr_candidates := .N, .(ID_af)]
+
+dt_grid_subset[nbr_candidates == 1]
+dt_grid_subset[nbr_candidates > 5]
+
+
+dt_grid_subset[nbr_candidates == 1, .(name_nccs, name_af, strdist_jac1, geodist)]
+
+## hermitage
+dt_grid_subset[ID_nccs == 10769997, .(name_nccs, name_af, strdist_jac1, geodist)]
+
+
+dt_grid_subset[grepl("joslyn", ignore.case = T, name_af), .(ein, name_af, name_nccs)]
+
+dt_nccs_artmuem_full[ein %in% c(470384577, 470835035), .(year, styear, name, ein)] %>% print(n=80)
+
+
+dt_grid_subset[ID_af == 6805] ## single
+
+dt_grid_subset[ID_af == 7345, .(name_af, name_nccs, strdist_jac1, geodist, ID_nccs, ID_af)] %>% print(n=80)## many
+
+dt_grid_subset[ID_af == 7345, .(name_af, name_nccs, strdist_jac1, geodist, ID_nccs, ID_af)] %>% view_xl
+
+dt_example <- dt_grid_subset[ID_af == 7345, .(name_nccs, strdist_jac1, geodist, ID_nccs)]

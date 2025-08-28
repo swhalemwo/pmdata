@@ -12,6 +12,8 @@ library(texreg)
 library(gbm)
 library(xgboost)
 library(fixest)
+library(ellmer)
+library(caret)
 
 NODB_GEOCODE_NCCS <- "~/Dropbox/phd/pmdata/inst/manual_munging/nodb_geocode_nccs.sqlite"
 NODB_GEOCODE_AF <- "~/Dropbox/phd/pmdata/inst/manual_munging/nodb_geocode_artfacts.sqlite"
@@ -29,94 +31,38 @@ gd_coords <- function(db_name, container, dt_info) {
 }
 
 PMDATA_LOCS <- gc_pmdata_locs()
-    
-dt_nccs_artmuem_full <- gd_nccs_muem()[nteecc == "A51"]
-dt_nccs_artmuem <- gd_nccs_muem()[nteecc == "A51", tail(.SD, 1), ein]
 
-dt_nccs_artmuem_min <- dt_nccs_artmuem %>% copy %>% .[, .(ID = ein, name)] # minimal 
+gd_grid_new <- function() {
+    #' generate data for which I want to get matches
+    #' here it's AF and NCCS 
 
+    dt_nccs_artmuem_full <- gd_nccs_muem()[nteecc == "A51"]
+    dt_nccs_artmuem <- gd_nccs_muem()[nteecc == "A51", tail(.SD, 1), ein]
 
-dt_nccs_info <- gd_coords(NODB_GEOCODE_NCCS, "google_waddr", dt_nccs_artmuem_min) %>%
-    setnames(old = names(.), new = paste0(names(.), "_nccs"))
-
-dt_af_instns_us <- gd_af_instns() %>% .[Country == "United States" & InstitutionType != "Private Galleries"] %>%
-    .[, .(ID, name = Name)]
-
-dt_af_info <- gd_coords(NODB_GEOCODE_AF, "google", dt_af_instns_us) %>%
-    setnames(old = names(.), new = paste0(names(.), "_af")) %>% .[]
+    dt_nccs_artmuem_min <- dt_nccs_artmuem %>% copy %>% .[, .(ID = ein, name)] # minimal 
 
 
-## old permutations: too expensive
-## dt_af_cpnts <- dt_af_info %>% head(10) %>% 
-##     .[, .(pob_name  = strsplit(name_af, " ")[[1]] %>%
-##               permutations(n=uniqueN(.), r= uniqueN(.), v = .) %>%
-##               apply(1, paste0, collapse = " ")), ID_af]
+    dt_nccs_info <- gd_coords(NODB_GEOCODE_NCCS, "google_waddr", dt_nccs_artmuem_min) %>%
+        setnames(old = names(.), new = paste0(names(.), "_nccs"))
 
+    dt_af_instns_us <- gd_af_instns() %>% .[Country == "United States" & InstitutionType != "Private Galleries"] %>%
+        .[, .(ID, name = Name)]
 
-library(stringdist)
-l_stringdist_methods <- c("osa", "lv", "dl", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex") %>%
-    setNames(.,.)
-
-imap(l_stringdist_methods, ~stringdist("some test here", "test some", method = .x))
-imap(l_stringdist_methods, ~stringdist("test some", "some test here", method = .x))
+    dt_af_info <- gd_coords(NODB_GEOCODE_AF, "google", dt_af_instns_us) %>%
+        setnames(old = names(.), new = paste0(names(.), "_af")) %>% .[]
 
 
 
-## set up grid
-lenx <- 5e3
-## lenx <- max(
-dt_grid <- CJ(ID_af = dt_af_info[1:lenx, ID_af], ID_nccs = dt_nccs_info[1:lenx, ID_nccs]) %>%
-    merge(dt_af_info, by = "ID_af") %>%
-    merge(dt_nccs_info, by = "ID_nccs")
+    ## set up grid
+    lenx <- 5e3
+    ## lenx <- max(
+    dt_grid <- CJ(ID_af = dt_af_info[1:lenx, ID_af], ID_nccs = dt_nccs_info[1:lenx, ID_nccs]) %>%
+        merge(dt_af_info, by = "ID_af") %>%
+        merge(dt_nccs_info, by = "ID_nccs")
 
+    return(dt_grid)
+}
 
-
-## test jaccard distances with varying qgrams
-l_qs <- 1:5
-
-t1 = Sys.time()
-dt_grid[, paste0("strdist_jac", l_qs)
-        := (map(l_qs, ~stringdist(tolower(name_af), tolower(name_nccs), method = "jaccard", q = .x))), ID_nccs]
-t2 = Sys.time()
-dt_grid[, .N*5]/as.numeric(t2-t1)
-
-## add distances based on coordinates--
-dt_grid[, geodist := st_distance(geometry_af, geometry_nccs, by_element = T) %>% set_units("km") %>% drop_units]
-
-## ** exploring match data
-dt_grid %>% head %>% adf
-
-
-
-dt_grid_subset <- dt_grid[strdist_jac1 < 0.3 & geodist < 5] %>% copy
-
-
-dt_grid_subset[, nbr_candidates := .N, .(ID_af)]
-
-dt_grid_subset[nbr_candidates == 1]
-dt_grid_subset[nbr_candidates > 5]
-
-
-dt_grid_subset[nbr_candidates == 1, .(name_nccs, name_af, strdist_jac1, geodist)]
-
-## hermitage
-dt_grid_subset[ID_nccs == 10769997, .(name_nccs, name_af, strdist_jac1, geodist)]
-
-
-dt_grid_subset[grepl("joslyn", ignore.case = T, name_af), .(ein, name_af, name_nccs)]
-
-dt_nccs_artmuem_full[ein %in% c(470384577, 470835035), .(year, styear, name, ein)] %>% print(n=80)
-
-
-dt_grid_subset[ID_af == 6805] ## single
-
-dt_grid_subset[ID_af == 7345, .(name_af, name_nccs, strdist_jac1, geodist, ID_nccs, ID_af)] %>% print(n=80)## many
-
-dt_grid_subset[ID_af == 7345, .(name_af, name_nccs, strdist_jac1, geodist, ID_nccs, ID_af)] %>% view_xl
-
-dt_example <- dt_grid_subset[ID_af == 7345, .(name_nccs, strdist_jac1, geodist, ID_nccs)]
-
-library(ellmer)
 
 ## ** AI matching
 
@@ -144,144 +90,7 @@ gwd_aisimas(dt_example)
 
 
 ## first PMDB
-gd_grid_train <- function(size_nomatch = 2e3) {
 
-    #' generate training data to see how similar matched museums are:
-    #' find out which metrics are best for automated merging
-
-    dt_pmdb <- gd_pmdb_excl(sel = "all") %>% gd_pmdb %>% .[, .(ID_pmdb = ID, name_pmdb = name)]
-
-    dt_mow_prep <- gd_mow_info() %>% .[, .(ID_mow = MOW_ID, name_mow = name, ID_PMDB_mow = PMDB_ID)]
-    dt_mow <- rbind(dt_mow_prep[!is.na(ID_PMDB_mow)],
-                    dt_mow_prep[is.na(ID_PMDB_mow), .SD[sample(1:.N, size = size_nomatch)]]) 
-
-    dt_grid_mow <- CJ(ID_mow = dt_mow[, ID_mow], ID_pmdb = dt_pmdb[, ID_pmdb]) %>%
-        merge(dt_pmdb, by =  "ID_pmdb") %>%
-        merge(dt_mow, by = "ID_mow") %>%
-        .[, match := (ID_PMDB_mow == ID_pmdb)*1] %>% setnafill(fill = 0, cols = "match")
-
-    ## then AF
-    dt_af_instns_prep <- gd_af_instns()[, .(ID_af = ID, name_af = Name)]
-    dt_af_pmdb_matches <- gd_af_pmdb_matches()[AF_IID != "nomatch"][, AF_IID := as.integer(AF_IID)] %>%
-        .[, .(ID_af = AF_IID, ID_PMDB_af = PMDB_ID)]
-    dt_af_instns_prep2 <- merge(dt_af_instns_prep, dt_af_pmdb_matches, by = "ID_af", all.x = T)
-    dt_af_instns <- rbind(dt_af_instns_prep2[!is.na(ID_PMDB_af)],
-                          dt_af_instns_prep2[is.na(ID_PMDB_af), .SD[sample(1:.N, size = size_nomatch)]])
-
-    dt_grid_af <- CJ(ID_af = dt_af_instns[, ID_af], ID_pmdb = dt_pmdb[, ID_pmdb]) %>%
-        merge(dt_pmdb, by = "ID_pmdb") %>%
-        merge(dt_af_instns, by = "ID_af") %>%
-        .[, match := (ID_PMDB_af == ID_pmdb)*1] %>% setnafill(fill = 0, cols = "match")
-
-    dt_grid <- rbind(dt_grid_mow[, .(ID_pmdb, ID_tgt = ID_mow, name_pmdb, name_tgt = name_mow, match)],
-                     dt_grid_af[, .(ID_pmdb, ID_tgt = ID_af, name_pmdb, name_tgt = name_af, match)])
-
-    return(dt_grid)
-}
-
-
-
-gd_strfeat_wq <- function(dtx, dt_qmod) {
-    #' generate string features for string similarities with q
-
-    dt_strfeat_wq <- dtx %>% copy %>%
-        .[, paste0(dt_qmod[, sprintf("strdist_%s_%s", mod, q)]) :=
-                (map2(dt_qmod[, mod], dt_qmod[, q],
-                      ~stringdist(tolower(name1), tolower(name2), method = .x, q = .y))), ID_pmdb]
-
-    return(dt_strfeat_wq)
-}
-
-gd_strfeat_noq <- function(dtx, l_mod_noq) {
-    #' generate string similarity features for which there is no q (only single input)
-    dt_strfeat_noq <- dtx %>% copy %>%
-        .[, paste0("strdist_", l_mod_noq) :=
-                map(l_mod_noq, ~stringdist(tolower(name1),
-                                           tolower(name2), method = .x)), ID_pmdb]
-        
-
-    return(dt_strfeat_noq)
-}
-    
-
-
-
-
-gd_grid_wfeat <- function(dt_grid_blank, name1, name2, dt_qmod = NULL, l_mod_noq = NULL) {
-    #' construct features for similarity matching
-    
-    dt_grid_blank %>% setnames(old = c(name1, name2), new = c("name1", "name2"))
-    
-
-    if (is.null(dt_qmod)) {
-        l_qs <- 1:5 # qgrams for qmethods
-        l_qmods <- c("qgram", "jaccard", "cosine") # methods using Q
-
-        dt_qmod <- CJ(q = l_qs, mod = l_qmods)## [, sprintf("%s_%s", mod, q)]
-    }
-
-    if (is.null(l_mod_noq)) {
-        ## "hamming" creates infinite dist -> yeet
-        l_mod_noq <- c("osa", "lv", "dl", "lcs", "jw")
-    }
-
-    
-    dt_grid_wfeat_q <- gd_strfeat_wq(dt_grid_blank, dt_qmod)
-
-    dt_grid_wfeat_both <- gd_strfeat_noq(dt_grid_wfeat_q, l_mod_noq)
-    
-    ## dt_grid_blank <- dt_grid_blank[1:1e4]
-
-    ## generate string similarities for q mods
-    
-    dt_grid_wfeat_both %>% setnames(old = c("name1", "name2"), new = c(name1, name2))
-
-    ## fill up missing columns
-    l_cols_feat <- paste0("strdist_", c(dt_qmod[, sprintf("%s_%s", mod, q)], l_mod_noq))
-    setnafill(dt_grid_wfeat_both, fill = NA, nan = NA, cols = l_cols_feat)
-
-    dt_grid_wfeat_both <- dt_grid_wfeat_both[sample(1:.N, size = .N)] # shuffle
-
-    return(dt_grid_wfeat_both)
-
-}
-
-
-dt_grid_blank <- gd_grid_train(size_nomatch = 1e2)
-dt_grid_wfeat <- gd_grid_wfeat(dt_grid_blank, "name_pmdb", "name_tgt")
-
-dt_grid_wfeat[, .SD[sample(1:.N, size = 5)], match] %>% write.csv(file = "")
-    
-
-
-
-
-## ** gbm
-
-
-set.seed(123)
-
-
-l_cols_feat <- keep(names(dt_grid_wfeat), ~grepl("strdist", .x))
-f_gbm <- l_cols_feat  %>% paste0(collapse = "+") %>%
-    sprintf("match ~ %s", .) %>% as.formula
-              
-
-r_gbm <- gbm(
-  formula = f_gbm,
-  distribution = "bernoulli",    # Binary classification
-  data = dt_grid_wfeat,          
-  n.trees = 100,                 # Number of trees
-  interaction.depth = 4,         # Depth of trees
-  n.minobsinnode = 10,           # Minimum number of observations in the tree node
-  shrinkage = 0.01,              # Learning rate
-  verbose = TRUE                 # Show progress
-)
-
-
-gbm.perf(r_gbm)
-
-confusionMatrix
 
 
 
@@ -289,64 +98,34 @@ confusionMatrix
 ## ** xgboost
 
 
-gd_xgb_assess <- function(r_xgb, dt_grid_test, mat_test, return_data = F) {
 
+
+
+## collecting new data to be matched
+dt_grid_new <- gd_grid_new()
+
+## add distances based on coordinates--
+dt_grid[, geodist := st_distance(geometry_af, geometry_nccs, by_element = T) %>% set_units("km") %>% drop_units]
+
+
+
+
+## training model
+dt_grid_blank <- gd_grid_train(size_nomatch = 1e3)
+dt_grid_wfeat <- gd_grid_wfeat(dt_grid_blank, "name_pmdb", "name_tgt")
+
+## dt_grid_wfeat[, .SD[sample(1:.N, size = 5)], match] %>% write.csv(file = "")
     
-    dt_grid_test[, match_pred_num := predict(r_xgb, mat_test)][, match_pred := 1*(match_pred_num > 0.5)]
-    
-    mat_confuse <- dt_grid_test[, table(Pred = match_pred, actual = match)]
-
-    accuracy <- sum(diag(mat_confuse)) / sum(mat_confuse)
-    precision <- mat_confuse[2, 2] / sum(mat_confuse[2, ])
-    recall <- mat_confuse[2, 2] / sum(mat_confuse[, 2])
-    f1_score <- 2 * ((precision * recall) / (precision + recall))
-
-    dt_assess <- data.table(
-        accuracy = accuracy,
-        precision = precision,
-        recall = recall,
-        f1_score = f1_score)
-
-    
-    if (return_data) {
-        ret_obj <- list(dt_grid_test = dt_grid_test, dt_assess = dt_assess)
-    } else {
-        ret_obj <- dt_assess
-    }
-    
+## dt_grid_blank[tolower(name_pmdb) == tolower(name_tgt) & match == 0]
+dt_grid_blank[, .N, match]
 
 
-    return(ret_obj)
-}
 
 
-library(caret)
-train_index <- createDataPartition(dt_grid_wfeat$match, p = 0.8, list = FALSE)
-
-dt_grid_train <- dt_grid_wfeat[train_index, ]
-dt_grid_test <- dt_grid_wfeat[-train_index, ]
 
 
-mat_train <- xgb.DMatrix(dt_grid_train[, .SD, .SDcols = l_cols_feat] %>% as.matrix,
-                         label = dt_grid_train$match)
-
-mat_test <- xgb.DMatrix(dt_grid_test[, .SD, .SDcols = l_cols_feat] %>% as.matrix,
-                        label = dt_grid_test$match)
-
-params <- list(
-  objective = "binary:logistic",  # Binary classification
-  eval_metric = "logloss",         # Evaluation metric
-  eta = 0.1,                       # Learning rate
-  max_depth = 6                    # Maximum depth of trees
-)
-
-l_watch <- list(train = mat_train, test = mat_test)
 
 # Train the model
-nrounds <- 100                       # Number of boosting rounds, 100 seems to be good
-r_xgb <- xgb.train(params = params, data = mat_train, nrounds =nrounds, verbose  = 1, watchlist = l_watch)
-
-gd_xgb_assess(r_xgb,  dt_grid_test, mat_test)
 
 
 
@@ -355,108 +134,27 @@ gd_xgb_assess(r_xgb,  dt_grid_test, mat_test)
 
 dt_grid_test[match == 1 & match_pred_num < 0.5, .(name_pmdb, name_tgt, match, match_pred)] %>% print(n=80)
 
-## somewhat systematic parameter exploration
-## set up params
-dt_boost_paramcbns <- expand.grid(
-    eta = c(0.01, 0.05, 0.2, 0.5),
-    max_depth = c(2,4,6,8),
-    n_rounds = c(20,50,100),
-    subsample = c(0.5,1)) %>% adt
-
-l_boost_paramcbns <- dt_boost_paramcbns %>% split(1:nrow(.))
-                             
-assess_xgb_params <- function(eta, max_depth, n_rounds, subsample) {
-
-    c_params <- list(
-        objective = "binary:logistic",
-        eval_metric = "logloss",
-        eta = eta,
-        max_depth = max_depth,
-        subsample = subsample)
-
-    r_xgb <- xgb.train(params = c_params, data = mat_train, nrounds =n_rounds, verbose  = 1, watchlist = l_watch)
-    gd_xgb_assess(r_xgb, dt_grid_test, mat_test)
-}
 
 
-l_res <- map(l_boost_paramcbns, ~do.call(assess_xgb_params, .x))
-
-dt_paramres <- l_res %>% rbindlist %>%
-    cbind(dt_boost_paramcbns)
-
-dt_paramres_long <- dt_paramres %>% melt(id.vars = names(dt_boost_paramcbns))
     
-
-fx <- sprintf("value ~ mvsw(%s)", paste0(names(dt_boost_paramcbns), collapse = ",")) %>% as.formula
-feols(fx, dt_paramres_long[variable == "recall"])
-
-dt_paramres_long[variable == "recall"] %>% 
-    ggplot(aes(x = factor(n_rounds), y = value, color = factor(eta))) + geom_point() +
-    facet_grid(max_depth~subsample)
-
-dt_paramres[order(-recall)]
-
-## dt_paramres %>% ggplot(aes(x = n_rounds, 
-
-
-gd_xgb_topfeat <- function(r_xgb) {
-    #' use smaller, faster model: only take most influential predictors
-    #' feature construction is expensive so can use that to filter down number of cases to check
-
-    dt_topfeat <- xgb.importance(model = r_xgb) %>% .[, cum_gain := cumsum(Gain)] %>% .[cum_gain < 0.8]
-
-    return(dt_topfeat)
-}
-
-
-
-gr_xgb_smol <- function(r_xgb) {
-
-    dt_topfeat <- gd_xgb_topfeat(r_xgb)
-
-    mat_train <- xgb.DMatrix(dt_grid_train[, .SD, .SDcols = l_cols_feat] %>% as.matrix,
-                         label = dt_grid_train$match)
-
-    mat_train_smol <- dt_grid_train[, .SD, .SDcols = dt_topfeat[, Feature]] %>% as.matrix %>%
-        xgb.DMatrix(label = dt_grid_train$match)
-
-    mat_test_smol <- dt_grid_test[, .SD, .SDcols = dt_topfeat[, Feature]] %>% as.matrix %>%
-        xgb.DMatrix(label = dt_grid_test$match)
-    
-
-    l_watch_smol <- list(train = mat_train_smol, test = mat_test_smol)
-
-    r_xgb_smol <- xgb.train(params = params, data = mat_train_smol,
-                            nrounds =nrounds, verbose  = 1, watchlist = l_watch_smol)
-
-    dt_assess <- gd_xgb_assess(r_xgb_smol, dt_grid_test = dt_grid_test, mat_test = mat_test_smol)
-    print(dt_assess)
-    return(r_xgb_smol)
-}
-
 
 
 r_xgb_smol <- gr_xgb_smol(r_xgb)
 
-gd_dt_smol <- function(dt_grid_blank, r_xgb, r_xgb_smol) {
-    #' idea: apply a smaller model first (less time spent constructing features, which is expensive)
 
-    ## first see which columns are needed
-    l_topfeat <- gd_xgb_topfeat(r_xgb)[, Feature]
+dt_grid_bu <- dt_grid %>% copy %>% .[1:1e4]
 
-    ## sort into q and noq
+dt_grid_smol <- gd_dt_smol(dt_grid_blank = dt_grid, r_xgb_smol = r_xgb_smol, "name_af", "name_nccs", thld = 0.0001)
 
-    ## then construct those features for dt_grid_blank
-    
-    
-    
-
-
-}
-    
+dt_grid_fullfeat <- gd_dt_smol(dt_grid_smol, r_xgb, "name_af", "name_nccs", thld = 0.01)
 
 
 
+dt_grid_fullfeat[match_pred > 0.1][, .(name_af, name_nccs, match_pred)] %>% print(n=80)
 
 
 
+dt_grid_fullfeat[tolower(name_af) == tolower(name_nccs), .(name_af, name_nccs, match_pred)]
+
+dt_grid_fullfeat[match_pred > 0.5]
+dt_grid[tolower(name_af) == tolower(name_nccs)]
