@@ -95,7 +95,10 @@ gc_pmdata_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_so
         DIR_MEMOISE = "/home/johannes/tec/memoise_cache/",
         ## NCCS FILES
         DIR_NCCS_CORE = "/run/media/johannes/data/nccs/core/",
-        FILE_NCCS_MUSEUMS = "/run/media/johannes/data/nccs/nccs_museums.csv"        
+        FILE_NCCS_MUSEUMS = "/run/media/johannes/data/nccs/nccs_museums.csv",
+        ## name matching model files
+        R_XGB_MON = "~/Dropbox/phd/pmdata/inst/manual_munging/r_xgb_mon.model",
+        R_XGB_MON_SMOL = "~/Dropbox/phd/pmdata/inst/manual_munging/r_xgb_mon_smol.model"
     )
         
 
