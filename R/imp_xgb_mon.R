@@ -63,9 +63,10 @@ gc_params_mon <- function() {
 #'
 #' @param R_XGB_MON file to store full model
 gwr_xgb_mon <- function(R_XGB_MON = PMDATA_LOCS$R_XGB_MON) {
+    ## browser()
     #' generates and writes model for matching organization names (MON)
     #' goes to pmdata
-
+    
     c_params_mon <- gc_params_mon()
 
     ## dt_grid_blank <- gd_grid_train_mon(size_nomatch = 1e3)
@@ -112,3 +113,6 @@ rr_xgb_mon <- function(model_size = "full", R_XGB_MON = PMDATA_LOCS$R_XGB_MON,
 
 ## FIXME: eventually add function that retrains full and smol models in one go 
 ## - do hyper parameter optimization for both
+
+
+    

@@ -14,6 +14,7 @@ library(xgboost)
 library(fixest)
 library(ellmer)
 library(caret)
+library(stringdist)
 
 NODB_GEOCODE_NCCS <- "~/Dropbox/phd/pmdata/inst/manual_munging/nodb_geocode_nccs.sqlite"
 NODB_GEOCODE_AF <- "~/Dropbox/phd/pmdata/inst/manual_munging/nodb_geocode_artfacts.sqlite"
@@ -89,11 +90,6 @@ gwd_aisimas(dt_example)
 ## combine MOW and PMDB, and AF and PMDB
 
 
-## first PMDB
-
-
-
-
 
 ## ** xgboost
 
@@ -111,7 +107,7 @@ dt_grid[, geodist := st_distance(geometry_af, geometry_nccs, by_element = T) %>%
 
 
 ## training model
-dt_grid_blank <- gd_grid_train(size_nomatch = 1e3)
+dt_grid_blank <- gd_grid_train_mon(size_nomatch = 1e3)
 dt_grid_wfeat <- gd_grid_wfeat(dt_grid_blank, "name_pmdb", "name_tgt")
 
 ## dt_grid_wfeat[, .SD[sample(1:.N, size = 5)], match] %>% write.csv(file = "")
@@ -120,13 +116,7 @@ dt_grid_wfeat <- gd_grid_wfeat(dt_grid_blank, "name_pmdb", "name_tgt")
 dt_grid_blank[, .N, match]
 
 
-
-
-
-
-
 # Train the model
-
 
 
 ## dt_grid_test[match_pred_num > 0.5, .(name_pmdb, name_tgt, match)] %>% print(n=80)
