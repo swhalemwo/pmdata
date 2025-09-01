@@ -94,57 +94,43 @@ gwd_aisimas(dt_example)
 ## ** xgboost
 
 
-
-
-
-## collecting new data to be matched
-dt_grid_new <- gd_grid_new()
-
-## add distances based on coordinates--
-dt_grid[, geodist := st_distance(geometry_af, geometry_nccs, by_element = T) %>% set_units("km") %>% drop_units]
-
-
-
-
-## training model
-dt_grid_blank <- gd_grid_train_mon(size_nomatch = 1e3)
-dt_grid_wfeat <- gd_grid_wfeat(dt_grid_blank, "name_pmdb", "name_tgt")
-
-## dt_grid_wfeat[, .SD[sample(1:.N, size = 5)], match] %>% write.csv(file = "")
-    
-## dt_grid_blank[tolower(name_pmdb) == tolower(name_tgt) & match == 0]
-dt_grid_blank[, .N, match]
-
-
-# Train the model
-
-
-## dt_grid_test[match_pred_num > 0.5, .(name_pmdb, name_tgt, match)] %>% print(n=80)
-# howy smokes
-
-dt_grid_test[match == 1 & match_pred_num < 0.5, .(name_pmdb, name_tgt, match, match_pred)] %>% print(n=80)
-
-
+gd_cands_gpt <- function() {
+    #' generate candidate pairs for AI matching
 
     
+    ## collecting new data to be matched
+    dt_grid_new <- gd_grid_new()
+
+    ## add distances based on coordinates--
+    dt_grid_new[, geodist := st_distance(geometry_af, geometry_nccs, by_element = T) %>% set_units("km") %>% drop_units]
+
+    ## get smol and full models to train match
+    r_xgb_mon_smol <- rr_xgb_mon(model_size = "smol")
+    r_xgb_mon_full <- rr_xgb_mon(model_size = "full")
+
+    ## use smol model for basic filtering
+    dt_grid_smol <- gd_dt_smol(dt_grid_new, r_xgb_mon_smol, "name_af", "name_nccs", thld = 0)
+
+    ## get 10 closest stringmatch and 10 closest locations
+    dt_grid_smol2 <- rbind(dt_grid_smol[, head(.SD[order(-match_pred)], 10), ID_nccs],
+                           dt_grid_smol[, head(.SD[order(geodist)], 10), ID_nccs]) %>% 
+        .[, head(.SD,1), .(ID_nccs, ID_af)] # remove duplicates
+
+    ## use full model to predict matches with hopefully more accuracy
+    dt_grid_smol3 <- gd_dt_smol(dt_grid_smol2, r_xgb_mon_full, "name_af", "name_nccs", thld = 0)
+
+    return(dt_grid_smol3)
+}
 
 
-r_xgb_smol <- gr_xgb_smol(r_xgb)
 
 
-dt_grid_bu <- dt_grid %>% copy %>% .[1:1e4]
-
-dt_grid_smol <- gd_dt_smol(dt_grid_blank = dt_grid, r_xgb_smol = r_xgb_smol, "name_af", "name_nccs", thld = 0.0001)
-
-dt_grid_fullfeat <- gd_dt_smol(dt_grid_smol, r_xgb, "name_af", "name_nccs", thld = 0.01)
+merge(unique(dt_grid_smol2[, .(ID_nccs, ID_af)]), dt_grid_smol2, by = c("ID_nccs", "ID_af"), all.x = T)
 
 
 
-dt_grid_fullfeat[match_pred > 0.1][, .(name_af, name_nccs, match_pred)] %>% print(n=80)
+dt_grid_smol[order(-match_pred)][, head(.SD, 10), ID_nccs][, .(name_af, name_nccs, match_pred, geodist)] %>% print(n=80)
+
+, 10), ID_nccs]
 
 
-
-dt_grid_fullfeat[tolower(name_af) == tolower(name_nccs), .(name_af, name_nccs, match_pred)]
-
-dt_grid_fullfeat[match_pred > 0.5]
-dt_grid[tolower(name_af) == tolower(name_nccs)]

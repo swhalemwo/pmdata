@@ -422,3 +422,63 @@ dt_grid_subset[ID_af == 7345, .(name_af, name_nccs, strdist_jac1, geodist, ID_nc
 dt_grid_subset[ID_af == 7345, .(name_af, name_nccs, strdist_jac1, geodist, ID_nccs, ID_af)] %>% view_xl
 
 dt_example <- dt_grid_subset[ID_af == 7345, .(name_nccs, strdist_jac1, geodist, ID_nccs)]
+
+
+## ** old AI sim code, now hopefullly better fucntionalized
+
+## training model
+dt_grid_blank <- gd_grid_train_mon(size_nomatch = 1e3)
+dt_grid_wfeat <- gd_grid_wfeat(dt_grid_blank, "name_pmdb", "name_tgt")
+
+## dt_grid_wfeat[, .SD[sample(1:.N, size = 5)], match] %>% write.csv(file = "")
+    
+## dt_grid_blank[tolower(name_pmdb) == tolower(name_tgt) & match == 0]
+dt_grid_blank[, .N, match]
+
+
+# Train the model
+
+
+## dt_grid_test[match_pred_num > 0.5, .(name_pmdb, name_tgt, match)] %>% print(n=80)
+# howy smokes
+
+dt_grid_test[match == 1 & match_pred_num < 0.5, .(name_pmdb, name_tgt, match, match_pred)] %>% print(n=80)
+
+
+
+r_xgb_mon <- gr_xgb_mon()
+
+r_xgb_mon_ff <- pmdata:::rr_xgb_mon("full")
+
+r_xgb_mon_ff <- readRDS(PMDATA_LOCS$R_XGB_MON)
+
+gd_xgb_topfeat(r_xgb_mon)
+gd_xgb_topfeat(r_xgb_mon_ff, 0.8)
+
+setinfo(r_xgb_mon_ff, "label", 1)
+
+pmdata:::gr_xgb_mon_smol()
+
+r_xgb_smol <- gr_xgb_smol(r_xgb_mon, dt_grid_blank, c_params)
+
+
+dt_grid_bu <- dt_grid %>% copy %>% .[1:1e4]
+
+dt_grid_smol <- gd_dt_smol(dt_grid_blank = dt_grid, r_xgb_smol = r_xgb_smol, "name_af", "name_nccs", thld = 0.0001)
+
+dt_grid_fullfeat <- gd_dt_smol(dt_grid_smol, r_xgb, "name_af", "name_nccs", thld = 0.01)
+
+
+
+dt_grid_fullfeat[match_pred > 0.1][, .(name_af, name_nccs, match_pred)] %>% print(n=80)
+
+
+
+dt_grid_fullfeat[tolower(name_af) == tolower(name_nccs), .(name_af, name_nccs, match_pred)]
+
+dt_grid_fullfeat[match_pred > 0.5]
+dt_grid[tolower(name_af) == tolower(name_nccs)]
+
+
+library(yaml)
+read_yaml("~/Dropbox/phd/pmdata/inst/manual_munging/params_mon.yaml") %>% chuck("c_params_xgb") %>% str
