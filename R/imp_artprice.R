@@ -391,4 +391,36 @@ gc_cache_pmdata <- function(DIR_MEMOISE = gc_pmdata_locs()$DIR_MEMOISE) {
     return(cm)
 }
 
+#' get data based on artprice yearly reports
+#'
+#' manually collected from the reports
+#' in early years no total figures, read from graphs
+#' exchange rates estimated from https://www.macrotrends.net/2548/euro-dollar-exchange-rate-historical-chart
+#' @export
+gd_ap_yearrep <- function() {
+    
+    dt_ap_yearrep <- tribble(
+        ~year, ~turnover_aprep, # ~lots_k,
+        2002, 2.47,   # 2.6 * 0.95 (guestimated exchange rate) 
+        2003,2.376,# 2.2 * 1.08 (guestimated exchange rate) 
+        2004,3.5, # 2.8 * 1.25 (guestimated exchange rates) 
+        2005,4.15,
+        2006, 6.4, # 400,  # figure p.5 has ~5, but is in EUR?
+        2007, 9.2, 
+        2008, 8.2,
+        2009,4.6, # unclear ?
+        2010,9.36,
+        2011,11.57,
+        2012,12.269,
+        2013,12.005, # says 2012 was 10.6bn? line has to go up lol
+        2014,15.2,
+        2015, 16,
+        2016,12.45,
+        2017,14.9,
+        2018,15.5,
+        2019,13.3,
+        2020,10.57,
+        2021,17)
 
+    return(dt_ap_yearrep)
+}
