@@ -1,24 +1,24 @@
-InstitutionType,clsfcn1,reason,clsfcn2,clsfcn3
-Private Galleries,gallery,obv,gallery,gallery
-"Editions, Prints, ...",gallery,"many have gallery in name",yeet,yeet
-Non-profit organizations,npo,obv,npo,nonpm
-Public Institutions,pubm,obv,pubm,nonpm
-Project Spaces,npo,"sounds vague",npo,nonpm
-Other Spaces,npo,"sounds vague",npo,nonpm
-Online galleries,gallery,obv,gallery,gallery
-Private Collections,npo,"not public -> npo",yeet,yeet
-Art Management,npo,"not public -> npo",yeet,yeet
-"Biennials, Triennials etc.",event,obv,event,event
-Auction Houses,gallery,"also commercial",yeet,yeet
-Art Fairs,event,obv,event,event
-Temporary Exhibition Spaces,npo,"sounds permanent enough",npo,nonpm
-Art Hotel,npo,"art is probably npo",yeet,yeet
-Art Dealers,gallery,obv,gallery,gallery
-Festivals,event,obv,event,event
-Sculpture Gardens,npo,"sounds permanent enough",npo,nonpm
-Artist Studios,gallery,"sounds like gallery",yeet,yeet
-Juried Exhibitions,event,"sounds large",yeet,yeet
-Art Schools,school,"maybe own category",yeet,yeet
-Associations,npo,obv,npo,nonpm
-Art Journals,gallery,"commercial?",yeet,yeet
-Biennial Pavillion,event,obv,event,event
+InstitutionType,clsfcn1,reason,clsfcn2,clsfcn3,clsfcn4,clsfcn5
+Private Galleries,gallery,obv,gallery,gallery,gallery,gallery
+"Editions, Prints, ...",gallery,"many have gallery in name",yeet,yeet,yeet,yeet
+Non-profit organizations,npo,obv,npo,nonpm,pes,oes
+Public Institutions,pubm,obv,pubm,nonpm,pes,pi
+Project Spaces,npo,"sounds vague",npo,nonpm,pes,oes
+Other Spaces,npo,"sounds vague",npo,nonpm,pes,oes
+Online galleries,gallery,obv,gallery,gallery,gallery,gallery
+Private Collections,npo,"not public -> npo",yeet,yeet,yeet,yeet
+Art Management,npo,"not public -> npo",yeet,yeet,yeet,yeet
+"Biennials, Triennials etc.",event,obv,event,event,event,event
+Auction Houses,gallery,"also commercial",yeet,yeet,yeet,yeet
+Art Fairs,event,obv,event,event,event,event
+Temporary Exhibition Spaces,npo,"sounds permanent enough",npo,nonpm,pes,oes
+Art Hotel,npo,"art is probably npo",yeet,yeet,yeet,yeet
+Art Dealers,gallery,obv,gallery,gallery,gallery,gallery
+Festivals,event,obv,event,event,event,event
+Sculpture Gardens,npo,"sounds permanent enough",npo,nonpm,pes,oes
+Artist Studios,gallery,"sounds like gallery",yeet,yeet,yeet,yeet
+Juried Exhibitions,event,"sounds large",yeet,yeet,yeet,yeet
+Art Schools,school,"maybe own category",yeet,yeet,yeet,yeet
+Associations,npo,obv,npo,nonpm,pes,oes
+Art Journals,gallery,"commercial?",yeet,yeet,yeet,yeet
+Biennial Pavillion,event,obv,event,event,event,event
