@@ -170,6 +170,16 @@ docdb_get(src, key = "google") %>% adt %>% .[ID == 142] %>% names
 
 
 ## ** geocoding eval
+
+library(nodbi)
+library(RSQLite)
+library(pmdata)
+library(jtls)
+library(magrittr)
+PMDATA_LOCS <- gc_pmdata_locs()
+
+
+
 NODB_GEOCODE_AF <- "~/Dropbox/phd/pmdata/inst/manual_munging/nodb_geocode_artfacts.sqlite"
 src <- src_sqlite(NODB_GEOCODE_AF)
 src2 <- dbConnect(SQLite(), NODB_GEOCODE_AF)
@@ -183,19 +193,114 @@ dt_af_instns_tomap <- gd_af_instns()[Country == "United States" & InstitutionTyp
 ## ok this is really fucking slow %>% needs to be flattened
 dt_af_instns_geocoded_google <- docdb_get(src, key = "google") %>% adt
 
+dt_af_instns <- gd_af_instns()
 
-dt_af_instns_geocoded_google[, uniqueN(ID)]
-dt_af_instns_geocoded_google[, .SD[nrow(.SD) > 1], ID, .SDcols = c("ID", "lat", "long", "partial_match")]
+dt_af_instns_geocoded_google_flat <- dbGetQuery(src2, "select * from google_flat") %>% adt %>%
+    merge(dt_af_instns, by = "ID")
+
+dt_dists <- gd_distmat(dt_af_instns_geocoded_google_flat[, .(src = ID, long, lat)])
+dt_dists[out != incom & dist < 0.1, .(unq_out = uniqueN(out), unq_incom = uniqueN(incom))]
+
 
 ## check what hasn't been mapped
-dt_af_instns_tomap[!dt_af_instns_geocoded_google[, .(ID = unique(ID))], on = "ID"]
-
 
 l_methods <- c("google", "arcgis" ,  "iq", "geocodio") # "census",  "osm")
 
 
-
 gd_compare_coords()
+
+## ** leaflet interactive map
+library(leaflet)
+library(purrr)
+options(browser = "surf") # make it use surf
+
+m = leaflet() %>% addTiles()
+m  # a map with the default OSM tile layer
+
+m = m %>% setView(-93.65, 42.0285, zoom = 17)
+m
+
+m %>% addPopups(-93.65, 42.0285, 'Here is the <b>Department of Statistics</b>, ISU')
+
+m %>% addPopups(-93.60, 42.0285, '==========')
+
+
+## example of quickly visualizing stuff
+dt_loc <- dt_af_instns_geocoded_google_flat %>% copy %>% 
+    ## .[grepl("New York", address)] %>% # .[sample(1:.N, size = 200)] %>%
+    ## add some random noise
+    .[, c("lat", "long") := map(.SD, ~.x + runif(.N, min = -0.0005, max = 0.0005)), .SDcols = c("lat", "long")]
+
+
+leaflet(dt_loc) %>% addTiles() %>% addCircles(lat = ~lat, lng = ~long, label = ~Name) 
+# huh looks quite good for quick plotting
+
+
+## fitBounds # fits rectangle lng1/lat1, lng2/lat2
+library(geosphere)
+## filtering based on distance
+
+dt_loc[distHaversine(cbind(long, lat), cbind(-74.0060, 40.7128)) < 50000] %>% # NYC coordinates
+    leaflet()  %>% addTiles() %>% addCircles(lat = ~lat, lng = ~long, label = ~Name)
+# huh that also works quite well
+
+
+## graph component identification for non-identified stuff
+
+t1 = Sys.time()
+dt_dists <- gd_distmat(dt_af_instns_geocoded_google_flat[1:3000, .(src = ID, long, lat)])
+dt_ovlp_distmat <- dt_dists[dist < 1, .(out = as.integer(out), incom = as.integer(incom))][out > incom]
+t2 = Sys.time()
+t2-t1 # 3.8 secs for 3k entries/9m dists: 2.3m dists/sec
+
+## mx <- dist(dt_af_instns_geocoded_google_flat[1:5, .(long, lat)])
+
+
+
+t3 <- Sys.time()
+mx <- dt_af_instns_geocoded_google_flat[, cbind(long, lat) %>% set_rownames(ID)] %>% dist
+dt_ovlp_base <- i1d2d(which(mx < 0.00001), mx) %>% adt %>% .[, names(.) := map(.SD, as.integer)]
+t4 <- Sys.time()
+t4-t3 # 0.11 secs %>% much faster
+
+## checks look good
+dt_ovlp_base[!dt_ovlp_distmat, on = .(V1 = out, V2 = incom)]
+dt_ovlp_distmat[!dt_ovlp_base, on = .(out = V1, incom = V2)]
+
+
+library(igraph)
+g_ovlp <- graph_from_data_frame(dt_ovlp_base, directed = F)
+clusters <- cluster_louvain(g_ovlp)
+plot(clusters, g_ovlp)
+
+dt_clusters <- data.table(ID = as.integer(clusters$names), cluster = clusters$membership)
+dt_clusters[, .N, cluster][order(-N)] # looks good: every cluster has at least 2 (kinda has to based on edgelist)
+
+
+dt_cluster_nyc <- merge(dt_loc[distHaversine(cbind(long, lat), cbind(-74.0060, 40.7128)) < 50000],
+      dt_clusters, by = "ID", all.x = T) %>%
+    setnafill(fill = 0, cols = "cluster") %>%
+    .[cluster != 0, .(format(lat), format(long), cluster, address, Name)] %>%
+    .[order(cluster)]
+
+
+
+## hmm not sure if NY clusters are such an issue, check largest cluster %>% berlin lul
+dt_berlin <- merge(dt_loc, dt_clusters[cluster==2], by = "ID", all.x = T) %>% 
+    .[, .SD[distHaversine(cbind(long,lat), .[cluster==2, cbind(mean(long), mean(lat))]) < 70e3]] %>%
+    setnafill(fill = 0, cols = "cluster") %>% # .[, .N, cluster] 
+    .[, .(Name, lat, long, cluster)]
+
+
+leaflet(dt_berlin) %>% # .[, head(.SD,10), cluster] %>% 
+    addTiles() %>%
+    addCircles(lat = ~lat, lng = ~long, label = ~Name,
+        color = ~colorFactor(palette = "RdYlBu", domain = unique(cluster))(cluster),
+        opacity = 1, fillOpacity = 0.9, radius = 20)
+
+
+
+# dt_ovlp_distmat[, .(node = unique(c(out, incom)))] # looks good
 
 
 ## ** old geocode eval funcs
