@@ -108,7 +108,7 @@ gd_af_inst_sameloc <- function(dt_af_inst_loc, maxsim = 0.00001) {
 #' @export
 gd_af_inst_sameloc_clusters <- function(dt_af_inst_sameloc) {
     
-    g_ovlp <- igraph::graph_from_data_frame(dt_ovlp_base, directed = F)
+    g_ovlp <- igraph::graph_from_data_frame(dt_af_inst_sameloc, directed = F)
     clusters <- igraph::cluster_louvain(g_ovlp)
     ## plot(clusters, g_ovlp)
 

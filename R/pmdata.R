@@ -21,6 +21,7 @@
 #' @importFrom glue glue
 #' @importFrom memoise memoise
 #' @importFrom igraph graph_from_data_frame cluster_louvain
+#' @importFrom geosphere distHaversine
 #' @rawNamespace import(stats, except = D) # don't import D, which comes from collapse
 #' @rawNamespace import(collapse, except = fdroplevels)
 ## https://stackoverflow.com/questions/51899220/import-all-the-functions-of-a-package-except-one-when-building-a-package
