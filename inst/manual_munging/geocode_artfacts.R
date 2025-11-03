@@ -51,8 +51,16 @@ library(RSQLite)
 db_af <- dbConnect(SQLite(), NODB_GEOCODE)
 dt_af_already_geocoded <- dbGetQuery(db_af, "select ID, lat, long from google_flat") %>% adt
 
-dt_af_instns_tomap <- dt_af_instns[InstitutionType %in% c("Public Institutions", "Non-profit organizations")] %>%
-    .[!dt_af_already_geocoded, on = "ID"] %>% head(9800) %>%
+## dt_geoc <- dbGetQuery(db_af, "select * from google_flat") %>% adt
+
+## dt_geoc
+
+## dt_af_instns[, .N, InstitutionType][order(-N)] %>% print(n=80) %>%
+##     .[, cumsum := cumsum(N)] %>% print(n=80)
+
+dt_af_instns_tomap <-dt_af_instns[InstitutionType != "Private Galleries"] %>% 
+    ## dt_af_instns[InstitutionType %in% c("Public Institutions", "Non-profit organizations")] %>%
+    .[!dt_af_already_geocoded, on = "ID"] %>% # head(300) %>%
     .[, .(ID, addr = sprintf("%s, %s, %s", Name, City, Country))]
 
 ## merge(dt_af_instns, dt_af_already_geocoded, by = "ID") %>% summary
