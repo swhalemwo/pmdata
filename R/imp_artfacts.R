@@ -119,3 +119,101 @@ gd_af_inst_sameloc_clusters <- function(dt_af_inst_sameloc) {
 
     return(dt_clusters)
 }
+
+#' spread locations of identically located points using 2d density
+#' @param dt_af_inst_loc_wclust data.table with all orgs (including overlapping ones): coordinates, cluster, ID
+#' @param cluster_id cluster identifier (integer)
+#' @export 
+gd_ovlp_shifted_coords <- function(dt_af_inst_loc_wclust, cluster_id) {
+
+
+    ## get coordinates of stuff to cluster
+    dt_cluster_coords <- dt_af_inst_loc_wclust[cluster == cluster_id]
+
+    ## get cluster location
+    mat_cluster_coords <- dt_cluster_coords[, map(.SD, mean), .SDcols = c("long", "lat")]
+
+    ## get all other instns around cluster mean; only use non-approximate
+    dt_base <- dt_af_inst_loc_wclust[distHaversine(cbind(long, lat), mat_cluster_coords)<10e3] %>%
+        .[geometry.location_type != "APPROXIMATE"]
+
+    ## leaflet(dt_base) %>% addTiles %>% addCircles(lng=~long, lat=~lat)
+
+    ## if there's nothing in environment -> just return original coords, no can do
+    if (dt_base[, .N] < 2 | dt_base[, uniqueN(.SD), .SDcols = c("lat", "long")] == 1) {
+        return(dt_cluster_coords)
+    }
+
+    ## calculate grid of base, assign cells and relative probablities
+    dt_grid <- dt_base[, kde2d_tidy(long, lat, n = 50)][, `:=`(cell = 1:.N, zscld = z/max(z))]
+    
+    ## visualization: maybe move to separate plot for illustrative purposes
+    ## ## addRectangles needs corners %>% needs avg step size
+    ## lunqx <- dt_grid[, unique(x)] %>% sort
+    ## stepx <- (lunqx - shift(lunqx)) %>% mean(na.rm = T)
+
+    ## lunqy <- dt_grid[, unique(y)] %>% sort
+    ## stepy <- (lunqy - shift(lunqy)) %>% mean(na.rm = T)
+
+    ## dt_grid[, `:=`(xmin = x - stepx/2, xmax = x + stepx/2, ymin = y - stepy/2, ymax = y+stepy/2)]
+    
+
+    ## dt_grid %>% ggplot(aes(x=x, y=y, fill = z)) + geom_tile()
+
+    ## leaflet(dt_grid) %>% addTiles() %>%
+    ##     ## addCircles(lng = ~x, lat = ~y) %>%
+    ##     addRectangles(lng1 = ~xmin, lng2 = ~xmax, lat1 = ~ymin, lat2 = ~ymax, stroke = F,
+    ##                   fillOpacit = 0.5,
+    ##                   color = ~colorNumeric("YlOrRd", 0:1)(zscld))
+    
+    # update coords
+    dt_newcords <- dt_grid[cell %in% sample(cell, size = dt_cluster_coords[, .N], prob = zscld), .(x,y)]
+    dt_cluster_newcords <- cbind(dt_cluster_coords, dt_newcords)[, `:=`(long = x, lat = y, x = NULL, y= NULL)] 
+
+    ## check that coords are now spread -> looks good
+    ## leaflet(dt_cluster_coords) %>% addTiles %>% addCircles(lat = ~lat, lng = ~long)
+    ## leaflet(dt_cluster_newcords) %>% addTiles %>% addCircles(lat = ~lat, lng = ~long)
+            
+    return(dt_cluster_newcords)
+
+
+}
+
+#' de-overlap overlapping locations (approximate locations which cluster in city centers)
+#' @param dt_af_inst_loc dt with AF locations
+#' @param dt_af_inst_sameloc_clusters dt with AF overlap cluster information
+#' @export
+gd_af_loc_deovlpd <- function(dt_af_inst_loc, dt_af_inst_sameloc_clusters) {
+    ## dt_af_inst_sameloc_clusters[, .N, cluster][N > 3]
+
+    ## merge cluster info back
+    dt_af_inst_loc_wclust <- merge(dt_af_inst_loc, dt_af_inst_sameloc_clusters, by = "ID", all.x = T)
+
+    ## get all the places that have to be spread out; only keep where location is not precise
+    dt_af_inst_clusters <- dt_af_inst_loc_wclust[!is.na(cluster) & geometry.location_type != "ROOFTOP"] %>%
+        copy %>% 
+        .[, memnbr_cluster := .N, cluster] %>% .[memnbr_cluster > 1] # only keep clusters here with at least 2
+
+    ## 2d density
+    ## need the NYC cluster: 63 (atm)
+    ## dt_af_inst_loc_wclust[distHaversine(cbind(long, lat), cbind(-74.0060, 40.7128)) < 50e3, .N, cluster][order(-N)]
+
+    ## shifing all takes around 3.5 secs %>% fine to keep like this
+
+    dt_af_inst_clust_newcords <- map(dt_af_inst_clusters[, unique(cluster)],
+                                     ~gd_ovlp_shifted_coords(dt_af_inst_loc_wclust, .x)) %>% rbindlist
+
+    ## bring new shifted coords back in 
+    dt_af_loc_deovlpd <- dt_af_inst_loc %>% copy %>%
+        .[dt_af_inst_clust_newcords, `:=`(lat = i.lat, long = i.long), on = "ID"]
+
+    ## manually inspect -> looks good
+    ## dt_af_inst_loc[distHaversine(cbind(long,lat), cbind(-74.0060, 40.7128)) < 50e3] %>%
+    ##     leaflet() %>% addTiles %>% addCircles(lat = ~lat, lng = ~long)
+
+    ## dt_af_loc_deovlpd[distHaversine(cbind(long,lat), cbind(-74.0060, 40.7128)) < 50e3] %>%
+    ##     leaflet() %>% addTiles %>% addCircles(lat = ~lat, lng = ~long)
+
+    return(dt_af_loc_deovlpd)
+
+}

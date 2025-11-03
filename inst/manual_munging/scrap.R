@@ -189,14 +189,17 @@ dt_af_inst_loc_wnoise <- dt_af_instns_geocoded_google_flat %>% copy %>%
 dt_af_inst_sameloc <- gd_af_inst_sameloc(dt_af_inst_loc)
 dt_af_inst_sameloc_clusters <- gd_af_inst_sameloc_clusters(dt_af_inst_sameloc)
     
-# dt_af_inst_sameloc_clusters[, .N, cluster][N > 3]
 
-## merge cluster info back
-dt_af_inst_loc_wclust <- merge(dt_af_inst_loc, dt_af_inst_sameloc_clusters, by = "ID", all.x = T)
+dt_af_loc_deovlpd <- gd_af_loc_deovlpd(dt_af_inst_loc, dt_af_inst_sameloc_clusters)
 
-## get all the places that have to be spread out; only keep where location is not precise
-dt_af_inst_clusters <- dt_af_inst_loc_wclust[!is.na(cluster) & geometry.location_type != "ROOFTOP"] %>% copy %>% 
-    .[, memnbr_cluster := .N, cluster] %>% .[memnbr_cluster > 1] # only keep clusters here with at least 2
+
+
+## gd_ovlp_shifted_coords(dt_af_inst_loc_wclust, 44)
+
+
+## *** ugly code below, clean above
+
+
 
 
 src <- src_sqlite(NODB_GEOCODE_AF)
