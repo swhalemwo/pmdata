@@ -180,17 +180,11 @@ library(purrr)
 
 PMDATA_LOCS <- gc_pmdata_locs()
 
-dt_af_inst_loc <- gd_af_inst_loc()
 
-dt_af_inst_loc_wnoise <- dt_af_instns_geocoded_google_flat %>% copy %>% 
-    .[, c("lat", "long") := map(.SD, ~.x + runif(.N, min = -0.0005, max = 0.0005)), .SDcols = c("lat", "long")]
+## dt_af_loc_deovlpd[dt_pmdb_af_proxlink[PMID == 1], on = .(ID = AFID), address] ## Vienna: looks good
 
 
-dt_af_inst_sameloc <- gd_af_inst_sameloc(dt_af_inst_loc)
-dt_af_inst_sameloc_clusters <- gd_af_inst_sameloc_clusters(dt_af_inst_sameloc)
-    
 
-dt_af_loc_deovlpd <- gd_af_loc_deovlpd(dt_af_inst_loc, dt_af_inst_sameloc_clusters)
 
 
 
