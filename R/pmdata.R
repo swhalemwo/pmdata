@@ -20,6 +20,7 @@
 #' @importFrom duckdb duckdb dbConnect dbWriteTable
 #' @importFrom glue glue
 #' @importFrom memoise memoise
+#' @importFrom igraph graph_from_data_frame cluster_louvain
 #' @rawNamespace import(stats, except = D) # don't import D, which comes from collapse
 #' @rawNamespace import(collapse, except = fdroplevels)
 ## https://stackoverflow.com/questions/51899220/import-all-the-functions-of-a-package-except-one-when-building-a-package
@@ -98,7 +99,9 @@ gc_pmdata_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_so
         FILE_NCCS_MUSEUMS = "/run/media/johannes/data/nccs/nccs_museums.csv",
         ## name matching model files
         R_XGB_MON = "~/Dropbox/phd/pmdata/inst/manual_munging/r_xgb_mon.model",
-        R_XGB_MON_SMOL = "~/Dropbox/phd/pmdata/inst/manual_munging/r_xgb_mon_smol.model"
+        R_XGB_MON_SMOL = "~/Dropbox/phd/pmdata/inst/manual_munging/r_xgb_mon_smol.model",
+        ## artfacts location
+        NODB_GEOCODE_AF = "~/Dropbox/phd/pmdata/inst/manual_munging/nodb_geocode_artfacts.sqlite"
     )
         
 
