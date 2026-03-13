@@ -102,7 +102,10 @@ gc_pmdata_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_so
         R_XGB_MON = "~/Dropbox/phd/pmdata/inst/manual_munging/r_xgb_mon.model",
         R_XGB_MON_SMOL = "~/Dropbox/phd/pmdata/inst/manual_munging/r_xgb_mon_smol.model",
         ## artfacts location
-        NODB_GEOCODE_AF = "~/Dropbox/phd/pmdata/inst/manual_munging/nodb_geocode_artfacts.sqlite"
+        NODB_GEOCODE_AF = "~/Dropbox/phd/pmdata/inst/manual_munging/nodb_geocode_artfacts.sqlite",
+        ## the art newspaper
+        FILE_TANP_CITY_ID = paste0(DATA_DIR, "artnewspaper/tanp_city_id.csv"),
+        FILE_TANP_CITY_LINKS = paste0(DATA_DIR, "artnewspaper/tanp_city_link.csv")        
     )
         
 
