@@ -60,13 +60,14 @@ gd_tanp_cbn <- function() {
 gd_tanp_city <- function(dt_tanp_cbn) {
     #' get all the cities
 
-    dt_tanp_city <- dt_tanp_cbn[, .(city = unique(city))] # [, ID := paste0("city_", 1:.N)]
+    dt_tanp_city_unq <- dt_tanp_cbn[, .(city = unique(city))] # [, ID := paste0("city_", 1:.N)]
 
     ## need to deal with cities that have no ID yet
     dt_tanp_city_ff <- gd_tanp_city_geo()
     
-    dt_tanp_city_new <- dt_tanp_city[!dt_tanp_city_ff, on = "city"] %>%
-        .[, ID := paste0("city_", (dt_tanp_city[, .N]):.N)] # start where we have stopped
+    # assign new IDs: start where we have stopped previously (ff)
+    dt_tanp_city_new <- dt_tanp_city_unq[!dt_tanp_city_ff, on = "city"] %>%
+        .[, ID := paste0("city_", (dt_tanp_city_ff[, .N]+1):((dt_tanp_city_unq[, .N])))] 
 
     if (dt_tanp_city_new[, .N] > 0) { gwd_geocode_tanp_city(dt_tanp_city_new = dt_tanp_city_new)}
 
@@ -90,7 +91,7 @@ gd_tanp_city <- function(dt_tanp_cbn) {
     
     ## then update join
     dt_tanp_city_geo[dt_tanp_city_links_ff, ID := i.ID_i, on = .(ID = ID_j)]
-    ## dt_tanp_city_geo[grepl("Kr", city), .(city, ID)]
+    dt_tanp_city_geo[grepl("Kr|Pau", city), .(city, ID)]
 
     return(dt_tanp_city_geo)
 
@@ -131,7 +132,7 @@ gwd_geocode_tanp_city <- function(FILE_TANP_CITY_ID = PMDATA_LOCS$FILE_TANP_CITY
     wtf <- readline("write to file?")
 
     if (wtf == "y") {
-        fwrite(dt_newcitie_geo %>% adt %>% copy %>% .[, boundingbox := NULL], FILE_TANP_CITY_ID, append = T)
+        fwrite(dt_newcities_geo %>% adt %>% copy %>% .[, boundingbox := NULL], FILE_TANP_CITY_ID, append = T)
     }
 
     
@@ -163,14 +164,21 @@ gd_tanp_city_link_candidates <- function(dt_tanp_city_geo) {
 
 
 dt_tanp_cbn <- gd_tanp_cbn()
+dt_tanp_city <- gd_tanp_city(dt_tanp_cbn)
 
+## with city id 
+dt_tanp_wcid <- merge(dt_tanp_cbn, dt_tanp_city[, .(city, id_city = ID)], by = "city")
+
+dt_tanp_wcid[grepl("Kr|Pau|Washing", city)] %>% print(n=80)
+
+dt_tanp_wcid[grepl("Metropolitan", museum)]
 
 
 
 
 ## cross-join into long
-dt_tanp_cpr <- merge(dt_tanp_cbn[, .(id1 = id, name1 = paste0(museum, " -- ", city), mrg = "x")],
-                     dt_tanp_cbn[, .(id2 = id, name2 = paste0(museum, " -- ", city), mrg = "x")], by = "mrg",
+dt_tanp_cpr <- merge(dt_tanp_wcid[, .(id1 = id, name1 = museum, mrg = "x", id_city)],
+                     dt_tanp_wcid[, .(id2 = id, name2 = museum, mrg = "x", id_city)], by = "id_city",
                      allow.cartesian = T) %>% .[id1 > id2]
 
 
@@ -202,7 +210,7 @@ merge(dt_clusters, dt_tanp_cbn, by = "id")[order(cluster)] %>%
     .[nbr_members > 2]
 
 
-dt_tanp_wfeat[strdist_avg_all> 0][order(strdist_avg_all), .(name1, name2, strdist_avg_all)][1:20]
+dt_tanp_wfeat[strdist_avg_all> 0][order(strdist_avg_all), .(name1, name2, strdist_avg_all)] %>% print(n=200)
 
 dt_tanp_wfeat[strdist_cosine_1> 0][order(strdist_cosine_1)][1:20, .(id1, id2, name1, name2)]
 
