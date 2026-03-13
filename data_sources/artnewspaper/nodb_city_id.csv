@@ -44,7 +44,7 @@ Frankfurt,city_42,50.1106444,8.6820917,127389583,"Data © OpenStreetMap contribu
 Lisbon,city_43,38.7077507,-9.1365919,274299220,"Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",relation,5400890,boundary,administrative,14,0.76350361483068,city,Lisboa,"Lisboa, Portugal"
 Bilbao,city_44,43.2630018,-2.9350039,270685627,"Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",relation,339549,boundary,administrative,16,0.681601477283632,city,Bilbao,"Bilbao, Bizkaia, Euskadi, España"
 Krakow,city_45,50.0619474,19.9368564,167402527,"Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",relation,449696,boundary,administrative,12,0.753661338790818,city,Kraków,"Kraków, województwo małopolskie, Polska"
-S√£o Paulo,city_46,-23.5506507,-46.6333824,,,,,,,,,,
+S√£o Paulo,city_46,-23.5506507,-46.6333824,,,,,,,,,,,
 Montreal,city_47,45.5031824,-73.5698065,337883586,"Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",relation,1634158,boundary,administrative,16,0.768339993225789,city,Montréal,"Montréal, Agglomération de Montréal, Montréal (région administrative), Québec, Canada"
 Berlin,city_48,52.5173885,13.3951309,133769868,"Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",relation,62422,boundary,administrative,8,0.852219653608809,city,Berlin,"Berlin, Deutschland"
 Basel,city_49,47.5581077,7.5878261,85092634,"Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",relation,1683619,boundary,administrative,16,0.721906213499309,city,Basel,"Basel, Basel-Stadt, Schweiz/Suisse/Svizzera/Svizra"
