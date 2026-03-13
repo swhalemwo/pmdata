@@ -47,7 +47,8 @@ gd_tanp_cbn <- function() {
     dt_tanp_cbn <- map(list(dt_tanp_20, dt_tanp_21, dt_tanp_22, dt_tanp_23, dt_tanp_24),
                        ~.x[, .(id, museum, city, total)]) %>%
         rbindlist %>%
-        .[museum == "teamLab Borderless: MORI Building", city := "Tokyo"] # manual fixes
+        .[museum == "teamLab Borderless: MORI Building", city := "Tokyo"] %>% # manual fixes
+        .[, museum := trimws(gsub("\\*|†", "", museum))]
     
     if (dt_tanp_cbn[city == "", .N] > 0) {stop("not all museums have cities")}
 
@@ -91,7 +92,14 @@ gd_tanp_city <- function(dt_tanp_cbn) {
     
     ## then update join
     dt_tanp_city_geo[dt_tanp_city_links_ff, ID := i.ID_i, on = .(ID = ID_j)]
-    dt_tanp_city_geo[grepl("Kr|Pau", city), .(city, ID)]
+
+    ## anotherupdate join for new city name
+    dt_tanp_city_geo[, city_new := city] %>%
+        .[dt_tanp_city_links_ff, city_new := i.new_name, on = .(ID = ID_i)]
+    
+    ## dt_tanp_city_geo[dt_tanp_city_links_ff, `:=`(ID = i.ID_i, city_new = i.new_name) , on = .(ID = ID_j)]
+    ## dt_tanp_city_geo[grepl("Kr|Pau|Washington", city), .(city, ID)]
+    ## dt_tanp_city_geo[grepl("Kr|Pau|Washington", city), .(city, city_new, ID)]
 
     return(dt_tanp_city_geo)
 
@@ -113,6 +121,7 @@ gd_tanp_city <- function(dt_tanp_cbn) {
 ##     .[, strdist_avg_all := rowMeans(.SD), .SDcols = c("strdist_cosine_avg", "strdist_jaccard_avg", "strdist_jw")]
 
 ## dt_tanp_city_wfeat[order(strdist_avg_all)]
+
 
 gwd_geocode_tanp_city <- function(FILE_TANP_CITY_ID = PMDATA_LOCS$FILE_TANP_CITY_ID, dt_tanp_city_new) {
     #' geocode new cities and write them to file
@@ -167,11 +176,35 @@ dt_tanp_cbn <- gd_tanp_cbn()
 dt_tanp_city <- gd_tanp_city(dt_tanp_cbn)
 
 ## with city id 
-dt_tanp_wcid <- merge(dt_tanp_cbn, dt_tanp_city[, .(city, id_city = ID)], by = "city")
+dt_tanp_wcid <- merge(dt_tanp_cbn, dt_tanp_city[, .(city, id_city = ID, city_new)], by = "city")
 
 dt_tanp_wcid[grepl("Kr|Pau|Washing", city)] %>% print(n=80)
 
-dt_tanp_wcid[grepl("Metropolitan", museum)]
+dt_tanp_wcid[grepl("Smithsonian", museum)]
+
+dt_tanp_wcid[grepl("/", museum)]
+
+## museum geocoding: use museum-city
+dt_tanp_muci <- dt_tanp_wcid[, .(museum, city_new)] %>% unique %>% .[, muci := paste0("muci_", 1:.N)] %>%
+    .[, .(muci, museum, city_new, addr = paste0(museum, ", ",city_new))]
+
+
+dt_tanp_muci_geo <- geocode(dt_tanp_muci, address = addr, full_results = T, method = "google") %>% adt
+
+dt_tanp_muci_geo2 <- dt_tanp_muci_geo %>% copy %>% 
+    .[, `:=`(address_components = NULL, navigation_points = NULL, types = NULL)]
+                                                             
+fwrite(dt_tanp_muci_geo2, PMDATA_LOCS$FILE_TANP_MUCI_ID)
+
+
+    
+wtf <- readline("write to file?")
+
+    if (wtf == "y") {
+        fwrite(dt_newcities_geo %>% adt %>% copy %>% .[, boundingbox := NULL], FILE_TANP_CITY_ID, append = T)
+    }
+
+## fwrite(dt_tanp_muci, PMDATA_LOCS$FILE_TANP_MUCI_ID)
 
 
 
@@ -191,7 +224,9 @@ dt_qmod <- expand.grid(mod = c("cosine", "jaccard"), q = 1:5, stringsAsFactors =
 dt_tanp_wfeat <- gd_grid_wfeat(dt_tanp_cpr, "name1", "name2", dt_qmod = dt_qmod, l_mod_noq = "jw") %>% 
     .[, strdist_cosine_avg := rowMeans(.SD), .SDcols = patterns("strdist_cosine")] %>%
     .[, strdist_jaccard_avg := rowMeans(.SD), .SDcols = patterns("strdist_jaccard")] %>%
-    .[, strdist_avg_all := rowMeans(.SD), .SDcols = c("strdist_cosine_avg", "strdist_jaccard_avg", "strdist_jw")]
+    .[, strdist_avg_all := rowMeans(.SD), .SDcols = c("strdist_cosine_avg", "strdist_jaccard_avg",
+                                                      "strdist_jw")]
+    ## .[, .SD := NULL,  .SDcols = patterns("strdist_cosine")]
 
 dt_tanp_wfeat[strdist_cosine_1 < 0.1]
 
@@ -210,7 +245,8 @@ merge(dt_clusters, dt_tanp_cbn, by = "id")[order(cluster)] %>%
     .[nbr_members > 2]
 
 
-dt_tanp_wfeat[strdist_avg_all> 0][order(strdist_avg_all), .(name1, name2, strdist_avg_all)] %>% print(n=200)
+dt_tanp_wfeat[strdist_avg_all> 0][order(strdist_avg_all), .(name1, name2, strdist_avg_all)] %>% print(n=9)
+    ## .[grepl("American Indian", name1)]
 
 dt_tanp_wfeat[strdist_cosine_1> 0][order(strdist_cosine_1)][1:20, .(id1, id2, name1, name2)]
 
@@ -227,3 +263,25 @@ tribble(~id1, ~id2,
 library(ellmer)
 Sys.setenv(OPENAI_API_KEY = show_pass_secret("gemini-api-key"))
 chat_google_gemini("what is the capital of uruguay")
+
+
+
+## check match probability fall of
+dt_fallof <- dt_tanp_wfeat[grepl("tanp23", id1) & grepl("tanp22", id2)] %>%
+    .[order(id1, strdist_avg_all), .SD, .SDcols = patterns("avg|id1|id2|name1|name2")] %>%
+    .[, any_match := as.integer(any(strdist_cosine_avg == 0)), id1] %>%
+    .[any_match == 0] %>%
+    .[, nbr := 1:.N, id1]
+
+dt_fallof %>% melt(id.vars = c("id1", "nbr"), measure.vars = patterns("strdist")) %>%
+    .[nbr < 5] %>% 
+    ggplot(aes(x=factor(nbr), y = value, color = id1, group = id1)) + geom_line() + geom_point() +
+    facet_grid(~variable)
+
+dt_fallof[id1=="tanp23_31"] %>% adf
+
+
+dt_fallof %>% ggplot(aes(x=factor(nbr), y=strdist_avg_all, color = id1, group = id1)) + geom_line() + geom_point()
+
+dt_fallof[nbr %in% c(1,2)][, .N, nbr]
+
