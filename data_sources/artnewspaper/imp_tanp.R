@@ -201,15 +201,21 @@ dt_tanp_wcid <- merge(dt_tanp_cbn, dt_tanp_city[, .(city, id_city = ID, city_new
 dt_tanp_wcid[grepl("Kr|Pau|Washing", city)] %>% print(n=80)
 
 dt_tanp_wcid[grepl("Smithsonian", museum)]
+dt_tanp_wcid[grepl("National Portrait", museum)]
 
 dt_tanp_wcid[grepl("/", museum)]
 
 dt_tanp_muci <- gd_tanp_muci(dt_tanp_wcid)
+dt_tanp_muci[grepl("Smithsonian", museum)]
+dt_tanp_muci[grepl("National Portrait", museum)]
+
 
 dt_tanp_muyr <- merge(dt_tanp_wcid, dt_tanp_muci[, .(muci, id_city, museum, museum_new)],
                       by = c("museum", "id_city")) %>%
-    .[, year := as.integer(gsub("tanp(\\d+)_.*", "\\1", id))] %>%
-    
+    .[, year := as.integer(gsub("tanp(\\d+)_.*", "\\1", id))]
+
+dt_tanp_muyr[grepl("Smithsonian", museum)]
+dt_tanp_muyr[grepl("National Portrait", museum)]
 
 
 dt_tanp_muyr %>% ggplot(aes(x = year, y = total, color = muci)) +
