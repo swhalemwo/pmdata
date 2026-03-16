@@ -171,6 +171,13 @@ gd_tanp_city_link_candidates <- function(dt_tanp_city_geo) {
 }
 
 
+gd_tanp_muci_ff <- function(FILE_TANP_MUCI_ID = PMDATA_LOCS$FILE_TANP_MUCI_ID) {
+    fread(FILE_TANP_MUCI_ID)
+}
+
+
+
+
 
 dt_tanp_cbn <- gd_tanp_cbn()
 dt_tanp_city <- gd_tanp_city(dt_tanp_cbn)
@@ -184,56 +191,103 @@ dt_tanp_wcid[grepl("Smithsonian", museum)]
 
 dt_tanp_wcid[grepl("/", museum)]
 
-## museum geocoding: use museum-city
-dt_tanp_muci <- dt_tanp_wcid[, .(museum, city_new)] %>% unique %>% .[, muci := paste0("muci_", 1:.N)] %>%
-    .[, .(muci, museum, city_new, addr = paste0(museum, ", ",city_new))]
 
 
-dt_tanp_muci_geo <- geocode(dt_tanp_muci, address = addr, full_results = T, method = "google") %>% adt
+gd_tanp_muci <- function(dt_tanp_wcid) {
 
-dt_tanp_muci_geo2 <- dt_tanp_muci_geo %>% copy %>% 
-    .[, `:=`(address_components = NULL, navigation_points = NULL, types = NULL)]
-                                                             
-fwrite(dt_tanp_muci_geo2, PMDATA_LOCS$FILE_TANP_MUCI_ID)
+    dt_tanp_muci_geo_ff <- gd_tanp_muci_ff()
+    
 
+    ## museum geocoding: use museum-city
+    ## dt_tanp_muci <- dt_tanp_wcid[, .(museum, city_new, id_city)] %>% unique %>%
+    ##     .[, muci := paste0("muci_", 1:.N)] %>%
+    ##     .[, .(muci, museum, city_new, id_city, addr = paste0(museum, ", ",city_new))]
+
+    ## get new IDs
+    dt_tanp_muci_new <- dt_tanp_wcid[, .(museum, city_new, id_city)] %>% unique %>%
+        .[!dt_tanp_muci_geo_ff, on = .(museum, city_new)] %>%
+        .[, muci := paste0("muci_", (dt_tanp_muci_geo_ff[, .N]+1):(dt_tanp_muci_geo_ff[, .N]+1 + .N))] %>%
+        .[, .(muci, museum, city_new, id_city, addr = paste0(museum, ", ",city_new))]
+
+
+    ## manual fix to add id_city to FILE_TANP_MUCI_ID
+    ## dt_tanp_muci_fix <- merge(dt_tanp_muci_geo_ff,
+    ##       dt_tanp_wcid[, .(id_city, museum, city_new)] %>% unique,
+    ##       by = c("museum", "city_new")) %>%
+    ##     setcolorder(neworder = c("museum", "city_new", "muci", "id_city", "lat", "long"))
+
+    ## fwrite(dt_tanp_muci_fix, PMDATA_LOCS$FILE_TANP_MUCI_ID)
 
     
-wtf <- readline("write to file?")
+    ## do the geocoding of new ones if neccessary
+    if (nrow(dt_tanp_muci_new) > 0) {
+        dt_tanp_muci_geo <- geocode(dt_tanp_muci_new, address = addr, full_results = T, method = "google") %>% adt
 
-    if (wtf == "y") {
-        fwrite(dt_newcities_geo %>% adt %>% copy %>% .[, boundingbox := NULL], FILE_TANP_CITY_ID, append = T)
+        dt_tanp_muci_geo2 <- dt_tanp_muci_geo %>% copy %>% 
+            .[, `:=`(address_components = NULL, navigation_points = NULL, types = NULL)]
+        
+        wtf <- readline("write to file?")
+        if (wtf == "y") {
+            fwrite(dt_tanp_muci_geo2, PMDATA_LOCS$FILE_TANP_MUCI_ID, append = T)
+        }
     }
 
-## fwrite(dt_tanp_muci, PMDATA_LOCS$FILE_TANP_MUCI_ID)
+    ## get from file again
+    dt_tanp_muci_geo <- gd_tanp_muci_ff()
+
+}
+
+gd_muci_links_geo <- function(dt_tanp_muci_geo) {
+
+    dt_tanp_muci_vect <- terra::vect(dt_tanp_muci_geo[, .(muci, long, lat)], geom = c("long", "lat"), crs = "WGS84")
+    mat_dist <- terra::distance(dt_tanp_muci_vect)
+
+    dt_tanp_muci_match_id <- i1d2d(which(mat_dist < 5), mat_dist) %>% adt %>% 
+        .[, id_link := 1:.N] %>%
+        melt(id.vars = "id_link", value.name = "index") %>%
+        .[order(id_link, -index)]
+
+    merge(dt_tanp_muci_geo %>% copy %>% .[, index := 1:.N], dt_tanp_muci_match_id, by = "index") %>%
+        dcast(id_link ~ variable, value.var = c("muci", "museum")) %>% print(n=80)
+
+}
+      
+
+gd_muci_links_stringdist <- function(dt_tanp_wcid) {
+
+    
+
+    dt_tanp_muci_geo <- gd_tanp_muci_ff()
+
+    ## cross-join into long
+    dt_tanp_cpr <- merge(dt_tanp_muci_geo[, .(id1 = muci, museum1 = museum, id_city)],
+                         dt_tanp_muci_geo[, .(id2 = muci, museum2 = museum, id_city)], by = "id_city",
+                         allow.cartesian = T) %>% .[id1 > id2]
 
 
+    ## l_cols_strdist_toobig <- paste0("strdist_", c(paste0("qgram_", 1:5), "osa", "lv", "dl", "lcs"))
 
+    ## only use standardized string distances: cosine, jaccard, jw
+    dt_qmod <- expand.grid(mod = c("cosine", "jaccard"), q = 1:5, stringsAsFactors = F) %>% adt
 
-## cross-join into long
-dt_tanp_cpr <- merge(dt_tanp_wcid[, .(id1 = id, name1 = museum, mrg = "x", id_city)],
-                     dt_tanp_wcid[, .(id2 = id, name2 = museum, mrg = "x", id_city)], by = "id_city",
-                     allow.cartesian = T) %>% .[id1 > id2]
-
-
-
-## l_cols_strdist_toobig <- paste0("strdist_", c(paste0("qgram_", 1:5), "osa", "lv", "dl", "lcs"))
-
-## only use standardized string distances: cosine, jaccard, jw
-dt_qmod <- expand.grid(mod = c("cosine", "jaccard"), q = 1:5, stringsAsFactors = F) %>% adt
-
-dt_tanp_wfeat <- gd_grid_wfeat(dt_tanp_cpr, "name1", "name2", dt_qmod = dt_qmod, l_mod_noq = "jw") %>% 
-    .[, strdist_cosine_avg := rowMeans(.SD), .SDcols = patterns("strdist_cosine")] %>%
-    .[, strdist_jaccard_avg := rowMeans(.SD), .SDcols = patterns("strdist_jaccard")] %>%
-    .[, strdist_avg_all := rowMeans(.SD), .SDcols = c("strdist_cosine_avg", "strdist_jaccard_avg",
-                                                      "strdist_jw")]
+    dt_tanp_wfeat <- gd_grid_wfeat(dt_tanp_cpr, "name1", "name2", dt_qmod = dt_qmod, l_mod_noq = "jw") %>% 
+        .[, strdist_cosine_avg := rowMeans(.SD), .SDcols = patterns("strdist_cosine")] %>%
+        .[, strdist_jaccard_avg := rowMeans(.SD), .SDcols = patterns("strdist_jaccard")] %>%
+        .[, strdist_avg_all := rowMeans(.SD), .SDcols = c("strdist_cosine_avg", "strdist_jaccard_avg",
+                                                          "strdist_jw")]
     ## .[, .SD := NULL,  .SDcols = patterns("strdist_cosine")]
 
-dt_tanp_wfeat[strdist_cosine_1 < 0.1]
 
 
-dt_tanp_wfeat[strdist_cosine_1 < 0.1]
+    dt_tanp_wfeat[between(strdist_avg_all, 0, 0.2, incbounds = F)]
 
-dt_tanp_wfeat[strdist_cosine_1 == 0] %>% adf
+}
+
+    dt_tanp_wfeat[strdist_cosine_1 < 0.1]
+
+    dt_tanp_wfeat[strdist_cosine_1 < 0.1]
+
+    dt_tanp_wfeat[strdist_cosine_1 == 0] %>% adf
 
 g_tanp <- igraph::graph_from_data_frame(dt_tanp_wfeat[strdist_cosine_1 == 0, .(id1, id2)], directed = F)
 clusters <- igraph::cluster_louvain(g_tanp)

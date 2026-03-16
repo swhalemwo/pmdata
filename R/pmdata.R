@@ -106,7 +106,8 @@ gc_pmdata_locs <- function(DATA_DIR = "/home/johannes/Dropbox/phd/pmdata/data_so
         ## the art newspaper
         FILE_TANP_CITY_ID = paste0(DATA_DIR, "artnewspaper/tanp_city_id.csv"),
         FILE_TANP_CITY_LINKS = paste0(DATA_DIR, "artnewspaper/tanp_city_link.csv"),
-        FILE_TANP_MUCI_ID = paste0(DATA_DIR, "artnewspaper/tanp_muci_id.csv")
+        FILE_TANP_MUCI_ID = paste0(DATA_DIR, "artnewspaper/tanp_muci_id.csv"),
+        FILE_TANP_MUCI_LINKS = paste0(DATA_DIR, "artnewspaper/tanp_muci_links.csv")
     )
         
 
