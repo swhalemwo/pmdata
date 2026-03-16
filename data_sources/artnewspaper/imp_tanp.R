@@ -48,11 +48,24 @@ gd_tanp_cbn <- function() {
                        ~.x[, .(id, museum, city, total)]) %>%
         rbindlist %>%
         .[museum == "teamLab Borderless: MORI Building", city := "Tokyo"] %>% # manual fixes
-        .[, museum := trimws(gsub("\\*|†", "", museum))]
+        .[, museum := trimws(gsub("\\*|†", "", museum))] %>%
+        .[, total := as.integer(gsub(",", "", total))]
     
-    if (dt_tanp_cbn[city == "", .N] > 0) {stop("not all museums have cities")}
+    ## smithsonian fix: sometimes grouped together with national portrait gallery
+    dt_smithies <- dt_tanp_cbn[grepl("Smithsonian", museum) & grepl("Portrait", museum)] %>%
+        .[, .(museum = trimws(unlist(tstrsplit(museum, "/")))), .(city, total, id)]
 
-    return(dt_tanp_cbn)
+    dt_smithies_new <- dt_smithies %>%  copy %>% 
+        .[, nbr := 1:.N, id] %>% 
+        .[, `:=`(id = paste0(id, letters[nbr]), total = total/2)] %>% # split audience
+        .[, nbr := NULL]
+
+    dt_tanp_cbn2 <- rbind(dt_tanp_cbn[id %!in% dt_smithies[, id]], dt_smithies_new)
+
+    
+    if (dt_tanp_cbn2[city == "", .N] > 0) {stop("not all museums have cities")}
+
+    return(dt_tanp_cbn2)
 
 
 }
@@ -93,7 +106,7 @@ gd_tanp_city <- function(dt_tanp_cbn) {
     ## then update join
     dt_tanp_city_geo[dt_tanp_city_links_ff, ID := i.ID_i, on = .(ID = ID_j)]
 
-    ## anotherupdate join for new city name
+    ## another update join for new city name
     dt_tanp_city_geo[, city_new := city] %>%
         .[dt_tanp_city_links_ff, city_new := i.new_name, on = .(ID = ID_i)]
     
@@ -191,6 +204,27 @@ dt_tanp_wcid[grepl("Smithsonian", museum)]
 
 dt_tanp_wcid[grepl("/", museum)]
 
+dt_tanp_muci <- gd_tanp_muci(dt_tanp_wcid)
+
+dt_tanp_muyr <- merge(dt_tanp_wcid, dt_tanp_muci[, .(muci, id_city, museum, museum_new)],
+                      by = c("museum", "id_city")) %>%
+    .[, year := as.integer(gsub("tanp(\\d+)_.*", "\\1", id))] %>%
+    
+
+
+dt_tanp_muyr %>% ggplot(aes(x = year, y = total, color = muci)) +
+    geom_line(show.legend = F)
+
+
+
+dt_tanp_muyr[, .N, muci][order(-N)]
+dt_tanp_muyr[muci %in% c("muci_216")][order(year, muci)] %>% adf
+
+dt_tanp_muyr[grepl("Smithsonian", museum)]
+
+dt_af_instns <- gd_af_instns()
+dt_af_instns[grepl("Smithsonian", Name)]
+dt_af_instns[grepl("National Portrait", Name)]
 
 
 gd_tanp_muci <- function(dt_tanp_wcid) {
@@ -247,15 +281,45 @@ gd_tanp_muci <- function(dt_tanp_wcid) {
 
     ## get from file again
     dt_tanp_muci_geo <- gd_tanp_muci_ff()
-    return(dt_tanp_muci_geo)
-
     
+    dt_muci_links <- gd_muci_links(dt_tanp_muci_geo)[b_same == 1] # get links to update
+
+    cnt_unq <- dt_tanp_muci_geo[, uniqueN(muci)]
+    keep_going <- T
+    cntr <- 0
+    dt_tanp_muci_fixed <- dt_tanp_muci_geo %>% copy
+
+    ## iteratively update all muci ids
+    while(keep_going) {
+        
+        dt_tanp_muci_fixed <- dt_tanp_muci_fixed %>% copy %>%
+            .[dt_muci_links, muci := i.muci2, on = .(muci = muci1)]
+        
+        keep_going <- cnt_unq != dt_tanp_muci_fixed[, uniqueN(muci)]
+        cnt_unq <- dt_tanp_muci_fixed[, uniqueN(muci)]
+        cntr <- cntr + 1
+        print(cnt_unq)
+        if (cntr == 20) {stop("stop")}
+    }
+
+    ## dt_tanp_muci_fixed[, .N, muci][order(-N)]
+    ## dt_tanp_muci_fixed[grepl("Smithsoni|National Portrait", museum) & grepl("Washington", city_new)]
+
+    ## new names: use first occurence for consistency
+    dt_tanp_muci_newname <- dt_tanp_muci_fixed[, head(.SD,1), muci]
+    dt_tanp_muci_fixed[dt_tanp_muci_newname, museum_new := i.museum, on = "muci"]
+
+    ## dt_tanp_muci_fixed[muci == "muci_216"]
+    dt_tanp_muci_fixed[muci == "muci_21"]
+
+    return(dt_tanp_muci_fixed)
 
 }
 
 
 
 gd_muci_links_geo <- function(dt_tanp_muci_geo) {
+    "get muci links based on geographical distance: within 100m"
 
     dt_tanp_muci_vect <- terra::vect(dt_tanp_muci_geo[, .(muci, long, lat)], geom = c("long", "lat"), crs = "WGS84")
     mat_dist <- terra::distance(dt_tanp_muci_vect)
@@ -310,10 +374,10 @@ gd_muci_links_ff <- function(FILE_TANP_MUCI_LINKS = PMDATA_LOCS$FILE_TANP_MUCI_L
 }
 
 gd_muci_links <- function(dt_tanp_muci_geo)  {
-
+    #' get muci links
     dt_muci_links_geo <- gd_muci_links_geo(dt_tanp_muci_geo)
     dt_muci_links_stringdist <- gd_muci_links_stringdist(dt_tanp_muci_geo)
-    dt_muci_links_stringdist %>% print(n=80)
+    ## dt_muci_links_stringdist %>% print(n=80)
 
     dt_links_muci <- rbind(dt_muci_links_geo,dt_muci_links_stringdist) %>%
         .[, .(src = paste0(src, collapse = ",")), .(muci1, muci2, museum1, museum2)]
@@ -321,12 +385,16 @@ gd_muci_links <- function(dt_tanp_muci_geo)  {
 
     dt_muci_links_ff <- gd_muci_links_ff()
 
-    dt_links_muci_new <- dt_links_muci[!dt_muci_links_ff, on = .(muci1, muci2)] %>%
-        .[, b_same := -1]
+    dt_links_muci_new <- dt_links_muci[!dt_muci_links_ff, on = .(muci1, muci2)]
 
-    fwrite(dt_links_muci_new, PMDATA_LOCS$FILE_TANP_MUCI_LINKS, append = T)
-
-
+    if (nrow(dt_links_muci_new) > 0) {
+        fwrite(dt_links_muci_new %>% copy %>% .[, b_same := -1])
+        stop("check muci links")
+    }
+    
+    ## fwrite(dt_links_muci_new, PMDATA_LOCS$FILE_TANP_MUCI_LINKS, append = T)
+    
+    return(dt_muci_links_ff)
 }
 
 

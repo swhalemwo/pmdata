@@ -65,8 +65,8 @@ muci_223,muci_219,Smithsonian American Art Museum (SAAM),Smithsonian American Ar
 muci_221,muci_220,National Portrait Gallery / Smithsonian American Art Museum (SAAM),National Portrait Gallery / Smithsonian American Art Museum,"geo,stringdist",1
 muci_6,muci_5,Stedelijk Museum,Van Gogh Museum,geo,0
 muci_28,muci_26,Queensland Art Gallery,Queensland Art Gallery (QAG),"geo,stringdist",1
-muci_87,muci_81,National Portrait Gallery,National Gallery,"geo,stringdist",1
-muci_89,muci_81,"National Portrait Gallery, London",National Gallery,geo,1
+muci_87,muci_81,National Portrait Gallery,National Gallery,"geo,stringdist",0
+muci_89,muci_81,"National Portrait Gallery, London",National Gallery,geo,0
 muci_154,muci_153,Musée d'Art Moderne de Paris,Palais de Tokyo,geo,0
 muci_217,muci_216,Smithsonian American Art Museum (SAAM) main building,National Portrait Gallery,geo,1
 muci_219,muci_216,Smithsonian American Art Museum,National Portrait Gallery,geo,1
