@@ -321,9 +321,10 @@ gd_muci_links <- function(dt_tanp_muci_geo)  {
 
     dt_muci_links_ff <- gd_muci_links_ff()
 
-    dt_links_muci_new <- dt_links_muci[!dt_muci_links_ff, on = .(muci1, muci2)]
+    dt_links_muci_new <- dt_links_muci[!dt_muci_links_ff, on = .(muci1, muci2)] %>%
+        .[, b_same := -1]
 
-    fwrite(dt_links_muci, PMDATA_LOCS$FILE_TANP_MUCI_LINKS, append)
+    fwrite(dt_links_muci_new, PMDATA_LOCS$FILE_TANP_MUCI_LINKS, append = T)
 
 
 }

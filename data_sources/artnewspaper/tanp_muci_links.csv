@@ -63,3 +63,23 @@ muci_219,muci_217,Smithsonian American Art Museum,Smithsonian American Art Museu
 muci_223,muci_217,Smithsonian American Art Museum (SAAM),Smithsonian American Art Museum (SAAM) main building,"geo,stringdist",1
 muci_223,muci_219,Smithsonian American Art Museum (SAAM),Smithsonian American Art Museum,"geo,stringdist",1
 muci_221,muci_220,National Portrait Gallery / Smithsonian American Art Museum (SAAM),National Portrait Gallery / Smithsonian American Art Museum,"geo,stringdist",1
+muci_6,muci_5,Stedelijk Museum,Van Gogh Museum,geo,0
+muci_28,muci_26,Queensland Art Gallery,Queensland Art Gallery (QAG),"geo,stringdist",1
+muci_87,muci_81,National Portrait Gallery,National Gallery,"geo,stringdist",1
+muci_89,muci_81,"National Portrait Gallery, London",National Gallery,geo,1
+muci_154,muci_153,Musée d'Art Moderne de Paris,Palais de Tokyo,geo,0
+muci_217,muci_216,Smithsonian American Art Museum (SAAM) main building,National Portrait Gallery,geo,1
+muci_219,muci_216,Smithsonian American Art Museum,National Portrait Gallery,geo,1
+muci_223,muci_216,Smithsonian American Art Museum (SAAM),National Portrait Gallery,geo,1
+muci_220,muci_217,National Portrait Gallery / Smithsonian American Art Museum,Smithsonian American Art Museum (SAAM) main building,geo,1
+muci_221,muci_217,National Portrait Gallery / Smithsonian American Art Museum (SAAM),Smithsonian American Art Museum (SAAM) main building,geo,1
+muci_220,muci_219,National Portrait Gallery / Smithsonian American Art Museum,Smithsonian American Art Museum,geo,1
+muci_221,muci_219,National Portrait Gallery / Smithsonian American Art Museum (SAAM),Smithsonian American Art Museum,geo,1
+muci_223,muci_220,Smithsonian American Art Museum (SAAM),National Portrait Gallery / Smithsonian American Art Museum,geo,1
+muci_223,muci_221,Smithsonian American Art Museum (SAAM),National Portrait Gallery / Smithsonian American Art Museum (SAAM),"geo,stringdist",1
+muci_170,muci_165,National Folk Museum of Korea,National Museum of Korea,stringdist,0
+muci_174,muci_171,Shanghai Museum East,Shanghai Museum,stringdist,0
+muci_197,muci_193,National Museum of Modern Art,National Museum of Western Art,stringdist,0
+muci_90,muci_88,"Imperial War Museum, London",Imperial War Museum,stringdist,1
+muci_198,muci_193,National Museum of Modern Art (MOMAT),National Museum of Western Art,stringdist,0
+muci_170,muci_169,National Folk Museum of Korea,National Museum of Korea Seoul,stringdist,0
