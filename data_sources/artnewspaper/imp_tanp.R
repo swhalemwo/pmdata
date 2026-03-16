@@ -130,10 +130,10 @@ gd_tanp_city <- function(dt_tanp_cbn) {
     
     ## another update join for new city name
     dt_tanp_city_geo[, city_new := city] %>%
-        .[dt_tanp_city_links_ff, city_new := i.new_name, on = .(ID = ID_i)]
+        .[dt_tanp_city_links_ff, city_new := i.new_name, on = .(ID = ID_j)]
 
     ## dt_tanp_city_geo[grepl("Washington", city), .(city, ID, city_new)]
-    ## dt_tanp_city_geo[grepl("Paulo", city), .(city, ID, city_new)]
+    ## dt_tanp_city_geo[grepl("Paulo|Washington|Krak", city), .(city, ID, city_new)][order(ID)]
     ## dt_tanp_city_geo %>% copy %>% .[, N:= .N, ID] %>% .[N > 1] %>% .[order(-N, ID), .(city, ID, N)]
     
     ## dt_tanp_city_geo[dt_tanp_city_links_ff, `:=`(ID = i.ID_i, city_new = i.new_name) , on = .(ID = ID_j)]
@@ -237,18 +237,6 @@ gd_tanp_muci <- function(dt_tanp_wcid) {
         .[, .(museum, city_new, muci, id_city, addr = paste0(museum, ", ",city_new))]
 
 
-    ## manual fix to add id_city to FILE_TANP_MUCI_ID
-    ## dt_tanp_muci_fix <- merge(dt_tanp_muci_geo_ff,
-    ##       dt_tanp_wcid[, .(id_city, museum, city_new)] %>% unique,
-    ##       by = c("museum", "city_new")) %>%
-    ##     setcolorder(neworder = c("museum", "city_new", "muci", "id_city", "lat", "long"))
-    ## fwrite(dt_tanp_muci_fix, PMDATA_LOCS$FILE_TANP_MUCI_ID)
-
-
-    ## manual fix: get muci in order for proper muci IDs generation
-    ## dt_muci_ordered <- gd_tanp_muci_ff() %>% .[, muci_int := as.integer(gsub("muci_", "", muci))] %>%
-    ##     .[order(muci_int)]
-    ## fwrite(dt_muci_ordered[, muci_int := NULL], PMDATA_LOCS$FILE_TANP_MUCI_ID)
 
 
     ## do the geocoding of new ones if neccessary
@@ -257,7 +245,7 @@ gd_tanp_muci <- function(dt_tanp_wcid) {
 
         
         ## manual start
-        ## dt_tanp_muci_cbn <- dt_tanp_muci_geo %>% copy %>%
+        ## dt_muci_cbn <- dt_tanp_muci_geo %>% copy %>%
         ##     .[, `:=`(address_components = NULL, navigation_points = NULL, types = NULL)]
 
 
@@ -276,13 +264,22 @@ gd_tanp_muci <- function(dt_tanp_wcid) {
 
     ## get from file again
     dt_tanp_muci_geo <- gd_tanp_muci_ff()
+    ## dt_tanp_muci_geo[grepl("Metropol", museum)]
+    ## dt_tanp_muci_geo[grepl("Museum of China", museum)]
+    ## dt_tanp_wcid[grepl("Museum of China", museum)]
+    ## dt_tanp_muci_geo[muci %in% c("muci_116","muci_112"), .(lat, long)] %>% adf
     
     dt_muci_links <- gd_muci_links(dt_tanp_muci_geo)[b_same == 1] # get links to update
+
+    ## dt_tanp_muci_geo[grepl("Tomie", museum)]
+    ## dt_tanp_muci_geo[grepl("Paul", city_new)] %>% names
 
     cnt_unq <- dt_tanp_muci_geo[, uniqueN(muci)]
     keep_going <- T
     cntr <- 0
     dt_tanp_muci_fixed <- dt_tanp_muci_geo %>% copy
+    dt_tanp_muci_fixed[grepl("SAAM", museum)]
+
 
     ## iteratively update all muci ids
     while(keep_going) {
@@ -297,6 +294,8 @@ gd_tanp_muci <- function(dt_tanp_wcid) {
         if (cntr == 20) {stop("stop")}
     }
 
+    dt_tanp_muci_fixed[grepl("SAAM", museum)] # seems to work
+
     ## dt_tanp_muci_fixed[, .N, muci][order(-N)]
     ## dt_tanp_muci_fixed[grepl("Smithsoni|National Portrait", museum) & grepl("Washington", city_new)]
 
@@ -304,8 +303,10 @@ gd_tanp_muci <- function(dt_tanp_wcid) {
     dt_tanp_muci_newname <- dt_tanp_muci_fixed[, head(.SD,1), muci]
     dt_tanp_muci_fixed[dt_tanp_muci_newname, museum_new := i.museum, on = "muci"]
 
+    dt_tanp_muci_fixed[grepl("SAAM", museum), .(muci, museum_new, city_new, id_city)] # seems to work
+
     ## dt_tanp_muci_fixed[muci == "muci_216"]
-    dt_tanp_muci_fixed[muci == "muci_21"]
+    ## dt_tanp_muci_fixed[muci == "muci_21"]
 
     return(dt_tanp_muci_fixed)
 
@@ -397,7 +398,7 @@ gd_muci_links <- function(dt_tanp_muci_geo)  {
 
 dt_tanp_cbn <- gd_tanp_cbn()
 dt_tanp_city <- gd_tanp_city(dt_tanp_cbn)
-dt_tanp_city[grepl("Washington", city), .(ID)]
+dt_tanp_city[grepl("Washington", city), .(ID, city, city_new)]
 
 ## with city id 
 dt_tanp_wcid <- merge(dt_tanp_cbn, dt_tanp_city[, .(city, id_city = ID, city_new)], by = "city")
@@ -410,7 +411,7 @@ dt_tanp_wcid[grepl("National Portrait", museum) & grepl("Washington", city)]
 dt_tanp_wcid[grepl("/", museum)]
 
 dt_tanp_muci <- gd_tanp_muci(dt_tanp_wcid)
-dt_tanp_muci[grepl("Smithsonian", museum)]
+dt_tanp_muci[grepl("Smithsonian",museum), .(muci, museum, id_city, museum_new)]
 dt_tanp_muci[grepl("National Portrait", museum) & grepl("Washington", city_new)]
 
 
@@ -418,7 +419,7 @@ dt_tanp_muyr <- merge(dt_tanp_wcid, dt_tanp_muci[, .(muci, id_city, museum, muse
                       by = c("museum", "id_city")) %>%
     .[, year := as.integer(gsub("tanp(\\d+)_.*", "\\1", id))]
 
-dt_tanp_muyr[grepl("Smithsonian", museum)]
+dt_tanp_muyr[grepl("SAAM", museum_new), .(muci)]
 dt_tanp_muyr[grepl("National Portrait", museum) & grepl("Washington", city_new)]
 
 

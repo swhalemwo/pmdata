@@ -1,0 +1,104 @@
+muci1,muci2,museum1,museum2,src,b_same
+muci_6,muci_5,Stedelijk Museum,Van Gogh Museum,geo,0
+muci_11,muci_9,Museu Nacional d'Art de Catalunya (MNAC),MNAC,geo,1
+muci_16,muci_15,UCCA Center for Contemporary Art,Ullens Center for Contemporary Art,"geo,stringdist",1
+muci_18,muci_17,Centro Cultural Banco Brasil,Centro Cultural Banco do Brasil,"geo,stringdist",1
+muci_25,muci_24,Guggenheim Museum Bilbao,Guggenheim,geo,1
+muci_27,muci_26,"Museum of Fine Arts (MFA), Boston",Museum of Fine Arts,"geo,stringdist",1
+muci_28,muci_26,Museum of Fine Arts (MFA Boston),Museum of Fine Arts,"geo,stringdist",1
+muci_29,muci_26,Museum of Fine Arts Boston,Museum of Fine Arts,"geo,stringdist",1
+muci_28,muci_27,Museum of Fine Arts (MFA Boston),"Museum of Fine Arts (MFA), Boston","geo,stringdist",1
+muci_29,muci_27,Museum of Fine Arts Boston,"Museum of Fine Arts (MFA), Boston","geo,stringdist",1
+muci_29,muci_28,Museum of Fine Arts Boston,Museum of Fine Arts (MFA Boston),"geo,stringdist",1
+muci_33,muci_31,Gallery of Modern Art,Gallery of Modern Art (GOMA),"geo,stringdist",1
+muci_34,muci_32,Queensland Art Gallery,Queensland Art Gallery (QAG),"geo,stringdist",1
+muci_36,muci_35,Musées Royaux des Beaux-Arts de Belgique,Musées Royaux des Beaux-Arts,"geo,stringdist",1
+muci_51,muci_50,National Galleries Scotland: National,Scottish National Gallery,geo,1
+muci_53,muci_52,Dali Theatre-Museum,Teatre-Museu Dalí,geo,1
+muci_57,muci_54,Gallerie degli Uffizi,Galleria degli Uffizi,"geo,stringdist",1
+muci_56,muci_55,Galleria dell’Accademia di Firenze,Galleria dell'Accademia di Firenze,"geo,stringdist",1
+muci_58,muci_55,Galleria dell'Accademia,Galleria dell'Accademia di Firenze,"geo,stringdist",1
+muci_58,muci_56,Galleria dell'Accademia,Galleria dell’Accademia di Firenze,"geo,stringdist",1
+muci_63,muci_62,Fondation Monet,Fondation Claude Monet,"geo,stringdist",1
+muci_65,muci_64,Kelvingrove Art Gallery & Museum,Kelvingrove Art Gallery and Museum,"geo,stringdist",1
+muci_75,muci_74,"Museum of Fine Arts, Houston",Museum of Fine Arts,"geo,stringdist",1
+muci_80,muci_79,Israel Museume,Israel Museum,"geo,stringdist",1
+muci_82,muci_81,21st century Museum of Contemporary Art,21st Century Museum of Contemporary Art,geo,1
+muci_85,muci_84,National Museum,National Museum in Krakow,"geo,stringdist",1
+muci_87,muci_86,Wawel Royal Castle,Royal Wawel Castle,"geo,stringdist",1
+muci_92,muci_91,"World Museum, Liverpool",World Museum,geo,1
+muci_99,muci_95,National Portrait Gallery,National Gallery,"geo,stringdist",0
+muci_104,muci_95,"National Portrait Gallery, London",National Gallery,geo,0
+muci_103,muci_96,Victoria and Albert Museum,Victoria and Albert,"geo,stringdist",1
+muci_104,muci_99,"National Portrait Gallery, London",National Portrait Gallery,"geo,stringdist",1
+muci_111,muci_106,J. Paul Getty Museum (Getty Center),Getty Center,geo,1
+muci_109,muci_107,Los Angeles County Museum of Art,Lacma,geo,1
+muci_110,muci_107,Los Angeles County Museum of Art (Lacma),Lacma,geo,1
+muci_110,muci_109,Los Angeles County Museum of Art (Lacma),Los Angeles County Museum of Art,"geo,stringdist",1
+muci_117,muci_112,Museo Reina Sofía,Reina Sofia,geo,1
+muci_120,muci_112,Reina Sofia (main site),Reina Sofia,geo,1
+muci_122,muci_112,Reina Sofia: Main site,Reina Sofia,geo,1
+muci_118,muci_114,CaixaForum,CaixaForum Madrid,"geo,stringdist",1
+muci_123,muci_114,"CaixaForum Madrid, Fundacion La Caixa",CaixaForum Madrid,geo,1
+muci_121,muci_115,Museo Nacional Thyssen-Bornemisza,Museo Thyssen-Bornemisza,"geo,stringdist",1
+muci_120,muci_117,Reina Sofia (main site),Museo Reina Sofía,geo,1
+muci_122,muci_117,Reina Sofia: Main site,Museo Reina Sofía,geo,1
+muci_123,muci_118,"CaixaForum Madrid, Fundacion La Caixa",CaixaForum,geo,1
+muci_122,muci_120,Reina Sofia: Main site,Reina Sofia (main site),"geo,stringdist",1
+muci_125,muci_124,Museo Picasso Málaga,Museo Picasso Malaga,"geo,stringdist",1
+muci_127,muci_126,mucem,Mucem,geo,1
+muci_128,muci_126,Mucem - Musée des civilisations de l'Europe et de la Méditerranée,Mucem,geo,1
+muci_129,muci_126,Mucem,Mucem,geo,1
+muci_128,muci_127,Mucem - Musée des civilisations de l'Europe et de la Méditerranée,mucem,geo,1
+muci_129,muci_127,Mucem,mucem,geo,1
+muci_129,muci_128,Mucem,Mucem - Musée des civilisations de l'Europe et de la Méditerranée,geo,1
+muci_133,muci_130,National Gallery of Victoria,NGV International,geo,1
+muci_140,muci_139,Triennale Milano,Triennale di Milano,"geo,stringdist",1
+muci_147,muci_144,State Pushkin Museum of Fine Arts,Pushkin Museum,geo,1
+muci_148,muci_145,Garage Museum of Contemporary Art,Garage Museum,geo,1
+muci_150,muci_149,GES-2 House of Culture,Contemporary Art Center Winzavod,geo,0
+muci_156,muci_152,Museum of Modern Art (MoMA),Museum of Modern Art,"geo,stringdist",1
+muci_158,muci_153,Solomon R. Guggenheim Museum,Guggenheim Museum,geo,1
+muci_157,muci_154,Whitney Museum of American Art,Whitney Museum,geo,1
+muci_159,muci_155,Metropolitan Museum of Art (Fifth Avenue),Metropolitan Museum of Art,"geo,stringdist",1
+muci_172,muci_166,Musée d’Orsay,Musée d'Orsay,"geo,stringdist",1
+muci_174,muci_170,Grand Palais,Galeries Nationales du Grand Palais,geo,1
+muci_173,muci_171,Musée de l’Orangerie,Musée de l'Orangerie,"geo,stringdist",1
+muci_178,muci_177,Musée d'Art Moderne de Paris,Palais de Tokyo,geo,1
+muci_186,muci_185,M. H. de Young Museum,de Young Museum,"geo,stringdist",1
+muci_188,muci_187,The Huntington,Huntington Library,geo,1
+muci_189,muci_187,"The Huntington Library, Art Museum, and Botanical Gardens",Huntington Library,geo,1
+muci_189,muci_188,"The Huntington Library, Art Museum, and Botanical Gardens",The Huntington,geo,1
+muci_199,muci_192,National Museum of Korea Seoul,National Museum of Korea,"geo,stringdist",1
+muci_196,muci_195,National Museum of Modern and Contemporary Art (MMCA),MMCA,geo,1
+muci_204,muci_200,Shanghai Museum on People's Square,Shanghai Museum,geo,1
+muci_206,muci_205,National Gallery Singapore,National Gallery,"geo,stringdist",1
+muci_211,muci_208,State Hermitage Museum,State Hermitage,"geo,stringdist",1
+muci_212,muci_210,Faberge Museum,Fabergé Museum,"geo,stringdist",1
+muci_215,muci_214,Museum of Contemporary Art Australia,MCA Australia,geo,1
+muci_223,muci_220,National Art Center,National Art Center Tokyo,"geo,stringdist",1
+muci_225,muci_224,National Museum of Modern Art (MOMAT),National Museum of Modern Art,"geo,stringdist",1
+muci_230,muci_228,Royal Ontario Museum (ROM),Royal Ontario Museum,"geo,stringdist",1
+muci_239,muci_236,Upper Belvedere,Österreichische Galerie Belvedere,geo,1
+muci_242,muci_241,"Royal Castle, Warsaw",Royal Castle,"geo,stringdist",1
+muci_252,muci_245,National Museum of the American Indian,American Indian Museum,geo,1
+muci_248,muci_247,SAAM,National Portrait Gallery,geo,0
+muci_249,muci_247,Smithsonian American Art Museum (SAAM) main building,National Portrait Gallery,geo,0
+muci_251,muci_247,Smithsonian American Art Museum,National Portrait Gallery,geo,0
+muci_253,muci_247,Smithsonian American Art Museum (SAAM),National Portrait Gallery,geo,0
+muci_249,muci_248,Smithsonian American Art Museum (SAAM) main building,SAAM,geo,1
+muci_251,muci_248,Smithsonian American Art Museum,SAAM,geo,1
+muci_253,muci_248,Smithsonian American Art Museum (SAAM),SAAM,geo,1
+muci_251,muci_249,Smithsonian American Art Museum,Smithsonian American Art Museum (SAAM) main building,"geo,stringdist",1
+muci_253,muci_249,Smithsonian American Art Museum (SAAM),Smithsonian American Art Museum (SAAM) main building,"geo,stringdist",1
+muci_253,muci_251,Smithsonian American Art Museum (SAAM),Smithsonian American Art Museum,"geo,stringdist",1
+muci_203,muci_200,Shanghai Museum East,Shanghai Museum,stringdist,0
+muci_193,muci_192,National Folk Museum of Korea,National Museum of Korea,stringdist,0
+muci_105,muci_102,"Imperial War Museum, London",Imperial War Museum,stringdist,1
+muci_155,muci_151,Metropolitan Museum of Art,Metropolitan Museum,stringdist,1
+muci_225,muci_222,National Museum of Modern Art (MOMAT),National Museum of Western Art,stringdist,0
+muci_14,muci_13,National Art Museum of China,National Museum of China,stringdist,0
+muci_117,muci_116,Museo Reina Sofía,Reina Sofía,stringdist,1
+muci_224,muci_222,National Museum of Modern Art,National Museum of Western Art,stringdist,0
+muci_199,muci_193,National Museum of Korea Seoul,National Folk Museum of Korea,stringdist,0
+muci_116,muci_112,Reina Sofía,Reina Sofia,stringdist,1
