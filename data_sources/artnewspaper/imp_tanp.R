@@ -225,8 +225,8 @@ gd_tanp_muci <- function(dt_tanp_wcid) {
     dt_tanp_muci_geo_ff <- gd_tanp_muci_ff()
     
 
-    ## museum geocoding: use museum-city
-    ## dt_tanp_muci <- dt_tanp_wcid[, .(museum, city_new, id_city)] %>% unique %>%
+    ## ## museum geocoding: use museum-city
+    ## dt_tanp_muci_new <- dt_tanp_wcid[, .(museum, city_new, id_city)] %>% unique %>%
     ##     .[, muci := paste0("muci_", 1:.N)] %>%
     ##     .[, .(muci, museum, city_new, id_city, addr = paste0(museum, ", ",city_new))]
 
@@ -255,14 +255,16 @@ gd_tanp_muci <- function(dt_tanp_wcid) {
     if (nrow(dt_tanp_muci_new) > 0) {
         dt_tanp_muci_geo <- geocode(dt_tanp_muci_new, address = addr, full_results = T, method = "google") %>% adt
 
-        ## dt_tanp_muci_geo2 <- dt_tanp_muci_geo %>% copy %>% 
+        
+        ## manual start
+        ## dt_tanp_muci_cbn <- dt_tanp_muci_geo %>% copy %>%
         ##     .[, `:=`(address_components = NULL, navigation_points = NULL, types = NULL)]
-            ## setcolorder(neworder = names(dt_tanp_muci_geo_ff))
+
 
         dt_muci_cbn <- rbind(dt_tanp_muci_geo_ff, dt_tanp_muci_geo, fill = T) %>%
             .[, `:=`(address_components = NULL, navigation_points = NULL, types = NULL)]
         
-        print(dt_tanp_muci_geo[, .(museum, city_new, muci, id_city, lat, long, addr)])
+        ## print(dt_tanp_muci_geo[, .(museum, city_new, muci, id_city, lat, long, addr)])
 
         wtf <- readline("write to file?")
         if (wtf == "y") {
