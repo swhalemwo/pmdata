@@ -1,0 +1,65 @@
+muci1,muci2,museum1,museum2,src,b_same
+muci_20,muci_19,Guggenheim Museum Bilbao,Guggenheim,geo,1
+muci_22,muci_21,"Museum of Fine Arts (MFA), Boston",Museum of Fine Arts,"geo,stringdist",1
+muci_23,muci_21,Museum of Fine Arts (MFA Boston),Museum of Fine Arts,"geo,stringdist",1
+muci_24,muci_21,Museum of Fine Arts Boston,Museum of Fine Arts,"geo,stringdist",1
+muci_23,muci_22,Museum of Fine Arts (MFA Boston),"Museum of Fine Arts (MFA), Boston","geo,stringdist",1
+muci_24,muci_22,Museum of Fine Arts Boston,"Museum of Fine Arts (MFA), Boston","geo,stringdist",1
+muci_24,muci_23,Museum of Fine Arts Boston,Museum of Fine Arts (MFA Boston),"geo,stringdist",1
+muci_27,muci_25,Gallery of Modern Art,Gallery of Modern Art (GOMA),"geo,stringdist",1
+muci_30,muci_29,Musées Royaux des Beaux-Arts de Belgique,Musées Royaux des Beaux-Arts,"geo,stringdist",1
+muci_44,muci_43,National Galleries Scotland: National,Scottish National Gallery,geo,1
+muci_48,muci_46,Galleria degli Uffizi,Gallerie degli Uffizi,"geo,stringdist",1
+muci_49,muci_47,Galleria dell'Accademia,Galleria dell'Accademia di Firenze,"geo,stringdist",1
+muci_54,muci_53,Fondation Monet,Fondation Claude Monet,"geo,stringdist",1
+muci_64,muci_63,"Museum of Fine Arts, Houston",Museum of Fine Arts,"geo,stringdist",1
+muci_70,muci_69,21st century Museum of Contemporary Art,21st Century Museum of Contemporary Art,geo,1
+muci_73,muci_72,National Museum,National Museum in Krakow,"geo,stringdist",1
+muci_75,muci_74,Wawel Royal Castle,Royal Wawel Castle,"geo,stringdist",1
+muci_78,muci_77,"World Museum, Liverpool",World Museum,geo,1
+muci_89,muci_87,"National Portrait Gallery, London",National Portrait Gallery,"geo,stringdist",1
+muci_95,muci_91,J. Paul Getty Museum (Getty Center),Getty Center,geo,1
+muci_93,muci_92,Los Angeles County Museum of Art (Lacma),Los Angeles County Museum of Art,"geo,stringdist",1
+muci_99,muci_96,Reina Sofia,Museo Reina Sofía,geo,1
+muci_102,muci_96,Reina Sofia (main site),Museo Reina Sofía,geo,1
+muci_105,muci_96,Reina Sofia: Main site,Museo Reina Sofía,geo,1
+muci_103,muci_98,Museo Nacional Thyssen-Bornemisza,Museo Thyssen-Bornemisza,geo,1
+muci_102,muci_99,Reina Sofia (main site),Reina Sofia,geo,1
+muci_105,muci_99,Reina Sofia: Main site,Reina Sofia,geo,1
+muci_104,muci_100,CaixaForum Madrid,CaixaForum,"geo,stringdist",1
+muci_106,muci_100,"CaixaForum Madrid, Fundacion La Caixa",CaixaForum,geo,1
+muci_105,muci_102,Reina Sofia: Main site,Reina Sofia (main site),"geo,stringdist",1
+muci_106,muci_104,"CaixaForum Madrid, Fundacion La Caixa",CaixaForum Madrid,geo,1
+muci_108,muci_107,Museo Picasso Málaga,Museo Picasso Malaga,"geo,stringdist",1
+muci_110,muci_109,mucem,Mucem,geo,1
+muci_111,muci_109,Mucem - Musée des civilisations de l'Europe et de la Méditerranée,Mucem,geo,1
+muci_111,muci_110,Mucem - Musée des civilisations de l'Europe et de la Méditerranée,mucem,geo,1
+muci_114,muci_112,National Gallery of Victoria,NGV International,geo,1
+muci_120,muci_119,Triennale Milano,Triennale di Milano,"geo,stringdist",1
+muci_127,muci_123,State Pushkin Museum of Fine Arts,Pushkin Museum,geo,1
+muci_128,muci_125,Garage Museum of Contemporary Art,Garage Museum,geo,1
+muci_130,muci_129,GES-2 House of Culture,Contemporary Art Center Winzavod,geo,0
+muci_137,muci_131,Metropolitan Museum of Art (Fifth Avenue),Metropolitan Museum of Art,"geo,stringdist",1
+muci_134,muci_132,Museum of Modern Art (MoMA),Museum of Modern Art,"geo,stringdist",1
+muci_135,muci_133,Whitney Museum of American Art,Whitney Museum,geo,1
+muci_148,muci_144,Musée d'Orsay,Musée d’Orsay,"geo,stringdist",1
+muci_161,muci_160,de Young Museum,M. H. de Young Museum,"geo,stringdist",1
+muci_163,muci_162,The Huntington,Huntington Library,geo,1
+muci_164,muci_162,"The Huntington Library, Art Museum, and Botanical Gardens",Huntington Library,geo,1
+muci_164,muci_163,"The Huntington Library, Art Museum, and Botanical Gardens",The Huntington,geo,1
+muci_169,muci_165,National Museum of Korea Seoul,National Museum of Korea,"geo,stringdist",1
+muci_175,muci_171,Shanghai Museum on People's Square,Shanghai Museum,geo,1
+muci_177,muci_176,National Gallery Singapore,National Gallery,"geo,stringdist",1
+muci_182,muci_180,State Hermitage Museum,State Hermitage,"geo,stringdist",1
+muci_183,muci_181,Faberge Museum,Fabergé Museum,"geo,stringdist",1
+muci_186,muci_185,Museum of Contemporary Art Australia,MCA Australia,geo,1
+muci_196,muci_195,National Art Center Tokyo,National Art Center,"geo,stringdist",1
+muci_198,muci_197,National Museum of Modern Art (MOMAT),National Museum of Modern Art,"geo,stringdist",1
+muci_203,muci_202,Royal Ontario Museum,Royal Ontario Museum (ROM),"geo,stringdist",1
+muci_213,muci_212,"Royal Castle, Warsaw",Royal Castle,"geo,stringdist",1
+muci_220,muci_216,National Portrait Gallery / Smithsonian American Art Museum,National Portrait Gallery,geo,1
+muci_221,muci_216,National Portrait Gallery / Smithsonian American Art Museum (SAAM),National Portrait Gallery,geo,1
+muci_219,muci_217,Smithsonian American Art Museum,Smithsonian American Art Museum (SAAM) main building,"geo,stringdist",1
+muci_223,muci_217,Smithsonian American Art Museum (SAAM),Smithsonian American Art Museum (SAAM) main building,"geo,stringdist",1
+muci_223,muci_219,Smithsonian American Art Museum (SAAM),Smithsonian American Art Museum,"geo,stringdist",1
+muci_221,muci_220,National Portrait Gallery / Smithsonian American Art Museum (SAAM),National Portrait Gallery / Smithsonian American Art Museum,"geo,stringdist",1
