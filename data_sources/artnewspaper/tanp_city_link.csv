@@ -3,4 +3,8 @@ id_link,ID_i,ID_j,city_i,city_j,new_name,b_same
 2,city_63,city_45,Kraków,Krakow,Krakow,1
 3,city_86,city_46,São Paulo,S√£o Paulo,São Paulo,1
 4,city_93,city_11,Rio De Janeiro,Rio de Janeiro,"Rio de Janeiro",1
+5,city_96,city_14,"Washington, Dc","Washington, DC","Washington, DC",1
+6,city_99,city_46,Sao Paulo,S√£o Paulo,"São Paulo",1
+7,city_96,city_78,"Washington, Dc",Washington,"Washington, DC",1
+8,city_99,city_86,Sao Paulo,São Paulo,"São Paulo",1
 
