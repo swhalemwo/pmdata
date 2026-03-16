@@ -3,6 +3,7 @@ library(jtls)
 library(purrr)
 library(igraph)
 library(terra)
+library(tidygeocoder)
 
 PMDATA_LOCS <- gc_pmdata_locs()
 
@@ -20,6 +21,11 @@ gd_tanp_cbn <- function() {
 
     ## more systematic approach
     ## read in data
+
+    dt_tanp_19 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_19.csv") %>%
+        .[, `:=`(city = stringr::str_to_title(city), id = paste0("tanp19_", 1:.N))]
+        
+    
     dt_tanp_20 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_20.csv") %>%
         setnames(new = c("total", "museum", "city", "perc_chng_19", "days_closed_pandemic")) %>% 
         .[, id := paste0("tanp20_", 1:.N)] 
@@ -44,7 +50,7 @@ gd_tanp_cbn <- function() {
         .[, id := paste0("tanp24_", 1:.N)]
 
     ## combine
-    dt_tanp_cbn <- map(list(dt_tanp_20, dt_tanp_21, dt_tanp_22, dt_tanp_23, dt_tanp_24),
+    dt_tanp_cbn <- map(list(dt_tanp_19, dt_tanp_20, dt_tanp_21, dt_tanp_22, dt_tanp_23, dt_tanp_24),
                        ~.x[, .(id, museum, city, total)]) %>%
         rbindlist %>%
         .[museum == "teamLab Borderless: MORI Building", city := "Tokyo"] %>% # manual fixes
@@ -52,7 +58,7 @@ gd_tanp_cbn <- function() {
         .[, total := as.integer(gsub(",", "", total))]
     
     ## smithsonian fix: sometimes grouped together with national portrait gallery
-    dt_smithies <- dt_tanp_cbn[grepl("Smithsonian", museum) & grepl("Portrait", museum)] %>%
+    dt_smithies <- dt_tanp_cbn[grepl("Smithsonian|SAAM", museum) & grepl("Portrait", museum)] %>%
         .[, .(museum = trimws(unlist(tstrsplit(museum, "/")))), .(city, total, id)]
 
     dt_smithies_new <- dt_smithies %>%  copy %>% 
@@ -192,45 +198,6 @@ gd_tanp_muci_ff <- function(FILE_TANP_MUCI_ID = PMDATA_LOCS$FILE_TANP_MUCI_ID) {
 
 
 
-dt_tanp_cbn <- gd_tanp_cbn()
-dt_tanp_city <- gd_tanp_city(dt_tanp_cbn)
-
-## with city id 
-dt_tanp_wcid <- merge(dt_tanp_cbn, dt_tanp_city[, .(city, id_city = ID, city_new)], by = "city")
-
-dt_tanp_wcid[grepl("Kr|Pau|Washing", city)] %>% print(n=80)
-
-dt_tanp_wcid[grepl("Smithsonian", museum)]
-dt_tanp_wcid[grepl("National Portrait", museum)]
-
-dt_tanp_wcid[grepl("/", museum)]
-
-dt_tanp_muci <- gd_tanp_muci(dt_tanp_wcid)
-dt_tanp_muci[grepl("Smithsonian", museum)]
-dt_tanp_muci[grepl("National Portrait", museum)]
-
-
-dt_tanp_muyr <- merge(dt_tanp_wcid, dt_tanp_muci[, .(muci, id_city, museum, museum_new)],
-                      by = c("museum", "id_city")) %>%
-    .[, year := as.integer(gsub("tanp(\\d+)_.*", "\\1", id))]
-
-dt_tanp_muyr[grepl("Smithsonian", museum)]
-dt_tanp_muyr[grepl("National Portrait", museum)]
-
-
-dt_tanp_muyr %>% ggplot(aes(x = year, y = total, color = muci)) +
-    geom_line(show.legend = F)
-
-
-
-dt_tanp_muyr[, .N, muci][order(-N)]
-dt_tanp_muyr[muci %in% c("muci_216")][order(year, muci)] %>% adf
-
-dt_tanp_muyr[grepl("Smithsonian", museum)]
-
-dt_af_instns <- gd_af_instns()
-dt_af_instns[grepl("Smithsonian", Name)]
-dt_af_instns[grepl("National Portrait", Name)]
 
 
 gd_tanp_muci <- function(dt_tanp_wcid) {
@@ -402,6 +369,56 @@ gd_muci_links <- function(dt_tanp_muci_geo)  {
     
     return(dt_muci_links_ff)
 }
+
+
+## ** main
+
+dt_tanp_cbn <- gd_tanp_cbn()
+dt_tanp_city <- gd_tanp_city(dt_tanp_cbn)
+
+## with city id 
+dt_tanp_wcid <- merge(dt_tanp_cbn, dt_tanp_city[, .(city, id_city = ID, city_new)], by = "city")
+
+dt_tanp_wcid[grepl("Kr|Pau|Washing", city)] %>% print(n=80)
+
+dt_tanp_wcid[grepl("Smithsonian", museum)]
+dt_tanp_wcid[grepl("National Portrait", museum) & grepl("Washington", city)]
+
+dt_tanp_wcid[grepl("/", museum)]
+
+dt_tanp_muci <- gd_tanp_muci(dt_tanp_wcid)
+dt_tanp_muci[grepl("Smithsonian", museum)]
+dt_tanp_muci[grepl("National Portrait", museum) & grepl("Washington", city_new)]
+
+
+dt_tanp_muyr <- merge(dt_tanp_wcid, dt_tanp_muci[, .(muci, id_city, museum, museum_new)],
+                      by = c("museum", "id_city")) %>%
+    .[, year := as.integer(gsub("tanp(\\d+)_.*", "\\1", id))]
+
+dt_tanp_muyr[grepl("Smithsonian", museum)]
+dt_tanp_muyr[grepl("National Portrait", museum) & grepl("Washington", city_new)]
+
+
+dt_tanp_muyr %>% ggplot(aes(x = year, y = total, color = muci)) +
+    geom_line(show.legend = F) +
+    scale_y_continuous(trans = scales::log10_trans())
+
+
+dt_tanp_muyr[, .N, muci][order(-N)]
+dt_tanp_muyr[muci %in% c("muci_216")][order(year, muci)] %>% adf
+
+dt_tanp_muyr[grepl("Smithsonian", museum)]
+
+dt_af_instns <- gd_af_instns()
+dt_af_instns[grepl("Smithsonian", Name)]
+dt_af_instns[grepl("National Portrait", Name)]
+
+
+## gap stuffing
+
+dt_tanp_muyr %>% copy %>% .[, `:=`(yrdiff = max(year) - min(year), nobs = .N), muci] %>%
+    .[yrdiff > nobs, .(museum_new, muci, museum, year, yrdiff, nobs)] %>% print(n=80)
+
 
 
 

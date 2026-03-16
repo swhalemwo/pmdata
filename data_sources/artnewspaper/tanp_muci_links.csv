@@ -74,3 +74,29 @@ muci_221,muci_216,Smithsonian American Art Museum (SAAM),National Portrait Galle
 muci_219,muci_217,Smithsonian American Art Museum,Smithsonian American Art Museum (SAAM) main building,"geo,stringdist",1
 muci_221,muci_217,Smithsonian American Art Museum (SAAM),Smithsonian American Art Museum (SAAM) main building,"geo,stringdist",1
 muci_221,muci_219,Smithsonian American Art Museum (SAAM),Smithsonian American Art Museum,"geo,stringdist",1
+muci_224,muci_10,MNAC,Museu Nacional d'Art de Catalunya (MNAC),geo,1
+muci_225,muci_14,Centro Cultural Banco Brasil,Centro Cultural Banco do Brasil,"geo,stringdist",1
+muci_228,muci_45,Teatre-Museu Dalí,Dali Theatre-Museum,geo,1
+muci_229,muci_47,Galleria dell’Accademia di Firenze,Galleria dell'Accademia di Firenze,"geo,stringdist",1
+muci_229,muci_49,Galleria dell’Accademia di Firenze,Galleria dell'Accademia,"geo,stringdist",1
+muci_230,muci_55,Kelvingrove Art Gallery & Museum,Kelvingrove Art Gallery and Museum,"geo,stringdist",1
+muci_231,muci_68,Israel Museume,Israel Museum,"geo,stringdist",1
+muci_233,muci_92,Lacma,Los Angeles County Museum of Art,geo,1
+muci_233,muci_93,Lacma,Los Angeles County Museum of Art (Lacma),geo,1
+muci_235,muci_109,Mucem,Mucem,geo,1
+muci_235,muci_110,Mucem,mucem,geo,1
+muci_235,muci_111,Mucem,Mucem - Musée des civilisations de l'Europe et de la Méditerranée,geo,1
+muci_237,muci_136,Guggenheim Museum,Solomon R. Guggenheim Museum,geo,1
+muci_239,muci_146,Galeries Nationales du Grand Palais,Grand Palais,geo,1
+muci_240,muci_152,Musée de l’Orangerie,Musée de l'Orangerie,"geo,stringdist",1
+muci_241,muci_159,Centro Cultural Banco do Brasil,Centro Cultural Banco do Brasil,geo,1
+muci_243,muci_166,MMCA,National Museum of Modern and Contemporary Art (MMCA),geo,1
+muci_245,muci_210,Österreichische Galerie Belvedere,Upper Belvedere,geo,1
+muci_248,muci_216,SAAM,National Portrait Gallery,geo,0
+muci_248,muci_217,SAAM,Smithsonian American Art Museum (SAAM) main building,geo,1
+muci_248,muci_219,SAAM,Smithsonian American Art Museum,geo,1
+muci_246,muci_220,American Indian Museum,National Museum of the American Indian,geo,1
+muci_248,muci_221,SAAM,Smithsonian American Art Museum (SAAM),geo,1
+muci_238,muci_131,Metropolitan Museum,Metropolitan Museum of Art,stringdist,1
+muci_234,muci_99,Reina Sofía,Reina Sofia,stringdist,1
+muci_234,muci_96,Reina Sofía,Museo Reina Sofía,stringdist,1
