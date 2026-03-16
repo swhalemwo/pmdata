@@ -205,8 +205,8 @@ gd_tanp_muci <- function(dt_tanp_wcid) {
 
     ## get new IDs
     dt_tanp_muci_new <- dt_tanp_wcid[, .(museum, city_new, id_city)] %>% unique %>%
-        .[!dt_tanp_muci_geo_ff, on = .(museum, city_new)] %>%
-        .[, muci := paste0("muci_", (dt_tanp_muci_geo_ff[, .N]+1):(dt_tanp_muci_geo_ff[, .N]+1 + .N))] %>%
+        .[!dt_tanp_muci_geo_ff, on = .(museum, city_new, id_city)] %>%
+        .[, muci := paste0("muci_", (dt_tanp_muci_geo_ff[, .N]+1):(dt_tanp_muci_geo_ff[, .N] + .N))] %>%
         .[, .(muci, museum, city_new, id_city, addr = paste0(museum, ", ",city_new))]
 
 
@@ -218,7 +218,13 @@ gd_tanp_muci <- function(dt_tanp_wcid) {
 
     ## fwrite(dt_tanp_muci_fix, PMDATA_LOCS$FILE_TANP_MUCI_ID)
 
-    
+    ## manual fix: get muci in order for proper muci IDs generation
+    dt_muci_ordered <- gd_tanp_muci_ff() %>% .[, muci_int := as.integer(gsub("muci_", "", muci))] %>%
+        .[order(muci_int)]
+
+    fwrite(dt_muci_ordered[, muci_int := NULL], PMDATA_LOCS$FILE_TANP_MUCI_ID)
+
+
     ## do the geocoding of new ones if neccessary
     if (nrow(dt_tanp_muci_new) > 0) {
         dt_tanp_muci_geo <- geocode(dt_tanp_muci_new, address = addr, full_results = T, method = "google") %>% adt
