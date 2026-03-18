@@ -21,6 +21,11 @@ gd_tanp_cbn <- function() {
 
     ## more systematic approach
     ## read in data
+
+    dt_tanp_16 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_16.csv") %>%
+        .[, map(.SD, trimws)] %>%
+        .[, `:=`(id  = paste0("tanp16_", 1:.N), city = stringr::str_to_title(city))]    
+    
     dt_tanp_17 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_17.csv") %>%
         .[, map(.SD, trimws)] %>%
         .[, id := paste0("tanp17_", 1:.N)] %>% # drop duplicate MMCA
@@ -64,12 +69,12 @@ gd_tanp_cbn <- function() {
         .[, id := paste0("tanp24_", 1:.N)]
 
     ## combine
-    dt_tanp_cbn <- map(list(dt_tanp_17, dt_tanp_18,
+    dt_tanp_cbn <- map(list(dt_tanp_16, dt_tanp_17, dt_tanp_18,
                             dt_tanp_19, dt_tanp_20, dt_tanp_21, dt_tanp_22, dt_tanp_23, dt_tanp_24),
                        ~.x[, .(id, museum, city, total)]) %>%
         rbindlist %>%
         .[museum == "teamLab Borderless: MORI Building", city := "Tokyo"] %>% # manual fixes
-        .[, museum := trimws(gsub("\\*|†", "", museum))] %>%
+        .[, museum := trimws(gsub("\\*|†|�", "", museum))] %>%
         .[, total := as.integer(gsub(",", "", total))]
     
     ## smithsonian fix: sometimes grouped together with national portrait gallery
@@ -191,6 +196,8 @@ gwd_geocode_tanp_city <- function(FILE_TANP_CITY_ID = PMDATA_LOCS$FILE_TANP_CITY
 
     ## geocode new cities
     dt_newcities_geo <- geocode(dt_tanp_city_new, city = city, full_results = T, method = "osm") %>% adt
+
+    print(dt_newcities_geo)
 
     wtf <- readline("write to file?")
 
@@ -435,6 +442,9 @@ dt_tanp_muci[grepl("National Portrait", museum) & grepl("Washington", city_new)]
 dt_tanp_muyr <- merge(dt_tanp_wcid, dt_tanp_muci[, .(muci, id_city, museum, museum_new)],
                       by = c("museum", "id_city")) %>%
     .[, year := as.integer(gsub("tanp(\\d+)_.*", "\\1", id))]
+
+dt_tanp_muyr[grepl("queensland", museum, ignore.case = T)]
+dt_tanp_muyr[grepl("de young", museum, ignore.case = T)]
 
 dt_tanp_muyr[grepl("SAAM", museum_new), .(muci)]
 dt_tanp_muyr[grepl("National Portrait", museum) & grepl("Washington", city_new)]

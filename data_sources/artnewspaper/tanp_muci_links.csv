@@ -130,3 +130,32 @@ muci_273,muci_220,"The National Art Center, Tokyo",National Art Center Tokyo,"ge
 muci_273,muci_223,"The National Art Center, Tokyo",National Art Center,"geo,stringdist",1
 muci_274,muci_236,Belvedere,Österreichische Galerie Belvedere,geo,1
 muci_274,muci_239,Belvedere,Upper Belvedere,geo,1
+muci_275,muci_9,Museu Nacional d’Art de Catalunya,MNAC,geo,1
+muci_275,muci_11,Museu Nacional d’Art de Catalunya,Museu Nacional d'Art de Catalunya (MNAC),"geo,stringdist",1
+muci_279,muci_50,National Galleries of Scotland,Scottish National Gallery,geo,1
+muci_279,muci_51,National Galleries of Scotland,National Galleries Scotland: National,"geo,stringdist",1
+muci_280,muci_52,Teatre Museu Dalí,Teatre-Museu Dalí,"geo,stringdist",1
+muci_280,muci_53,Teatre Museu Dalí,Dali Theatre-Museum,geo,1
+muci_283,muci_106,Getty,Getty Center,geo,1
+muci_283,muci_111,Getty,J. Paul Getty Museum (Getty Center),geo,1
+muci_284,muci_135,MUAC UNAM,MUAC UNAMe,"geo,stringdist",1
+muci_287,muci_184,Museum of Modern Art,SFMoMA,geo,1
+muci_286,muci_185,Fine Arts Museums (FAMSF),de Young Museum,geo,1
+muci_286,muci_186,Fine Arts Museums (FAMSF),M. H. de Young Museum,geo,1
+muci_288,muci_195,Modern & Contemporary Arts (MMCA),MMCA,geo,1
+muci_288,muci_196,Modern & Contemporary Arts (MMCA),National Museum of Modern and Contemporary Art (MMCA),geo,1
+muci_290,muci_214,Museum of Contemporary Art,MCA Australia,geo,1
+muci_290,muci_215,Museum of Contemporary Art,Museum of Contemporary Art Australia,"geo,stringdist",1
+muci_292,muci_236,Osterreichische Galerie Belvedere,Österreichische Galerie Belvedere,"geo,stringdist",1
+muci_292,muci_239,Osterreichische Galerie Belvedere,Upper Belvedere,geo,1
+muci_293,muci_254,Renwick Gallery,Renwick Gallery (SAAM),"geo,stringdist",1
+muci_280,muci_258,Teatre Museu Dalí,Dalí Theatre and Museum,geo,1
+muci_287,muci_270,Museum of Modern Art,San Francisco Museum of Modern Art,"geo,stringdist",1
+muci_286,muci_271,Fine Arts Museums (FAMSF),De Young Museum,geo,1
+muci_288,muci_272,Modern & Contemporary Arts (MMCA),National Museum of Modern and Contemporary Art,geo,1
+muci_292,muci_274,Osterreichische Galerie Belvedere,Belvedere,geo,1
+muci_289,muci_203,Shanghai Art Museum,Shanghai Museum East,stringdist,0
+muci_281,muci_71,Hong Kong Museum of History,Hong Kong Museum of Art,stringdist,0
+muci_278,muci_32,Queensland Art Gallery/GoMA,Queensland Art Gallery (QAG),stringdist,1
+muci_289,muci_200,Shanghai Art Museum,Shanghai Museum,stringdist,0
+muci_278,muci_34,Queensland Art Gallery/GoMA,Queensland Art Gallery,stringdist,1
