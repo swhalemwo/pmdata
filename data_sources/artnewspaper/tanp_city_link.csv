@@ -7,4 +7,12 @@ id_link,ID_i,ID_j,city_i,city_j,new_name,b_same
 6,city_99,city_46,Sao Paulo,S√£o Paulo,"São Paulo",1
 7,city_96,city_78,"Washington, Dc",Washington,"Washington, DC",1
 8,city_99,city_86,Sao Paulo,São Paulo,"São Paulo",1
-
+9,city_100,city_7,New York City,New York,New York,1
+10,city_101,city_14,"Washington, D.C.","Washington, DC","Washington, DC",1
+11,city_103,city_14,Washington D.C.,"Washington, DC","Washington, DC",1
+12,city_101,city_78,"Washington, D.C.",Washington,"Washington, DC",1
+13,city_103,city_78,Washington D.C.,Washington,"Washington, DC",1
+14,city_101,city_96,"Washington, D.C.","Washington, Dc","Washington, DC",1
+15,city_103,city_96,Washington D.C.,"Washington, Dc","Washington, DC",1
+16,city_104,city_97,Brasília,Brasilia,Brasilia,1
+17,city_103,city_101,Washington D.C.,"Washington, D.C.","Washington, DC",1

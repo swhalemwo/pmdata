@@ -21,6 +21,16 @@ gd_tanp_cbn <- function() {
 
     ## more systematic approach
     ## read in data
+    dt_tanp_17 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_17.csv") %>%
+        .[, map(.SD, trimws)] %>%
+        .[, id := paste0("tanp17_", 1:.N)] %>% # drop duplicate MMCA
+        .[!(museum == "National Museum of Modern and Contemporary Art"  & total == "1,218,504")] %>%
+        ## rename one SAAM (SAAM already there on its own)
+        .[museum == "SAAM/National Portrait Gallery", museum := "National Portrait Gallery"]
+          
+        
+
+
 
     dt_tanp_18 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_18.csv") %>%
         .[, `:=`(city = stringr::str_to_title(city), id = paste0("tanp18_", 1:.N))]
@@ -54,7 +64,8 @@ gd_tanp_cbn <- function() {
         .[, id := paste0("tanp24_", 1:.N)]
 
     ## combine
-    dt_tanp_cbn <- map(list(dt_tanp_18, dt_tanp_19, dt_tanp_20, dt_tanp_21, dt_tanp_22, dt_tanp_23, dt_tanp_24),
+    dt_tanp_cbn <- map(list(dt_tanp_17, dt_tanp_18,
+                            dt_tanp_19, dt_tanp_20, dt_tanp_21, dt_tanp_22, dt_tanp_23, dt_tanp_24),
                        ~.x[, .(id, museum, city, total)]) %>%
         rbindlist %>%
         .[museum == "teamLab Borderless: MORI Building", city := "Tokyo"] %>% # manual fixes
@@ -127,10 +138,14 @@ gd_tanp_city <- function(dt_tanp_cbn) {
         cnt_unq <- dt_tanp_city_geo[, uniqueN(ID)]        
     }
 
+    ## dt_tanp_city_geo[grepl("New York", city), .(city, ID, name)] 
+
     
     ## another update join for new city name
     dt_tanp_city_geo[, city_new := city] %>%
         .[dt_tanp_city_links_ff, city_new := i.new_name, on = .(ID = ID_j)]
+
+    ## dt_tanp_city_geo[grepl("New York", city), .(city, ID, name, city_new)] 
 
     ## dt_tanp_city_geo[grepl("Washington", city), .(city, ID, city_new)]
     ## dt_tanp_city_geo[grepl("Paulo|Washington|Krak", city), .(city, ID, city_new)][order(ID)]
@@ -236,7 +251,7 @@ gd_tanp_muci <- function(dt_tanp_wcid) {
         .[, muci := paste0("muci_", (dt_tanp_muci_geo_ff[, .N]+1):(dt_tanp_muci_geo_ff[, .N] + .N))] %>%
         .[, .(museum, city_new, muci, id_city, addr = paste0(museum, ", ",city_new))]
 
-
+    ## dt_tanp_muci_new[, .(museum, city_new, id_city)] %>% print(n=80)
 
 
     ## do the geocoding of new ones if neccessary
@@ -398,7 +413,8 @@ gd_muci_links <- function(dt_tanp_muci_geo)  {
 
 dt_tanp_cbn <- gd_tanp_cbn()
 dt_tanp_city <- gd_tanp_city(dt_tanp_cbn)
-dt_tanp_city[grepl("Washington", city), .(ID, city, city_new)]
+
+dt_tanp_city[grepl("New York", city), .(ID, city, city_new, lat, long)]
 
 ## with city id 
 dt_tanp_wcid <- merge(dt_tanp_cbn, dt_tanp_city[, .(city, id_city = ID, city_new)], by = "city")
@@ -411,6 +427,7 @@ dt_tanp_wcid[grepl("National Portrait", museum) & grepl("Washington", city)]
 dt_tanp_wcid[grepl("/", museum)]
 
 dt_tanp_muci <- gd_tanp_muci(dt_tanp_wcid)
+dt_tanp_wcid[grepl("museum of modern art", museum, ignore.case= T) & grepl("new york", city_new, ignore.case = T)]
 dt_tanp_muci[grepl("Smithsonian",museum), .(muci, museum, id_city, museum_new)]
 dt_tanp_muci[grepl("National Portrait", museum) & grepl("Washington", city_new)]
 
@@ -425,9 +442,13 @@ dt_tanp_muyr[grepl("National Portrait", museum) & grepl("Washington", city_new)]
 
 dt_tanp_muyr %>% ggplot(aes(x = year, y = total, color = muci)) +
     geom_line(show.legend = F) +
-    scale_y_continuous(trans = scales::log10_trans())
+    scale_y_continuous(trans = scales::log10_trans()) +
+    geom_point(show.legend = F)
 
 dt_tanp_muyr[grepl("national museum", museum, ignore.case = T)] %>% print(n=80)
+
+dt_tanp_muyr[, .N, .(muci,year)][N > 1]
+dt_tanp_muyr[muci %in% c("muci_195", "muci_248") &  year == 17]
 
 
 dt_tanp_muyr[, .N, muci][order(-N)]

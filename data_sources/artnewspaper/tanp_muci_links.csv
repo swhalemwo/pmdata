@@ -102,3 +102,31 @@ muci_117,muci_116,Museo Reina Sofía,Reina Sofía,stringdist,1
 muci_224,muci_222,National Museum of Modern Art,National Museum of Western Art,stringdist,0
 muci_199,muci_193,National Museum of Korea Seoul,National Folk Museum of Korea,stringdist,0
 muci_116,muci_112,Reina Sofía,Reina Sofia,stringdist,1
+muci_257,muci_31,Queensland Gallery of Modern Art,Gallery of Modern Art (GOMA),geo,1
+muci_257,muci_33,Queensland Gallery of Modern Art,Gallery of Modern Art,"geo,stringdist",1
+muci_258,muci_52,Dalí Theatre and Museum,Teatre-Museu Dalí,geo,1
+muci_258,muci_53,Dalí Theatre and Museum,Dali Theatre-Museum,geo,1
+muci_259,muci_113,Museo del Prado,Museo Nacional del Prado,geo,1
+muci_260,muci_126,Museum of European and Mediterranean Civilisations,Mucem,geo,1
+muci_260,muci_127,Museum of European and Mediterranean Civilisations,mucem,geo,1
+muci_260,muci_128,Museum of European and Mediterranean Civilisations,Mucem - Musée des civilisations de l'Europe et de la Méditerranée,geo,1
+muci_260,muci_129,Museum of European and Mediterranean Civilisations,Mucem,geo,1
+muci_261,muci_131,Australian Centre for the Moving Image,Centre for the Moving Image,"geo,stringdist",1
+muci_262,muci_138,Royal Palace of Milan,Palazzo Reale,geo,1
+muci_263,muci_143,Tretyakov Gallery,State Tretyakov Gallery,"geo,stringdist",1
+muci_264,muci_144,Pushkin State Museum of Fine Arts,Pushkin Museum,geo,1
+muci_264,muci_147,Pushkin State Museum of Fine Arts,State Pushkin Museum of Fine Arts,"geo,stringdist",1
+muci_265,muci_165,Musée National d'Art Moderne (Centre Pompidou),Centre Pompidou,geo,1
+muci_267,muci_167,Musée du quai Branly,Musée du Quai Branly,geo,1
+muci_266,muci_169,Louis Vuitton Foundation,Fondation Louis Vuitton,"geo,stringdist",1
+muci_270,muci_184,San Francisco Museum of Modern Art,SFMoMA,geo,1
+muci_271,muci_185,De Young Museum,de Young Museum,geo,1
+muci_271,muci_186,De Young Museum,M. H. de Young Museum,"geo,stringdist",1
+muci_272,muci_195,National Museum of Modern and Contemporary Art,MMCA,geo,1
+muci_272,muci_196,National Museum of Modern and Contemporary Art,National Museum of Modern and Contemporary Art (MMCA),"geo,stringdist",1
+muci_269,muci_208,State Hermitage Museum,State Hermitage,geo,1
+muci_269,muci_211,State Hermitage Museum,State Hermitage Museum,geo,1
+muci_273,muci_220,"The National Art Center, Tokyo",National Art Center Tokyo,"geo,stringdist",1
+muci_273,muci_223,"The National Art Center, Tokyo",National Art Center,"geo,stringdist",1
+muci_274,muci_236,Belvedere,Österreichische Galerie Belvedere,geo,1
+muci_274,muci_239,Belvedere,Upper Belvedere,geo,1
