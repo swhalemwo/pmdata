@@ -18,3 +18,5 @@ id_link,ID_i,ID_j,city_i,city_j,new_name,b_same
 17,city_103,city_101,Washington D.C.,"Washington, D.C.","Washington, DC",1
 18,city_109,city_31,Humlebæk,Humlebaek,"Humlebaek",1
 19,city_111,city_73,Valencia,València,"Valencia",1
+20,city_122,city_11,Rio,Rio de Janeiro,"Rio de Janeiro",1
+21,city_122,city_93,Rio,Rio De Janeiro,"Rio de Janeiro",1

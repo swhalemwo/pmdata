@@ -217,3 +217,53 @@ muci_328,muci_297,Birmingham Museum & Art Gallery,Birmingham Museum,"geo,stringd
 muci_340,muci_326,SAAM/Renwick,SAAM/Renwick Gallery,"geo,stringdist",1
 muci_335,muci_334,Complesso del Vittoriano,Museo Centrale del Risorgimento,geo,0
 muci_339,muci_239,Upper and Lower Belvedere,Upper Belvedere,stringdist,1
+muci_343,muci_10,CaixaForum,CaixaForum Barcelona,geo,11
+muci_347,muci_31,Queensland GoMA,Gallery of Modern Art (GOMA),geo,1
+muci_347,muci_33,Queensland GoMA,Gallery of Modern Art,geo,1
+muci_355,muci_50,National Gallery of Scotland,Scottish National Gallery,geo,1
+muci_355,muci_51,National Gallery of Scotland,National Galleries Scotland: National,"geo,stringdist",1
+muci_357,muci_64,Kelvingrove Art Gallery,Kelvingrove Art Gallery and Museum,"geo,stringdist",1
+muci_357,muci_65,Kelvingrove Art Gallery,Kelvingrove Art Gallery & Museum,"geo,stringdist",1
+muci_359,muci_66,Frederik Meijer Sculpture Park,Frederik Meijer Gardens & Sculpture Park,"geo,stringdist",1
+muci_360,muci_76,Louisiana,Louisiana Museum of Modern Art,geo,1
+muci_362,muci_89,Museu Colecção Berardo,Museu Coleção Berardo,"geo,stringdist",1
+muci_364,muci_98,Royal Academy,Royal Academy of Arts,"geo,stringdist",1
+muci_365,muci_106,Getty Center (Getty Museum),Getty Center,geo,1
+muci_365,muci_111,Getty Center (Getty Museum),J. Paul Getty Museum (Getty Center),"geo,stringdist",1
+muci_366,muci_131,Aus Centre for the Moving Image,Centre for the Moving Image,"geo,stringdist",1
+muci_367,muci_132,Ian Potter Centre: NGV Australia,The Ian Potter Centre: NGV Australia,"geo,stringdist",1
+muci_369,muci_139,La Triennale di Milano,Triennale di Milano,"geo,stringdist",1
+muci_369,muci_140,La Triennale di Milano,Triennale Milano,"geo,stringdist",1
+muci_371,muci_142,Kremlin Museums,Moscow Kremlin Museums,"geo,stringdist",1
+muci_372,muci_153,Guggenheim,Guggenheim Museum,"geo,stringdist",1
+muci_372,muci_158,Guggenheim,Solomon R. Guggenheim Museum,geo,1
+muci_373,muci_177,Musée d’Art Moderne de la Ville,Palais de Tokyo,geo,0
+muci_374,muci_177,Musée d’Art Moderne de la Ville/ARC,Palais de Tokyo,geo,0
+muci_373,muci_178,Musée d’Art Moderne de la Ville,Musée d'Art Moderne de Paris,geo,1
+muci_374,muci_178,Musée d’Art Moderne de la Ville/ARC,Musée d'Art Moderne de Paris,geo,1
+muci_378,muci_187,"Huntington Library, Art Collections",Huntington Library,"geo,stringdist",1
+muci_378,muci_188,"Huntington Library, Art Collections",The Huntington,geo,1
+muci_378,muci_189,"Huntington Library, Art Collections","The Huntington Library, Art Museum, and Botanical Gardens",geo,1
+muci_382,muci_216,Pinacoteca do Estado,Pinacoteca de São Paulo,geo,1
+muci_383,muci_231,Museo delle Antichità Egizie,Museo Egizio,geo,1
+muci_384,muci_255,Museum of New Zealand Te Papa,Museum of New Zealand Te Papa Tongarewa,"geo,stringdist",1
+muci_347,muci_257,Queensland GoMA,Queensland Gallery of Modern Art,geo,1
+muci_366,muci_261,Aus Centre for the Moving Image,Australian Centre for the Moving Image,"geo,stringdist",1
+muci_375,muci_268,Museo Castel Sant'Angelo,Museo Nazionale di Castel Sant'Angelo,"geo,stringdist",1
+muci_344,muci_276,Museum & Art Gallery,Museum and Art Gallery,"geo,stringdist",1
+muci_345,muci_276,Birmingham Museum and Art Gallery,Museum and Art Gallery,"geo,stringdist",1
+muci_355,muci_279,National Gallery of Scotland,National Galleries of Scotland,"geo,stringdist",1
+muci_365,muci_283,Getty Center (Getty Museum),Getty,geo,1
+muci_344,muci_297,Museum & Art Gallery,Birmingham Museum,geo,1
+muci_345,muci_297,Birmingham Museum and Art Gallery,Birmingham Museum,geo,1
+muci_359,muci_299,Frederik Meijer Sculpture Park,Meijer Gardens & Sculpture Park,geo,1
+muci_366,muci_302,Aus Centre for the Moving Image,Australian Centre for Moving Image,"geo,stringdist",1
+muci_359,muci_312,Frederik Meijer Sculpture Park,Meijer Gardens and Sculpture Park,geo,1
+muci_379,muci_315,"Seattle Art Museum, Downtown",Seattle Art Museum,"geo,stringdist",1
+muci_373,muci_322,Musée d’Art Moderne de la Ville,Musée d’Art Moderne de la Ville de Paris,"geo,stringdist",1
+muci_374,muci_322,Musée d’Art Moderne de la Ville/ARC,Musée d’Art Moderne de la Ville de Paris,"geo,stringdist",1
+muci_344,muci_328,Museum & Art Gallery,Birmingham Museum & Art Gallery,"geo,stringdist",1
+muci_345,muci_328,Birmingham Museum and Art Gallery,Birmingham Museum & Art Gallery,"geo,stringdist",1
+muci_345,muci_344,Birmingham Museum and Art Gallery,Museum & Art Gallery,geo,1
+muci_354,muci_353,Gemäldegalerie Alte Meister,Galerie Alte Meister,"geo,stringdist",1
+muci_374,muci_373,Musée d’Art Moderne de la Ville/ARC,Musée d’Art Moderne de la Ville,"geo,stringdist",1

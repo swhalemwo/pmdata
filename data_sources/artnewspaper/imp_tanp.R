@@ -21,6 +21,11 @@ gd_tanp_cbn <- function() {
 
     ## more systematic approach
     ## read in data
+    dt_tanp_10 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_10.csv") %>%
+        .[, map(.SD, trimws)] %>%
+        .[, `:=`(id  = paste0("tanp10_", 1:.N), city = stringr::str_to_title(trimws(city)))]
+
+    
     dt_tanp_11 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_11.csv") %>%
         .[, map(.SD, trimws)] %>%
         .[, `:=`(id  = paste0("tanp11_", 1:.N), city = stringr::str_to_title(trimws(city)))]
@@ -89,8 +94,10 @@ gd_tanp_cbn <- function() {
         .[, id := paste0("tanp24_", 1:.N)]
 
     ## combine
-    dt_tanp_cbn <- map(list(dt_tanp_12, dt_tanp_13, dt_tanp_14, dt_tanp_15, dt_tanp_16, dt_tanp_17, dt_tanp_18,
-                            dt_tanp_19, dt_tanp_20, dt_tanp_21, dt_tanp_22, dt_tanp_23, dt_tanp_24),
+    dt_tanp_cbn <- map(list(
+        dt_tanp_10, dt_tanp_11,
+        dt_tanp_12, dt_tanp_13, dt_tanp_14, dt_tanp_15, dt_tanp_16, dt_tanp_17, dt_tanp_18,
+        dt_tanp_19, dt_tanp_20, dt_tanp_21, dt_tanp_22, dt_tanp_23, dt_tanp_24),
                        ~.x[, .(id, museum, city, total)]) %>%
         rbindlist %>%
         .[museum == "teamLab Borderless: MORI Building", city := "Tokyo"] %>% # manual fixes
