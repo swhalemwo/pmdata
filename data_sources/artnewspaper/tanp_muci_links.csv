@@ -267,3 +267,33 @@ muci_345,muci_328,Birmingham Museum and Art Gallery,Birmingham Museum & Art Gall
 muci_345,muci_344,Birmingham Museum and Art Gallery,Museum & Art Gallery,geo,1
 muci_354,muci_353,Gemäldegalerie Alte Meister,Galerie Alte Meister,"geo,stringdist",1
 muci_374,muci_373,Musée d’Art Moderne de la Ville/ARC,Musée d’Art Moderne de la Ville,"geo,stringdist",1
+muci_386,muci_8,Museo Picasso,Museu Picasso,"geo,stringdist",1
+muci_392,muci_35,Musée Magritte,Musées Royaux des Beaux-Arts,geo,0
+muci_392,muci_36,Musée Magritte,Musées Royaux des Beaux-Arts de Belgique,geo,0
+muci_396,muci_50,National Gallery Complex,Scottish National Gallery,geo,1
+muci_396,muci_51,National Gallery Complex,National Galleries Scotland: National,geo,1
+muci_398,muci_59,Galleria Palatina,Palazzo Pitti,geo,0
+muci_399,muci_61,Stadel Museum,Städel Museum,"geo,stringdist",1
+muci_401,muci_66,Frederik Meijer Gardens,Frederik Meijer Gardens & Sculpture Park,"geo,stringdist",1
+muci_405,muci_84,National Museum Krakow,National Museum in Krakow,"geo,stringdist",1
+muci_405,muci_85,National Museum Krakow,National Museum,"geo,stringdist",1
+muci_407,muci_106,Getty Museum (Getty Center),Getty Center,geo,1
+muci_407,muci_111,Getty Museum (Getty Center),J. Paul Getty Museum (Getty Center),"geo,stringdist",1
+muci_413,muci_142,Moscow Kremlin Museum,Moscow Kremlin Museums,"geo,stringdist",1
+muci_416,muci_162,National Gallery,Nasjonalmuseet,geo,1
+muci_425,muci_217,Taiwan Palace Museum,National Palace Museum,geo,1
+muci_433,muci_236,Galerie Belvedere,Österreichische Galerie Belvedere,geo,1
+muci_433,muci_239,Galerie Belvedere,Upper Belvedere,geo,1
+muci_420,muci_268,Museo Castel Sant’Angelo,Museo Nazionale di Castel Sant'Angelo,geo,1
+muci_433,muci_274,Galerie Belvedere,Belvedere,geo,1
+muci_396,muci_279,National Gallery Complex,National Galleries of Scotland,geo,1
+muci_407,muci_283,Getty Museum (Getty Center),Getty,geo,1
+muci_433,muci_292,Galerie Belvedere,Osterreichische Galerie Belvedere,geo,1
+muci_401,muci_299,Frederik Meijer Gardens,Meijer Gardens & Sculpture Park,geo,1
+muci_401,muci_312,Frederik Meijer Gardens,Meijer Gardens and Sculpture Park,geo,1
+muci_400,muci_330,Museum of Transport,Riverside Museum,geo,0
+muci_396,muci_355,National Gallery Complex,National Gallery of Scotland,geo,1
+muci_401,muci_359,Frederik Meijer Gardens,Frederik Meijer Sculpture Park,geo,1
+muci_407,muci_365,Getty Museum (Getty Center),Getty Center (Getty Museum),"geo,stringdist",1
+muci_413,muci_371,Moscow Kremlin Museum,Kremlin Museums,"geo,stringdist",1
+muci_420,muci_375,Museo Castel Sant’Angelo,Museo Castel Sant'Angelo,"geo,stringdist",1

@@ -20,3 +20,5 @@ id_link,ID_i,ID_j,city_i,city_j,new_name,b_same
 19,city_111,city_73,Valencia,València,"Valencia",1
 20,city_122,city_11,Rio,Rio de Janeiro,"Rio de Janeiro",1
 21,city_122,city_93,Rio,Rio De Janeiro,"Rio de Janeiro",1
+22,city_128,city_73,Valéncia,València,"Valencia",1
+23,city_128,city_111,Valéncia,Valencia,"Valencia",1
