@@ -64,7 +64,7 @@ muci_159,muci_155,Metropolitan Museum of Art (Fifth Avenue),Metropolitan Museum 
 muci_172,muci_166,Musée d’Orsay,Musée d'Orsay,"geo,stringdist",1
 muci_174,muci_170,Grand Palais,Galeries Nationales du Grand Palais,geo,1
 muci_173,muci_171,Musée de l’Orangerie,Musée de l'Orangerie,"geo,stringdist",1
-muci_178,muci_177,Musée d'Art Moderne de Paris,Palais de Tokyo,geo,1
+muci_178,muci_177,Musée d'Art Moderne de Paris,Palais de Tokyo,geo,0
 muci_186,muci_185,M. H. de Young Museum,de Young Museum,"geo,stringdist",1
 muci_188,muci_187,The Huntington,Huntington Library,geo,1
 muci_189,muci_187,"The Huntington Library, Art Museum, and Botanical Gardens",Huntington Library,geo,1
@@ -217,7 +217,7 @@ muci_328,muci_297,Birmingham Museum & Art Gallery,Birmingham Museum,"geo,stringd
 muci_340,muci_326,SAAM/Renwick,SAAM/Renwick Gallery,"geo,stringdist",1
 muci_335,muci_334,Complesso del Vittoriano,Museo Centrale del Risorgimento,geo,0
 muci_339,muci_239,Upper and Lower Belvedere,Upper Belvedere,stringdist,1
-muci_343,muci_10,CaixaForum,CaixaForum Barcelona,geo,11
+muci_343,muci_10,CaixaForum,CaixaForum Barcelona,geo,1
 muci_347,muci_31,Queensland GoMA,Gallery of Modern Art (GOMA),geo,1
 muci_347,muci_33,Queensland GoMA,Gallery of Modern Art,geo,1
 muci_355,muci_50,National Gallery of Scotland,Scottish National Gallery,geo,1
