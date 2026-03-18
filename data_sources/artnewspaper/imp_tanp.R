@@ -523,6 +523,13 @@ dt_af_instns <- gd_af_instns()
 dt_af_instns[grepl("Smithsonian", Name)]
 dt_af_instns[grepl("National Portrait", Name)]
 
+dt_af_exhbs <- gd_af_exhbs()
+
+dt_af_exhbs[, begin_year := year(BeginDate)] %>%
+    .[begin_year > 1990, .N, begin_year] %>% ggplot(aes(x=begin_year, y = N)) + geom_line()
+
+
+
 
 ## gap stuffing
 
@@ -586,7 +593,8 @@ tribble(~id1, ~id2,
 
 library(ellmer)
 Sys.setenv(OPENAI_API_KEY = show_pass_secret("gemini-api-key"))
-chat_google_gemini("what is the capital of uruguay")
+Sys.setenv(GEMINI_API_KEY = show_pass_secret("gemini-api-key"))
+x <- chat_google_gemini("what is the capital of uruguay",)
 
 
 
@@ -609,3 +617,75 @@ dt_fallof %>% ggplot(aes(x=factor(nbr), y=strdist_avg_all, color = id1, group = 
 
 dt_fallof[nbr %in% c(1,2)][, .N, nbr]
 
+
+
+## processing exhibitions
+
+library(stringr)
+dt_tanp05_raw <- data.table(text = readLines("~/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_05_raw.csv"))
+
+dt_tanp05_raw[, `:=`(cnt_comma = str_count(text, ","), cnt_slash = str_count(text, "/"), cnt_dash = str_count(text, "-"))]
+
+dt_tanp05_raw[, .N, cnt_comma]
+dt_tanp05_raw[, .N, cnt_slash]
+dt_tanp05_raw[cnt_slash %in% c(1,2)]
+dt_tanp05_raw[, .N, .(cnt_slash, cnt_dash)]
+
+dt_tanp05_raw[cnt_slash == 4 & cnt_dash != 1]
+dt_tanp05_raw[cnt_slash %!in% c(0,4)]
+
+## get IDs
+dt_tanp05_raw[cnt_slash == 4, id_show := 1:.N] %>%
+    setnafill(type = "nocb", cols = "id_show") %>%
+    .[, lines := .N, id_show]
+
+
+dt_tanp05_raw[lines > 5]
+
+dt_tanp05_raw[, .(lines = .N), id_show][, .N, lines]
+
+library(ellmer)
+chat_tanp <- chat_google_gemini("you are a careful research assistant. you'll get some text summarizing an art exhibition. the first two numbers are daily visitors and total visitors. after that you have, in the following order, the show name, the venue name, the city, and the date (start/end). there may not be clear delimiters between these items, i.e. exhibition name could be followed directly by the museum name. all fields are always present. your task is to figure out all the fields (visitor daily, visitor total, show name, museum name, start and end date)")
+
+
+text1 <- dt_tanp05_raw[id_show == 1, paste0(text, collapse = "\n")]
+
+schema_tanp05 <- type_object(
+    daily_visitors = type_number(),
+    total_visitors = type_number(),
+    show_name = type_string(),
+    venue_name = type_string(),
+    city = type_string(),
+    start_date = type_string(),
+    end_date = type_string())
+
+chat_tanp$chat_structured(text1, type = schema_tanp05)
+
+
+text_parallel <- dt_tanp05_raw[id_show <= 40, .(test_strs = paste0(text, collapse = "\n")), id_show]
+
+dt_output_par <- parallel_chat_structured(chat_tanp, text_parallel$test_strs %>% as.list, type = schema_tanp05)
+dt_output_par <- dt_output_par %>% adt
+
+
+# manual check
+dt_output_mnl <- fread("~/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_05_head.csv") %>%
+    .[, `:=`(total_visitors = as.integer(trimws(gsub(",", "", total_visitors))),
+             daily_visitors = as.integer(trimws(gsub(",", "", daily_visitors))),
+             venue_name = trimws(venue_name))]
+
+dt_output_mnl[1:40, .(show_name)] %>% print(n=80)
+dt_output_par[1:40, .(show_name)] %>% print(n=80)
+
+l_relcols <- c("show_name", "venue_name", "daily_visitors", "total_visitors")
+
+rbind(
+    dt_output_mnl %>% copy %>% .[, `:=`(show_id = 1:.N, src = "mnl")] %>% melt(id.vars = c("show_id", "src"), measure.vars = l_relcols),
+    dt_output_par %>% copy %>% .[, `:=`(show_id = 1:.N, src = "par")] %>% melt(id.vars = c("show_id", "src"), measure.vars = l_relcols)) %>%
+    dcast(show_id + variable ~src) %>%
+    .[, b_same := as.integer(mnl == par)] %>%
+    .[b_same == 0]
+    
+    
+
+dt_output_par %>% copy %>% .[, `:=`(show_id = 1:.N, src = "par")] %>% melt(id.vars = c("show_id", "src"), value.vars = l_relcols) %>% .[, .N, variable]
