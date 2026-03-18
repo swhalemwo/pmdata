@@ -193,3 +193,27 @@ muci_314,muci_78,Istanbul Modern,Istanbul Museum of Modern Art,geo,1
 muci_309,muci_277,"Museu Nacional, Conjunto Cultural",Museu Nacional da República,geo,1
 muci_308,muci_296,Guggenheim Museum,Guggenheim Bilbao,geo,1
 muci_312,muci_299,Meijer Gardens and Sculpture Park,Meijer Gardens & Sculpture Park,"geo,stringdist",1
+muci_321,muci_167,Musée Quai Branly,Musée du Quai Branly,"geo,stringdist",1
+muci_322,muci_177,Musée d’Art Moderne de la Ville de Paris,Palais de Tokyo,geo,0
+muci_322,muci_178,Musée d’Art Moderne de la Ville de Paris,Musée d'Art Moderne de Paris,"geo,stringdist",1
+muci_325,muci_232,CaixaForum València,CaixaForum València,geo,1
+muci_326,muci_254,SAAM/Renwick Gallery,Renwick Gallery (SAAM),"geo,stringdist",1
+muci_321,muci_267,Musée Quai Branly,Musée du quai Branly,"geo,stringdist",1
+muci_319,muci_282,Serpentine Gallery,Serpentine Galleries,"geo,stringdist",1
+muci_326,muci_293,SAAM/Renwick Gallery,Renwick Gallery,"geo,stringdist",1
+muci_317,muci_295,MACBA,Museu d’Art Contemporani,geo,1
+muci_323,muci_213,Art Gallery New South Wales,Art Gallery of New South Wales,stringdist,1
+muci_332,muci_96,Victoria & Albert Museum,Victoria and Albert,geo,1
+muci_332,muci_103,Victoria & Albert Museum,Victoria and Albert Museum,"geo,stringdist",1
+muci_336,muci_195,National Museum of Contemporary Art,MMCA,geo,1
+muci_336,muci_196,National Museum of Contemporary Art,National Museum of Modern and Contemporary Art (MMCA),"geo,stringdist",1
+muci_337,muci_209,Russian Museum,State Russian Museum,"geo,stringdist",1
+muci_340,muci_254,SAAM/Renwick,Renwick Gallery (SAAM),geo,1
+muci_336,muci_272,National Museum of Contemporary Art,National Museum of Modern and Contemporary Art,"geo,stringdist",1
+muci_328,muci_276,Birmingham Museum & Art Gallery,Museum and Art Gallery,geo,1
+muci_336,muci_288,National Museum of Contemporary Art,Modern & Contemporary Arts (MMCA),geo,1
+muci_340,muci_293,SAAM/Renwick,Renwick Gallery,geo,1
+muci_328,muci_297,Birmingham Museum & Art Gallery,Birmingham Museum,"geo,stringdist",1
+muci_340,muci_326,SAAM/Renwick,SAAM/Renwick Gallery,"geo,stringdist",1
+muci_335,muci_334,Complesso del Vittoriano,Museo Centrale del Risorgimento,geo,0
+muci_339,muci_239,Upper and Lower Belvedere,Upper Belvedere,stringdist,1
