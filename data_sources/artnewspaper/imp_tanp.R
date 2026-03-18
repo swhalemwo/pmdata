@@ -294,14 +294,18 @@ gd_tanp_muci <- function(dt_tanp_wcid) {
     ##     .[, muci := paste0("muci_", 1:.N)] %>%
     ##     .[, .(muci, museum, city_new, id_city, addr = paste0(museum, ", ",city_new))]
 
+    
+    max_id <- dt_tanp_muci_geo_ff[, tail(muci,1)] %>% gsub("muci_", "", .) %>% as.integer
+
     ## get new IDs
     dt_tanp_muci_new <- dt_tanp_wcid[, .(museum, city_new, id_city)] %>% unique %>%
         .[!dt_tanp_muci_geo_ff, on = .(museum, city_new, id_city)] %>%
-        .[, muci := paste0("muci_", (dt_tanp_muci_geo_ff[, .N]+1):(dt_tanp_muci_geo_ff[, .N] + .N))] %>%
+        .[, muci := paste0("muci_", (max_id+1):(max_id + .N))] %>%
         .[, .(museum, city_new, muci, id_city, addr = paste0(museum, ", ",city_new))]
 
     ## dt_tanp_muci_new[, .(museum, city_new, id_city)] %>% print(n=80)
-
+    ## dt_tanp_wcid[grepl("Valencia", city_new)]
+    ## dt_tanp_muci_geo_ff[grepl("Valencia", city_new), .(muci, museum, city_new, id_city)]
 
     ## do the geocoding of new ones if neccessary
     if (nrow(dt_tanp_muci_new) > 0) {
@@ -486,6 +490,9 @@ dt_tanp_muci[grepl("National Portrait", museum) & grepl("Washington", city_new)]
 dt_tanp_muyr <- merge(dt_tanp_wcid, dt_tanp_muci[, .(muci, id_city, museum, museum_new)],
                       by = c("museum", "id_city")) %>%
     .[, year := as.integer(gsub("tanp(\\d+)_.*", "\\1", id))]
+
+dt_tanp_muyr[, .N, .(muci, year)][N > 1] %>%
+    merge(dt_tanp_muyr, by = c("muci", "year"))
 
 dt_tanp_muyr[grepl("queensland", museum, ignore.case = T)]
 dt_tanp_muyr[grepl("de young", museum, ignore.case = T)]
