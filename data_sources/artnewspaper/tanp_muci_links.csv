@@ -297,3 +297,13 @@ muci_401,muci_359,Frederik Meijer Gardens,Frederik Meijer Sculpture Park,geo,1
 muci_407,muci_365,Getty Museum (Getty Center),Getty Center (Getty Museum),"geo,stringdist",1
 muci_413,muci_371,Moscow Kremlin Museum,Kremlin Museums,"geo,stringdist",1
 muci_420,muci_375,Museo Castel Sant’Angelo,Museo Castel Sant'Angelo,"geo,stringdist",1
+muci_434,muci_74,Museum of Fine Arts Houston,Museum of Fine Arts,"geo,stringdist",1
+muci_434,muci_75,Museum of Fine Arts Houston,"Museum of Fine Arts, Houston","geo,stringdist",1
+muci_435,muci_106,Getty Museum,Getty Center,geo,1
+muci_435,muci_111,Getty Museum,J. Paul Getty Museum (Getty Center),geo,1
+muci_436,muci_130,National Gallery of Victoria (NGV),NGV International,geo,1
+muci_436,muci_133,National Gallery of Victoria (NGV),National Gallery of Victoria,"geo,stringdist",1
+muci_439,muci_233,Vatican Museums,Vatican Museums,geo,1
+muci_435,muci_283,Getty Museum,Getty,geo,1
+muci_435,muci_365,Getty Museum,Getty Center (Getty Museum),geo,1
+muci_435,muci_407,Getty Museum,Getty Museum (Getty Center),geo,1
