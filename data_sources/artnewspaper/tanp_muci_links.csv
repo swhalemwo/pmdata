@@ -307,3 +307,23 @@ muci_439,muci_233,Vatican Museums,Vatican Museums,geo,1
 muci_435,muci_283,Getty Museum,Getty,geo,1
 muci_435,muci_365,Getty Museum,Getty Center (Getty Museum),geo,1
 muci_435,muci_407,Getty Museum,Getty Museum (Getty Center),geo,1
+muci_440,muci_10,CaxiaForum Barcelona,CaixaForum Barcelona,"geo,stringdist",1
+muci_441,muci_24,Museo Guggenheim,Guggenheim,"geo,stringdist",1
+muci_441,muci_25,Museo Guggenheim,Guggenheim Museum Bilbao,geo,1
+muci_442,muci_37,Museum of Fine Arts Budapest,Museum of Fine Arts,"geo,stringdist",1
+muci_444,muci_47,Green Vault,Residenzschloss,geo,0
+muci_445,muci_50,National Gallery,Scottish National Gallery,"geo,stringdist",1
+muci_445,muci_51,National Gallery,National Galleries Scotland: National,geo,1
+muci_446,muci_54,Uffizi,Galleria degli Uffizi,geo,1
+muci_446,muci_57,Uffizi,Gallerie degli Uffizi,geo,1
+muci_447,muci_132,Ian Potter Centre,The Ian Potter Centre: NGV Australia,geo,1
+muci_448,muci_184,SFMOMA,SFMoMA,geo,1
+muci_448,muci_270,SFMOMA,San Francisco Museum of Modern Art,geo,1
+muci_445,muci_279,National Gallery,National Galleries of Scotland,geo,1
+muci_448,muci_287,SFMOMA,Museum of Modern Art,geo,1
+muci_441,muci_296,Museo Guggenheim,Guggenheim Bilbao,geo,1
+muci_441,muci_308,Museo Guggenheim,Guggenheim Museum,geo,1
+muci_440,muci_343,CaxiaForum Barcelona,CaixaForum,geo,1
+muci_445,muci_355,National Gallery,National Gallery of Scotland,"geo,stringdist",1
+muci_447,muci_367,Ian Potter Centre,Ian Potter Centre: NGV Australia,"geo,stringdist",1
+muci_445,muci_396,National Gallery,National Gallery Complex,"geo,stringdist",1
