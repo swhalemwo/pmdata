@@ -159,3 +159,26 @@ muci_281,muci_71,Hong Kong Museum of History,Hong Kong Museum of Art,stringdist,
 muci_278,muci_32,Queensland Art Gallery/GoMA,Queensland Art Gallery (QAG),stringdist,1
 muci_289,muci_200,Shanghai Art Museum,Shanghai Museum,stringdist,0
 muci_278,muci_34,Queensland Art Gallery/GoMA,Queensland Art Gallery,stringdist,1
+muci_294,muci_9,Museu Nacional d’Arte de Catalunya,MNAC,geo,1
+muci_294,muci_11,Museu Nacional d’Arte de Catalunya,Museu Nacional d'Art de Catalunya (MNAC),"geo,stringdist",1
+muci_296,muci_24,Guggenheim Bilbao,Guggenheim,"geo,stringdist",1
+muci_296,muci_25,Guggenheim Bilbao,Guggenheim Museum Bilbao,"geo,stringdist",1
+muci_299,muci_66,Meijer Gardens & Sculpture Park,Frederik Meijer Gardens & Sculpture Park,"geo,stringdist",1
+muci_300,muci_107,LACMA,Lacma,geo,1
+muci_300,muci_109,LACMA,Los Angeles County Museum of Art,geo,1
+muci_300,muci_110,LACMA,Los Angeles County Museum of Art (Lacma),geo,1
+muci_301,muci_126,MuCEM,Mucem,geo,1
+muci_301,muci_127,MuCEM,mucem,geo,1
+muci_301,muci_128,MuCEM,Mucem - Musée des civilisations de l'Europe et de la Méditerranée,geo,1
+muci_301,muci_129,MuCEM,Mucem,geo,1
+muci_302,muci_131,Australian Centre for Moving Image,Centre for the Moving Image,geo,1
+muci_306,muci_185,FAMSF,de Young Museum,geo,1
+muci_306,muci_186,FAMSF,M. H. de Young Museum,geo,1
+muci_301,muci_260,MuCEM,Museum of European and Mediterranean Civilisations,geo,1
+muci_302,muci_261,Australian Centre for Moving Image,Australian Centre for the Moving Image,"geo,stringdist",1
+muci_306,muci_271,FAMSF,De Young Museum,geo,1
+muci_294,muci_275,Museu Nacional d’Arte de Catalunya,Museu Nacional d’Art de Catalunya,"geo,stringdist",1
+muci_297,muci_276,Birmingham Museum,Museum and Art Gallery,geo,1
+muci_303,muci_285,Minneapolis Institute of Arts,Minneapolis Institute of Art,"geo,stringdist",1
+muci_306,muci_286,FAMSF,Fine Arts Museums (FAMSF),geo,1
+muci_304,muci_164,,,,1

@@ -22,6 +22,11 @@ gd_tanp_cbn <- function() {
     ## more systematic approach
     ## read in data
 
+    dt_tanp_15 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_15.csv") %>%
+        .[, map(.SD, trimws)] %>%
+        .[, `:=`(id  = paste0("tanp15_", 1:.N), city = stringr::str_to_title(trimws(city)))]
+
+
     dt_tanp_16 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_16.csv") %>%
         .[, map(.SD, trimws)] %>%
         .[, `:=`(id  = paste0("tanp16_", 1:.N), city = stringr::str_to_title(city))]    
@@ -33,9 +38,6 @@ gd_tanp_cbn <- function() {
         ## rename one SAAM (SAAM already there on its own)
         .[museum == "SAAM/National Portrait Gallery", museum := "National Portrait Gallery"]
           
-        
-
-
 
     dt_tanp_18 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_18.csv") %>%
         .[, `:=`(city = stringr::str_to_title(city), id = paste0("tanp18_", 1:.N))]
@@ -69,7 +71,7 @@ gd_tanp_cbn <- function() {
         .[, id := paste0("tanp24_", 1:.N)]
 
     ## combine
-    dt_tanp_cbn <- map(list(dt_tanp_16, dt_tanp_17, dt_tanp_18,
+    dt_tanp_cbn <- map(list(dt_tanp_15, dt_tanp_16, dt_tanp_17, dt_tanp_18,
                             dt_tanp_19, dt_tanp_20, dt_tanp_21, dt_tanp_22, dt_tanp_23, dt_tanp_24),
                        ~.x[, .(id, museum, city, total)]) %>%
         rbindlist %>%
@@ -456,6 +458,8 @@ dt_tanp_muyr %>% ggplot(aes(x = year, y = total, color = muci)) +
     geom_point(show.legend = F)
 
 dt_tanp_muyr[grepl("national museum", museum, ignore.case = T)] %>% print(n=80)
+
+dt_tanp_muyr[year == 17][order(-total)]
 
 dt_tanp_muyr[, .N, .(muci,year)][N > 1]
 dt_tanp_muyr[muci %in% c("muci_195", "muci_248") &  year == 17]
