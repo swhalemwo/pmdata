@@ -21,6 +21,11 @@ gd_tanp_cbn <- function() {
 
     ## more systematic approach
     ## read in data
+    dt_tanp_11 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_11.csv") %>%
+        .[, map(.SD, trimws)] %>%
+        .[, `:=`(id  = paste0("tanp11_", 1:.N), city = stringr::str_to_title(trimws(city)))]
+
+    
     dt_tanp_12 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_12.csv") %>%
         .[, map(.SD, trimws)] %>%
         .[, `:=`(id  = paste0("tanp12_", 1:.N), city = stringr::str_to_title(trimws(city)))]
