@@ -182,3 +182,14 @@ muci_297,muci_276,Birmingham Museum,Museum and Art Gallery,geo,1
 muci_303,muci_285,Minneapolis Institute of Arts,Minneapolis Institute of Art,"geo,stringdist",1
 muci_306,muci_286,FAMSF,Fine Arts Museums (FAMSF),geo,1
 muci_304,muci_164,,,,1
+muci_308,muci_24,Guggenheim Museum,Guggenheim,"geo,stringdist",1
+muci_308,muci_25,Guggenheim Museum,Guggenheim Museum Bilbao,"geo,stringdist",1
+muci_310,muci_55,Galleria dell’Accademia,Galleria dell'Accademia di Firenze,"geo,stringdist",1
+muci_310,muci_56,Galleria dell’Accademia,Galleria dell’Accademia di Firenze,"geo,stringdist",1
+muci_310,muci_58,Galleria dell’Accademia,Galleria dell'Accademia,"geo,stringdist",1
+muci_312,muci_66,Meijer Gardens and Sculpture Park,Frederik Meijer Gardens & Sculpture Park,"geo,stringdist",1
+muci_313,muci_67,MMCA,Museum of Modern Art,geo,1
+muci_314,muci_78,Istanbul Modern,Istanbul Museum of Modern Art,geo,1
+muci_309,muci_277,"Museu Nacional, Conjunto Cultural",Museu Nacional da República,geo,1
+muci_308,muci_296,Guggenheim Museum,Guggenheim Bilbao,geo,1
+muci_312,muci_299,Meijer Gardens and Sculpture Park,Meijer Gardens & Sculpture Park,"geo,stringdist",1
