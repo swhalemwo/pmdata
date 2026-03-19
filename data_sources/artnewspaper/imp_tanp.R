@@ -471,6 +471,201 @@ gd_muci_links <- function(dt_tanp_muci_geo)  {
     return(dt_muci_links_ff)
 }
 
+gd_proc_exhb <- function(dt_tanp_struc, id_prefix) {
+    #' process exhibition data for integration into tanp
+    #' exhb entries (museum,city) not necessarily unique for same org -> do some aggregation first
+    #' kinda add tanp only later on in the end, when aggregated
+
+    ## first aggregate to organization-year (not finally unique, need muci for that)
+    dt_tanp_oyr_prep <- dt_tanp_struc[, .(total = sum(total_visitors)), .(museum = venue_name, city)] %>%
+        .[, id := paste0("exhb_", 1:.N)]
+
+    dt_tanp_city <- gd_tanp_city(dt_tanp_oyr_prep)
+    ## dt_tanp_city[grepl("Louis", city), .(city, ID, lat, long, city_new)]
+    ## dt_tanp_city[grepl("Col", city), .(ID, city, lat, long, city_new)]
+
+    ## get unique city
+    dt_tanp_wcid <- merge(dt_tanp_oyr_prep, dt_tanp_city[, .(city, id_city = ID, city_new)], by = "city")
+
+    ## dt_tanp_wcid[grepl("Col", city), .(id_city, city, city_new)]
+    ## dt_tanp_wcid[grepl("Louis", city), .(id_city, city, city_new)]
+
+    ## get overall muci
+    dt_tanp_muci <- gd_tanp_muci(dt_tanp_wcid)
+    ## dt_tanp_muci[city_new == "St. Louis"]
+    ## dt_tanp_muci[grepl("Louis", city_new), .(id_city, city_new)]
+    ## dt_tanp_muci[id_city == "city_91", .(muci, museum, city_new, id_city)]
+
+    ## add muci back to get unique institutions
+    dt_tanp_exhb <- merge(dt_tanp_wcid, dt_tanp_muci[, .(muci, id_city, museum, museum_new)],
+          by = c("museum", "id_city"))
+
+    ## add stuff (museum name, city): backwards to easily integrate it: need id, museum, city, total
+    dt_proc_exhb <- merge(
+        dt_tanp_exhb[, .(total = sum(total)), muci],
+        dt_tanp_muci[, head(.SD, 1), muci, .SDcols = c("museum", "id_city")], by = "muci") %>%
+        merge(dt_tanp_city[, head(.SD,1), .(id_city = ID), .SDcols = "city"], by = "id_city") %>%
+        .[order(-total)] %>% 
+        .[, .(id = paste0(id_prefix, 1:.N), museum, city, total)]
+
+    
+    ## dt_tanp_exhb[, .N, id_city][!dt_tanp_wcid[, .N, id_city], on = .(id_city, N)]
+
+    ## dt_tanp_wcid[city_new == "St. Louis"]
+    ## dt_tanp_exhb[city_new == "St. Louis"]
+    return(dt_proc_exhb)
+
+}
+
+gd_tanp05_raw <- function() {
+    #' get 05 tanp exhb info
+
+
+    FILE_TANP05_RAW <- "~/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_05_raw.csv"
+    dt_tanp05_raw <- data.table(text = readLines(FILE_TANP05_RAW))
+
+    dt_tanp05_raw[, `:=`(cnt_comma = str_count(text, ","), cnt_slash = str_count(text, "/"),
+                         cnt_dash = str_count(text, "-"))]
+
+    dt_tanp05_raw[, .N, cnt_comma]
+    dt_tanp05_raw[, .N, cnt_slash]
+    dt_tanp05_raw[cnt_slash %in% c(1,2)]
+    dt_tanp05_raw[, .N, .(cnt_slash, cnt_dash)]
+
+    dt_tanp05_raw[cnt_slash == 4 & cnt_dash != 1]
+    dt_tanp05_raw[cnt_slash %!in% c(0,4)]
+
+    ## get IDs: use date delimiters as ID, then fill up backwards
+    dt_tanp05_raw[cnt_slash == 4, id_show := 1:.N] %>%
+        setnafill(type = "nocb", cols = "id_show") %>%
+        .[, lines := .N, id_show]
+
+    return(dt_tanp05_raw)
+}
+
+
+
+
+
+
+gd_tanp05_struc <- function(dt_tanp05_raw, limit) {
+    
+    chat_tanp <- chat_google_gemini("you are a careful research assistant. you'll get some text summarizing an art exhibition. the first two numbers are daily visitors and total visitors. after that you have, in the following order, the show name, the venue name, the city, and the date (start/end). there may not be clear delimiters between these items, i.e. exhibition name could be followed directly by the museum name. all fields are always present. your task is to figure out all the fields (visitor daily, visitor total, show name, museum name, start and end date)")
+
+
+    ## text1 <- dt_tanp05_raw[id_show == 1, paste0(text, collapse = "\n")]
+
+    schema_tanp05 <- type_object(
+        daily_visitors = type_number(),
+        total_visitors = type_number(),
+        show_name = type_string(),
+        venue_name = type_string(),
+        city = type_string(),
+        start_date = type_string(),
+        end_date = type_string())
+
+    ## chat_tanp$chat_structured(text1, type = schema_tanp05)
+    ## dt_text_parallel <- dt_tanp05_raw[id_show <= 40, .(test_strs = paste0(text, collapse = "\n")), id_show]
+    dt_text_parallel <- dt_tanp05_raw[id_show <= limit, .(test_strs = paste0(text, collapse = "\n")), id_show]
+    l_prompts <- dt_text_parallel$test_strs %>% as.list
+
+    ## do the LLM
+    dt_tanp05_struc_prep <- parallel_chat_structured(chat_tanp, l_prompts, type = schema_tanp05)
+
+    dt_tanp05_struc <- cbind(dt_text_parallel[, .(id_show)], dt_tanp05_struc_prep) # add IDs
+
+    ## write to file: add index
+    DIR_LLM <- paste0("~/Dropbox/phd/pmdata/data_sources/artnewspaper/llm/")
+    l_files <- list.files(DIR_LLM) %>% keep(~grepl("tanp05_llm_", .x))
+    
+    max_cntr <- gsub("tanp05_llm_(\\d+)\\.csv", "\\1", l_files) %>% as.integer %>% max
+    
+    fwrite(dt_tanp05_struc, paste0(DIR_LLM, sprintf("tanp05_llm_%s.csv", max_cntr + 1)))
+
+    return(dt_tanp05_struc)
+}
+
+gd_tanp05_asses <- function(dt_tanp05_struc) {
+    #' automated checks
+    
+    ## check whether ordering by visitor numbers makes sense
+    dt_assess <- dt_tanp05_struc %>% copy %>%
+        .[, daily_visitors_l1 := data.table::shift(daily_visitors)]
+
+    ## check how many times the daily visitor order is disrupted
+    dt_assess[, daily_check := daily_visitors_l1 >=daily_visitors]
+
+    dt_assess[, `:=`(date_start = as.Date(start_date, format = "%d/%m/%y"),
+                     date_end = as.Date(end_date, format = "%d/%m/%y"))] %>%
+        .[, nbr_days_date := as.numeric(date_end - date_start)] %>% # days open based on dates, just range
+        .[, nbr_days_cnts := total_visitors/daily_visitors] # how many days it was open based on visitor numbers
+
+    ## dt_assess[nbr_days_cnts > nbr_days_date]
+        
+    avg_scalar <- dt_assess[, total_visitors/(daily_visitors * nbr_days_date)] %>% mean
+    print(sprintf("avg scalar: %s", round(avg_scalar,3)))
+
+    ## check how much predicted total numbers vary from observed, assuming avg scalar (best fit)
+    ## difference by log 0.2 in either direction
+    dt_assess_cnts <- dt_assess[, total_pred := nbr_days_date* avg_scalar * daily_visitors] %>%
+        .[, diff_total_obs_pred := log(total_pred/total_visitors)]
+
+    
+    ## dt_assess %>% ggplot(aes(x = diff_total_obs_pred)) + geom_density()
+
+    ## dt_assess[abs(diff_total_obs_pred) > 0.2, .(id_show, nbr_days_date,
+    ##                                             daily_visitors, total_pred, total_visitors)]
+
+    ## check of those where the daily visitor numbers are not able to reach the total (total > daily * nbr_days)
+    ## how many of them are substantially higher (log > 0.1)
+    dt_assess_days <- dt_assess[nbr_days_cnts > nbr_days_date,
+                                .(id_show, nbr_days_date, nbr_days_cnts, daily_visitors, total_pred,
+                                  total_visitors, date_start, date_end)] %>%
+        .[, diff_nbrdays := log(nbr_days_date/nbr_days_cnts)] %>%
+        .[abs(diff_nbrdays) > 0.1]
+    
+    
+    dt_check <- tribble(~test, ~cnt,
+            "daily_order", dt_assess[daily_check == F, .N],
+            "nbr_visitor", dt_assess[abs(diff_total_obs_pred) > 0.2, .N],
+            "nbr_days", dt_assess_days[abs(diff_nbrdays) > 0.1, .N]) %>% adt %>%
+        .[, prop := cnt/dt_assess[, .N]]
+    
+
+    return(dt_check)
+
+}
+
+gd_tanp05_mnlcheck <- function(dt_tanp05_struc) {
+
+    ## manual check
+    dt_output_mnl <- fread("~/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_05_1.csv", nrows = 113) %>%
+        .[, `:=`(total_visitors = as.integer(trimws(gsub(",", "", total_visitors))),
+                 daily_visitors = as.integer(trimws(gsub(",", "", daily_visitors))),
+                 venue_name = trimws(venue_name),
+                 id_show = 1:.N, src = "mnl")]
+        
+
+    ## dt_output_mnl[1:40, .(show_name)] %>% print(n=80)
+    ## dt_output_par[1:40, .(show_name)] %>% print(n=80)
+
+    l_relcols <- c("show_name", "venue_name", "daily_visitors", "total_visitors")
+
+    dt_cpr_wide <- rbind(dt_output_mnl %>% copy %>% melt(id.vars = c("id_show", "src"), measure.vars = l_relcols),
+                          dt_tanp05_struc %>% copy %>% .[, `:=`(src = "par")] %>%
+                          melt(id.vars = c("id_show", "src"), measure.vars = l_relcols)) %>%
+        dcast(id_show + variable ~src)
+
+    dt_check_mnl <- dt_cpr_wide %>%
+        .[, b_same := as.integer(mnl == par)] %>%
+        .[b_same == 0]
+
+    return(dt_check_mnl)
+    
+}
+
+
+
 
 ## ** main
 
@@ -634,152 +829,6 @@ dt_fallof[nbr %in% c(1,2)][, .N, nbr]
 library(ellmer)
 library(stringr)
 
-gd_tanp05_raw <- function() {
-    #' get 05 tanp exhb info
-
-
-    FILE_TANP05_RAW <- "~/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_05_raw.csv"
-    dt_tanp05_raw <- data.table(text = readLines(FILE_TANP05_RAW))
-
-    dt_tanp05_raw[, `:=`(cnt_comma = str_count(text, ","), cnt_slash = str_count(text, "/"),
-                         cnt_dash = str_count(text, "-"))]
-
-    dt_tanp05_raw[, .N, cnt_comma]
-    dt_tanp05_raw[, .N, cnt_slash]
-    dt_tanp05_raw[cnt_slash %in% c(1,2)]
-    dt_tanp05_raw[, .N, .(cnt_slash, cnt_dash)]
-
-    dt_tanp05_raw[cnt_slash == 4 & cnt_dash != 1]
-    dt_tanp05_raw[cnt_slash %!in% c(0,4)]
-
-    ## get IDs: use date delimiters as ID, then fill up backwards
-    dt_tanp05_raw[cnt_slash == 4, id_show := 1:.N] %>%
-        setnafill(type = "nocb", cols = "id_show") %>%
-        .[, lines := .N, id_show]
-
-    return(dt_tanp05_raw)
-}
-
-
-
-
-
-
-gd_tanp05_struc <- function(dt_tanp05_raw, limit) {
-    
-    chat_tanp <- chat_google_gemini("you are a careful research assistant. you'll get some text summarizing an art exhibition. the first two numbers are daily visitors and total visitors. after that you have, in the following order, the show name, the venue name, the city, and the date (start/end). there may not be clear delimiters between these items, i.e. exhibition name could be followed directly by the museum name. all fields are always present. your task is to figure out all the fields (visitor daily, visitor total, show name, museum name, start and end date)")
-
-
-    ## text1 <- dt_tanp05_raw[id_show == 1, paste0(text, collapse = "\n")]
-
-    schema_tanp05 <- type_object(
-        daily_visitors = type_number(),
-        total_visitors = type_number(),
-        show_name = type_string(),
-        venue_name = type_string(),
-        city = type_string(),
-        start_date = type_string(),
-        end_date = type_string())
-
-    ## chat_tanp$chat_structured(text1, type = schema_tanp05)
-    ## dt_text_parallel <- dt_tanp05_raw[id_show <= 40, .(test_strs = paste0(text, collapse = "\n")), id_show]
-    dt_text_parallel <- dt_tanp05_raw[id_show <= limit, .(test_strs = paste0(text, collapse = "\n")), id_show]
-    l_prompts <- dt_text_parallel$test_strs %>% as.list
-
-    ## do the LLM
-    dt_tanp05_struc_prep <- parallel_chat_structured(chat_tanp, l_prompts, type = schema_tanp05)
-
-    dt_tanp05_struc <- cbind(dt_text_parallel[, .(id_show)], dt_tanp05_struc_prep) # add IDs
-
-    ## write to file: add index
-    DIR_LLM <- paste0("~/Dropbox/phd/pmdata/data_sources/artnewspaper/llm/")
-    l_files <- list.files(DIR_LLM) %>% keep(~grepl("tanp05_llm_", .x))
-    
-    max_cntr <- gsub("tanp05_llm_(\\d+)\\.csv", "\\1", l_files) %>% as.integer %>% max
-    
-    fwrite(dt_tanp05_struc, paste0(DIR_LLM, sprintf("tanp05_llm_%s.csv", max_cntr + 1)))
-
-    return(dt_tanp05_struc)
-}
-
-gd_tanp05_asses <- function(dt_tanp05_struc) {
-    #' automated checks
-    
-    ## check whether ordering by visitor numbers makes sense
-    dt_assess <- dt_tanp05_struc %>% copy %>%
-        .[, daily_visitors_l1 := data.table::shift(daily_visitors)]
-
-    ## check how many times the daily visitor order is disrupted
-    dt_assess[, daily_check := daily_visitors_l1 >=daily_visitors]
-
-    dt_assess[, `:=`(date_start = as.Date(start_date, format = "%d/%m/%y"),
-                     date_end = as.Date(end_date, format = "%d/%m/%y"))] %>%
-        .[, nbr_days_date := as.numeric(date_end - date_start)] %>% # days open based on dates, just range
-        .[, nbr_days_cnts := total_visitors/daily_visitors] # how many days it was open based on visitor numbers
-
-    ## dt_assess[nbr_days_cnts > nbr_days_date]
-        
-    avg_scalar <- dt_assess[, total_visitors/(daily_visitors * nbr_days_date)] %>% mean
-    print(sprintf("avg scalar: %s", round(avg_scalar,3)))
-
-    ## check how much predicted total numbers vary from observed, assuming avg scalar (best fit)
-    ## difference by log 0.2 in either direction
-    dt_assess_cnts <- dt_assess[, total_pred := nbr_days_date* avg_scalar * daily_visitors] %>%
-        .[, diff_total_obs_pred := log(total_pred/total_visitors)]
-
-    
-    ## dt_assess %>% ggplot(aes(x = diff_total_obs_pred)) + geom_density()
-
-    ## dt_assess[abs(diff_total_obs_pred) > 0.2, .(id_show, nbr_days_date,
-    ##                                             daily_visitors, total_pred, total_visitors)]
-
-    ## check of those where the daily visitor numbers are not able to reach the total (total > daily * nbr_days)
-    ## how many of them are substantially higher (log > 0.1)
-    dt_assess_days <- dt_assess[nbr_days_cnts > nbr_days_date,
-                                .(id_show, nbr_days_date, nbr_days_cnts, daily_visitors, total_pred,
-                                  total_visitors, date_start, date_end)] %>%
-        .[, diff_nbrdays := log(nbr_days_date/nbr_days_cnts)] %>%
-        .[abs(diff_nbrdays) > 0.1]
-    
-    
-    dt_check <- tribble(~test, ~cnt,
-            "daily_order", dt_assess[daily_check == F, .N],
-            "nbr_visitor", dt_assess[abs(diff_total_obs_pred) > 0.2, .N],
-            "nbr_days", dt_assess_days[abs(diff_nbrdays) > 0.1, .N]) %>% adt %>%
-        .[, prop := cnt/dt_assess[, .N]]
-    
-
-    return(dt_check)
-
-}
-
-gd_tanp05_mnlcheck <- function(dt_tanp05_struc) {
-
-    ## manual check
-    dt_output_mnl <- fread("~/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_05_1.csv", nrows = 113) %>%
-        .[, `:=`(total_visitors = as.integer(trimws(gsub(",", "", total_visitors))),
-                 daily_visitors = as.integer(trimws(gsub(",", "", daily_visitors))),
-                 venue_name = trimws(venue_name),
-                 id_show = 1:.N, src = "mnl")]
-        
-
-    ## dt_output_mnl[1:40, .(show_name)] %>% print(n=80)
-    ## dt_output_par[1:40, .(show_name)] %>% print(n=80)
-
-    l_relcols <- c("show_name", "venue_name", "daily_visitors", "total_visitors")
-
-    dt_cpr_wide <- rbind(dt_output_mnl %>% copy %>% melt(id.vars = c("id_show", "src"), measure.vars = l_relcols),
-                          dt_tanp05_struc %>% copy %>% .[, `:=`(src = "par")] %>%
-                          melt(id.vars = c("id_show", "src"), measure.vars = l_relcols)) %>%
-        dcast(id_show + variable ~src)
-
-    dt_check_mnl <- dt_cpr_wide %>%
-        .[, b_same := as.integer(mnl == par)] %>%
-        .[b_same == 0]
-
-    return(dt_check_mnl)
-    
-}
 
 dt_tanp05_raw <- gd_tanp05_raw() # get raw data
 dt_tanp05_struc <- gd_tanp05_struc(dt_tanp05_raw, limit = 10000) # get LLM data
@@ -798,51 +847,6 @@ dt_tanp05_struc[, .(yearly_visitors = sum(total_visitors)), .(venue_name, city)]
 
 dt_tanp05_struc[venue_name == "Museum of Modern Art" & city == "New York"]
 
-gd_proc_exhb <- function(dt_tanp_struc, id_prefix) {
-    #' process exhibition data for integration into tanp
-    #' exhb entries (museum,city) not necessarily unique for same org -> do some aggregation first
-    #' kinda add tanp only later on
-
-    ## first aggregate to organization-year (not finally unique, need muci for that)
-    dt_tanp_oyr_prep <- dt_tanp_struc[, .(total = sum(total_visitors)), .(museum = venue_name, city)] %>%
-        .[, id := paste0("exhb_", 1:.N)]
-
-    dt_tanp_city <- gd_tanp_city(dt_tanp_oyr_prep)
-    ## dt_tanp_city[grepl("Louis", city), .(city, ID, lat, long, city_new)]
-    ## dt_tanp_city[grepl("Col", city), .(ID, city, lat, long, city_new)]
-
-    ## get unique city
-    dt_tanp_wcid <- merge(dt_tanp_oyr_prep, dt_tanp_city[, .(city, id_city = ID, city_new)], by = "city")
-
-    ## dt_tanp_wcid[grepl("Col", city), .(id_city, city, city_new)]
-    ## dt_tanp_wcid[grepl("Louis", city), .(id_city, city, city_new)]
-
-    ## get overall muci
-    dt_tanp_muci <- gd_tanp_muci(dt_tanp_wcid)
-    ## dt_tanp_muci[city_new == "St. Louis"]
-    ## dt_tanp_muci[grepl("Louis", city_new), .(id_city, city_new)]
-    ## dt_tanp_muci[id_city == "city_91", .(muci, museum, city_new, id_city)]
-
-    ## add muci back to get unique institutions
-    dt_tanp_exhb <- merge(dt_tanp_wcid, dt_tanp_muci[, .(muci, id_city, museum, museum_new)],
-          by = c("museum", "id_city"))
-
-    ## add stuff (museum name, city): backwards to easily integrate it: need id, museum, city, total
-    dt_proc_exhb <- merge(
-        dt_tanp_exhb[, .(total = sum(total)), muci],
-        dt_tanp_muci[, head(.SD, 1), muci, .SDcols = c("museum", "id_city")], by = "muci") %>%
-        merge(dt_tanp_city[, head(.SD,1), .(id_city = ID), .SDcols = "city"], by = "id_city") %>%
-        .[order(-total)] %>% 
-        .[, .(id = paste0(id_prefix, 1:.N), museum, city, total)]
-
-    
-    ## dt_tanp_exhb[, .N, id_city][!dt_tanp_wcid[, .N, id_city], on = .(id_city, N)]
-
-    ## dt_tanp_wcid[city_new == "St. Louis"]
-    ## dt_tanp_exhb[city_new == "St. Louis"]
-    return(dt_proc_exhb)
-
-}
 
 
 gd_proc_exhb(dt_tanp05_struc, "tanp05_")
