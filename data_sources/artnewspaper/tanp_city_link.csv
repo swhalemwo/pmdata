@@ -22,3 +22,8 @@ id_link,ID_i,ID_j,city_i,city_j,new_name,b_same
 21,city_122,city_93,Rio,Rio De Janeiro,"Rio de Janeiro",1
 22,city_128,city_73,Valéncia,València,"Valencia",1
 23,city_128,city_111,Valéncia,Valencia,"Valencia",1
+24,city_166,city_91,St. Louis,St Louis,"St. Louis",1
+25,city_150,city_142,"Portland, OR",Portland,"Portland",1
+26,city_159,city_157,Colorado Sp.,Colorado Springs,"Colorado Springs",1
+27,city_171,city_157,Col. Springs,Colorado Springs,"Colorado Springs",1
+26,city_171,city_159,"Col. Springs","Colorado Sp.","Colorado Springs",1
