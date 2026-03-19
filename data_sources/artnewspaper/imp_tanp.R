@@ -151,9 +151,11 @@ gd_tanp_city <- function(dt_tanp_cbn) {
     ## need to deal with cities that have no ID yet
     dt_tanp_city_ff <- gd_tanp_city_geo()
     
+    max_id <- dt_tanp_city_ff[, tail(ID,1)] %>% gsub("city_", "", .) %>% as.integer
+
     # assign new IDs: start where we have stopped previously (ff)
     dt_tanp_city_new <- dt_tanp_city_unq[!dt_tanp_city_ff, on = "city"] %>%
-        .[, ID := paste0("city_", (dt_tanp_city_ff[, .N]+1):((dt_tanp_city_unq[, .N])))] 
+        .[, ID := paste0("city_", (max_id + 1):(max_id + .N))] 
 
     if (dt_tanp_city_new[, .N] > 0) { gwd_geocode_tanp_city(dt_tanp_city_new = dt_tanp_city_new)}
 
