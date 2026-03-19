@@ -850,3 +850,33 @@ dt_tanp05_struc[venue_name == "Museum of Modern Art" & city == "New York"]
 
 
 gd_proc_exhb(dt_tanp05_struc, "tanp05_")
+
+
+## ** add tanp04
+
+## structure looks pretty much identical to 05 -> can reuse code
+
+dt_tanp04_raw <- data.table(text = readLines("~/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_04_raw.csv"))
+
+dt_tanp04_raw[, `:=`(cnt_comma = str_count(text, ","), cnt_slash = str_count(text, "/"),
+                     cnt_dash = str_count(text, "-"))]
+
+
+dt_tanp04_raw[, .N, cnt_comma]
+dt_tanp04_raw[, .N, cnt_slash]
+
+
+dt_tanp04_raw[cnt_slash == 4, id_show := 1:.N] %>%
+    setnafill(type = "nocb", cols = "id_show") %>%
+    .[, lines := .N, id_show]
+
+dt_tanp04_raw[, .N, lines]
+dt_tanp04_raw[lines > 6]
+
+dt_tanp04_struc <- gd_tanp05_struc(dt_tanp04_raw, limit = 99999)
+
+
+gd_tanp05_asses(dt_tanp04_struc) # assess 
+
+
+dt_tanp04_struc[grepl("Rover", show_name)]
