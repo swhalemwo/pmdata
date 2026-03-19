@@ -327,3 +327,73 @@ muci_440,muci_343,CaxiaForum Barcelona,CaixaForum,geo,1
 muci_445,muci_355,National Gallery,National Gallery of Scotland,"geo,stringdist",1
 muci_447,muci_367,Ian Potter Centre,Ian Potter Centre: NGV Australia,"geo,stringdist",1
 muci_445,muci_396,National Gallery,National Gallery Complex,"geo,stringdist",1
+muci_456,muci_20,Alte Nationalgalerie,Neues Museum,geo,0
+muci_468,muci_40,Art institute of Chicago,Art Institute of Chicago,geo,1
+muci_473,muci_47,Kupferstich-Kabinett,Residenzschloss,geo,0
+muci_475,muci_49,Royal Museum of Scotland,National Museum of Scotland,"geo,stringdist",1
+muci_479,muci_49,Museum of Scotland,National Museum of Scotland,"geo,stringdist",1
+muci_478,muci_50,Scottish Natioanl Gallery,Scottish National Gallery,"geo,stringdist",1
+muci_478,muci_51,Scottish Natioanl Gallery,National Galleries Scotland: National,geo,1
+muci_480,muci_60,Museo Giardino di Boboli,Giardino di Boboli,"geo,stringdist",1
+muci_504,muci_97,Courtauld Institute Gallery,Somerset House,geo,0
+muci_506,muci_106,The Getty Museum,Getty Center,geo,1
+muci_507,muci_106,The Getty Center,Getty Center,"geo,stringdist",1
+muci_508,muci_107,LA County Museum of Art,Lacma,geo,1
+muci_508,muci_109,LA County Museum of Art,Los Angeles County Museum of Art,"geo,stringdist",1
+muci_508,muci_110,LA County Museum of Art,Los Angeles County Museum of Art (Lacma),geo,1
+muci_506,muci_111,The Getty Museum,J. Paul Getty Museum (Getty Center),geo,1
+muci_507,muci_111,The Getty Center,J. Paul Getty Museum (Getty Center),geo,1
+muci_511,muci_139,Triennale,Triennale di Milano,geo,1
+muci_511,muci_140,Triennale,Triennale Milano,"geo,stringdist",1
+muci_519,muci_155,The Metropolitan Museum of Art,Metropolitan Museum of Art,"geo,stringdist",1
+muci_519,muci_159,The Metropolitan Museum of Art,Metropolitan Museum of Art (Fifth Avenue),"geo,stringdist",1
+muci_528,muci_165,Centre Georges Pompidou,Centre Pompidou,"geo,stringdist",1
+muci_541,muci_184,SF Museum of Modern Art,SFMoMA,geo,1
+muci_544,muci_207,Saint Louis Art Museum,Saint Louis Art Museum,geo,1
+muci_558,muci_246,Hirshhorn Museum and Sculpture,Hirshhorn Museum,"geo,stringdist",1
+muci_561,muci_256,Kuntshaus,Kunsthaus Zürich,geo,1
+muci_562,muci_256,Kunthaus,Kunsthaus Zürich,geo,1
+muci_528,muci_265,Centre Georges Pompidou,Musée National d'Art Moderne (Centre Pompidou),geo,1
+muci_541,muci_270,SF Museum of Modern Art,San Francisco Museum of Modern Art,"geo,stringdist",1
+muci_478,muci_279,Scottish Natioanl Gallery,National Galleries of Scotland,geo,1
+muci_506,muci_283,The Getty Museum,Getty,geo,1
+muci_507,muci_283,The Getty Center,Getty,geo,1
+muci_541,muci_287,SF Museum of Modern Art,Museum of Modern Art,"geo,stringdist",1
+muci_454,muci_295,Museu d’Art Contemporani (MACBA),Museu d’Art Contemporani,"geo,stringdist",1
+muci_508,muci_300,LA County Museum of Art,LACMA,geo,1
+muci_489,muci_311,Gallery of Modern Art (GoMA),Gallery of Modern Art,"geo,stringdist",1
+muci_454,muci_317,Museu d’Art Contemporani (MACBA),MACBA,geo,1
+muci_464,muci_348,Groeninge Museum,Musea Bruges,geo,0
+muci_478,muci_355,Scottish Natioanl Gallery,National Gallery of Scotland,geo,1
+muci_506,muci_365,The Getty Museum,Getty Center (Getty Museum),geo,1
+muci_507,muci_365,The Getty Center,Getty Center (Getty Museum),geo,1
+muci_511,muci_369,Triennale,La Triennale di Milano,geo,1
+muci_457,muci_388,Kupferstichkabinett,Kulturforum,geo,0
+muci_459,muci_390,Kunst der Bundesrepublik,Kunsthalle der Bundesrepublik,"geo,stringdist",1
+muci_460,muci_390,Kunstshalle der Bundesrepublik,Kunsthalle der Bundesrepublik,"geo,stringdist",1
+muci_478,muci_396,Scottish Natioanl Gallery,National Gallery Complex,geo,1
+muci_501,muci_406,Whitechapel Art Gallery,Whitechapel Gallery,"geo,stringdist",1
+muci_506,muci_407,The Getty Museum,Getty Museum (Getty Center),geo,1
+muci_507,muci_407,The Getty Center,Getty Museum (Getty Center),geo,1
+muci_514,muci_412,Wallker Art Center,Walker Art Center,"geo,stringdist",1
+muci_540,muci_422,"California Palace, Legion of Honor",Legion of Honor,geo,1
+muci_506,muci_435,The Getty Museum,Getty Museum,"geo,stringdist",1
+muci_507,muci_435,The Getty Center,Getty Museum,geo,1
+muci_473,muci_444,Kupferstich-Kabinett,Green Vault,geo,0
+muci_478,muci_445,Scottish Natioanl Gallery,National Gallery,geo,1
+muci_541,muci_448,SF Museum of Modern Art,SFMOMA,geo,1
+muci_450,muci_449,University of Michigan,University of Michigan Museum,"geo,stringdist",1
+muci_460,muci_459,Kunstshalle der Bundesrepublik,Kunst der Bundesrepublik,"geo,stringdist",1
+muci_479,muci_475,Museum of Scotland,Royal Museum of Scotland,"geo,stringdist",1
+muci_487,muci_486,BALTIC Centre,BALTIC,geo,1
+muci_488,muci_486,BALTIC Centre for Contemporary Art,BALTIC,geo,1
+muci_488,muci_487,BALTIC Centre for Contemporary Art,BALTIC Centre,geo,1
+muci_521,muci_505,P.S.1 Contemporary Art Center,P.S.1 Contemporary Art Center,geo,1
+muci_507,muci_506,The Getty Center,The Getty Museum,geo,1
+muci_525,muci_524,Kröˆller-Mü¸ller Museum,Kröller-Müller Museum,"geo,stringdist",1
+muci_562,muci_561,Kunthaus,Kuntshaus,geo,1
+muci_456,muci_389,Alte Nationalgalerie,Neue Nationalgalerie,stringdist,0
+muci_519,muci_151,The Metropolitan Museum of Art,Metropolitan Museum,stringdist,1
+muci_464,muci_463,Groeninge Museum,Groening Museum,stringdist,1
+muci_477,muci_50,Scottish National Portrait Gallery,Scottish National Gallery,stringdist,1
+muci_478,muci_477,Scottish Natioanl Gallery,Scottish National Portrait Gallery,stringdist,1

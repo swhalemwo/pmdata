@@ -22,6 +22,9 @@ gd_tanp_cbn <- function() {
     ## more systematic approach
     ## read in data
 
+    dt_tanp05_struc <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/llm/tanp05_llm_4.csv")
+    dt_tanp_05 <- gd_proc_exhb(dt_tanp05_struc, "tanp05_")
+
     dt_tanp_07 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_07.csv") %>%
         .[, map(.SD, trimws)] %>%
         .[, `:=`(id  = paste0("tanp07_", 1:.N), city = stringr::str_to_title(trimws(city)))]
@@ -110,6 +113,7 @@ gd_tanp_cbn <- function() {
 
     ## combine
     dt_tanp_cbn <- map(list(
+        dt_tanp_05,
         dt_tanp_07, dt_tanp_08, dt_tanp_09, dt_tanp_10, dt_tanp_11,
         dt_tanp_12, dt_tanp_13, dt_tanp_14, dt_tanp_15, dt_tanp_16, dt_tanp_17, dt_tanp_18,
         dt_tanp_19, dt_tanp_20, dt_tanp_21, dt_tanp_22, dt_tanp_23, dt_tanp_24),
@@ -185,12 +189,15 @@ gd_tanp_city <- function(dt_tanp_cbn) {
         cnt_unq <- dt_tanp_city_geo[, uniqueN(ID)]        
     }
 
+    
     ## dt_tanp_city_geo[grepl("New York", city), .(city, ID, name)] 
 
     
     ## another update join for new city name
     dt_tanp_city_geo[, city_new := city] %>%
         .[dt_tanp_city_links_ff, city_new := i.new_name, on = .(ID = ID_j)]
+
+    ## dt_tanp_city_geo[grepl("Col", city), .(city, ID, lat, long, city_new)]
 
     ## dt_tanp_city_geo[grepl("New York", city), .(city, ID, name, city_new)] 
 
@@ -348,15 +355,13 @@ gd_tanp_muci <- function(dt_tanp_wcid) {
     keep_going <- T
     cntr <- 0
     dt_tanp_muci_fixed <- dt_tanp_muci_geo %>% copy
-    dt_tanp_muci_fixed[grepl("SAAM", museum)]
+    ## dt_tanp_muci_fixed[grepl("SAAM", museum)]
 
 
     ## iteratively update all muci ids
     while(keep_going) {
-        
         dt_tanp_muci_fixed <- dt_tanp_muci_fixed %>% copy %>%
             .[dt_muci_links, muci := i.muci2, on = .(muci = muci1)]
-        
         keep_going <- cnt_unq != dt_tanp_muci_fixed[, uniqueN(muci)]
         cnt_unq <- dt_tanp_muci_fixed[, uniqueN(muci)]
         cntr <- cntr + 1
@@ -364,7 +369,8 @@ gd_tanp_muci <- function(dt_tanp_wcid) {
         if (cntr == 20) {stop("stop")}
     }
 
-    dt_tanp_muci_fixed[grepl("SAAM", museum)] # seems to work
+    ## dt_tanp_muci_fixed[grepl("SAAM", museum)] # seems to work
+    ## dt_tanp_muci_fixed[id_city == "city_91", .(muci, museum, city_new, id_city)]
 
     ## dt_tanp_muci_fixed[, .N, muci][order(-N)]
     ## dt_tanp_muci_fixed[grepl("Smithsoni|National Portrait", museum) & grepl("Washington", city_new)]
@@ -777,11 +783,64 @@ dt_tanp05_raw <- gd_tanp05_raw() # get raw data
 dt_tanp05_struc <- gd_tanp05_struc(dt_tanp05_raw, limit = 10000) # get LLM data
 ## dt_tanp05_struc <- dt_output_par2# old version using global data
 gd_tanp05_asses(dt_tanp05_struc) # assess 
-gd_tanp05_mnlcheck(dt_tanp05_struc)
+gd_tanp05_mnlcheck(dt_tanp05_struc) %>% print(n=80)
+
+dt_tanp05_struc[, .(yearly_visitors = sum(total_visitors)), .(venue_name, city)][order(-yearly_visitors)] %>%
+    .[grepl("Museum of Modern", venue_name)]
+
+dt_tanp05_struc[, .(yearly_visitors = sum(total_visitors)), .(venue_name, city)][order(-yearly_visitors)] %>%
+    .[grepl("New York|NYC|NY", city)]
 
 
-## dt_tanp05_raw[lines > 5]
+dt_tanp05_struc[, .(yearly_visitors = sum(total_visitors)), .(venue_name, city)][order(-yearly_visitors)] %>% print(n=80)
 
-## dt_tanp05_raw[, .(lines = .N), id_show][, .N, lines]
+dt_tanp05_struc[venue_name == "Museum of Modern Art" & city == "New York"]
+
+gd_proc_exhb <- function(dt_tanp_struc, id_prefix) {
+    #' process exhibition data for integration into tanp
+    #' exhb entries (museum,city) not necessarily unique for same org -> do some aggregation first
+    #' kinda add tanp only later on
+
+    ## first aggregate to organization-year (not finally unique, need muci for that)
+    dt_tanp_oyr_prep <- dt_tanp_struc[, .(total = sum(total_visitors)), .(museum = venue_name, city)] %>%
+        .[, id := paste0("exhb_", 1:.N)]
+
+    dt_tanp_city <- gd_tanp_city(dt_tanp_oyr_prep)
+    ## dt_tanp_city[grepl("Louis", city), .(city, ID, lat, long, city_new)]
+    ## dt_tanp_city[grepl("Col", city), .(ID, city, lat, long, city_new)]
+
+    ## get unique city
+    dt_tanp_wcid <- merge(dt_tanp_oyr_prep, dt_tanp_city[, .(city, id_city = ID, city_new)], by = "city")
+
+    ## dt_tanp_wcid[grepl("Col", city), .(id_city, city, city_new)]
+    ## dt_tanp_wcid[grepl("Louis", city), .(id_city, city, city_new)]
+
+    ## get overall muci
+    dt_tanp_muci <- gd_tanp_muci(dt_tanp_wcid)
+    ## dt_tanp_muci[city_new == "St. Louis"]
+    ## dt_tanp_muci[grepl("Louis", city_new), .(id_city, city_new)]
+    ## dt_tanp_muci[id_city == "city_91", .(muci, museum, city_new, id_city)]
+
+    ## add muci back to get unique institutions
+    dt_tanp_exhb <- merge(dt_tanp_wcid, dt_tanp_muci[, .(muci, id_city, museum, museum_new)],
+          by = c("museum", "id_city"))
+
+    ## add stuff (museum name, city): backwards to easily integrate it: need id, museum, city, total
+    dt_proc_exhb <- merge(
+        dt_tanp_exhb[, .(total = sum(total)), muci],
+        dt_tanp_muci[, head(.SD, 1), muci, .SDcols = c("museum", "id_city")], by = "muci") %>%
+        merge(dt_tanp_city[, head(.SD,1), .(id_city = ID), .SDcols = "city"], by = "id_city") %>%
+        .[order(-total)] %>% 
+        .[, .(id = paste0(id_prefix, 1:.N), museum, city, total)]
+
+    
+    ## dt_tanp_exhb[, .N, id_city][!dt_tanp_wcid[, .N, id_city], on = .(id_city, N)]
+
+    ## dt_tanp_wcid[city_new == "St. Louis"]
+    ## dt_tanp_exhb[city_new == "St. Louis"]
+    return(dt_proc_exhb)
+
+}
 
 
+gd_proc_exhb(dt_tanp05_struc, "tanp05_")
