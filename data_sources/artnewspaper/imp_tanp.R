@@ -610,6 +610,9 @@ gd_tanp05_asses <- function(dt_tanp05_struc) {
     dt_assess_cnts <- dt_assess[, total_pred := nbr_days_date* avg_scalar * daily_visitors] %>%
         .[, diff_total_obs_pred := log(total_pred/total_visitors)]
 
+    dt_assess_cnts[is.na(diff_total_obs_pred), .(total_pred, total_visitors, nbr_days_date)]
+    
+
     
     ## dt_assess %>% ggplot(aes(x = diff_total_obs_pred)) + geom_density()
 
@@ -628,7 +631,8 @@ gd_tanp05_asses <- function(dt_tanp05_struc) {
     dt_check <- tribble(~test, ~cnt,
             "daily_order", dt_assess[daily_check == F, .N],
             "nbr_visitor", dt_assess[abs(diff_total_obs_pred) > 0.2, .N],
-            "nbr_days", dt_assess_days[abs(diff_nbrdays) > 0.1, .N]) %>% adt %>%
+            "nbr_days", dt_assess_days[abs(diff_nbrdays) > 0.1, .N],
+            "wrong_dates", dt_assess[nbr_days_date < 0, .N]) %>% adt %>%
         .[, prop := cnt/dt_assess[, .N]]
     
 
@@ -873,9 +877,23 @@ dt_tanp04_raw[cnt_slash == 4, id_show := 1:.N] %>%
 dt_tanp04_raw[, .N, lines]
 dt_tanp04_raw[lines > 6]
 
-dt_tanp04_struc <- gd_tanp05_struc(dt_tanp04_raw, limit = 99999)
+dt_tanp04_raw[grepl("sublime landscape", text)] # -> 223
+dt_tanp04_raw[grepl("Urbino", text)] # -> 230
+
+dt_tanp04_raw[, max(id_show)]
+
+## dt_tanp04_struc <- gd_tanp05_struc(dt_tanp04_raw[id_show < 200], limit = 99999)
+## dt_tanp04_struc2 <- gd_tanp05_struc(dt_tanp04_raw[id_show >= 200], limit = 99999)
 
 
+dt_tanp04_raw[, nchar := nchar(text)]
+dt_tanp04_raw[order(-nchar)]
+
+dt_tanp04_raw[id_show == 297]
+
+fwrite(dt_tanp04_struc2, "~/Dropbox/phd/pmdata/data_sources/artnewspaper/llm/tanp04_llm_1.csv")
+
+dt_tanp04_struc <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_04_struc.csv")
 gd_tanp05_asses(dt_tanp04_struc) # assess 
 
 
