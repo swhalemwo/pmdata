@@ -22,6 +22,10 @@ gd_tanp_cbn <- function() {
     ## more systematic approach
     ## read in data
 
+    dt_tanp01_struc <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_01_struc.csv")
+    dt_tanp01 <- gd_proc_exhb(dt_tanp01_struc, "tanp01_")
+
+
     dt_tanp02_struc <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_02_struc.csv")
     dt_tanp02 <- gd_proc_exhb(dt_tanp02_struc, "tanp02_")
     
@@ -124,7 +128,7 @@ gd_tanp_cbn <- function() {
 
     ## combine
     dt_tanp_cbn <- map(list(
-        dt_tanp02, dt_tanp03, dt_tanp04, dt_tanp_05,
+        dt_tanp01, dt_tanp02, dt_tanp03, dt_tanp04, dt_tanp_05,
         dt_tanp_07, dt_tanp_08, dt_tanp_09, dt_tanp_10, dt_tanp_11,
         dt_tanp_12, dt_tanp_13, dt_tanp_14, dt_tanp_15, dt_tanp_16, dt_tanp_17, dt_tanp_18,
         dt_tanp_19, dt_tanp_20, dt_tanp_21, dt_tanp_22, dt_tanp_23, dt_tanp_24),
@@ -953,3 +957,28 @@ dt_tanp02_struc <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnews
 
 gd_tanp05_asses(dt_tanp02_struc)
 gd_proc_exhb(dt_tanp02_struc, "tanp02_")
+
+
+## ** add tanp01
+
+dt_tanp01_raw <- data.table(text = readLines("~/Dropbox/phd/pmdata/data_sources/artnewspaper/llm/tanp01_raw.csv"))
+dt_tanp01_raw[, `:=`(cnt_slash = str_count(text, "/"))]
+
+dt_tanp01_raw[cnt_slash == 4, id_show := 1:.N] %>%
+    setnafill(type = "nocb", cols = "id_show") %>%
+    .[, lines := .N, id_show]
+
+dt_tanp01_raw[, .N, lines]
+dt_tanp01_raw[lines > 10] %>% print(n=80)
+
+gd_tanp05_struc(dt_tanp01_raw[id_show < 300], limit = 9999)
+gd_tanp05_struc(dt_tanp01_raw[id_show %between% c(300,370)], limit = 9999)
+gd_tanp05_struc(dt_tanp01_raw[id_show %between% c(371,400)], limit = 9999)
+gd_tanp05_struc(dt_tanp01_raw[id_show %between% c(401,500)], limit = 9999)
+gd_tanp05_struc(dt_tanp01_raw[id_show > 500], limit = 9999)
+
+dt_tanp01_struc <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_01_struc.csv")
+dt_tanp01_struc[, .N, id_show][N>1]
+
+gd_proc_exhb(dt_tanp01_struc, "tanp01_")
+

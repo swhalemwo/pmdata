@@ -524,3 +524,116 @@ muci_665,muci_625,Musée des Beaux-Arts,Museum of Fine Arts,geo,1
 muci_646,muci_645,Fundació la Caixa Barcelona,Fundació “la Caixa” Barcelona,"geo,stringdist",1
 muci_665,muci_370,Musée des Beaux-Arts,Musée National des Beaux-arts,stringdist,1
 muci_645,muci_612,Fundació “la Caixa” Barcelona,Fundació “la Caixa”,stringdist,1
+muci_728,muci_47,Grünes Gewolbe,Residenzschloss,geo,0
+muci_732,muci_55,Galleria dell’Accademia.,Galleria dell'Accademia di Firenze,geo,1
+muci_732,muci_56,Galleria dell’Accademia.,Galleria dell’Accademia di Firenze,"geo,stringdist",1
+muci_732,muci_58,Galleria dell’Accademia.,Galleria dell'Accademia,"geo,stringdist",1
+muci_749,muci_97,Courtauld Institute Galleries,Somerset House,geo,0
+muci_756,muci_138,Palazzo reale,Palazzo Reale,geo,1
+muci_759,muci_139,La Triennale,Triennale di Milano,geo,1
+muci_759,muci_140,La Triennale,Triennale Milano,geo,1
+muci_775,muci_177,"Musée d’art moderne, Paris",Palais de Tokyo,geo,0
+muci_775,muci_178,"Musée d’art moderne, Paris",Musée d'Art Moderne de Paris,"geo,stringdist",1
+muci_795,muci_184,San Francisco MoMAs,SFMoMA,geo,1
+muci_819,muci_246,Hirshhorn Mus & Sculpture Gdn,Hirshhorn Museum,geo,1
+muci_756,muci_262,Palazzo reale,Royal Palace of Milan,geo,1
+muci_795,muci_270,San Francisco MoMAs,San Francisco Museum of Modern Art,geo,1
+muci_795,muci_287,San Francisco MoMAs,Museum of Modern Art,geo,1
+muci_697,muci_295,Museu d'art contemporani,Museu d’Art Contemporani,"geo,stringdist",1
+muci_732,muci_310,Galleria dell’Accademia.,Galleria dell’Accademia,"geo,stringdist",1
+muci_697,muci_317,Museu d'art contemporani,MACBA,geo,1
+muci_775,muci_322,"Musée d’art moderne, Paris",Musée d’Art Moderne de la Ville de Paris,"geo,stringdist",1
+muci_802,muci_338,Scuderie castello di Miramare,Parco del Castello di Miramare,"geo,stringdist",1
+muci_695,muci_342,High Museum of Folk Art,High Museum of Art,"geo,stringdist",1
+muci_696,muci_342,High Museum of Art Folk Art,High Museum of Art,"geo,stringdist",1
+muci_759,muci_369,La Triennale,La Triennale di Milano,"geo,stringdist",1
+muci_775,muci_373,"Musée d’art moderne, Paris",Musée d’Art Moderne de la Ville,geo,1
+muci_775,muci_374,"Musée d’art moderne, Paris",Musée d’Art Moderne de la Ville/ARC,geo,1
+muci_720,muci_394,MoCA,Museum of Contemporary Art,geo,1
+muci_721,muci_394,Museum of Contemporary Art (MCA),Museum of Contemporary Art,"geo,stringdist",1
+muci_764,muci_411,Castello sforzesco,Castello Sforzesco,geo,1
+muci_794,muci_422,California Palace of Legion of Honor,Legion of Honor,geo,1
+muci_796,muci_422,California Pal. of the Legion of Honor,Legion of Honor,geo,1
+muci_810,muci_432,Galleria dell’Accademia,Gallerie dell’Accademia,"geo,stringdist",1
+muci_728,muci_444,Grünes Gewolbe,Green Vault,geo,1
+muci_795,muci_448,San Francisco MoMAs,SFMOMA,geo,1
+muci_691,muci_449,University of Michigan MoA,University of Michigan Museum,"geo,stringdist",1
+muci_691,muci_450,University of Michigan MoA,University of Michigan,"geo,stringdist",1
+muci_697,muci_454,Museu d'art contemporani,Museu d’Art Contemporani (MACBA),"geo,stringdist",1
+muci_700,muci_455,Accademia Carrara di Belle Arti,Accademia Carrara,"geo,stringdist",1
+muci_708,muci_462,Museo Santa Giulia e Museo di Città,Museo di Santa Giulia,"geo,stringdist",1
+muci_728,muci_473,Grünes Gewolbe,Kupferstich-Kabinett,geo,0
+muci_734,muci_483,Modern Art Museum,Modern Art Museum of Fort Worth,"geo,stringdist",1
+muci_741,muci_496,Kemper Mus of Contemporary Art,Kemper Museum,geo,1
+muci_749,muci_504,Courtauld Institute Galleries,Courtauld Institute Gallery,"geo,stringdist",1
+muci_759,muci_511,La Triennale,Triennale,"geo,stringdist",1
+muci_761,muci_512,Galleria Gruppo Credito Valtellinese,Fondazione Antonio Mazzotta,geo,0
+muci_767,muci_516,Yale Center for British Art,Yale University Art Gallery,geo,1
+muci_770,muci_526,Museum of Modern Art,Modern Art Oxford,geo,1
+muci_784,muci_534,Galeria d’arte Moderna,Galleria Nazionale d’Arte Moderna,"geo,stringdist",1
+muci_785,muci_534,Galleria nazionale d’arte moderna,Galleria Nazionale d’Arte Moderna,geo,1
+muci_789,muci_534,Galleria Nazionale d’arte Moderna,Galleria Nazionale d’Arte Moderna,geo,1
+muci_792,muci_537,Archivio del ‘900,Museum of Modern and Cont. Art,geo,1
+muci_794,muci_540,California Palace of Legion of Honor,"California Palace, Legion of Honor","geo,stringdist",1
+muci_796,muci_540,California Pal. of the Legion of Honor,"California Palace, Legion of Honor","geo,stringdist",1
+muci_795,muci_541,San Francisco MoMAs,SF Museum of Modern Art,geo,1
+muci_805,muci_549,Palazzo Cavour,Palazzo Bricherasio,geo,0
+muci_780,muci_550,Castello di Rivoli,Castello di Rivoli,geo,1
+muci_816,muci_557,Kunsthaus Wien,KunstHausWien,"geo,stringdist",1
+muci_819,muci_558,Hirshhorn Mus & Sculpture Gdn,Hirshhorn Museum and Sculpture,"geo,stringdist",1
+muci_690,muci_563,Univ. of Michigan Museum of Art,University of Michigan art Museum,geo,1
+muci_692,muci_563,University of Michigan Museum of Art,University of Michigan art Museum,"geo,stringdist",1
+muci_697,muci_564,Museu d'art contemporani,Museu d'Art Contemporani,geo,1
+muci_698,muci_565,Museo civico,Museo Civico,geo,1
+muci_732,muci_577,Galleria dell’Accademia.,Gallerie dell’Accademia,"geo,stringdist",1
+muci_758,muci_587,Museo della permanente,Museo della Permanente,geo,1
+muci_766,muci_589,Museo archeologico nazionale,Museo Archeologico Nazionale,geo,1
+muci_771,muci_592,Museo civico degli eremitani,Musei Civici agli Eremitani,geo,1
+muci_786,muci_595,Académie de France Villa Medici,Palazzo Venezia,geo,0
+muci_794,muci_597,California Palace of Legion of Honor,Palace of the Legion of Honor,"geo,stringdist",1
+muci_796,muci_597,California Pal. of the Legion of Honor,Palace of the Legion of Honor,"geo,stringdist",1
+muci_797,muci_598,O’Keeffe Museum,Georgia O’Keeffe Museum,"geo,stringdist",1
+muci_799,muci_599,Museo di S. Maria d. Scala,Santa Maria della Scala,geo,1
+muci_780,muci_605,Castello di Rivoli,Museo di Rivoli,geo,1
+muci_808,muci_606,Palazzo Ducale,The Ducal Palaces,geo,1
+muci_820,muci_609,Clark Institute,Sterling and Francine Clark Institute,geo,1
+muci_770,muci_629,Museum of Modern Art,Modern Art,geo,1
+muci_775,muci_632,"Musée d’art moderne, Paris",Musée d’art moderne de la Ville,geo,1
+muci_795,muci_639,San Francisco MoMAs,MoMA,geo,1
+muci_820,muci_644,Clark Institute,Clark Art Institute,"geo,stringdist",1
+muci_697,muci_647,Museu d'art contemporani,Museu d’art contemporani,"geo,stringdist",1
+muci_728,muci_652,Grünes Gewolbe,Dresden Castle,geo,0
+muci_754,muci_660,MoCA Los Angeles,Museum of Contemporary Art,geo,1
+muci_761,muci_664,Galleria Gruppo Credito Valtellinese,Fondazione Mazzotta,geo,0
+muci_780,muci_673,Castello di Rivoli,Castello,geo,1
+muci_782,muci_677,Scuderie papali al Quirinale,Scuderie papali al Quiriniale,"geo,stringdist",1
+muci_783,muci_678,Palazzo Esposizioni,Palazzo delle Esposizioni,"geo,stringdist",1
+muci_790,muci_678,Palazzo esposizioni,Palazzo delle Esposizioni,"geo,stringdist",1
+muci_794,muci_679,California Palace of Legion of Honor,The Legion of Honor,geo,1
+muci_796,muci_679,California Pal. of the Legion of Honor,The Legion of Honor,geo,1
+muci_692,muci_690,University of Michigan Museum of Art,Univ. of Michigan Museum of Art,"geo,stringdist",1
+muci_696,muci_695,High Museum of Art Folk Art,High Museum of Folk Art,"geo,stringdist",1
+muci_703,muci_702,Museo Civico Archeologico,Museo civico archeologico,geo,1
+muci_718,muci_717,Mint Museum of Craft and Design,Mint Museum of Art,geo,1
+muci_719,muci_717,Mint Museum of Craft +Design,Mint Museum of Art,geo,1
+muci_719,muci_718,Mint Museum of Craft +Design,Mint Museum of Craft and Design,"geo,stringdist",1
+muci_721,muci_720,Museum of Contemporary Art (MCA),MoCA,geo,1
+muci_730,muci_729,Kunstgewerbemuseum,Kunstgewebermuseum,"geo,stringdist",1
+muci_743,muci_742,MoCA,Kemper MoCA,geo,1
+muci_790,muci_783,Palazzo esposizioni,Palazzo Esposizioni,geo,1
+muci_785,muci_784,Galleria nazionale d’arte moderna,Galeria d’arte Moderna,"geo,stringdist",1
+muci_789,muci_784,Galleria Nazionale d’arte Moderna,Galeria d’arte Moderna,"geo,stringdist",1
+muci_789,muci_785,Galleria Nazionale d’arte Moderna,Galleria nazionale d’arte moderna,geo,1
+muci_788,muci_787,Museo del corso,Museo del Corso,geo,1
+muci_796,muci_794,California Pal. of the Legion of Honor,California Palace of Legion of Honor,"geo,stringdist",1
+muci_806,muci_803,Galeria d’arte moderna,Galeria d’arte Moderna,geo,1
+muci_795,muci_640,San Francisco MoMAs,San Francisco MoMA,stringdist,1
+muci_714,muci_713,Castello di Ursino,Castello Ursino,stringdist,1
+muci_691,muci_563,University of Michigan MoA,University of Michigan art Museum,stringdist,1
+muci_692,muci_691,University of Michigan Museum of Art,University of Michigan MoA,stringdist,1
+muci_692,muci_449,University of Michigan Museum of Art,University of Michigan Museum,stringdist,1
+muci_806,muci_604,Galeria d’arte moderna,Galleria Civica d’Arte Moderna,stringdist,1
+muci_803,muci_604,Galeria d’arte Moderna,Galleria Civica d’Arte Moderna,stringdist,1
+muci_692,muci_450,University of Michigan Museum of Art,University of Michigan,stringdist,1
+muci_782,muci_376,Scuderie papali al Quirinale,Scuderie del Quirinale,stringdist,1
+muci_755,muci_109,Los Angeles County MoA,Los Angeles County Museum of Art,stringdist,1
