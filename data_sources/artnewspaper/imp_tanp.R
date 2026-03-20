@@ -971,14 +971,46 @@ dt_tanp01_raw[cnt_slash == 4, id_show := 1:.N] %>%
 dt_tanp01_raw[, .N, lines]
 dt_tanp01_raw[lines > 10] %>% print(n=80)
 
-gd_tanp05_struc(dt_tanp01_raw[id_show < 300], limit = 9999)
-gd_tanp05_struc(dt_tanp01_raw[id_show %between% c(300,370)], limit = 9999)
-gd_tanp05_struc(dt_tanp01_raw[id_show %between% c(371,400)], limit = 9999)
-gd_tanp05_struc(dt_tanp01_raw[id_show %between% c(401,500)], limit = 9999)
-gd_tanp05_struc(dt_tanp01_raw[id_show > 500], limit = 9999)
+## gd_tanp05_struc(dt_tanp01_raw[id_show < 300], limit = 9999)
+## gd_tanp05_struc(dt_tanp01_raw[id_show %between% c(300,370)], limit = 9999)
+## gd_tanp05_struc(dt_tanp01_raw[id_show %between% c(371,400)], limit = 9999)
+## gd_tanp05_struc(dt_tanp01_raw[id_show %between% c(401,500)], limit = 9999)
+## gd_tanp05_struc(dt_tanp01_raw[id_show > 500], limit = 9999)
 
 dt_tanp01_struc <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_01_struc.csv")
 dt_tanp01_struc[, .N, id_show][N>1]
 
 gd_proc_exhb(dt_tanp01_struc, "tanp01_")
+
+
+
+## ** tanp00
+
+dt_tanp00_raw <- data.table(text = readLines("~/Dropbox/phd/pmdata/data_sources/artnewspaper/llm/tanp00_raw.csv"))
+dt_tanp00_raw[, `:=`(cnt_slash = str_count(text, "/"))]
+
+dt_tanp00_raw[cnt_slash == 4, id_show := 1:.N] %>%
+    setnafill(type = "nocb", cols = "id_show") %>%
+    .[, lines := .N, id_show]
+
+dt_tanp00_raw[, .N, lines]
+dt_tanp00_raw[lines > 10] %>% print(n=80)
+dt_tanp00_raw %>% tail(n=20)
+
+
+gd_tanp05_struc(dt_tanp00_raw[id_show < 200], limit = 9999)
+gd_tanp05_struc(dt_tanp00_raw[id_show %between% c(200, 400)], limit = 9999)
+gd_tanp05_struc(dt_tanp00_raw[id_show > 400], limit = 9999)
+
+dt_tanp0_struc <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_00_struc.csv")
+
+gd_tanp05_asses(dt_tanp0_struc)
+
+
+
+
+
+
+
+
 
