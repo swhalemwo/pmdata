@@ -468,3 +468,59 @@ muci_642,muci_551,Palazzina di caccia di Stupinigi,Palazzina di Caccia di Stupin
 muci_638,muci_596,Mart,MART,geo,1
 muci_644,muci_609,Clark Art Institute,Sterling and Francine Clark Institute,geo,1
 muci_627,muci_333,Museo di Capodimonte,Parco di Capodimonte,stringdist,1
+muci_649,muci_26,"Museum of Fine Arts, Boston",Museum of Fine Arts,"geo,stringdist",1
+muci_649,muci_27,"Museum of Fine Arts, Boston","Museum of Fine Arts (MFA), Boston","geo,stringdist",1
+muci_649,muci_28,"Museum of Fine Arts, Boston",Museum of Fine Arts (MFA Boston),"geo,stringdist",1
+muci_649,muci_29,"Museum of Fine Arts, Boston",Museum of Fine Arts Boston,"geo,stringdist",1
+muci_650,muci_35,Musée d’art ancien,Musées Royaux des Beaux-Arts,geo,1
+muci_650,muci_36,Musée d’art ancien,Musées Royaux des Beaux-Arts de Belgique,geo,1
+muci_652,muci_47,Dresden Castle,Residenzschloss,geo,1
+muci_655,muci_54,Uffizi Gallery,Galleria degli Uffizi,geo,1
+muci_655,muci_57,Uffizi Gallery,Gallerie degli Uffizi,geo,1
+muci_656,muci_83,Nelson-Atkins Museum of Art,The Nelson-Atkins Museum of Art,"geo,stringdist",1
+muci_661,muci_107,County Museum of Art,Lacma,geo,1
+muci_661,muci_109,County Museum of Art,Los Angeles County Museum of Art,"geo,stringdist",1
+muci_661,muci_110,County Museum of Art,Los Angeles County Museum of Art (Lacma),geo,1
+muci_665,muci_141,Musée des Beaux-Arts,Montreal Museum of Fine Arts,geo,1
+muci_668,muci_154,Whitney Museum of Art,Whitney Museum,"geo,stringdist",1
+muci_668,muci_157,Whitney Museum of Art,Whitney Museum of American Art,"geo,stringdist",1
+muci_671,muci_179,Pennsylvania Academy of Art,Philadelphia Museum of Art,geo,0
+muci_685,muci_256,Kunsthaus,Kunsthaus Zürich,geo,1
+muci_647,muci_295,Museu d’art contemporani,Museu d’Art Contemporani,geo,1
+muci_661,muci_300,County Museum of Art,LACMA,geo,1
+muci_648,muci_307,Martin-Gropius-Bau,Martin-Gropius-Bau Museum,"geo,stringdist",1
+muci_647,muci_317,Museu d’art contemporani,MACBA,geo,1
+muci_675,muci_334,Vittoriano,Museo Centrale del Risorgimento,geo,0
+muci_675,muci_335,Vittoriano,Complesso del Vittoriano,geo,1
+muci_650,muci_392,Musée d’art ancien,Musée Magritte,geo,0
+muci_679,muci_422,The Legion of Honor,Legion of Honor,"geo,stringdist",1
+muci_680,muci_424,National Museum Stockholm,Nationalmuseum,geo,1
+muci_682,muci_431,Peggy Guggeneheim Collection,Peggy Guggenheim Collection,"geo,stringdist",1
+muci_652,muci_444,Dresden Castle,Green Vault,geo,0
+muci_655,muci_446,Uffizi Gallery,Uffizi,geo,1
+muci_647,muci_454,Museu d’art contemporani,Museu d’Art Contemporani (MACBA),"geo,stringdist",1
+muci_652,muci_473,Dresden Castle,Kupferstich-Kabinett,geo,0
+muci_661,muci_508,County Museum of Art,LA County Museum of Art,"geo,stringdist",1
+muci_664,muci_512,Fondazione Mazzotta,Fondazione Antonio Mazzotta,"geo,stringdist",1
+muci_669,muci_529,Musée Carnavalet,Musee Carnavalet,"geo,stringdist",1
+muci_679,muci_540,The Legion of Honor,"California Palace, Legion of Honor",geo,1
+muci_673,muci_550,Castello,Castello di Rivoli,geo,1
+muci_684,muci_559,Phillips Collection,The Phillips Collection,"geo,stringdist",1
+muci_685,muci_561,Kunsthaus,Kuntshaus,geo,1
+muci_685,muci_562,Kunsthaus,Kunthaus,geo,1
+muci_647,muci_564,Museu d’art contemporani,Museu d'Art Contemporani,"geo,stringdist",1
+muci_653,muci_575,Albertinum,Gemäldegalerie Neue Meister,geo,1
+muci_656,muci_583,Nelson-Atkins Museum of Art,Nelson-Atkins Museum,"geo,stringdist",1
+muci_662,muci_586,Fundació ‘la Caixa” Madrid,Fundació “la Caixa”,"geo,stringdist",1
+muci_666,muci_588,Kunsthalle,Kunsthalle der Hypo-Kulturstiftung,geo,1
+muci_679,muci_597,The Legion of Honor,Palace of the Legion of Honor,"geo,stringdist",1
+muci_680,muci_600,National Museum Stockholm,National Museum of Fine Arts,geo,1
+muci_681,muci_603,GAM,Galleria Civica,geo,1
+muci_681,muci_604,GAM,Galleria Civica d’Arte Moderna,geo,1
+muci_673,muci_605,Castello,Museo di Rivoli,geo,1
+muci_683,muci_607,Kunsthalle Wien am Museumplatz,Kunsthalle Wien,geo,1
+muci_648,muci_613,Martin-Gropius-Bau,Martin-Gropius Bau Museum,"geo,stringdist",1
+muci_665,muci_625,Musée des Beaux-Arts,Museum of Fine Arts,geo,1
+muci_646,muci_645,Fundació la Caixa Barcelona,Fundació “la Caixa” Barcelona,"geo,stringdist",1
+muci_665,muci_370,Musée des Beaux-Arts,Musée National des Beaux-arts,stringdist,1
+muci_645,muci_612,Fundació “la Caixa” Barcelona,Fundació “la Caixa”,stringdist,1

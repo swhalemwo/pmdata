@@ -190,3 +190,11 @@ Milano,city_190,45.4641943,9.1896346,397707315,"Data © OpenStreetMap contributo
 Lyons,city_191,41.811108,-87.8232695,343578960,"Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",relation,123439,boundary,administrative,16,0.501726674596231,town,Lyons,"Lyons, Lyons Township, Cook County, Illinois, 60534, United States"
 Ferrara,city_192,44.8372737,11.6186451,69940274,"Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",relation,43512,boundary,administrative,16,0.672118802170427,city,Ferrara,"Ferrara, Emilia-Romagna, 44121-44124, Italia"
 Quimper,city_193,47.9960325,-4.1024782,266103008,"Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",relation,296095,boundary,administrative,16,0.603235937954656,town,Quimper,"Quimper, Finistère, Bretagne, France métropolitaine, 29000, France"
+Martigny,city_194,49.8597222,4.1375,108685081,"Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",relation,153341,boundary,administrative,16,0.591849532715049,village,Martigny,"Martigny, Vervins, Aisne, Hauts-de-France, France métropolitaine, 02500, France"
+Rivoli,city_195,45.0697151,7.5176764,80374627,"Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",relation,44071,boundary,administrative,16,0.5952134740961,town,Rivoli,"Rivoli, Torino, Piemonte, 10098, Italia"
+Phoenix,city_196,33.4484367,-112.074141,419832383,"Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",relation,111257,boundary,administrative,16,0.688127658530169,city,Phoenix,"Phoenix, Maricopa County, Arizona, United States"
+Düsseldorf,city_197,51.2254018,6.7763137,102124007,"Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",relation,62539,boundary,administrative,12,0.731060552503198,city,Düsseldorf,"Düsseldorf, Nordrhein-Westfalen, Deutschland"
+"Rochester, NY",city_198,43.161030,-77.610924,,,,,,,,,,,
+Kassel,city_199,51.3157833,9.4978479,128470291,"Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",relation,62598,boundary,administrative,12,0.676446401054241,city,Kassel,"Kassel, Hessen, Deutschland"
+
+
