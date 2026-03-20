@@ -21,6 +21,9 @@ gd_tanp_cbn <- function() {
 
     ## more systematic approach
     ## read in data
+    dt_tanp04_struc <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_04_struc.csv")
+    dt_tanp04 <- gd_proc_exhb(dt_tanp04_struc, "tanp04_")
+
 
     dt_tanp05_struc <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/llm/tanp05_llm_4.csv")
     dt_tanp_05 <- gd_proc_exhb(dt_tanp05_struc, "tanp05_")
@@ -113,7 +116,7 @@ gd_tanp_cbn <- function() {
 
     ## combine
     dt_tanp_cbn <- map(list(
-        dt_tanp_05,
+        dt_tanp04, dt_tanp_05,
         dt_tanp_07, dt_tanp_08, dt_tanp_09, dt_tanp_10, dt_tanp_11,
         dt_tanp_12, dt_tanp_13, dt_tanp_14, dt_tanp_15, dt_tanp_16, dt_tanp_17, dt_tanp_18,
         dt_tanp_19, dt_tanp_20, dt_tanp_21, dt_tanp_22, dt_tanp_23, dt_tanp_24),
@@ -247,6 +250,8 @@ gwd_geocode_tanp_city <- function(FILE_TANP_CITY_ID = PMDATA_LOCS$FILE_TANP_CITY
 
     ## geocode new cities
     dt_newcities_geo <- geocode(dt_tanp_city_new, city = city, full_results = T, method = "osm") %>% adt
+    ## can't use google: doesn't support city?
+    ## dt_newcities_geo <- geocode(dt_tanp_city_new, city = city, full_results = T, method = "google") %>% adt
 
     print(dt_newcities_geo)
 
@@ -898,3 +903,5 @@ gd_tanp05_asses(dt_tanp04_struc) # assess
 
 
 dt_tanp04_struc[grepl("Rover", show_name)]
+
+gd_proc_exhb(dt_tanp04_struc, "tanp04_")

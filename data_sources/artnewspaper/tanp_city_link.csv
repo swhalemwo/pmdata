@@ -26,4 +26,5 @@ id_link,ID_i,ID_j,city_i,city_j,new_name,b_same
 25,city_150,city_142,"Portland, OR",Portland,"Portland",1
 26,city_159,city_157,Colorado Sp.,Colorado Springs,"Colorado Springs",1
 27,city_171,city_157,Col. Springs,Colorado Springs,"Colorado Springs",1
-26,city_171,city_159,"Col. Springs","Colorado Sp.","Colorado Springs",1
+28,city_171,city_159,"Col. Springs","Colorado Sp.","Colorado Springs",1
+29,city_178,city_89,Zürich,Zurich,"Zurich",1

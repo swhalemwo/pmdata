@@ -397,3 +397,50 @@ muci_519,muci_151,The Metropolitan Museum of Art,Metropolitan Museum,stringdist,
 muci_464,muci_463,Groeninge Museum,Groening Museum,stringdist,1
 muci_477,muci_50,Scottish National Portrait Gallery,Scottish National Gallery,stringdist,1
 muci_478,muci_477,Scottish Natioanl Gallery,Scottish National Portrait Gallery,stringdist,1
+muci_570,muci_37,Szepmuveszeti Museum,Museum of Fine Arts,geo,1
+muci_574,muci_45,Nasher Sculpture Center,Dallas Museum of Art,geo,01
+muci_576,muci_50,Royal Scottish Academy,Scottish National Gallery,geo,1
+muci_576,muci_51,Royal Scottish Academy,National Galleries Scotland: National,geo,1
+muci_577,muci_55,Gallerie dell’Accademia,Galleria dell'Accademia di Firenze,geo,1
+muci_577,muci_56,Gallerie dell’Accademia,Galleria dell’Accademia di Firenze,"geo,stringdist",1
+muci_577,muci_58,Gallerie dell’Accademia,Galleria dell'Accademia,"geo,stringdist",1
+muci_583,muci_83,Nelson-Atkins Museum,The Nelson-Atkins Museum of Art,"geo,stringdist",1
+muci_584,muci_106,J. Paul Getty Museum,Getty Center,geo,1
+muci_584,muci_111,J. Paul Getty Museum,J. Paul Getty Museum (Getty Center),"geo,stringdist",1
+muci_585,muci_115,Thyssen-Bornemisza Museum,Museo Thyssen-Bornemisza,"geo,stringdist",1
+muci_585,muci_121,Thyssen-Bornemisza Museum,Museo Nacional Thyssen-Bornemisza,geo,1
+muci_576,muci_279,Royal Scottish Academy,National Galleries of Scotland,geo,1
+muci_584,muci_283,J. Paul Getty Museum,Getty,geo,1
+muci_564,muci_295,Museu d'Art Contemporani,Museu d’Art Contemporani,"geo,stringdist",1
+muci_577,muci_310,Gallerie dell’Accademia,Galleria dell’Accademia,"geo,stringdist",1
+muci_564,muci_317,Museu d'Art Contemporani,MACBA,geo,1
+muci_568,muci_346,Kunst und Ausstellungshalle,Bundeskunsthalle,geo,1
+muci_576,muci_355,Royal Scottish Academy,National Gallery of Scotland,geo,1
+muci_584,muci_365,J. Paul Getty Museum,Getty Center (Getty Museum),geo,1
+muci_576,muci_396,Royal Scottish Academy,National Gallery Complex,geo,1
+muci_584,muci_407,J. Paul Getty Museum,Getty Museum (Getty Center),geo,1
+muci_597,muci_422,Palace of the Legion of Honor,Legion of Honor,geo,1
+muci_600,muci_424,National Museum of Fine Arts,Nationalmuseum,geo,1
+muci_584,muci_435,J. Paul Getty Museum,Getty Museum,geo,1
+muci_570,muci_442,Szepmuveszeti Museum,Museum of Fine Arts Budapest,geo,1
+muci_571,muci_443,The Field Museum,Field Museum,"geo,stringdist",1
+muci_576,muci_445,Royal Scottish Academy,National Gallery,geo,1
+muci_564,muci_454,Museu d'Art Contemporani,Museu d’Art Contemporani (MACBA),"geo,stringdist",1
+muci_576,muci_478,Royal Scottish Academy,Scottish Natioanl Gallery,geo,1
+muci_579,muci_481,Museo di San Marco,Museo San Marco,"geo,stringdist",1
+muci_580,muci_486,Baltic Centre for Contemporary Art,BALTIC,geo,1
+muci_581,muci_486,Baltic Centre,BALTIC,geo,1
+muci_580,muci_487,Baltic Centre for Contemporary Art,BALTIC Centre,geo,1
+muci_581,muci_487,Baltic Centre,BALTIC Centre,geo,1
+muci_580,muci_488,Baltic Centre for Contemporary Art,BALTIC Centre for Contemporary Art,geo,1
+muci_581,muci_488,Baltic Centre,BALTIC Centre for Contemporary Art,geo,1
+muci_584,muci_506,J. Paul Getty Museum,The Getty Museum,geo,1
+muci_584,muci_507,J. Paul Getty Museum,The Getty Center,geo,1
+muci_591,muci_518,Frick Collection,The Frick Collection,"geo,stringdist",1
+muci_597,muci_540,Palace of the Legion of Honor,"California Palace, Legion of Honor",geo,1
+muci_605,muci_550,Museo di Rivoli,Castello di Rivoli,geo,1
+muci_581,muci_580,Baltic Centre,Baltic Centre for Contemporary Art,geo,1
+muci_604,muci_603,Galleria Civica d’Arte Moderna,Galleria Civica,geo,1
+muci_563,muci_450,University of Michigan art Museum,University of Michigan,stringdist,1
+muci_575,muci_354,Gemäldegalerie Neue Meister,Gemäldegalerie Alte Meister,stringdist,0
+muci_563,muci_449,University of Michigan art Museum,University of Michigan Museum,stringdist,1
