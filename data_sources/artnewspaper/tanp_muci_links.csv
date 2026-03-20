@@ -444,3 +444,27 @@ muci_604,muci_603,Galleria Civica d’Arte Moderna,Galleria Civica,geo,1
 muci_563,muci_450,University of Michigan art Museum,University of Michigan,stringdist,1
 muci_575,muci_354,Gemäldegalerie Neue Meister,Gemäldegalerie Alte Meister,stringdist,0
 muci_563,muci_449,University of Michigan art Museum,University of Michigan Museum,stringdist,1
+muci_618,muci_76,Louisiana MoMA,Louisiana Museum of Modern Art,geo,1
+muci_619,muci_90,Museum of Liverpool Life,Museum of Liverpool,"geo,stringdist",1
+muci_625,muci_141,Museum of Fine Arts,Montreal Museum of Fine Arts,"geo,stringdist",1
+muci_632,muci_177,Musée d’art moderne de la Ville,Palais de Tokyo,geo,0
+muci_632,muci_178,Musée d’art moderne de la Ville,Musée d'Art Moderne de Paris,geo,1
+muci_639,muci_184,MoMA,SFMoMA,geo,1
+muci_639,muci_270,MoMA,San Francisco Museum of Modern Art,geo,1
+muci_639,muci_287,MoMA,Museum of Modern Art,geo,1
+muci_613,muci_307,Martin-Gropius Bau Museum,Martin-Gropius-Bau Museum,"geo,stringdist",1
+muci_632,muci_322,Musée d’art moderne de la Ville,Musée d’Art Moderne de la Ville de Paris,"geo,stringdist",1
+muci_618,muci_360,Louisiana MoMA,Louisiana,"geo,stringdist",1
+muci_632,muci_373,Musée d’art moderne de la Ville,Musée d’Art Moderne de la Ville,geo,1
+muci_632,muci_374,Musée d’art moderne de la Ville,Musée d’Art Moderne de la Ville/ARC,"geo,stringdist",1
+muci_639,muci_448,MoMA,SFMOMA,geo,1
+muci_611,muci_451,Michael C. Carlos Museum,Micheal C. Carlos Museum,"geo,stringdist",1
+muci_621,muci_509,J.B. Speed Art Museum,Speed Art Museum,"geo,stringdist",1
+muci_624,muci_510,Palazzo Te/Palazzo Ducale,Palazzo Te,"geo,stringdist",1
+muci_629,muci_526,Modern Art,Modern Art Oxford,"geo,stringdist",1
+muci_639,muci_541,MoMA,SF Museum of Modern Art,geo,1
+muci_641,muci_545,Staatsgalerie,Staatsgalerie Stuttgart,"geo,stringdist",1
+muci_642,muci_551,Palazzina di caccia di Stupinigi,Palazzina di Caccia di Stupinigi,geo,1
+muci_638,muci_596,Mart,MART,geo,1
+muci_644,muci_609,Clark Art Institute,Sterling and Francine Clark Institute,geo,1
+muci_627,muci_333,Museo di Capodimonte,Parco di Capodimonte,stringdist,1

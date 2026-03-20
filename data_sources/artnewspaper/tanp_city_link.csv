@@ -28,3 +28,5 @@ id_link,ID_i,ID_j,city_i,city_j,new_name,b_same
 27,city_171,city_157,Col. Springs,Colorado Springs,"Colorado Springs",1
 28,city_171,city_159,"Col. Springs","Colorado Sp.","Colorado Springs",1
 29,city_178,city_89,Zürich,Zurich,"Zurich",1
+30,city_190,city_33,Milano,Milan,"Milan",1
+31,city_187,city_152,Mantua,Mantova,"Mantova",1
