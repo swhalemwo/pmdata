@@ -674,7 +674,7 @@ muci_873,muci_372,Solomon R. Guggenheim,Guggenheim,geo,1
 muci_834,muci_392,Musees Royaux des Beaux-Arts,Musée Magritte,geo,0
 muci_835,muci_392,Musées Royaux,Musée Magritte,geo,0
 muci_836,muci_392,Musees Royaux,Musée Magritte,geo,0
-muci_865,muci_411,Museo Egizio,Castello Sforzesco,geo,0
+muci_865,muci_411,Museo Egizio,Castello Sforzesco,geo,1
 muci_896,muci_424,National Museum,Nationalmuseum,"geo,stringdist",1
 muci_898,muci_431,Peggy Guggenheim,Peggy Guggenheim Collection,"geo,stringdist",1
 muci_825,muci_453,Walters Art Gallery,Walters Art Museum,geo,1
