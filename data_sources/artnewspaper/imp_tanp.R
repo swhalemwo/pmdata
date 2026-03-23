@@ -765,65 +765,12 @@ dt_af_exhbs[, begin_year := year(BeginDate)] %>%
 ## gap stuffing
 
 dt_tanp_muyr %>% copy %>% .[, `:=`(yrdiff = max(year) - min(year), nobs = .N), muci] %>%
-    .[yrdiff > nobs, .(museum_new, muci, museum, year, yrdiff, nobs)] %>% print(n=80)
+    .[yrdiff > nobs, .(museum_new, muci, museum, year, yrdiff, nobs)] %>%
+    .[, nobs_abs := yrdiff - nobs] %>% # print(n=80)
+    .[, head(.SD, 1), muci] %>% ## .[, sum(nobs_abs)]
+    
 
 
-## dt_tanp_wfeat[strdist_cosine_1 < 0.1]
-
-## dt_tanp_wfeat[strdist_cosine_1 < 0.1]
-
-## dt_tanp_wfeat[strdist_cosine_1 == 0] %>% adf
-
-g_tanp <- igraph::graph_from_data_frame(dt_tanp_wfeat[strdist_cosine_1 == 0, .(id1, id2)], directed = F)
-clusters <- igraph::cluster_louvain(g_tanp)
-dt_clusters <- data.table(id = clusters$names, cluster = as.integer(clusters$membership))
-
-
-merge(dt_clusters, dt_tanp_cbn, by = "id")[order(cluster)] %>%
-    .[, nbr_members := .N, cluster] %>%
-    .[nbr_members > 2]
-
-
-dt_tanp_wfeat[strdist_avg_all> 0][order(strdist_avg_all), .(name1, name2, strdist_avg_all)] %>% print(n=9)
-    ## .[grepl("American Indian", name1)]
-
-dt_tanp_wfeat[strdist_cosine_1> 0][order(strdist_cosine_1)][1:20, .(id1, id2, name1, name2)]
-
-
-tribble(~id1, ~id2, 
-"tanp22_16",   "tanp20_27", 
-"tanp22_55",   "tanp20_94", 
-"tanp22_40",   "tanp20_20", 
-"tanp22_59",   "tanp20_51", 
-"tanp20_51",   "tanp20_100",
-"tanp22_30",   "tanp20_49", 
-"tanp22_7",    "tanp20_68") %>% adt
-
-library(ellmer)
-Sys.setenv(OPENAI_API_KEY = show_pass_secret("gemini-api-key"))
-Sys.setenv(GEMINI_API_KEY = show_pass_secret("gemini-api-key"))
-x <- chat_google_gemini("what is the capital of uruguay",)
-
-
-
-## check match probability fall of
-dt_fallof <- dt_tanp_wfeat[grepl("tanp23", id1) & grepl("tanp22", id2)] %>%
-    .[order(id1, strdist_avg_all), .SD, .SDcols = patterns("avg|id1|id2|name1|name2")] %>%
-    .[, any_match := as.integer(any(strdist_cosine_avg == 0)), id1] %>%
-    .[any_match == 0] %>%
-    .[, nbr := 1:.N, id1]
-
-dt_fallof %>% melt(id.vars = c("id1", "nbr"), measure.vars = patterns("strdist")) %>%
-    .[nbr < 5] %>% 
-    ggplot(aes(x=factor(nbr), y = value, color = id1, group = id1)) + geom_line() + geom_point() +
-    facet_grid(~variable)
-
-dt_fallof[id1=="tanp23_31"] %>% adf
-
-
-dt_fallof %>% ggplot(aes(x=factor(nbr), y=strdist_avg_all, color = id1, group = id1)) + geom_line() + geom_point()
-
-dt_fallof[nbr %in% c(1,2)][, .N, nbr]
 
 
 
