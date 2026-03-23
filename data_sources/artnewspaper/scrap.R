@@ -192,6 +192,16 @@ gd_grid_wfeat(rbindlist(map(1:100, ~dt_clos5)), "name_af", "name_tanp", dt_qmod 
 t4 <- Sys.time()
 t4-t3
 
+gw_tanp_af_matches()
+
+dt_af_exhbs <- gd_af_exhbs()
+dt_af_exhbs_agg <- dt_af_exhbs[, .N, .(ID = InstitutionID)]
+
+
+merge(dt_af_instns[City == "Prague" & grepl("national gallery", Name, ignore.case = T)], dt_af_exhbs_agg,
+      by = "ID")
+
+ 
 dt_tanp_muci[grepl("MMCA|National Museum of Modern and Contemporary", museum)]
 
 leaflet(dt_tanp_muci[grepl("MMCA|National Museum of Modern and Contemporary", museum)]) %>% addTiles() %>%

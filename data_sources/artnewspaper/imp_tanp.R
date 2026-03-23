@@ -717,6 +717,21 @@ gd_links_tanp_af <- function(FILE_LINKS_AF_TANP = PMDATA_LOCS$FILE_LINKS_AF_TANP
     fread(FILE_LINKS_AF_TANP)
 }
 
+gw_tanp_af_match <- function(dt_tanp_muci, muci_id) {
+
+    do.call(sprintf, c(list(fmt = "%s, %s"),
+                       as.list(dt_tanp_muci[muci == muci_id, .(museum, city_new)]))) %>% print
+
+    AF_IID <- readline("AF-IID: ")
+
+    if (is.na(suppressWarnings(as.integer(AF_IID)))) AF_IID <- "nomatch"
+
+    dt_res <- data.table(muci_id = muci_id, id_af = AF_IID)
+    fwrite(dt_res, PMDATA_LOCS$FILE_LINKS_AF_TANP, append = T)
+    
+
+}
+
 
 gw_tanp_af_matches <- function() {
 
@@ -730,7 +745,7 @@ gw_tanp_af_matches <- function() {
 
     tanp_ids_tocheck <- setdiff(dt_tanp_muci[, muci], dt_links_tanp_af[, muci_id])
 
-    map(tanp_ids_tocheck, ~gw_tanp_af_match(dt_tanp_mui, .x))
+    map(tanp_ids_tocheck, ~gw_tanp_af_match(dt_tanp_muci, .x))
 }
 
     
