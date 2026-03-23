@@ -192,3 +192,29 @@ gd_grid_wfeat(rbindlist(map(1:100, ~dt_clos5)), "name_af", "name_tanp", dt_qmod 
 t4 <- Sys.time()
 t4-t3
 
+dt_tanp_muci[grepl("MMCA|National Museum of Modern and Contemporary", museum)]
+
+leaflet(dt_tanp_muci[grepl("MMCA|National Museum of Modern and Contemporary", museum)]) %>% addTiles() %>%
+    addCircles(lat = ~lat, lng = ~long, label = ~museum)
+
+dt_tanp_muyr[grepl("MMCA", muci_name)]
+dt_tanp_muyr[, .N, .(muci_id, year)][N > 1]
+
+
+dt_tanp_muyr <- gw_tanp_muyr()
+
+## 67 and 313 are Gwacheon
+l_mmca_int <- c(197, 196, 272, 195, 288, 272, 336, 194)
+l_mmca <- paste0("muci_", c(197, 196, 272, 195, 288, 272, 336, 194))
+gd_tanp_muci_ff()[muci %in% l_mmca, .(muci, museum, city_new)]
+
+dt_mmca_links <- expand.grid(muci1 = l_mmca_int, muci2 = l_mmca_int) %>% adt %>%
+    .[muci1 > muci2] %>%
+    .[, map(.SD, ~paste0("muci_", .x))]
+
+
+dt_mmca_links[!gd_muci_links_ff(), on = .(muci1, muci2)] %>% cat
+
+dt_tanp_muci_newname[grepl("MMCA", museum)]
+
+67 68 313

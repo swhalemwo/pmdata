@@ -302,16 +302,11 @@ gd_tanp_muci_ff <- function(FILE_TANP_MUCI_ID = PMDATA_LOCS$FILE_TANP_MUCI_ID) {
 
 
 gd_tanp_muci <- function(dt_tanp_wcid) {
+    ## museum geocoding: use museum-city
 
     dt_tanp_muci_geo_ff <- gd_tanp_muci_ff()
     
-
-    ## ## museum geocoding: use museum-city
-    ## dt_tanp_muci_new <- dt_tanp_wcid[, .(museum, city_new, id_city)] %>% unique %>%
-    ##     .[, muci := paste0("muci_", 1:.N)] %>%
-    ##     .[, .(muci, museum, city_new, id_city, addr = paste0(museum, ", ",city_new))]
-
-    
+    ## check how many muci there are already
     max_id <- dt_tanp_muci_geo_ff[, tail(muci,1)] %>% gsub("muci_", "", .) %>% as.integer
 
     ## get new IDs
@@ -387,12 +382,17 @@ gd_tanp_muci <- function(dt_tanp_wcid) {
 
     ## new names: use first occurence for consistency
     dt_tanp_muci_newname <- dt_tanp_muci_fixed[, head(.SD,1), muci]
+    ## dt_tanp_muci_newname[muci == "muci_194"]
+    ## dt_tanp_muci_fixed[muci == "muci_194"]
+    
     dt_tanp_muci_fixed[dt_tanp_muci_newname, museum_new := i.museum, on = "muci"]
+    ## dt_tanp_muci_fixed[muci == "muci_194", .(museum_new)]
 
-    dt_tanp_muci_fixed[grepl("SAAM", museum), .(muci, museum_new, city_new, id_city)] # seems to work
+    ## dt_tanp_muci_fixed[grepl("SAAM", museum), .(muci, museum_new, city_new, id_city)] # seems to work
 
     ## dt_tanp_muci_fixed[muci == "muci_216"]
     ## dt_tanp_muci_fixed[muci == "muci_21"]
+    ## dt_tanp_muci_fixed[grepl("MMCA", museum)]
 
     return(dt_tanp_muci_fixed)
 
@@ -688,12 +688,13 @@ gw_tanp_muyr <- function(FILE_TANP_MUYR = PMDATA_LOCS$FILE_TANP_MUYR) {
 
     ## get overall museum-city (muci) ID
     dt_tanp_muci <- gd_tanp_muci(dt_tanp_wcid)
+    ## dt_tanp_muci[muci == "muci_194", .(museum, museum_new)]
 
     ## get museum-year, variable names, order
     dt_tanp_muyr <- merge(dt_tanp_wcid, dt_tanp_muci[, .(muci, id_city, museum, museum_new)],
                       by = c("museum", "id_city")) %>%
         .[, year := as.integer(paste0("20", gsub("tanp(\\d+)_.*", "\\1", id)))] %>%
-        .[, .(muci_id = muci, muci_name = museum, city_id = id_city, city_name =city_new, total, year,
+        .[, .(muci_id = muci, muci_name = museum_new, city_id = id_city, city_name =city_new, total, year,
               old_city  = city, old_museum = museum)]
 
     fwrite(dt_tanp_muyr, FILE_TANP_MUYR)

@@ -189,6 +189,7 @@ muci_310,muci_56,Galleria dell’Accademia,Galleria dell’Accademia di Firenze,
 muci_310,muci_58,Galleria dell’Accademia,Galleria dell'Accademia,"geo,stringdist",1
 muci_312,muci_66,Meijer Gardens and Sculpture Park,Frederik Meijer Gardens & Sculpture Park,"geo,stringdist",1
 muci_313,muci_67,MMCA,Museum of Modern Art,geo,1
+muci_313,muci_68,MMCA,Museum of Modern Art,"manual",1
 muci_314,muci_78,Istanbul Modern,Istanbul Museum of Modern Art,geo,1
 muci_309,muci_277,"Museu Nacional, Conjunto Cultural",Museu Nacional da República,geo,1
 muci_308,muci_296,Guggenheim Museum,Guggenheim Bilbao,geo,1
@@ -752,3 +753,17 @@ muci_888,muci_534,Galleria Naz. di Arte Moderna,Galleria Nazionale d’Arte Mode
 muci_897,muci_803,Galleria d’Arte Moderna,Galeria d’arte Moderna,stringdist,1
 muci_897,muci_806,Galleria d’Arte Moderna,Galeria d’arte moderna,stringdist,1
 muci_844,muci_445,National Gallery of Modern Art,National Gallery,stringdist,1
+muci_195,muci_194,MMCA,National MMCA,"manual",1
+muci_197,muci_194,MMCA,National MMCA,"manual",1
+muci_197,muci_195,MMCA,MMCA,"manual",1
+muci_272,muci_197,MMCA,MMCA,"manual",1
+muci_288,muci_197,MMCA,MMCA,"manual",1
+muci_272,muci_197,MMCA,MMCA,"manual",1
+muci_336,muci_197,MMCA,MMCA,"manual",1
+muci_197,muci_196,MMCA,MMCA,"manual",1
+muci_196,muci_194,MMCA,MMCA,"manual",1
+muci_272,muci_194,MMCA,MMCA,"manual",1
+muci_288,muci_194,MMCA,MMCA,"manual",1
+muci_272,muci_194,MMCA,MMCA,"manual",1
+muci_336,muci_194,MMCA,MMCA,"manual",1
+muci_68,muci_67,MMCA,MMCA,"manual",1
