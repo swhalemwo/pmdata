@@ -4,10 +4,14 @@ library(purrr)
 library(igraph)
 library(terra)
 library(tidygeocoder)
+library(ellmer)
+
+
 
 PMDATA_LOCS <- gc_pmdata_locs()
 
 Sys.setenv("GOOGLEGEOCODE_API_KEY" = show_pass_secret("google-geocode-api-key"))
+Sys.setenv(GEMINI_API_KEY = show_pass_secret("gemini-api-key"))
 
 gd_tanp_city_geo <- function(FILE_TANP_CITY_ID = PMDATA_LOCS$FILE_TANP_CITY_ID) {
     #' read stuff from file
@@ -16,80 +20,81 @@ gd_tanp_city_geo <- function(FILE_TANP_CITY_ID = PMDATA_LOCS$FILE_TANP_CITY_ID) 
 }
 
 
-gd_tanp_cbn <- function() {
+gd_tanp_cbn <- function(DIR_TANP_STRUC = PMDATA_LOCS$DIR_TANP_STRUC) {
 
+    
 
     ## more systematic approach
     ## read in data
-    dt_tanp00_struc <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_00_struc.csv")
+    dt_tanp00_struc <- fread(paste0(DIR_TANP_STRUC, "tanp_00_struc.csv"))
     dt_tanp00 <- gd_proc_exhb(dt_tanp00_struc, "tanp00_")
 
-    dt_tanp01_struc <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_01_struc.csv")
+    dt_tanp01_struc <- fread(paste0(DIR_TANP_STRUC, "tanp_01_struc.csv"))
     dt_tanp01 <- gd_proc_exhb(dt_tanp01_struc, "tanp01_")
 
 
-    dt_tanp02_struc <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_02_struc.csv")
+    dt_tanp02_struc <- fread(paste0(DIR_TANP_STRUC, "tanp_02_struc.csv"))
     dt_tanp02 <- gd_proc_exhb(dt_tanp02_struc, "tanp02_")
     
-    dt_tanp03_struc <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_03_struc.csv")
+    dt_tanp03_struc <- fread(paste0(DIR_TANP_STRUC, "tanp_03_struc.csv"))
     dt_tanp03 <- gd_proc_exhb(dt_tanp03_struc, id_prefix = "tanp03_")
 
     
-    dt_tanp04_struc <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_04_struc.csv")
+    dt_tanp04_struc <- fread(paste0(DIR_TANP_STRUC, "tanp_04_struc.csv"))
     dt_tanp04 <- gd_proc_exhb(dt_tanp04_struc, "tanp04_")
 
 
-    dt_tanp05_struc <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_05_struc.csv")
+    dt_tanp05_struc <- fread(paste0(DIR_TANP_STRUC, "tanp_05_struc.csv"))
     dt_tanp_05 <- gd_proc_exhb(dt_tanp05_struc, "tanp05_")
 
-    dt_tanp_07 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_07.csv") %>%
+    dt_tanp_07 <- fread(paste0(DIR_TANP_STRUC, "tanp_07.csv")) %>%
         .[, map(.SD, trimws)] %>%
         .[, `:=`(id  = paste0("tanp07_", 1:.N), city = stringr::str_to_title(trimws(city)))]
 
 
-    dt_tanp_08 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_08.csv") %>%
+    dt_tanp_08 <- fread(paste0(DIR_TANP_STRUC, "tanp_08.csv")) %>%
         .[, map(.SD, trimws)] %>%
         .[, `:=`(id  = paste0("tanp08_", 1:.N), city = stringr::str_to_title(trimws(city)))]
 
-    dt_tanp_09 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_09.csv") %>%
+    dt_tanp_09 <- fread(paste0(DIR_TANP_STRUC, "tanp_09.csv")) %>%
         .[, map(.SD, trimws)] %>%
         .[, `:=`(id  = paste0("tanp09_", 1:.N), city = stringr::str_to_title(trimws(city)))]
 
     
-    dt_tanp_10 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_10.csv") %>%
+    dt_tanp_10 <- fread(paste0(DIR_TANP_STRUC, "tanp_10.csv")) %>%
         .[, map(.SD, trimws)] %>%
         .[, `:=`(id  = paste0("tanp10_", 1:.N), city = stringr::str_to_title(trimws(city)))]
 
     
-    dt_tanp_11 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_11.csv") %>%
+    dt_tanp_11 <- fread(paste0(DIR_TANP_STRUC, "tanp_11.csv")) %>%
         .[, map(.SD, trimws)] %>%
         .[, `:=`(id  = paste0("tanp11_", 1:.N), city = stringr::str_to_title(trimws(city)))]
 
     
-    dt_tanp_12 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_12.csv") %>%
+    dt_tanp_12 <- fread(paste0(DIR_TANP_STRUC, "tanp_12.csv")) %>%
         .[, map(.SD, trimws)] %>%
         .[, `:=`(id  = paste0("tanp12_", 1:.N), city = stringr::str_to_title(trimws(city)))]
 
     
-    dt_tanp_13 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_13.csv") %>%
+    dt_tanp_13 <- fread(paste0(DIR_TANP_STRUC, "tanp_13.csv")) %>%
         .[, map(.SD, trimws)] %>%
         .[, `:=`(id  = paste0("tanp13_", 1:.N), city = stringr::str_to_title(trimws(city)))]
 
     
-    dt_tanp_14 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_14.csv") %>%
+    dt_tanp_14 <- fread(paste0(DIR_TANP_STRUC, "tanp_14.csv")) %>%
         .[, map(.SD, trimws)] %>%
         .[, `:=`(id  = paste0("tanp14_", 1:.N), city = stringr::str_to_title(trimws(city)))]
 
-    dt_tanp_15 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_15.csv") %>%
+    dt_tanp_15 <- fread(paste0(DIR_TANP_STRUC, "tanp_15.csv")) %>%
         .[, map(.SD, trimws)] %>%
         .[, `:=`(id  = paste0("tanp15_", 1:.N), city = stringr::str_to_title(trimws(city)))]
 
 
-    dt_tanp_16 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_16.csv") %>%
+    dt_tanp_16 <- fread(paste0(DIR_TANP_STRUC, "tanp_16.csv")) %>%
         .[, map(.SD, trimws)] %>%
         .[, `:=`(id  = paste0("tanp16_", 1:.N), city = stringr::str_to_title(city))]    
     
-    dt_tanp_17 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_17.csv") %>%
+    dt_tanp_17 <- fread(paste0(DIR_TANP_STRUC, "tanp_17.csv")) %>%
         .[, map(.SD, trimws)] %>%
         .[, id := paste0("tanp17_", 1:.N)] %>% # drop duplicate MMCA
         .[!(museum == "National Museum of Modern and Contemporary Art"  & total == "1,218,504")] %>%
@@ -97,34 +102,34 @@ gd_tanp_cbn <- function() {
         .[museum == "SAAM/National Portrait Gallery", museum := "National Portrait Gallery"]
           
 
-    dt_tanp_18 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_18.csv") %>%
+    dt_tanp_18 <- fread(paste0(DIR_TANP_STRUC, "tanp_18.csv")) %>%
         .[, `:=`(city = stringr::str_to_title(city), id = paste0("tanp18_", 1:.N))]
 
 
-    dt_tanp_19 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_19.csv") %>%
+    dt_tanp_19 <- fread(paste0(DIR_TANP_STRUC, "tanp_19.csv")) %>%
         .[, `:=`(city = stringr::str_to_title(city), id = paste0("tanp19_", 1:.N))]
         
     
-    dt_tanp_20 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_20.csv") %>%
+    dt_tanp_20 <- fread(paste0(DIR_TANP_STRUC, "tanp_20.csv")) %>%
         setnames(new = c("total", "museum", "city", "perc_chng_19", "days_closed_pandemic")) %>% 
         .[, id := paste0("tanp20_", 1:.N)] 
 
-    dt_tanp_21 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_21.csv") %>%
+    dt_tanp_21 <- fread(paste0(DIR_TANP_STRUC, "tanp_21.csv")) %>%
         setnames(new = c("total", "museum", "city", "perc_chng_20", "perc_chng_19")) %>% 
         .[, id := paste0("tanp21_", 1:.N)] 
 
     
 
-    dt_tanp_22 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_22.csv") %>%
+    dt_tanp_22 <- fread(paste0(DIR_TANP_STRUC, "tanp_22.csv")) %>%
         setnames(new = c("total", "museum", "city", "perc_chng_21", "perc_chng_19")) %>%
         .[, id := paste0("tanp22_", 1:.N)]
 
 
-    dt_tanp_23 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_23.csv") %>%
+    dt_tanp_23 <- fread(paste0(DIR_TANP_STRUC, "tanp_23.csv")) %>%
         setnames(new = c("total", "museum", "city", "perc_chng_22", "perc_chng_19")) %>%
         .[, id := paste0("tanp23_", 1:.N)]
 
-    dt_tanp_24 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_24.csv") %>%
+    dt_tanp_24 <- fread(paste0(DIR_TANP_STRUC, "tanp_24.csv")) %>%
         setnames(new = c("total", "museum", "city", "perc_chng_23", "perc_chng_19")) %>%
         .[, id := paste0("tanp24_", 1:.N)]
 
