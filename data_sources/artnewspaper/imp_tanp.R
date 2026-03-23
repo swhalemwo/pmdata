@@ -21,6 +21,8 @@ gd_tanp_cbn <- function() {
 
     ## more systematic approach
     ## read in data
+    dt_tanp00_struc <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_00_struc.csv")
+    dt_tanp00 <- gd_proc_exhb(dt_tanp00_struc, "tanp00_")
 
     dt_tanp01_struc <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_01_struc.csv")
     dt_tanp01 <- gd_proc_exhb(dt_tanp01_struc, "tanp01_")
@@ -128,7 +130,7 @@ gd_tanp_cbn <- function() {
 
     ## combine
     dt_tanp_cbn <- map(list(
-        dt_tanp01, dt_tanp02, dt_tanp03, dt_tanp04, dt_tanp_05,
+        dt_tanp00, dt_tanp01, dt_tanp02, dt_tanp03, dt_tanp04, dt_tanp_05,
         dt_tanp_07, dt_tanp_08, dt_tanp_09, dt_tanp_10, dt_tanp_11,
         dt_tanp_12, dt_tanp_13, dt_tanp_14, dt_tanp_15, dt_tanp_16, dt_tanp_17, dt_tanp_18,
         dt_tanp_19, dt_tanp_20, dt_tanp_21, dt_tanp_22, dt_tanp_23, dt_tanp_24),
@@ -736,8 +738,6 @@ dt_tanp_muyr[grepl("national museum", museum, ignore.case = T)] %>% print(n=80)
 
 dt_tanp_muyr[year == 17][order(-total)]
 
-dt_tanp_muyr[, .N, .(muci,year)][N > 1]
-dt_tanp_muyr[muci %in% c("muci_195", "muci_248") &  year == 17]
 
 
 dt_tanp_muyr[, .N, muci][order(-N)]
@@ -1002,11 +1002,13 @@ gd_tanp05_struc(dt_tanp00_raw[id_show < 200], limit = 9999)
 gd_tanp05_struc(dt_tanp00_raw[id_show %between% c(200, 400)], limit = 9999)
 gd_tanp05_struc(dt_tanp00_raw[id_show > 400], limit = 9999)
 
-dt_tanp0_struc <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_00_struc.csv")
+dt_tanp00_struc <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_00_struc.csv")
 
-gd_tanp05_asses(dt_tanp0_struc)
+gd_tanp05_asses(dt_tanp00_struc)
 
+gd_proc_exhb(dt_tanp00_struc, "tanp00_")
 
+43.7755362,11.2631732
 
 
 

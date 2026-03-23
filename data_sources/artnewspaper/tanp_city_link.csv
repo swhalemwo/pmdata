@@ -34,3 +34,11 @@ id_link,ID_i,ID_j,city_i,city_j,new_name,b_same
 33,city_207,city_195,Rivoli (To),Rivoli,Rivoli,1
 34,city_215,city_195,Rivoli ( To),Rivoli,Rivoli,1
 35,city_215,city_207,Rivoli ( To),Rivoli (To),Rivoli,1
+36,city_236,city_6,St.Petersburg,St Petersburg,"St Petersburg",1
+37,city_238,city_34,Chiacgo,Chicago,"Chicago",1
+38,city_252,city_151,Stuutgart,Stuttgart,"Stuttgart",1
+39,city_246,city_197,Dusseldorf,Düsseldorf,"Düsseldorf",1
+40,city_243,city_204,Daytom,Dayton,"Dayton",1
+41,city_251,city_217,Colorno,Colorno (Pr),"Colorno (Pr)",1
+42,city_102,city_6,Saint Petersburg,St Petersburg,"St Petersburg",1
+23,city_236,city_102,St.Petersburg,Saint Petersburg,"St Petersburg",1

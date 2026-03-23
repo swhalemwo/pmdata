@@ -637,3 +637,118 @@ muci_803,muci_604,Galeria d’arte Moderna,Galleria Civica d’Arte Moderna,stri
 muci_692,muci_450,University of Michigan Museum of Art,University of Michigan,stringdist,1
 muci_782,muci_376,Scuderie papali al Quirinale,Scuderie del Quirinale,stringdist,1
 muci_755,muci_109,Los Angeles County MoA,Los Angeles County Museum of Art,stringdist,1
+muci_834,muci_35,Musees Royaux des Beaux-Arts,Musées Royaux des Beaux-Arts,"geo,stringdist",1
+muci_835,muci_35,Musées Royaux,Musées Royaux des Beaux-Arts,geo,1
+muci_836,muci_35,Musees Royaux,Musées Royaux des Beaux-Arts,geo,1
+muci_834,muci_36,Musees Royaux des Beaux-Arts,Musées Royaux des Beaux-Arts de Belgique,"geo,stringdist",1
+muci_835,muci_36,Musées Royaux,Musées Royaux des Beaux-Arts de Belgique,geo,1
+muci_836,muci_36,Musees Royaux,Musées Royaux des Beaux-Arts de Belgique,geo,1
+muci_839,muci_40,Art Institute Chicago,Art Institute of Chicago,"geo,stringdist",1
+muci_849,muci_79,The Israel Museum,Israel Museum,"geo,stringdist",1
+muci_849,muci_80,The Israel Museum,Israel Museume,"geo,stringdist",1
+muci_850,muci_83,The Nelson-Atkins Museum,The Nelson-Atkins Museum of Art,"geo,stringdist",1
+muci_852,muci_98,Royal Academy of the Arts,Royal Academy of Arts,"geo,stringdist",1
+muci_855,muci_107,Museum of Art,Lacma,geo,1
+muci_855,muci_109,Museum of Art,Los Angeles County Museum of Art,geo,1
+muci_855,muci_110,Museum of Art,Los Angeles County Museum of Art (Lacma),geo,1
+muci_859,muci_113,Prado Museum,Museo Nacional del Prado,geo,1
+muci_860,muci_115,Thyssen-Bornemisza Collection,Museo Thyssen-Bornemisza,geo,1
+muci_860,muci_121,Thyssen-Bornemisza Collection,Museo Nacional Thyssen-Bornemisza,geo,1
+muci_869,muci_141,Musee des Beaux-Arts,Montreal Museum of Fine Arts,geo,1
+muci_873,muci_153,Solomon R. Guggenheim,Guggenheim Museum,geo,1
+muci_873,muci_158,Solomon R. Guggenheim,Solomon R. Guggenheim Museum,"geo,stringdist",1
+muci_881,muci_165,Pompidou Centre,Centre Pompidou,geo,1
+muci_901,muci_182,Museum of Fine Arts,Virginia Museum of Fine Arts,geo,1
+muci_878,muci_228,Royal Ontario Museum,Royal Ontario Museum,geo,1
+muci_878,muci_230,Royal Ontario Museum,Royal Ontario Museum (ROM),geo,1
+muci_900,muci_238,Kunsthistorisches Wien,Kunsthistorisches Museum,"geo,stringdist",1
+muci_902,muci_244,Henry Art Gallery,National Gallery of Art,geo,0
+muci_903,muci_256,Kunsthaus Zurich,Kunsthaus Zürich,"geo,stringdist",1
+muci_859,muci_259,Prado Museum,Museo del Prado,geo,1
+muci_881,muci_265,Pompidou Centre,Musée National d'Art Moderne (Centre Pompidou),geo,1
+muci_855,muci_300,Museum of Art,LACMA,geo,1
+muci_852,muci_364,Royal Academy of the Arts,Royal Academy,geo,1
+muci_870,muci_370,Contemporary Art Museum,Musée National des Beaux-arts,geo,1
+muci_873,muci_372,Solomon R. Guggenheim,Guggenheim,geo,1
+muci_834,muci_392,Musees Royaux des Beaux-Arts,Musée Magritte,geo,0
+muci_835,muci_392,Musées Royaux,Musée Magritte,geo,0
+muci_836,muci_392,Musees Royaux,Musée Magritte,geo,0
+muci_865,muci_411,Museo Egizio,Castello Sforzesco,geo,0
+muci_896,muci_424,National Museum,Nationalmuseum,"geo,stringdist",1
+muci_898,muci_431,Peggy Guggenheim,Peggy Guggenheim Collection,"geo,stringdist",1
+muci_825,muci_453,Walters Art Gallery,Walters Art Museum,geo,1
+muci_837,muci_465,Albright Knox Art Gallery,Albright-Knox Art Gallery,"geo,stringdist",1
+muci_839,muci_468,Art Institute Chicago,Art institute of Chicago,"geo,stringdist",1
+muci_843,muci_474,The Dean Gallery,Dean Gallery,"geo,stringdist",1
+muci_844,muci_474,National Gallery of Modern Art,Dean Gallery,geo,0
+muci_846,muci_485,Museum fuer Moderne Kunst,Museum für Moderne Kunst,"geo,stringdist",1
+muci_853,muci_503,The British Library,British Library,"geo,stringdist",1
+muci_855,muci_508,Museum of Art,LA County Museum of Art,geo,1
+muci_862,muci_510,Palazzo del Te,Palazzo Te,"geo,stringdist",1
+muci_881,muci_528,Pompidou Centre,Centre Georges Pompidou,geo,1
+muci_890,muci_539,San Diego Art Museum,San Diego Museum of Art,"geo,stringdist",1
+muci_903,muci_561,Kunsthaus Zurich,Kuntshaus,geo,1
+muci_903,muci_562,Kunsthaus Zurich,Kunthaus,geo,1
+muci_830,muci_566,Vitra Design Museum,Deutsche Guggenheim,geo,0
+muci_840,muci_573,NY Carlsberg Glyptotek,Ny Carlsberg Glyptotek,geo,1
+muci_850,muci_583,The Nelson-Atkins Museum,Nelson-Atkins Museum,"geo,stringdist",1
+muci_860,muci_585,Thyssen-Bornemisza Collection,Thyssen-Bornemisza Museum,"geo,stringdist",1
+muci_884,muci_594,Musee du Quebec,Musée du Québec,geo,1
+muci_888,muci_595,Galleria Naz. di Arte Moderna,Palazzo Venezia,geo,0
+muci_892,muci_598,OKeefe Museum,Georgia O’Keeffe Museum,geo,1
+muci_893,muci_598,O’Keefe Museum,Georgia O’Keeffe Museum,geo,1
+muci_894,muci_598,O'Keefe Museum,Georgia O’Keeffe Museum,geo,1
+muci_896,muci_600,National Museum,National Museum of Fine Arts,"geo,stringdist",1
+muci_897,muci_603,Galleria d’Arte Moderna,Galleria Civica,geo,1
+muci_897,muci_604,Galleria d’Arte Moderna,Galleria Civica d’Arte Moderna,"geo,stringdist",1
+muci_826,muci_612,Fundacio ‘La Caixa’,Fundació “la Caixa”,geo,1
+muci_827,muci_612,Fundacio 'La Caixa',Fundació “la Caixa”,geo,1
+muci_862,muci_624,Palazzo del Te,Palazzo Te/Palazzo Ducale,geo,1
+muci_869,muci_625,Musee des Beaux-Arts,Museum of Fine Arts,geo,1
+muci_872,muci_626,Castelnuovo,Castel Nuovo,"geo,stringdist",1
+muci_899,muci_643,Biennale,"Arsenale, Giardini and other venues",geo,1
+muci_834,muci_650,Musees Royaux des Beaux-Arts,Musée d’art ancien,geo,0
+muci_835,muci_650,Musées Royaux,Musée d’art ancien,geo,0
+muci_836,muci_650,Musees Royaux,Musée d’art ancien,geo,0
+muci_842,muci_654,Kunstsammlung Nordrhein,Kunstsammlung,"geo,stringdist",1
+muci_850,muci_656,The Nelson-Atkins Museum,Nelson-Atkins Museum of Art,"geo,stringdist",1
+muci_855,muci_661,Museum of Art,County Museum of Art,"geo,stringdist",1
+muci_863,muci_663,Fondation Pierre Gianadda,Fondation Pierre Giannada,"geo,stringdist",1
+muci_869,muci_665,Musee des Beaux-Arts,Musée des Beaux-Arts,"geo,stringdist",1
+muci_882,muci_670,Maison de Photographie,Maison Européenne de la photo,geo,1
+muci_885,muci_677,Scuderie Papali,Scuderie papali al Quiriniale,"geo,stringdist",1
+muci_896,muci_680,National Museum,National Museum Stockholm,"geo,stringdist",1
+muci_897,muci_681,Galleria d’Arte Moderna,GAM,geo,1
+muci_898,muci_682,Peggy Guggenheim,Peggy Guggeneheim Collection,geo,1
+muci_903,muci_685,Kunsthaus Zurich,Kunsthaus,geo,1
+muci_822,muci_694,Museo Archeologico Regionale,Museo regionale,geo,1
+muci_838,muci_717,Mint Museum of Craft & Design,Mint Museum of Art,geo,1
+muci_838,muci_718,Mint Museum of Craft & Design,Mint Museum of Craft and Design,"geo,stringdist",1
+muci_838,muci_719,Mint Museum of Craft & Design,Mint Museum of Craft +Design,"geo,stringdist",1
+muci_847,muci_736,Hunterian Museum & Art Gallery,Hunterian Art Gallery,"geo,stringdist",1
+muci_866,muci_760,Pac,PAC,geo,1
+muci_865,muci_764,Museo Egizio,Castello sforzesco,geo,1
+muci_885,muci_782,Scuderie Papali,Scuderie papali al Quirinale,"geo,stringdist",1
+muci_888,muci_786,Galleria Naz. di Arte Moderna,Académie de France Villa Medici,geo,0
+muci_892,muci_797,OKeefe Museum,O’Keeffe Museum,"geo,stringdist",1
+muci_893,muci_797,O’Keefe Museum,O’Keeffe Museum,"geo,stringdist",1
+muci_894,muci_797,O'Keefe Museum,O’Keeffe Museum,"geo,stringdist",1
+muci_827,muci_826,Fundacio 'La Caixa',Fundacio ‘La Caixa’,"geo,stringdist",1
+muci_835,muci_834,Musées Royaux,Musees Royaux des Beaux-Arts,geo,1
+muci_836,muci_834,Musees Royaux,Musees Royaux des Beaux-Arts,geo,1
+muci_836,muci_835,Musees Royaux,Musées Royaux,"geo,stringdist",1
+muci_844,muci_843,National Gallery of Modern Art,The Dean Gallery,geo,1
+muci_857,muci_856,Musee art contemporain,Musee Art Contemporain,geo,1
+muci_858,muci_856,Musee d'art contemporain,Musee Art Contemporain,"geo,stringdist",1
+muci_858,muci_857,Musee d'art contemporain,Musee art contemporain,"geo,stringdist",1
+muci_875,muci_874,The Morgan Library,Pierpont Morgan Library,geo,1
+muci_893,muci_892,O’Keefe Museum,OKeefe Museum,"geo,stringdist",1
+muci_894,muci_892,O'Keefe Museum,OKeefe Museum,"geo,stringdist",1
+muci_894,muci_893,O'Keefe Museum,O’Keefe Museum,"geo,stringdist",1
+muci_888,muci_789,Galleria Naz. di Arte Moderna,Galleria Nazionale d’arte Moderna,stringdist,1
+muci_844,muci_355,National Gallery of Modern Art,National Gallery of Scotland,stringdist,1
+muci_888,muci_785,Galleria Naz. di Arte Moderna,Galleria nazionale d’arte moderna,stringdist,1
+muci_888,muci_534,Galleria Naz. di Arte Moderna,Galleria Nazionale d’Arte Moderna,stringdist,1
+muci_897,muci_803,Galleria d’Arte Moderna,Galeria d’arte Moderna,stringdist,1
+muci_897,muci_806,Galleria d’Arte Moderna,Galeria d’arte moderna,stringdist,1
+muci_844,muci_445,National Gallery of Modern Art,National Gallery,stringdist,1
