@@ -5,6 +5,7 @@ library(igraph)
 library(terra)
 library(tidygeocoder)
 library(ellmer)
+library(pmdata)
 
 
 
@@ -236,23 +237,6 @@ gd_tanp_city <- function(dt_tanp_cbn) {
     return(dt_tanp_city_geo)
 
 }    
-
-
-## ## look at city info
-## 
-
-## dt_tanp_city_cpr <- merge(dt_tanp_city[, .(city1 = city, id_city1 = ID, mrg = "x")],
-##                           dt_tanp_city[, .(city2 = city, id_city2 = ID, mrg = "x")],
-##                           by = "mrg", allow.cartesian = T) %>% .[city1 > city2] %>% .[, mrg := NULL]
-
-## ## get features
-## dt_tanp_city_wfeat <- gd_grid_wfeat(dt_tanp_city_cpr, name1 = "city1", name2 ="city2",
-##                                     dt_qmod, l_mod_noq = "jw") %>%
-##     .[, strdist_cosine_avg := rowMeans(.SD), .SDcols = patterns("strdist_cosine")] %>%
-##     .[, strdist_jaccard_avg := rowMeans(.SD), .SDcols = patterns("strdist_jaccard")] %>%
-##     .[, strdist_avg_all := rowMeans(.SD), .SDcols = c("strdist_cosine_avg", "strdist_jaccard_avg", "strdist_jw")]
-
-## dt_tanp_city_wfeat[order(strdist_avg_all)]
 
 
 gwd_geocode_tanp_city <- function(FILE_TANP_CITY_ID = PMDATA_LOCS$FILE_TANP_CITY_ID, dt_tanp_city_new) {
@@ -696,24 +680,33 @@ gw_tanp_muyr <- function(FILE_TANP_MUYR = PMDATA_LOCS$FILE_TANP_MUYR) {
     #' generate and write to file the art newspaper museum-year panel
     #' dataframe with museum (name + id), city (name new, ID), total, year, old (museum, city, for tech reasons)
 
-    dt_tanp_cbn <- gd_tanp_cbn()
-    dt_tanp_city <- gd_tanp_city(dt_tanp_cbn)
+    dt_tanp_cbn <- gd_tanp_cbn() # get individual years
+    dt_tanp_city <- gd_tanp_city(dt_tanp_cbn) # get city info
 
-
+    ## add cit info 
     dt_tanp_wcid <- merge(dt_tanp_cbn, dt_tanp_city[, .(city, id_city = ID, city_new)], by = "city")
 
+    ## get overall museum-city (muci) ID
     dt_tanp_muci <- gd_tanp_muci(dt_tanp_wcid)
 
+    ## get museum-year, variable names, order
     dt_tanp_muyr <- merge(dt_tanp_wcid, dt_tanp_muci[, .(muci, id_city, museum, museum_new)],
                       by = c("museum", "id_city")) %>%
-        .[, year := as.integer(paste0("20", gsub("tanp(\\d+)_.*", "\\1", id)))]
+        .[, year := as.integer(paste0("20", gsub("tanp(\\d+)_.*", "\\1", id)))] %>%
+        .[, .(muci_id = muci, muci_name = museum, city_id = id_city, city_name =city_new, total, year,
+              old_city  = city, old_museum = museum)]
 
     fwrite(dt_tanp_muyr, FILE_TANP_MUYR)
 
     return(dt_tanp_muyr)
 }
 
+
+#' read tanp museum-year file
+#' @return data.table with artnewspaper museum year info
+#' @export
 gd_tanp_muyr <- function(FILE_TANP_MUYR = PMDATA_LOCS$FILE_TANP_MUYR) {
+
     fread(FILE_TANP_MUYR)
 }
     
