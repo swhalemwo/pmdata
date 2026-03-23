@@ -711,8 +711,26 @@ gd_tanp_muyr <- function(FILE_TANP_MUYR = PMDATA_LOCS$FILE_TANP_MUYR) {
 }
     
 
+#' get the links between the art newspaper and artfacts
+gd_links_tanp_af <- function(FILE_LINKS_AF_TANP = PMDATA_LOCS$FILE_LINKS_AF_TANP) {
+    fread(FILE_LINKS_AF_TANP)
+}
 
 
+gw_tanp_af_matches <- function() {
+
+    dt_tanp_muci <- merge(gd_tanp_muyr()[, .(muci = unique(muci_id))],
+                          gd_tanp_muci_ff(), by = "muci") %>% .[, nbr := 1:.N] %>% # %>% .[1:40]
+        merge(gd_tanp_muyr()[, .N, .(muci_id, old_museum)][order(muci_id, -N)][, head(.SD, 1), muci_id],
+              by.x = "muci", by.y = "muci_id")
+
+
+    dt_links_tanp_af <- gd_links_tanp_af()
+
+    tanp_ids_tocheck <- setdiff(dt_tanp_muci[, muci], dt_links_tanp_af[, muci_id])
+
+    map(tanp_ids_tocheck, ~gw_tanp_af_match(dt_tanp_mui, .x))
+}
 
     
 

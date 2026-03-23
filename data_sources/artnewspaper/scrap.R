@@ -1,5 +1,6 @@
 ## * main
-## ** main
+
+
 
 dt_tanp_cbn <- gd_tanp_cbn()
 dt_tanp_city <- gd_tanp_city(dt_tanp_cbn)
@@ -98,4 +99,96 @@ dt_spring_2007[grepl("pdf", V1)]
 dt_2017 <- dt_wayback[date > "2018-02-01"]
 fwrite(dt_2017, "~/Dropbox/phd/pmdata/wayback17")
 
+
+## * artfacts matching
+
+
+dt_tanp_muci_fixed[, uniqueN(muci)]
+
+dt_tanp_muci_fixed[, .N, .(muci, museum)][order(muci, -N)] %>% print(n=80)
+
+dt_tanp_muyr[, .N, .(muci_id, old_museum)][order(muci_id, -N)][, head(.SD, 1), muci_id]
+
+
+
+
+## gets muci, then coordinates, then old name
+dt_tanp_muci <- merge(gd_tanp_muyr()[, .(muci = unique(muci_id))],
+                      gd_tanp_muci_ff(), by = "muci") %>% .[, nbr := 1:.N] %>% # %>% .[1:40]
+    merge(gd_tanp_muyr()[, .N, .(muci_id, old_museum)][order(muci_id, -N)][, head(.SD, 1), muci_id],
+          by.x = "muci", by.y = "muci_id")
+    
+
+dt_af_inst_loc <- merge(gd_af_instns(), gd_af_inst_loc(), by = "ID") %>%
+    .[, .(ID, name_af = Name, long, lat, nbr = 1:.N)] # %>% .[1:60]
+dt_muci_pts <- terra::vect(dt_tanp_muci[, .(muci, museum = old_museum, long, lat)], geom = c("long", "lat"))
+dt_af_pts <- terra::vect(dt_af_inst_loc[, .(id_af = ID, name_af, long, lat)], geom = c("long", "lat"))
+
+mat_dist <- terra::distance(dt_muci_pts, dt_af_pts)
+mat_dist[1:10, 1:10]
+
+## lame indexes: get all within 1km
+mat_indx <- which(mat_dist < 1000, arr.ind = T)
+dt_dist <- mat_indx %>% adt %>% .[, dist := mat_dist[mat_indx]]
+
+
+
+
+mat_dist2 <- mat_dist[1:20, 1:40]
+sapply(1:4, \(x) which(mat_dist2 == sort(mat_dist2)[x]))
+
+## better dist matrix: get closest 5 for each tanp
+
+## set up col names
+lv_nbraf <- paste0("nbraf", 1:5)
+lv_dist <- paste0("dist", 1:5)
+
+## actual calcs: get both ids (for merging later) and dists, then join and order later
+dt_clos5 <- apply(mat_dist, 1, \(x) c(order(x)[1:5], sort(x)[1:5])) %>% t %>% adt %>% 
+    .[, nbr_tanp := 1:.N] %>%
+    setnames(new = c(lv_nbraf, lv_dist, "nbr_tanp")) %>% 
+    melt(id.vars = "nbr_tanp", measure.vars = list(lv_nbraf, lv_dist), value.name = c("nbr_af", "dist")) %>%
+    merge(dt_af_inst_loc[, .(name_af, id_af = ID, nbr_af = nbr)], by = "nbr_af") %>%
+    .[, variable := NULL] %>%
+    merge(dt_tanp_muci[, .(muci, name_tanp = old_museum, nbr_tanp = nbr)], by = "nbr_tanp") %>%
+    .[order(nbr_tanp, dist)]
+
+## get string features
+dt_qmod <- expand.grid(mod = c("cosine", "jaccard"), q = 1:5, stringsAsFactors = F) %>% adt
+
+dt_tanp_wfeat <- gd_grid_wfeat(dt_clos5, "name_af", "name_tanp", dt_qmod = dt_qmod, l_mod_noq = "jw") %>% 
+        .[, strdist_cosine_avg := rowMeans(.SD, na.rm = T), .SDcols = patterns("strdist_cosine")] %>%
+        .[, strdist_jaccard_avg := rowMeans(.SD, na.rm = T), .SDcols = patterns("strdist_jaccard")] %>%
+        .[, strdist_avg_all := rowMeans(.SD, na.rm = T), .SDcols = c("strdist_cosine_avg", "strdist_jaccard_avg",
+                                                          "strdist_jw")]
+    ## .[, .SD := NULL,  .SDcols = patterns("strdist_cosine")]
+
+
+dt_clos_cbn <- merge(dt_clos5, dt_tanp_wfeat[, .(nbr_tanp, nbr_af, strdist_avg_all)], by = c("nbr_tanp", "nbr_af"))
+    
+dt_clos_cbn[, .SD[min(dist) > 0.1], nbr_tanp][order(nbr_tanp, dist), .(name_af, name_tanp, dist)]
+
+
+
+dt_clos_cbn[dist < 1 & strdist_avg_all < 0.05, .(name_af, name_tanp)] %>% print(n=800)
+
+## get some initial link
+fwrite(dt_clos_cbn[dist < 1 & strdist_avg_all < 0.05, .(muci_id = muci, id_af)],
+       PMDATA_LOCS$FILE_LINKS_AF_TANP)
+
+dt_af_instns <- gd_af_instns()
+
+
+## t1 <- Sys.time()
+## gd_grid_wfeat(dt_clos5, "name_af", "name_tanp", dt_qmod = dt_qmod, l_mod_noq = "jw")
+## t2 <- Sys.time()
+t2-t1
+
+## hmm not quite sure about perf, but gets slower: 3 secs for 3k, 5.2 for 130k, 6 for 266k
+
+t3 <- Sys.time()
+gd_grid_wfeat(rbindlist(map(1:100, ~dt_clos5)), "name_af", "name_tanp", dt_qmod = dt_qmod,
+              l_mod_noq = "jw")
+t4 <- Sys.time()
+t4-t3
 
