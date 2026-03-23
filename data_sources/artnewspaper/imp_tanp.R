@@ -39,7 +39,7 @@ gd_tanp_cbn <- function() {
     dt_tanp04 <- gd_proc_exhb(dt_tanp04_struc, "tanp04_")
 
 
-    dt_tanp05_struc <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/llm/tanp05_llm_4.csv")
+    dt_tanp05_struc <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_05_struc.csv")
     dt_tanp_05 <- gd_proc_exhb(dt_tanp05_struc, "tanp05_")
 
     dt_tanp_07 <- fread("/home/johannes/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_07.csv") %>%
