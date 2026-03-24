@@ -205,6 +205,9 @@ dt_tanp_muyr[, .N, .(muci_id, year)][N > 1]
 
 
 dt_tanp_muyr <- gw_tanp_muyr()
+dt_tanp_muyr[, .N, .(muci_id, year)][N > 1]
+dt_tanp_muyr[muci_id == "muci_505"]
+dt_tanp_muyr[, uniqueN(muci_id)]
 
 ## 67 and 313 are Gwacheon
 l_mmca_int <- c(197, 196, 272, 195, 288, 272, 336, 194)
