@@ -14,13 +14,16 @@ PMDATA_LOCS <- gc_pmdata_locs()
 Sys.setenv("GOOGLEGEOCODE_API_KEY" = show_pass_secret("google-geocode-api-key"))
 Sys.setenv(GEMINI_API_KEY = show_pass_secret("gemini-api-key"))
 
+#' read in all the tanp geo information
+#' @param FILE_TANP_CITY_ID file with tanp city information
 gd_tanp_city_geo <- function(FILE_TANP_CITY_ID = PMDATA_LOCS$FILE_TANP_CITY_ID) {
     #' read stuff from file
     dt_tanp_city_geo <- fread(FILE_TANP_CITY_ID)
     return(dt_tanp_city_geo)
 }
 
-
+#' read in all the tanp (struc) files, do some minor preprocessing
+#' @param DIR_TANP_STRUC dir with all the tanp files
 gd_tanp_cbn <- function(DIR_TANP_STRUC = PMDATA_LOCS$DIR_TANP_STRUC) {
 
     
@@ -165,7 +168,10 @@ gd_tanp_cbn <- function(DIR_TANP_STRUC = PMDATA_LOCS$DIR_TANP_STRUC) {
 
 }
 
-
+#' overall function to get clean city ids
+#' first check which cities are there already, if there are new ones, geocode them, check them against others
+#' finally do updates to ids and names (required for good muci ids)
+#' @param dt_tanp_cbn data.table with yearly tanp data, including city
 gd_tanp_city <- function(dt_tanp_cbn) {
     #' get all the cities
 
@@ -238,7 +244,9 @@ gd_tanp_city <- function(dt_tanp_cbn) {
 
 }    
 
-
+#' geocode new cities, write them to file, then need to be checked manually
+#' @param FILE_TANP_CITY_ID file to write IDs to
+#' @param dt_tanp_city_new data.table with new cities to check
 gwd_geocode_tanp_city <- function(FILE_TANP_CITY_ID = PMDATA_LOCS$FILE_TANP_CITY_ID, dt_tanp_city_new) {
     #' geocode new cities and write them to file
 
@@ -270,13 +278,16 @@ gwd_geocode_tanp_city <- function(FILE_TANP_CITY_ID = PMDATA_LOCS$FILE_TANP_CITY
 
 
 
-
+#' read tanp city links from file
+#' @param FILE_TANP_CITY_LINKS file with tanp city links
 gd_tanp_city_links <- function(FILE_TANP_CITY_LINKS= PMDATA_LOCS$FILE_TANP_CITY_LINKS) {
     fread(FILE_TANP_CITY_LINKS)
 }
 
+#' get tanp city candidates that need to be checked for overlap due to different spelling
+#' @param dt_tanp_city_geo data.table with city geo information
 gd_tanp_city_link_candidates <- function(dt_tanp_city_geo) {
-    #' get candidates that need to be checked
+    
     dt_tanp_city_vect <- terra::vect(dt_tanp_city_geo[, .(ID, long, lat)], geom = c("long", "lat"), crs = "WGS84")
     mat_dist <- terra::distance(dt_tanp_city_vect)
 
@@ -291,6 +302,8 @@ gd_tanp_city_link_candidates <- function(dt_tanp_city_geo) {
 }
 
 
+#' read tanp muci id from file
+#' @param FILE_TANP_MUCI_ID file with tanp muci info
 gd_tanp_muci_ff <- function(FILE_TANP_MUCI_ID = PMDATA_LOCS$FILE_TANP_MUCI_ID) {
     fread(FILE_TANP_MUCI_ID)
 }
@@ -301,6 +314,9 @@ gd_tanp_muci_ff <- function(FILE_TANP_MUCI_ID = PMDATA_LOCS$FILE_TANP_MUCI_ID) {
 
 
 
+#' overall pipeline function to get clear muci ids
+#' checks which museum-city links don't exist yet, gets new ids for them, geocodes them, checks overlaps with existing ids, synchronizes ids and names
+#' @param dt_tanp_wcid data.table with tanp ids (year) and city ids
 gd_tanp_muci <- function(dt_tanp_wcid) {
     ## museum geocoding: use museum-city
 
@@ -400,6 +416,8 @@ gd_tanp_muci <- function(dt_tanp_wcid) {
 
 
 
+#' get muci links based on geographical distance
+#' @param dt_tanp_muci_geo data.table with museum1/museum2 string info, also ids
 gd_muci_links_geo <- function(dt_tanp_muci_geo) {
     "get muci links based on geographical distance: within 100m"
 
@@ -418,6 +436,8 @@ gd_muci_links_geo <- function(dt_tanp_muci_geo) {
 }
       
 
+#' get muci links based on string distance
+#' @param dt_tanp_muci_geo data.table with museum1/museum2 string info, also ids
 gd_muci_links_stringdist <- function(dt_tanp_muci_geo) {
     #' get string similarity of muci in same city
     
@@ -451,12 +471,18 @@ gd_muci_links_stringdist <- function(dt_tanp_muci_geo) {
 
 }
 
+#' read muci links from file
+#' @param FILE_TANP_MUCI_LINKS file with muci links
 gd_muci_links_ff <- function(FILE_TANP_MUCI_LINKS = PMDATA_LOCS$FILE_TANP_MUCI_LINKS) {
     fread(FILE_TANP_MUCI_LINKS)
 }
 
+#' get muci links based on geographical dist and stringdist
+#' check if links that need to be checked have been checked already
+#' write new links in csv format to console, to be copied to FILE_TANP_MUCI_LINKS and checked MANUALLY 
+#' @param dt_tanp_muci_geo data.table with tanp names and coordinates
 gd_muci_links <- function(dt_tanp_muci_geo)  {
-    #' get muci links
+
     dt_muci_links_geo <- gd_muci_links_geo(dt_tanp_muci_geo)
     dt_muci_links_stringdist <- gd_muci_links_stringdist(dt_tanp_muci_geo)
     ## dt_muci_links_stringdist %>% print(n=80)
@@ -479,10 +505,12 @@ gd_muci_links <- function(dt_tanp_muci_geo)  {
     return(dt_muci_links_ff)
 }
 
+#' process exhibition data for integration into tanp
+#' exhb entries (museum,city) not necessarily unique for same org -> do some aggregation first
+#' kinda add tanp only later on in the end, when aggregated
+#' @param dt_tanp_struc structured tanp data.table (one show per line, id_show, daily_visitors, total visitors, show_name, venue_name, city, start_date, end_date
+#' @param id_prefix prefix for new tanp ids (just use "tanpXX_")
 gd_proc_exhb <- function(dt_tanp_struc, id_prefix) {
-    #' process exhibition data for integration into tanp
-    #' exhb entries (museum,city) not necessarily unique for same org -> do some aggregation first
-    #' kinda add tanp only later on in the end, when aggregated
 
     ## first aggregate to organization-year (not finally unique, need muci for that)
     dt_tanp_oyr_prep <- dt_tanp_struc[, .(total = sum(total_visitors)), .(museum = venue_name, city)] %>%
@@ -525,6 +553,7 @@ gd_proc_exhb <- function(dt_tanp_struc, id_prefix) {
 
 }
 
+#' read in tanp05 raw and get show ids based on data format (4 slashes)
 gd_tanp05_raw <- function() {
     #' get 05 tanp exhb info
 
@@ -555,7 +584,11 @@ gd_tanp05_raw <- function() {
 
 
 
-
+#' generate a structured output from raw tanp data, needs show ids (2000-2005 can use date for that)
+#' called tanp05 but works for all 2000-2005
+#' always writes results to files, then need manual checking
+#' @param dt_tanp05_raw data.table with raw (single line)
+#' @param limit don't process shows above this limit (uses ID, not count)
 gd_tanp05_struc <- function(dt_tanp05_raw, limit) {
     
     chat_tanp <- chat_google_gemini("you are a careful research assistant. you'll get some text summarizing an art exhibition. the first two numbers are daily visitors and total visitors. after that you have, in the following order, the show name, the venue name, the city, and the date (start/end). there may not be clear delimiters between these items, i.e. exhibition name could be followed directly by the museum name. all fields are always present. your task is to figure out all the fields (visitor daily, visitor total, show name, museum name, start and end date)")
@@ -593,6 +626,10 @@ gd_tanp05_struc <- function(dt_tanp05_raw, limit) {
     return(dt_tanp05_struc)
 }
 
+#' run some automated checks to assess quality of ai-extracted tanp data
+#' whether daily visitor order is maintained, whether nbr visitors makes sense, whether nbr days makes sense
+#' and whether dates are in right order
+#' @param dt_tanp05_struc data.table with ai-structured tanp info
 gd_tanp05_asses <- function(dt_tanp05_struc) {
     #' automated checks
     
@@ -648,10 +685,15 @@ gd_tanp05_asses <- function(dt_tanp05_struc) {
 
 }
 
+#' compare dt_tanp05_struc with manually copied results
+#' @param dt_tanp05_struc data.frame of tanp 2005 with gemini structured results
 gd_tanp05_mnlcheck <- function(dt_tanp05_struc) {
 
     ## manual check
-    dt_output_mnl <- fread("~/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_05_1.csv", nrows = 113) %>%
+    ## file_mnl <- "~/Dropbox/phd/pmdata/data_sources/artnewspaper/tanp_05_1.csv"
+    file_mnl <- "~/Dropbox/phd/pmdata/data_sources/artnewspaper/old/tanp_05_1.csv"
+    
+    dt_output_mnl <- fread(file_mnl, nrows = 113) %>%
         .[, `:=`(total_visitors = as.integer(trimws(gsub(",", "", total_visitors))),
                  daily_visitors = as.integer(trimws(gsub(",", "", daily_visitors))),
                  venue_name = trimws(venue_name),
@@ -676,10 +718,11 @@ gd_tanp05_mnlcheck <- function(dt_tanp05_struc) {
     
 }
 
+#' generate from scratch and write to file the art newspaper museum-year panel
+#' dataframe with museum (name + id), city (name new, ID), total, year, old (museum, city, for tech reasons)
+#' @param FILE_TANP_MUYR file where to write museum-year results to
 gw_tanp_muyr <- function(FILE_TANP_MUYR = PMDATA_LOCS$FILE_TANP_MUYR) {
-    #' generate and write to file the art newspaper museum-year panel
-    #' dataframe with museum (name + id), city (name new, ID), total, year, old (museum, city, for tech reasons)
-
+   
     dt_tanp_cbn <- gd_tanp_cbn() # get individual years
     dt_tanp_city <- gd_tanp_city(dt_tanp_cbn) # get city info
 
@@ -731,11 +774,18 @@ gd_tanp_muyr <- function(FILE_TANP_MUYR = PMDATA_LOCS$FILE_TANP_MUYR) {
     
 
 #' get the links between the art newspaper and artfacts
+#' @param FILE_LINKS_AF_TANP file with links between tanp/muci and artfacts
+#' @export
 gd_links_tanp_af <- function(FILE_LINKS_AF_TANP = PMDATA_LOCS$FILE_LINKS_AF_TANP) {
     fread(FILE_LINKS_AF_TANP)
 }
 
+#' manually check single tanp/muci candidate for coverage in artfacts
+#' @param dt_tanp_muci data.table with muci rows
+#' @param muci_id muci id to check
 gw_tanp_af_match <- function(dt_tanp_muci, muci_id) {
+    
+    
 
     do.call(sprintf, c(list(fmt = "%s, %s"),
                        as.list(dt_tanp_muci[muci == muci_id, .(museum, city_new)]))) %>% print
@@ -750,8 +800,9 @@ gw_tanp_af_match <- function(dt_tanp_muci, muci_id) {
 
 }
 
-
+#' manually check tanp/muci candidates for coverage in artfacts
 gw_tanp_af_matches <- function() {
+    
 
     dt_tanp_muci <- merge(gd_tanp_muyr()[, .(muci = unique(muci_id))],
                           gd_tanp_muci_ff(), by = "muci") %>% .[, nbr := 1:.N] %>% # %>% .[1:40]
