@@ -178,19 +178,12 @@ fwrite(dt_clos_cbn[dist < 1 & strdist_avg_all < 0.05, .(muci_id = muci, id_af)],
 
 dt_af_instns <- gd_af_instns()
 
+dt_links_tanp_af <- gd_links_tanp_af()
 
-## t1 <- Sys.time()
-## gd_grid_wfeat(dt_clos5, "name_af", "name_tanp", dt_qmod = dt_qmod, l_mod_noq = "jw")
-## t2 <- Sys.time()
-t2-t1
+dt_clos_cbn[!dt_links_tanp_af, on = .(muci = muci_id)] %>%
+    .[dist < 2, .(muci, id_af, name_tanp, name_af, dist)] %>% fwrite
 
-## hmm not quite sure about perf, but gets slower: 3 secs for 3k, 5.2 for 130k, 6 for 266k
 
-t3 <- Sys.time()
-gd_grid_wfeat(rbindlist(map(1:100, ~dt_clos5)), "name_af", "name_tanp", dt_qmod = dt_qmod,
-              l_mod_noq = "jw")
-t4 <- Sys.time()
-t4-t3
 
 gw_tanp_af_matches()
 
