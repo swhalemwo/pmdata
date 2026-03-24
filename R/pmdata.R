@@ -23,7 +23,7 @@
 #' @importFrom igraph graph_from_data_frame cluster_louvain
 #' @importFrom geosphere distHaversine
 #' @importFrom ellmer chat_google_gemini
-#' @importFrom jtls i1d2d
+#' @importFrom jtls i1d2d gd_grid_wfeat
 #' @importFrom tidygeocoder geocode
 #' @rawNamespace import(stats, except = D) # don't import D, which comes from collapse
 #' @rawNamespace import(collapse, except = fdroplevels)
