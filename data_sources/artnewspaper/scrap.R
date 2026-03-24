@@ -38,11 +38,23 @@ dt_tanp_muyr[grepl("de young", museum, ignore.case = T)]
 dt_tanp_muyr[grepl("SAAM", museum_new), .(muci)]
 dt_tanp_muyr[grepl("National Portrait", museum) & grepl("Washington", city_new)]
 
-
-dt_tanp_muyr %>% ggplot(aes(x = year, y = total, color = muci)) +
+## plot total over time
+dt_tanp_muyr %>%
+    .[, head(.SD, 100), year] %>% 
+    ggplot(aes(x = year, y = total, color = muci_id)) +
     geom_line(show.legend = F) +
     scale_y_continuous(trans = scales::log10_trans()) +
     geom_point(show.legend = F)
+
+
+dt_tanp_muyr[, head(.SD, 100), year] %>%
+    xtsum(log(total), muci_id)
+
+dt_tanp_muyr[ year <= 2005, head(.SD, 100), year] %>%
+    xtsum(total, muci_id)
+
+dt_tanp_muyr[ year > 2005, head(.SD, 100), year] %>%
+    xtsum(total, muci_id)
 
 dt_tanp_muyr[grepl("national museum", museum, ignore.case = T)] %>% print(n=80)
 
@@ -67,12 +79,12 @@ dt_af_exhbs[, begin_year := year(BeginDate)] %>%
 
 
 
-## gap stuffing
+## ** gap stuffing
 
-dt_tanp_muyr %>% copy %>% .[, `:=`(yrdiff = max(year) - min(year), nobs = .N), muci] %>%
-    .[yrdiff > nobs, .(museum_new, muci, museum, year, yrdiff, nobs)] %>%
+dt_tanp_muyr %>% copy %>% .[, `:=`(yrdiff = max(year) - min(year), nobs = .N), muci_id] %>%
+    .[yrdiff > nobs, .(muci_name, muci_id, old_museum, year, yrdiff, nobs)] %>%
     .[, nobs_abs := yrdiff - nobs] %>% # print(n=80)
-    .[, head(.SD, 1), muci] %>% ## .[, sum(nobs_abs)]
+    .[, head(.SD, 1), muci_id]## .[, sum(nobs_abs)]
 
 
 ## * wayback searching
@@ -211,20 +223,20 @@ dt_tanp_muyr[muci_id == "muci_505"]
 dt_tanp_muyr[, uniqueN(muci_id)]
 
 ## 67 and 313 are Gwacheon
-l_mmca_int <- c(197, 196, 272, 195, 288, 272, 336, 194)
-l_mmca <- paste0("muci_", c(197, 196, 272, 195, 288, 272, 336, 194))
-gd_tanp_muci_ff()[muci %in% l_mmca, .(muci, museum, city_new)]
+## l_mmca_int <- c(197, 196, 272, 195, 288, 272, 336, 194)
+## l_mmca <- paste0("muci_", c(197, 196, 272, 195, 288, 272, 336, 194))
+## gd_tanp_muci_ff()[muci %in% l_mmca, .(muci, museum, city_new)]
 
-dt_mmca_links <- expand.grid(muci1 = l_mmca_int, muci2 = l_mmca_int) %>% adt %>%
-    .[muci1 > muci2] %>%
-    .[, map(.SD, ~paste0("muci_", .x))]
+## dt_mmca_links <- expand.grid(muci1 = l_mmca_int, muci2 = l_mmca_int) %>% adt %>%
+##     .[muci1 > muci2] %>%
+##     .[, map(.SD, ~paste0("muci_", .x))]
 
 
-dt_mmca_links[!gd_muci_links_ff(), on = .(muci1, muci2)] %>% cat
+## dt_mmca_links[!gd_muci_links_ff(), on = .(muci1, muci2)] %>% cat
 
-dt_tanp_muci_newname[grepl("MMCA", museum)]
+## dt_tanp_muci_newname[grepl("MMCA", museum)]
 
-67 68 313
+
 
 
 ## check matching: have things been matched that no longer exist in dt_tanp_muyr
@@ -239,7 +251,7 @@ dt_links_tanp_af[id_af != "nomatch"]
 dt_tanp_linkcvrg <- merge(dt_tanp_muyr, dt_links_tanp_af[, .(muci_id, match = as.integer(!(id_af == "nomatch")))],
       by  = "muci_id")
     
-
+## coverage over time
 dt_tanp_linkcvrg[, .(total_yr = sum(total), N = .N), .(match, year)] %>% 
     dcast(year ~ match, value.var = c("total_yr", "N")) %>%
     .[, `:=`(total_yr = total_yr_0 + total_yr_1, N_yr = N_0 + N_1)] %>%
@@ -248,17 +260,9 @@ dt_tanp_linkcvrg[, .(total_yr = sum(total), N = .N), .(match, year)] %>%
     ggplot(aes(x=year, y = value, color = variable)) + geom_point() + geom_line()
 
 
-dt_tanp_linkcvrg[match == 0][order(year, -total)][, head(.SD,5), year] %>%
+## find largest non-matched ones, looks kinda ok
+dt_tanp_linkcvrg[match == 0][order(year, -total)][, head(.SD,10), year] %>%
     .[, .(total = sum(total)), .(muci_id, muci_name, city_name)] %>%
     .[order(-total)] %>% print(n=80)
 
 
-gd
-
-l_queensland <- gd_tanp_muci_ff()[grepl("Queensland", museum), muci] %>% gsub("muci_", "", .) %>% as.integer %>% c(31)
-
-dt_queens <- expand.grid(muci1 = l_queensland, muci2 = l_queensland) %>% adt %>%
-    .[muci1 > muci2] %>%
-    .[, map(.SD, ~paste0("muci_", .x))]
-
-dt_queens[!gd_muci_links_ff(), on = .(muci1, muci2)] %>% fwrite
