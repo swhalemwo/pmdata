@@ -10,7 +10,7 @@
 #' @importFrom parallel mclapply
 #' @importFrom purrr keep map
 #' @import data.table
-#' @importFrom terra rast vect project extract
+#' @importFrom terra rast vect project extract distance
 #' @importFrom RSQLite dbConnect dbGetQuery SQLite dbWriteTable dbDisconnect
 #' @importFrom wbstats wb_data
 #' @importFrom haven read_sav
@@ -22,6 +22,9 @@
 #' @importFrom memoise memoise
 #' @importFrom igraph graph_from_data_frame cluster_louvain
 #' @importFrom geosphere distHaversine
+#' @importFrom ellmer chat_google_gemini
+#' @importFrom jtls i1d2d
+#' @importFrom tidygeocoder geocode
 #' @rawNamespace import(stats, except = D) # don't import D, which comes from collapse
 #' @rawNamespace import(collapse, except = fdroplevels)
 ## https://stackoverflow.com/questions/51899220/import-all-the-functions-of-a-package-except-one-when-building-a-package
