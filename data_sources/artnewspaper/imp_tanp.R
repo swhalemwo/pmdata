@@ -688,14 +688,32 @@ gw_tanp_muyr <- function(FILE_TANP_MUYR = PMDATA_LOCS$FILE_TANP_MUYR) {
 
     ## get overall museum-city (muci) ID
     dt_tanp_muci <- gd_tanp_muci(dt_tanp_wcid)
+
+    ## dt_tanp_muci[
+
     ## dt_tanp_muci[muci == "muci_194", .(museum, museum_new)]
 
     ## get museum-year, variable names, order
-    dt_tanp_muyr <- merge(dt_tanp_wcid, dt_tanp_muci[, .(muci, id_city, museum, museum_new)],
-                      by = c("museum", "id_city")) %>%
+    dt_tanp_muyr_p1 <- merge(dt_tanp_wcid, dt_tanp_muci[, .(muci, id_city, museum, museum_new)],
+                          by = c("museum", "id_city")) %>%
         .[, year := as.integer(paste0("20", gsub("tanp(\\d+)_.*", "\\1", id)))] %>%
         .[, .(muci_id = muci, muci_name = museum_new, city_id = id_city, city_name =city_new, total, year,
               old_city  = city, old_museum = museum)]
+
+    
+
+    ## reduce QAGOMA to 1 row: maybe can be more general
+    l_muci_to_reduce <- c("muci_31")
+
+    ## do the reducing
+    dt_tanp_muyr_reduced <- dt_tanp_muyr_p1[muci_id %in% l_muci_to_reduce ] %>% 
+        .[order(year, muci_id, -total)] %>% .[, head(.SD, 1), .(year, muci_id)]
+
+    ## combine reduced with full 
+    dt_tanp_muyr <- rbind(dt_tanp_muyr_p1[muci_id %!in% l_muci_to_reduce], dt_tanp_muyr_reduced) %>%
+        .[order(year, -total)]
+
+    ## dt_tanp_muyr[grepl("Queensland", muci_name)]
 
     fwrite(dt_tanp_muyr, FILE_TANP_MUYR)
 

@@ -205,6 +205,7 @@ dt_tanp_muyr[, .N, .(muci_id, year)][N > 1]
 
 
 dt_tanp_muyr <- gw_tanp_muyr()
+## dt_tanp_muyr <- gd_tanp_muyr()
 dt_tanp_muyr[, .N, .(muci_id, year)][N > 1]
 dt_tanp_muyr[muci_id == "muci_505"]
 dt_tanp_muyr[, uniqueN(muci_id)]
@@ -224,3 +225,40 @@ dt_mmca_links[!gd_muci_links_ff(), on = .(muci1, muci2)] %>% cat
 dt_tanp_muci_newname[grepl("MMCA", museum)]
 
 67 68 313
+
+
+## check matching: have things been matched that no longer exist in dt_tanp_muyr
+dt_links_tanp_af <- gd_links_tanp_af()
+dt_links_tanp_af[!dt_tanp_muyr, on = "muci_id"]
+## -> cleaned some vatican match away
+
+dt_links_tanp_af[id_af != "nomatch"]
+
+
+
+dt_tanp_linkcvrg <- merge(dt_tanp_muyr, dt_links_tanp_af[, .(muci_id, match = as.integer(!(id_af == "nomatch")))],
+      by  = "muci_id")
+    
+
+dt_tanp_linkcvrg[, .(total_yr = sum(total), N = .N), .(match, year)] %>% 
+    dcast(year ~ match, value.var = c("total_yr", "N")) %>%
+    .[, `:=`(total_yr = total_yr_0 + total_yr_1, N_yr = N_0 + N_1)] %>%
+    .[, `:=`(prop_total_match = total_yr_1/total_yr, prop_N_match = N_1/N_yr)] %>%
+    melt(id.vars = "year", measure.vars = patterns("prop")) %>% 
+    ggplot(aes(x=year, y = value, color = variable)) + geom_point() + geom_line()
+
+
+dt_tanp_linkcvrg[match == 0][order(year, -total)][, head(.SD,5), year] %>%
+    .[, .(total = sum(total)), .(muci_id, muci_name, city_name)] %>%
+    .[order(-total)] %>% print(n=80)
+
+
+gd
+
+l_queensland <- gd_tanp_muci_ff()[grepl("Queensland", museum), muci] %>% gsub("muci_", "", .) %>% as.integer %>% c(31)
+
+dt_queens <- expand.grid(muci1 = l_queensland, muci2 = l_queensland) %>% adt %>%
+    .[muci1 > muci2] %>%
+    .[, map(.SD, ~paste0("muci_", .x))]
+
+dt_queens[!gd_muci_links_ff(), on = .(muci1, muci2)] %>% fwrite
