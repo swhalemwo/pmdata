@@ -1,18 +1,3 @@
-library(data.table)
-library(jtls)
-library(purrr)
-library(igraph)
-library(terra)
-library(tidygeocoder)
-library(ellmer)
-library(pmdata)
-
-
-
-PMDATA_LOCS <- gc_pmdata_locs()
-
-Sys.setenv("GOOGLEGEOCODE_API_KEY" = show_pass_secret("google-geocode-api-key"))
-Sys.setenv(GEMINI_API_KEY = show_pass_secret("gemini-api-key"))
 
 #' read in all the tanp geo information
 #' @param FILE_TANP_CITY_ID file with tanp city information
@@ -721,6 +706,7 @@ gd_tanp05_mnlcheck <- function(dt_tanp05_struc) {
 #' generate from scratch and write to file the art newspaper museum-year panel
 #' dataframe with museum (name + id), city (name new, ID), total, year, old (museum, city, for tech reasons)
 #' @param FILE_TANP_MUYR file where to write museum-year results to
+#' @export
 gw_tanp_muyr <- function(FILE_TANP_MUYR = PMDATA_LOCS$FILE_TANP_MUYR) {
    
     dt_tanp_cbn <- gd_tanp_cbn() # get individual years

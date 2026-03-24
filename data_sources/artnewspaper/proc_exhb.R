@@ -1,4 +1,4 @@
-## * processing exhibitions
+## * processing individual exhibitions (2000-2005) rather than museums with gemini
 
 library(ellmer)
 library(stringr)
