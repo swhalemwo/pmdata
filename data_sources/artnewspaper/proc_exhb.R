@@ -2,7 +2,7 @@
 
 library(ellmer)
 library(stringr)
-
+library(pmdata)
 
 dt_tanp05_raw <- gd_tanp05_raw() # get raw data
 dt_tanp05_struc <- gd_tanp05_struc(dt_tanp05_raw, limit = 10000) # get LLM data
@@ -165,7 +165,49 @@ gd_proc_exhb(dt_tanp00_struc, "tanp00_")
 
 
 
+## ** tanp08
+
+dt_tanp08_raw <- data.table(
+    text = readLines("~/Dropbox/phd/pmdata/data_sources/artnewspaper/csv/raw/tanp08_raw.csv"))
+
+l_months <- c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+
+dt_tanp08_raw[, cnt_months := str_count(text, paste0(l_months, collapse = "|"))] %>%
+    .[, cnt_slash := str_count(text, "-")] %>%
+    .[, cnt_int := str_count(text, "\\d+")]
+
+dt_tanp08_raw[, .N, .(cnt_months, cnt_slash, cnt_int)]
+
+dt_tanp08_raw[((cnt_months == 2 & cnt_slash == 1 & cnt_int > 0) |
+              (cnt_months == 1 & cnt_slash ==1 & cnt_int == 2)) &
+              text != "Art Deco, 1910-39",
+              id_show := 1:.N] %>%
+    setnafill(type = "nocb", cols = "id_show") %>%
+    .[, lines := .N, id_show]
+
+dt_tanp08_raw[, .N, lines]
+dt_tanp08_raw[lines > 10]
+dt_tanp08_raw[lines < 4]
+
+dt_tanp08_raw[id_show %in% c(84,85)]
 
 
+gd_tanp05_struc(dt_tanp08_raw[id_show < 200], limit = 9999)
+gd_tanp05_struc(dt_tanp08_raw[id_show %between% c(200, 400)], limit = 9999)
+gd_tanp05_struc(dt_tanp08_raw[id_show %between% c(401, 600)], limit = 9999)
+gd_tanp05_struc(dt_tanp08_raw[id_show > 600], limit = 9999)
+
+dt_tanp08_raw[cnt_months == 1]
+
+dt_tanp08_struc <- fread("~/Dropbox/phd/pmdata/data_sources/artnewspaper/csv/struc/tanp_08_struc.csv")
+
+dt_tanp08_struc[!grepl("2007", start_date)] %>% print(n=80)
+## date is messy, all kinds of different formats
+## don't deal with it, assume 2008
+
+
+pmdata:::gd_tanp05_asses(dt_tanp08_struc)
+
+gd_proc_exhb(dt_tanp08_struc, "tanp08_")
 
 

@@ -781,3 +781,105 @@ muci_347,muci_278,"Queensland GoMA","Queensland GoMA","manual",1
 muci_32,muci_31,"Queensland GoMA","Queensland GoMA","manual",1
 muci_34,muci_31,"Queensland GoMA","Queensland GoMA","manual",1
 muci_278,muci_31,"Queensland GoMA","Queensland GoMA","manual",1
+muci_909,muci_15,Ullens Centre,Ullens Center for Contemporary Art,geo,1
+muci_909,muci_16,Ullens Centre,UCCA Center for Contemporary Art,geo,1
+muci_914,muci_35,MuséesRoyauxdesBeaux-Arts,Musées Royaux des Beaux-Arts,"geo,stringdist",1
+muci_914,muci_36,MuséesRoyauxdesBeaux-Arts,Musées Royaux des Beaux-Arts de Belgique,geo,1
+muci_918,muci_50,Scottish National Gallery Complex,Scottish National Gallery,"geo,stringdist",1
+muci_918,muci_51,Scottish National Gallery Complex,National Galleries Scotland: National,geo,1
+muci_927,muci_88,NationalMuseumofModernArt,National Museum of Modern Art,geo,1
+muci_933,muci_97,Courtauld Gallery,Somerset House,geo,0
+muci_939,muci_106,Getty Museum,Getty Center,geo,1
+muci_939,muci_111,Getty Museum,J. Paul Getty Museum (Getty Center),geo,1
+muci_941,muci_115,Thyssen-Bornemisza/Fundación Caja Madrid,Museo Thyssen-Bornemisza,geo,1
+muci_941,muci_121,Thyssen-Bornemisza/Fundación Caja Madrid,Museo Nacional Thyssen-Bornemisza,geo,1
+muci_946,muci_143,The State Tretyakov Gallery,State Tretyakov Gallery,"geo,stringdist",1
+muci_947,muci_149,CCC Moscow,Contemporary Art Center Winzavod,geo,0
+muci_947,muci_150,CCC Moscow,GES-2 House of Culture,geo,0
+muci_957,muci_170,Grand Palais Nave,Galeries Nationales du Grand Palais,geo,1
+muci_957,muci_174,Grand Palais Nave,Grand Palais,"geo,stringdist",1
+muci_963,muci_177,Musée d'Art Moderne de la Ville,Palais de Tokyo,geo,0
+muci_963,muci_178,Musée d'Art Moderne de la Ville,Musée d'Art Moderne de Paris,"geo,stringdist",1
+muci_981,muci_185,De Young Museum,de Young Museum,geo,1
+muci_981,muci_186,De Young Museum,M. H. de Young Museum,geo,1
+muci_988,muci_214,MuseumofContemporaryArt,MCA Australia,geo,1
+muci_988,muci_215,MuseumofContemporaryArt,Museum of Contemporary Art Australia,geo,1
+muci_1000,muci_243,The Warsaw National Museum,"National Museum, Warsaw","geo,stringdist",1
+muci_946,muci_263,The State Tretyakov Gallery,Tretyakov Gallery,"geo,stringdist",1
+muci_972,muci_268,Museo di Castel Sant’Angelo,Museo Nazionale di Castel Sant'Angelo,geo,1
+muci_981,muci_271,De Young Museum,De Young Museum,geo,1
+muci_918,muci_279,Scottish National Gallery Complex,National Galleries of Scotland,geo,1
+muci_939,muci_283,Getty Museum,Getty,geo,1
+muci_981,muci_286,De Young Museum,Fine Arts Museums (FAMSF),geo,1
+muci_988,muci_290,MuseumofContemporaryArt,Museum of Contemporary Art,"geo,stringdist",1
+muci_958,muci_305,Musée National Picasso,Musée Picasso,geo,1
+muci_981,muci_306,De Young Museum,FAMSF,geo,1
+muci_963,muci_322,Musée d'Art Moderne de la Ville,Musée d’Art Moderne de la Ville de Paris,"geo,stringdist",1
+muci_918,muci_355,Scottish National Gallery Complex,National Gallery of Scotland,geo,1
+muci_939,muci_365,Getty Museum,Getty Center (Getty Museum),geo,1
+muci_963,muci_373,Musée d'Art Moderne de la Ville,Musée d’Art Moderne de la Ville,"geo,stringdist",1
+muci_963,muci_374,Musée d'Art Moderne de la Ville,Musée d’Art Moderne de la Ville/ARC,"geo,stringdist",1
+muci_972,muci_375,Museo di Castel Sant’Angelo,Museo Castel Sant'Angelo,"geo,stringdist",1
+muci_912,muci_390,KunsthallederBundesrepublik,Kunsthalle der Bundesrepublik,"geo,stringdist",1
+muci_913,muci_390,KunstshallederBundesrepublik,Kunsthalle der Bundesrepublik,"geo,stringdist",1
+muci_914,muci_392,MuséesRoyauxdesBeaux-Arts,Musée Magritte,geo,0
+muci_918,muci_396,Scottish National Gallery Complex,National Gallery Complex,"geo,stringdist",1
+muci_939,muci_407,Getty Museum,Getty Museum (Getty Center),geo,1
+muci_945,muci_414,Moscow Museum of Modern Art,Museum of Modern Art,"geo,stringdist",1
+muci_969,muci_419,Fundação de Serralves,Fundaçao Serralves,"geo,stringdist",1
+muci_970,muci_419,Fundação Serralves,Fundaçao Serralves,"geo,stringdist",1
+muci_972,muci_420,Museo di Castel Sant’Angelo,Museo Castel Sant’Angelo,"geo,stringdist",1
+muci_995,muci_432,Gallerie dell'Accademia,Gallerie dell’Accademia,"geo,stringdist",1
+muci_939,muci_435,Getty Museum,Getty Museum,geo,1
+muci_918,muci_445,Scottish National Gallery Complex,National Gallery,geo,1
+muci_912,muci_459,KunsthallederBundesrepublik,Kunst der Bundesrepublik,geo,1
+muci_913,muci_459,KunstshallederBundesrepublik,Kunst der Bundesrepublik,geo,1
+muci_912,muci_460,KunsthallederBundesrepublik,Kunstshalle der Bundesrepublik,"geo,stringdist",1
+muci_913,muci_460,KunstshallederBundesrepublik,Kunstshalle der Bundesrepublik,"geo,stringdist",1
+muci_918,muci_478,Scottish National Gallery Complex,Scottish Natioanl Gallery,"geo,stringdist",1
+muci_933,muci_504,Courtauld Gallery,Courtauld Institute Gallery,"geo,stringdist",1
+muci_939,muci_506,Getty Museum,The Getty Museum,geo,1
+muci_939,muci_507,Getty Museum,The Getty Center,geo,1
+muci_956,muci_523,National Gallery of Canada,National Gallery of Canada,geo,1
+muci_955,muci_524,Stichting Kröller-Müller Museum,Kröller-Müller Museum,"geo,stringdist",1
+muci_955,muci_525,Stichting Kröller-Müller Museum,Kröˆller-Mü¸ller Museum,geo,1
+muci_976,muci_534,GNAM,Galleria Nazionale d’Arte Moderna,geo,1
+muci_978,muci_536,Boijmans Van Beuningen,Museum Boijmans-van Beuningen,"geo,stringdist",1
+muci_918,muci_576,Scottish National Gallery Complex,Royal Scottish Academy,geo,1
+muci_920,muci_578,Museo Nazionale Bargello,Museo Nazionale del Bargello,"geo,stringdist",1
+muci_939,muci_584,Getty Museum,J. Paul Getty Museum,geo,1
+muci_941,muci_585,Thyssen-Bornemisza/Fundación Caja Madrid,Thyssen-Bornemisza Museum,geo,1
+muci_973,muci_595,Museo di Palazzo Venezia,Palazzo Venezia,"geo,stringdist",1
+muci_993,muci_606,Palazzo Ducale di Urbino,The Ducal Palaces,geo,1
+muci_998,muci_607,Museum of Modern Art Ludwig,Kunsthalle Wien,geo,0
+muci_911,muci_615,Museo de Bellas Artes de Bilbao,Museo de Bellas Artes,"geo,stringdist",1
+muci_963,muci_632,Musée d'Art Moderne de la Ville,Musée d’art moderne de la Ville,"geo,stringdist",1
+muci_914,muci_650,MuséesRoyauxdesBeaux-Arts,Musée d’art ancien,geo,0
+muci_998,muci_683,Museum of Modern Art Ludwig,Kunsthalle Wien am Museumplatz,geo,0
+muci_933,muci_749,Courtauld Gallery,Courtauld Institute Galleries,geo,1
+muci_963,muci_775,Musée d'Art Moderne de la Ville,"Musée d’art moderne, Paris",geo,1
+muci_976,muci_784,GNAM,Galeria d’arte Moderna,geo,1
+muci_976,muci_785,GNAM,Galleria nazionale d’arte moderna,geo,1
+muci_973,muci_786,Museo di Palazzo Venezia,Académie de France Villa Medici,geo,0
+muci_977,muci_787,Museo Fondazione Roma,Museo del Corso,geo,0
+muci_977,muci_788,Museo Fondazione Roma,Museo del corso,geo,0
+muci_976,muci_789,GNAM,Galleria Nazionale d’arte Moderna,geo,1
+muci_993,muci_808,Palazzo Ducale di Urbino,Palazzo Ducale,"geo,stringdist",1
+muci_995,muci_810,Gallerie dell'Accademia,Galleria dell’Accademia,"geo,stringdist",1
+muci_914,muci_834,MuséesRoyauxdesBeaux-Arts,Musees Royaux des Beaux-Arts,geo,1
+muci_914,muci_835,MuséesRoyauxdesBeaux-Arts,Musées Royaux,geo,1
+muci_914,muci_836,MuséesRoyauxdesBeaux-Arts,Musees Royaux,geo,1
+muci_940,muci_856,Musée d’art Contemporain,Musee Art Contemporain,"geo,stringdist",1
+muci_940,muci_857,Musée d’art Contemporain,Musee art contemporain,"geo,stringdist",1
+muci_940,muci_858,Musée d’art Contemporain,Musee d'art contemporain,"geo,stringdist",1
+muci_941,muci_860,Thyssen-Bornemisza/Fundación Caja Madrid,Thyssen-Bornemisza Collection,geo,1
+muci_973,muci_888,Museo di Palazzo Venezia,Galleria Naz. di Arte Moderna,geo,0
+muci_913,muci_912,KunstshallederBundesrepublik,KunsthallederBundesrepublik,"geo,stringdist",1
+muci_936,muci_935,The Queen’s Gallery,The Queen's Gallery,"geo,stringdist",1
+muci_996,muci_948,Glass Museum,Museo del Vetro,geo,1
+muci_970,muci_969,Fundação Serralves,Fundação de Serralves,"geo,stringdist",1
+muci_968,muci_531,Portland Museum of Art,Portland Art Museum,stringdist,1
+muci_967,muci_966,Pennsylvania Academy,Pennsylvania Academy of the Fine Arts,stringdist,1
+muci_967,muci_671,Pennsylvania Academy,Pennsylvania Academy of Art,stringdist,1
+muci_918,muci_477,Scottish National Gallery Complex,Scottish National Portrait Gallery,stringdist,1
+muci_966,muci_671,Pennsylvania Academy of the Fine Arts,Pennsylvania Academy of Art,stringdist,1

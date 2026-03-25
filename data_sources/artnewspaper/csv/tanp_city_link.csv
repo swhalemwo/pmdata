@@ -41,4 +41,5 @@ id_link,ID_i,ID_j,city_i,city_j,new_name,b_same
 40,city_243,city_204,Daytom,Dayton,"Dayton",1
 41,city_251,city_217,Colorno,Colorno (Pr),"Colorno (Pr)",1
 42,city_102,city_6,Saint Petersburg,St Petersburg,"St Petersburg",1
-23,city_236,city_102,St.Petersburg,Saint Petersburg,"St Petersburg",1
+43,city_236,city_102,St.Petersburg,Saint Petersburg,"St Petersburg",1
+44,city_253,city_47,Montréal,Montreal,"Montreal",1
