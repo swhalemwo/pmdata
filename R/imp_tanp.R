@@ -839,6 +839,7 @@ gw_tanp_af_matches <- function() {
     dt_links_tanp_af <- gd_links_tanp_af()
 
     tanp_ids_tocheck <- setdiff(dt_tanp_muci[, muci], dt_links_tanp_af[, muci_id])
+    print(sprintf("%s ids to check", len(tanp_ids_tocheck)))
 
     map(tanp_ids_tocheck, ~gw_tanp_af_match(dt_tanp_muci, .x))
 }

@@ -40,7 +40,7 @@ dt_tanp_muyr[grepl("National Portrait", museum) & grepl("Washington", city_new)]
 
 ## plot total over time
 dt_tanp_muyr %>%
-    .[, head(.SD, 100), year] %>% 
+    ## .[, head(.SD, 100), year] %>% 
     ggplot(aes(x = year, y = total, color = muci_id)) +
     geom_line(show.legend = F) +
     scale_y_continuous(trans = scales::log10_trans()) +
