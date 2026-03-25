@@ -126,7 +126,7 @@ dt_tanp_muyr[, .N, .(muci_id, old_museum)][order(muci_id, -N)][, head(.SD, 1), m
 
 ## gets muci, then coordinates, then old name
 dt_tanp_muci <- merge(gd_tanp_muyr()[, .(muci = unique(muci_id))],
-                      gd_tanp_muci_ff(), by = "muci") %>% .[, nbr := 1:.N] %>% # %>% .[1:40]
+                      pmdata:::gd_tanp_muci_ff(), by = "muci") %>% .[, nbr := 1:.N] %>% # %>% .[1:40]
     merge(gd_tanp_muyr()[, .N, .(muci_id, old_museum)][order(muci_id, -N)][, head(.SD, 1), muci_id],
           by.x = "muci", by.y = "muci_id")
     
@@ -184,6 +184,8 @@ dt_clos_cbn[, .SD[min(dist) > 0.1], nbr_tanp][order(nbr_tanp, dist), .(name_af, 
 
 dt_clos_cbn[dist < 1 & strdist_avg_all < 0.05, .(name_af, name_tanp)] %>% print(n=800)
 
+
+
 ## get some initial link
 fwrite(dt_clos_cbn[dist < 1 & strdist_avg_all < 0.05, .(muci_id = muci, id_af)],
        PMDATA_LOCS$FILE_LINKS_AF_TANP)
@@ -193,11 +195,11 @@ dt_af_instns <- gd_af_instns()
 dt_links_tanp_af <- gd_links_tanp_af()
 
 dt_clos_cbn[!dt_links_tanp_af, on = .(muci = muci_id)] %>%
-    .[dist < 2, .(muci, id_af, name_tanp, name_af, dist)] %>% fwrite
+    .[dist < 2, .(muci, id_af, name_tanp, name_af)] %>% fwrite
 
 
 
-gw_tanp_af_matches()
+pmdata:::gw_tanp_af_matches()
 
 dt_af_exhbs <- gd_af_exhbs()
 dt_af_exhbs_agg <- dt_af_exhbs[, .N, .(ID = InstitutionID)]
