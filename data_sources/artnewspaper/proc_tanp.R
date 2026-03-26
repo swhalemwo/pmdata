@@ -42,5 +42,7 @@ PMDATA_LOCS <- gc_pmdata_locs()
 dtx <- gw_tanp_muyr()
 dtx[, .N, year] %>% print(n=80)
 
+pmdata:::gw_tanp_af_matches()
+
 Sys.setenv("GOOGLEGEOCODE_API_KEY" = show_pass_secret("google-geocode-api-key"))
 Sys.setenv(GEMINI_API_KEY = show_pass_secret("gemini-api-key"))
