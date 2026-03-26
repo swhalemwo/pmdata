@@ -59,9 +59,26 @@ gd_tanp_cbn <- function(DIR_TANP_STRUC = PMDATA_LOCS$DIR_TANP_STRUC) {
     dt_tanp05_struc <- fread(paste0(DIR_TANP_STRUC, "tanp_05_struc.csv"))
     dt_tanp_05 <- gd_proc_exhb(dt_tanp05_struc, "tanp05_")
 
+    ## read 07 exhibition data, add muci
+    dt_tanp07_struc <- fread(paste0(DIR_TANP_STRUC, "tanp_07_struc.csv"))
+    dt_tanp_07_exhb <- gd_proc_exhb(dt_tanp07_struc, "tanp07_")
+    dt_tanp_07_exhb_wmuci <- gd_tanp_add_muci(dt_tanp_07_exhb)
+
+
     dt_tanp_07 <- fread(paste0(DIR_TANP_STRUC, "tanp_07.csv")) %>%
         .[, map(.SD, trimws)] %>%
         .[, `:=`(id  = paste0("tanp07_", 1:.N), city = stringr::str_to_title(trimws(city)))]
+
+
+    ## add muci to museum data
+    dt_tanp_07_mus_wmuci <- gd_tanp_add_muci(dt_tanp_07)
+
+    ## remove museum data from exhb, add them together
+    dt_tanp_07_cbn <- rbind(dt_tanp_07_mus_wmuci, dt_tanp_07_exhb_wmuci[!dt_tanp_07_mus_wmuci, on = "muci"]) %>%
+        .[, .(total = as.integer(gsub(",", "", total)), museum = museum_new, city)] %>%
+        .[order(-total)] %>%
+        .[, `:=`(id  = paste0("tanp07_", 1:.N), city = stringr::str_to_title(trimws(city)))]
+
 
 
     ## read 08 exhibition data, add muci
@@ -165,7 +182,7 @@ gd_tanp_cbn <- function(DIR_TANP_STRUC = PMDATA_LOCS$DIR_TANP_STRUC) {
     ## combine
     dt_tanp_cbn <- map(list(
         dt_tanp00, dt_tanp01, dt_tanp02, dt_tanp03, dt_tanp04, dt_tanp_05,
-        dt_tanp_07, dt_tanp_08_cbn, dt_tanp_09, dt_tanp_10, dt_tanp_11,
+        dt_tanp_07_cbn, dt_tanp_08_cbn, dt_tanp_09, dt_tanp_10, dt_tanp_11,
         dt_tanp_12, dt_tanp_13, dt_tanp_14, dt_tanp_15, dt_tanp_16, dt_tanp_17, dt_tanp_18,
         dt_tanp_19, dt_tanp_20, dt_tanp_21, dt_tanp_22, dt_tanp_23, dt_tanp_24),
                        ~.x[, .(id, museum, city, total)]) %>%

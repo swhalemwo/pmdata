@@ -164,6 +164,40 @@ gd_proc_exhb(dt_tanp00_struc, "tanp00_")
 43.7755362,11.2631732
 
 
+## ** tanp07
+
+
+dt_tanp07_raw <- data.table(
+    text = readLines("~/Dropbox/phd/pmdata/data_sources/artnewspaper/csv/raw/tanp07_raw.csv"))
+
+l_months <- c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+
+dt_tanp07_raw[, cnt_months := str_count(text, paste0(l_months, collapse = "|"))] %>%
+    .[, cnt_slash := str_count(text, "-")] %>%
+    .[, cnt_int := str_count(text, "\\d+")] %>%
+    .[, linenbr := 1:.N]
+
+
+dt_tanp07_raw[, .N, .(cnt_months, cnt_slash, cnt_int)]
+
+dt_tanp07_raw[((cnt_months == 2 & cnt_slash == 1 & cnt_int > 0) |
+               (cnt_months == 1 & cnt_slash ==1 & cnt_int == 2)) &
+              text != "Van Gogh: Last Landscapes, May-July 1890",               
+              id_show := 1:.N] %>%
+    setnafill(type = "nocb", cols = "id_show") %>%
+    .[, lines := .N, id_show]
+
+dt_tanp07_raw[, .N, lines]
+dt_tanp07_raw[lines < 4]
+
+gd_tanp05_struc(dt_tanp07_raw[id_show < 200], limit = 9999)
+gd_tanp05_struc(dt_tanp07_raw[id_show >= 200], limit = 9999)
+
+dt_tanp07_struc <- fread("~/Dropbox/phd/pmdata/data_sources/artnewspaper/csv/struc/tanp_07_struc.csv")
+pmdata:::gd_tanp05_asses(dt_tanp07_struc)
+
+
+gd_proc_exhb(dt_tanp07_struc, "tanp07_")
 
 ## ** tanp08
 

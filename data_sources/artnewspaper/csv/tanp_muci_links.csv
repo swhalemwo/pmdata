@@ -883,3 +883,19 @@ muci_967,muci_966,Pennsylvania Academy,Pennsylvania Academy of the Fine Arts,str
 muci_967,muci_671,Pennsylvania Academy,Pennsylvania Academy of Art,stringdist,1
 muci_918,muci_477,Scottish National Gallery Complex,Scottish National Portrait Gallery,stringdist,1
 muci_966,muci_671,Pennsylvania Academy of the Fine Arts,Pennsylvania Academy of Art,stringdist,1
+muci_1023,muci_327,Sackler Gallery,Freer and Sackler Galleries,geo,1
+muci_1019,muci_428,Institut Valencià d’Art Modern,Institut Valéncia d’Art Modern,"geo,stringdist",1
+muci_1009,muci_589,Museo Archeoligico Nazionale,Museo Archeologico Nazionale,"geo,stringdist",1
+muci_1011,muci_592,Musei Eremitani,Musei Civici agli Eremitani,geo,1
+muci_1021,muci_607,MUMOK,Kunsthalle Wien,geo,0
+muci_1013,muci_634,Palazzo della Pilotta,Galleria Nazionale,geo,1
+muci_1006,muci_660,Art Museum of Contemporary Art,Museum of Contemporary Art,"geo,stringdist",1
+muci_1021,muci_683,MUMOK,Kunsthalle Wien am Museumplatz,geo,0
+muci_1008,muci_760,Padiglione Arte Contemporanea,PAC,geo,1
+muci_1009,muci_766,Museo Archeoligico Nazionale,Museo archeologico nazionale,"geo,stringdist",1
+muci_1011,muci_771,Musei Eremitani,Museo civico degli eremitani,geo,1
+muci_1018,muci_804,Museo Civico d’Arte Antica,Palazzo Madama,geo,1
+muci_1008,muci_866,Padiglione Arte Contemporanea,Pac,geo,1
+muci_1021,muci_998,MUMOK,Museum of Modern Art Ludwig,geo,1
+muci_1022,muci_1001,Zacheta Narodowa Galeria Sztuki,Zacheta National Gallery of Art,geo,1
+muci_1004,muci_1003,CosmoCaixa Barcelona,CosmoCaxia Barcelona,"geo,stringdist",1
