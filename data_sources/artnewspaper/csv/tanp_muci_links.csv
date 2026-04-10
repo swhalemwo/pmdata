@@ -621,6 +621,7 @@ muci_719,muci_718,Mint Museum of Craft +Design,Mint Museum of Craft and Design,"
 muci_721,muci_720,Museum of Contemporary Art (MCA),MoCA,geo,1
 muci_730,muci_729,Kunstgewerbemuseum,Kunstgewebermuseum,"geo,stringdist",1
 muci_743,muci_742,MoCA,Kemper MoCA,geo,1
+muci_742,muci_496,MoCA,Kemper MoCA,"manual",1
 muci_790,muci_783,Palazzo esposizioni,Palazzo Esposizioni,geo,1
 muci_785,muci_784,Galleria nazionale d’arte moderna,Galeria d’arte Moderna,"geo,stringdist",1
 muci_789,muci_784,Galleria Nazionale d’arte Moderna,Galeria d’arte Moderna,"geo,stringdist",1
