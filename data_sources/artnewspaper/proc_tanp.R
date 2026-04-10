@@ -39,10 +39,23 @@ library(pmdata)
 PMDATA_LOCS <- gc_pmdata_locs()
 
 
-dtx <- gw_tanp_muyr()
-dtx[, .N, year] %>% print(n=80)
+dt_tanp_muyr <- gw_tanp_muyr()
+dt_tanp_muyr[, .N, year] %>% print(n=80)
+
+dt_tanp_muyr[, .N, .(muci_id, year)][N > 1]
+dt_tanp_muyr[, .(total_avg = mean(total), .N), .(muci_id, muci_name, city_name)][order(-total_avg)]
+
+dt_tanp_muyr_rnk <- dt_tanp_muyr[order(year, -total)] %>%
+    .[, rank := 1:.N, year]
+
 
 pmdata:::gw_tanp_af_matches()
 
 Sys.setenv("GOOGLEGEOCODE_API_KEY" = show_pass_secret("google-geocode-api-key"))
 Sys.setenv(GEMINI_API_KEY = show_pass_secret("gemini-api-key"))
+
+
+## check matching: have things been matched that no longer exist in dt_tanp_muyr
+dt_links_tanp_af <- gd_links_tanp_af()
+dt_links_tanp_af[!dt_tanp_muyr, on = "muci_id"]
+## -> cleaned some vatican match away

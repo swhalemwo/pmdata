@@ -241,10 +241,7 @@ dt_tanp_muyr[, uniqueN(muci_id)]
 
 
 
-## check matching: have things been matched that no longer exist in dt_tanp_muyr
-dt_links_tanp_af <- gd_links_tanp_af()
-dt_links_tanp_af[!dt_tanp_muyr, on = "muci_id"]
-## -> cleaned some vatican match away
+
 
 dt_links_tanp_af[id_af != "nomatch"]
 
