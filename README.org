@@ -7,7 +7,7 @@ Standardized interface for data sources used in the project "The Return of the M
 | data source                         | abbreviation | downloading           | importing    |
 |-------------------------------------+--------------+-----------------------+--------------|
 | Private Museum Database             | PMDB         | private data          | gd_pmdb_*    |
-| ARTnews collector ranking           | ARTNEWS      | scraping (python      | gd_artnews_* |
+| ARTnews collector ranking           | ARTNEWS      | scraping (python)     | gd_artnews_* |
 | Museums of the World                | MOW          | private data          | gd_mow       |
 | Artfacs                             | AF           | private data          | gd_af_*      |
 | ArtPrice                            | AP           | private data          | gd_ap_yr     |
@@ -16,6 +16,7 @@ Standardized interface for data sources used in the project "The Return of the M
 | Global Human Settlement Layer       | GSHL         | dl from [[https://ghsl.jrc.ec.europa.eu/download.php?ds=pop][EC website]]    | gd_popcircle |
 | European Group of Museum Statistics | EGMUS        | dl from [[https://www.egmus.eu/nc/en/statistics/complete_data/][EGMUS website]] | gd_egmus     |
 | Country Boundaries                  | crybndrs     | dl from [[https://www.geodatasource.com/addon/country-borders][GeoData]]       | gd_crybdnrs  |
+| The Art Newspaper museum ranking    | tanp         | private data          | gd_tanp_*    |
 
 
 detailed docs: check [[file:doc/doc_pmdata.org]]
